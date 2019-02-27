@@ -281,11 +281,6 @@ namespace TwitchToolkit
 
       labelRect.y += _height;
       inputRect.y += _height;
-      Widgets.Label(labelRect, "TwitchStoriesSettingsVoteInterval".Translate() + ": ");
-      VoteInterval = (int)Widgets.HorizontalSlider(inputRect, VoteInterval, 1, 120, false, VoteInterval.ToString() + " " + "TwitchStoriesMinutes".Translate(), null, null, 1);
-
-      labelRect.y += _height;
-      inputRect.y += _height;
       Widgets.Label(labelRect, "TwitchStoriesSettingsVoteTime".Translate() + ": ");
       VoteTime = (int)Widgets.HorizontalSlider(inputRect, VoteTime, 1, 15, false, VoteTime.ToString() + " " + "TwitchStoriesMinutes".Translate(), null, null, 1);
 
@@ -293,30 +288,6 @@ namespace TwitchToolkit
       inputRect.y += _height;
       Widgets.Label(labelRect, "TwitchStoriesSettingsVoteOptions".Translate() + ": ");
       VoteOptions = (int)Widgets.HorizontalSlider(inputRect, VoteOptions, 1, 5, false, VoteOptions.ToString() + " " + "TwitchStoriesOptions".Translate(), null, null, 1);
-
-      labelRect.y += _height;
-      inputRect.y += _height;
-      Widgets.Label(labelRect, "TwitchStoriesSettingsVotes".Translate() + ": ");
-      if (Widgets.ButtonText(inputRect, (VoteEnabled ? "TwitchStoriesEnabled".Translate() : "TwitchStoriesDisabled".Translate())))
-      {
-        VoteEnabled = !VoteEnabled;
-      }
-
-      labelRect.y += _height;
-      inputRect.y += _height;
-      Widgets.Label(labelRect, "TwitchStoriesSettingsDifficulty5".Translate() + ": ");
-      if (Widgets.ButtonText(inputRect, (DifficultyFiveEnabled ? "TwitchStoriesEnabled".Translate() : "TwitchStoriesDisabled".Translate())))
-      {
-        DifficultyFiveEnabled = !DifficultyFiveEnabled;
-      }
-
-      labelRect.y += _height;
-      inputRect.y += _height;
-      Widgets.Label(labelRect, "TwitchStoriesSettingsOtherStorytellers".Translate() + ": ");
-      if (Widgets.ButtonText(inputRect, (OtherStorytellersEnabled ? "TwitchStoriesEnabled".Translate() : "TwitchStoriesDisabled".Translate())))
-      {
-        OtherStorytellersEnabled = !OtherStorytellersEnabled;
-      }
 
       labelRect.y += _height;
       inputRect.y += _height;
@@ -334,13 +305,18 @@ namespace TwitchToolkit
       }
 
       labelRect.y += _height;
-      inputRect.x = _padding + 140f;
       inputRect.y += _height;
-      inputRect.width = rect.width - (_padding * 2) - 140f;
-      Widgets.Label(labelRect, "TwitchStoriesSettingsQuotes".Translate() + ": ");
-      if (Widgets.ButtonText(inputRect, (QuotesEnabled ? "TwitchStoriesEnabled".Translate() : "TwitchStoriesDisabled".Translate())))
+      inputRect.width = ((inputRect.width - _padding) / 2);
+      Widgets.Label(labelRect, "Coin Options" + ": ");
+      if (Widgets.ButtonText(inputRect, "Store " + (Settings.StoreOpen ? "Open" : "Closed")))
       {
-        QuotesEnabled = !QuotesEnabled;
+        Settings.StoreOpen = !Settings.StoreOpen;
+      }
+
+      inputRect.x += inputRect.width + _padding;
+      if (Widgets.ButtonText(inputRect, "Earning Coins " + (Settings.StoreOpen ? "On" : "Off")))
+      {
+        Settings.EarningCoins = !Settings.EarningCoins;
       }
 
       var mod = LoadedModManager.GetMod<TwitchToolkit>();

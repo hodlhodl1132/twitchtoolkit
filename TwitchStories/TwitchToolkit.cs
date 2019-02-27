@@ -434,12 +434,26 @@ namespace TwitchToolkit
         {
             Helper.Log("Trying to find User");
             Viewer viewer = Viewer.GetViewer(user);
-            Helper.Log("Viewer found or created");
-            Helper.Log($"@{viewer.username} Coins: {viewer.GetViewerCoins()} Karma: {viewer.GetViewerKarma()}%. !whatiskarma");
             _client.SendMessage($"@{viewer.username} Coins: {viewer.GetViewerCoins()} Karma: {viewer.GetViewerKarma()}%. !whatiskarma");
         }
 
-        if (!Settings.StoreOpen)
+        if (message.StartsWith("!whatiskarma") || message.StartsWith("!karma"))
+        {
+            Viewer viewer = Viewer.GetViewer(user);
+            _client.SendMessage($"@{viewer.username} karma is the rate at which you earn coins. Buying bad events lowers karma while good events/items raise your karma. You are currently earning karma at a rate of {viewer.GetViewerKarma()}%");
+        }
+
+        if (message.StartsWith("!modinfo"))
+        {
+            _client.SendMessage($"@{user} TwitchToolkit is a mod written by Twitch.tv/hodlhodl that integrates storytelling decisions into chat votes, awards viewers coins for watching, and those coins can be spent on items/events in game. Use !purchaselist to get more info. Join the discord https://discord.gg/qrtg224!");
+        }
+
+        if (message.StartsWith("!purchaselist") || message.StartsWith("!instructions"))
+        {
+            _client.SendMessage($"@{user} events/items can be purchased in game. Example: '!buyitem skillincrease' or '!buyitem beer 5'. Full list here: https://bit.ly/2tHiyu6");
+        }
+
+        if (Settings.StoreOpen)
         { 
             if (message.StartsWith("!buyevent"))
             {
@@ -609,7 +623,7 @@ namespace TwitchToolkit
         List<IncidentDef> eventTest = _eventsPossible.ToList();
 
         int eventsTotal = eventTest.Count();
-        int eventsNeeded = 5;
+        int eventsNeeded = Settings.VoteOptions;
         if (eventsTotal < eventsNeeded)        
         {
             eventsNeeded = eventsTotal;

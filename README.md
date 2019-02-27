@@ -25,3 +25,6 @@ User Commands:
 !balance, !bal, !coins - check balance and karma rate
 !buyevent - Syntax: !buyevent skillincrease - purchase an event
 !buyitem - Syntax: !buyitem beer 2 - purchase an item
+!whatiskarma, !karma - explains what the karma system is
+!purchaselist, !instructions - gives users a link to the public purchase list and info on using the mod
+!modinfo - gives users info about the mod

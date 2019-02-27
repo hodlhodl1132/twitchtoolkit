@@ -60,19 +60,33 @@ namespace TwitchToolkit
       Widgets.TextFieldNumeric<int>(rectInput, ref inputValue, ref inputBuffer);*/
 
       rectBtn = new Rect(padding, rectMessages.y + rectMessages.height, btnWidth, btnHeight);
-      if (Widgets.ButtonText(rectBtn, "TwitchStoriesMenuButtonDoomsday".Translate()))
+      if (Widgets.ButtonText(rectBtn, $"Store Toggle: {Settings.StoreOpen}"))
       {
-        _mod.Doomsday = true;
+        if (Settings.StoreOpen)
+        {
+            Settings.StoreOpen = false;
+        }
+        else
+        {
+            Settings.StoreOpen = true;
+        }
       }
 
       rectBtn.y += btnHeight + padding;
-      if (Widgets.ButtonText(rectBtn, "TwitchStoriesMenuButtonFun".Translate()))
+      if (Widgets.ButtonText(rectBtn, $"Earning Coins: {Settings.EarningCoins}"))
       {
-        Events.Start(5, 5);
+        if (Settings.EarningCoins)
+        {
+            Settings.EarningCoins = false;
+        }
+        else
+        {
+            Settings.EarningCoins = true;
+        }
       }
 
       rectBtn.y += btnHeight + padding;
-      if (Widgets.ButtonText(rectBtn, "TwitchStoriesMenuButtonVote".Translate()))
+      if (Widgets.ButtonText(rectBtn, ""))
       {
         //_mod.StartVote();
       }
