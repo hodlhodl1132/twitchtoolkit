@@ -168,10 +168,10 @@ namespace TwitchToolkit
             return Settings.products.Find(x => x.id == id);
         }
 
-        public static void SetProductAmount(int id, int amount)
+        public void SetProductAmount(int id, int amount)
         {
             Settings.ProductAmounts[id] = amount;
-            GetProductFromId(id).amount = amount;
+            this.amount = amount;
         }
     }
 

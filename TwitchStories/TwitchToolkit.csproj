@@ -53,6 +53,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Karma.cs" />
+    <Compile Include="Listing_TwitchToolkit.cs" />
     <Compile Include="Products.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>

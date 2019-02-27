@@ -5,6 +5,7 @@ using System.Text.RegularExpressions;
 using UnityEngine;
 using RimWorld;
 using Verse;
+using Verse.Sound;
 
 namespace TwitchToolkit
 {
@@ -154,31 +155,13 @@ namespace TwitchToolkit
       
       if (products == null)
       {
-        products = new List<Product>();
         if (ProductIds == null)
-        { 
-            ProductIds = new Dictionary<string, int>();
-            ProductTypes = new Dictionary<int, int>();
-            ProductNames = new Dictionary<int, string>();
-            ProductKarmaTypes = new Dictionary<int, int>();
-            ProductAmounts = new Dictionary<int, int>();
-            ProductEventIds = new Dictionary<int, int>();
-            // if no previous save data create new products
-            List<Product> defaultProducts = Products.GenerateDefaultProducts().ToList();
-            foreach(Product product in defaultProducts)
-            {
-                int id = product.id;
-                ProductIds.Add(product.abr, id);
-                ProductTypes.Add(id, product.type);
-                ProductNames.Add(id, product.name);
-                ProductKarmaTypes.Add(id, product.karmatype);
-                ProductAmounts.Add(id, product.amount);
-                ProductEventIds.Add(id, product.evtId);
-                products.Add(product);
-            }
+        {
+            ResetProductData();
         }
         else
         {   
+            products = new List<Product>();
             // load products from settings, then load them into settings class
             foreach(KeyValuePair<string, int> product in ProductIds)
             {
@@ -226,7 +209,19 @@ namespace TwitchToolkit
         _menu = 2;
       }
 
-      rect.width -= buttonWidth + _padding;
+      buttonRect.y += _height;
+      if (Widgets.ButtonText(buttonRect, "Coins"))
+      {
+        _menu = 3;
+      }
+
+      buttonRect.y += _height;
+      if (Widgets.ButtonText(buttonRect, "Products"))
+      {
+        _menu = 4;
+      }
+
+        rect.width -= buttonWidth + _padding;
       switch(_menu)
       {
         case 0:
@@ -239,6 +234,12 @@ namespace TwitchToolkit
         case 2:
           EventMenu(rect);
           break;
+        case 3:
+          CoinMenu(rect);
+          break;
+        case 4:
+          ProductMenu(rect);
+        break;
       }
     }
 
@@ -304,21 +305,6 @@ namespace TwitchToolkit
         CommandsAliveEnabled = !CommandsAliveEnabled;
       }
 
-      labelRect.y += _height;
-      inputRect.y += _height;
-      inputRect.width = ((inputRect.width - _padding) / 2);
-      Widgets.Label(labelRect, "Coin Options" + ": ");
-      if (Widgets.ButtonText(inputRect, "Store " + (Settings.StoreOpen ? "Open" : "Closed")))
-      {
-        Settings.StoreOpen = !Settings.StoreOpen;
-      }
-
-      inputRect.x += inputRect.width + _padding;
-      if (Widgets.ButtonText(inputRect, "Earning Coins " + (Settings.StoreOpen ? "On" : "Off")))
-      {
-        Settings.EarningCoins = !Settings.EarningCoins;
-      }
-
       var mod = LoadedModManager.GetMod<TwitchToolkit>();
       labelRect.y += _height;
       labelRect.height = 30f;
@@ -341,7 +327,7 @@ namespace TwitchToolkit
       Widgets.TextArea(labelRect, string.Join("\r\n", mod.MessageLog), true);
     }
 
-        private static void CategoryMenu(Rect rect)
+    private static void CategoryMenu(Rect rect)
     {
       var labelRect = new Rect(_padding, _padding + _height, rect.width - (_padding * 2), rect.height - (_padding * 2));
       var inputRect = new Rect(_padding + 140f, _padding + _height, rect.width - (_padding * 2) - 140f, 20f);
@@ -392,6 +378,7 @@ namespace TwitchToolkit
       int count = 0;
       foreach(KeyValuePair<int, string> evt in _Events)
       {
+        
         if(++scroll <= _eventScroll)
         {
           continue;
@@ -432,6 +419,173 @@ namespace TwitchToolkit
         }
       }
     }
+
+    private static void CoinMenu(Rect rect)
+    {
+        Listing_TwitchToolkit listingStandard = new Listing_TwitchToolkit();
+        listingStandard.Begin(rect);
+        listingStandard.CheckboxLabeled("Reward Coins:", ref Settings.EarningCoins, "Should viewers earn coins while watching?");
+        listingStandard.CheckboxLabeled("Store Open:", ref Settings.StoreOpen, "Enable purchasing of events and items");
+        listingStandard.Label("Coins Per Interval: " + Settings.CoinAmount);
+        Settings.CoinAmount = listingStandard.Slider((float)Settings.CoinAmount, 1, 50);
+
+        listingStandard.End();
+    }
+    
+    public static int ProductScroll = 0;
+
+        public static int ResetViewerStage { get; private set; }
+        public static string ResetViewerWarning { get; private set; }
+
+        private static void ProductMenu(Rect rect)
+    {
+        var labelRect = new Rect(_padding, _padding + _height, rect.width - (_padding * 2), rect.height - (_padding * 2));
+        var inputRect = new Rect(_padding + 140f, _padding + _height, rect.width - (_padding * 2) - 140f, 20f);
+
+        if (ProductScroll > 0)
+          {
+            inputRect.x = _padding + (rect.width - (_padding * 2)) / 4;
+            inputRect.width = (rect.width - (_padding * 2)) / 4;
+            if (Widgets.ButtonText(inputRect, "^"))
+            {
+              ProductScroll = Math.Max(0, ProductScroll - 3);
+            }
+          }
+
+        int count = 0;
+        int scroll = 0;
+
+        if (ProductScroll < (products.Count - count))
+        {
+            inputRect.x = _padding + (rect.width - (_padding * 2)) / 2;
+            inputRect.width = (rect.width - (_padding * 2)) / 4;
+            if (Widgets.ButtonText(inputRect, "v"))
+            {
+                ProductScroll += 3;
+            }
+        }
+
+        inputRect.x = _padding + (rect.width - (_padding * 2)) / 2 + (rect.width - (_padding * 2)) / 4;
+        inputRect.width = (rect.width - (_padding * 2)) / 4;
+
+        if (ResetViewerStage == 0)
+        {
+            ResetViewerWarning = "Reset to Default";
+        }
+        else if (ResetViewerStage == 1)
+        {
+            ResetViewerWarning = "Are you sure?";
+        }
+        else if (ResetViewerStage == 2)
+        {
+            ResetViewerWarning = "One more time";
+        }
+        else if (ResetViewerStage == 3)
+        {
+            ResetViewerStage = 0;
+            ResetProductData();
+            ProductMenu(rect);
+        }
+
+        if (Widgets.ButtonText(inputRect, ResetViewerWarning))
+        {
+            ResetViewerStage += 1;
+        }
+
+        inputRect.y += _height;
+
+        Listing_TwitchToolkit listingStandard = new Listing_TwitchToolkit();
+        listingStandard.Begin(rect);
+  
+
+        foreach (Product product in products)
+        {
+            if(++scroll <= ProductScroll)
+            {
+              continue;
+            }
+
+            listingStandard.Label($"{product.name}: {product.amount}");
+            int newprice = product.amount;
+
+            Rect productline = listingStandard.GetRect(24f);
+
+        	productline.width = 40f;
+		    if (Widgets.ButtonText(productline, "-" + 50))
+		    {
+			    SoundDefOf.AmountDecrement.PlayOneShotOnCamera();
+			    newprice -= 50 * GenUI.CurrentAdjustmentMultiplier();
+			    if (newprice < 50)
+			    {
+				    newprice = 50;
+			    }
+		    }
+
+		    productline.x += productline.width + 2f;
+		    if (Widgets.ButtonText(productline, "-" + 10))
+		    {
+			    SoundDefOf.AmountDecrement.PlayOneShotOnCamera();
+			    newprice -= 10 * GenUI.CurrentAdjustmentMultiplier();
+			    if (newprice < 50)
+			    {
+				    newprice = 50;
+			    }
+		    }
+
+		    productline.x += productline.width + 2f;
+		    if (Widgets.ButtonText(productline, "+" + 10))
+		    {
+			    SoundDefOf.AmountIncrement.PlayOneShotOnCamera();
+			    newprice += 10 * GenUI.CurrentAdjustmentMultiplier();
+			    if (newprice < 50)
+			    {
+				    newprice = 50;
+			    }
+		    }
+
+            productline.x += productline.width + 2f;
+		    if (Widgets.ButtonText(productline, "+" + 50))
+		    {
+			    SoundDefOf.AmountIncrement.PlayOneShotOnCamera();
+			    newprice += 50 * GenUI.CurrentAdjustmentMultiplier();
+			    if (newprice < 50)
+			    {
+				    newprice = 50;
+			    }
+		    }
+
+		    listingStandard.Gap(listingStandard.verticalSpacing);
+
+            ProductAmounts[product.id] = newprice;      
+            product.amount = newprice;
+
+            count++;
+        }
+    }
+
+        public static void ResetProductData()
+        {
+            products = new List<Product>();
+            ProductIds = new Dictionary<string, int>();
+            ProductTypes = new Dictionary<int, int>();
+            ProductNames = new Dictionary<int, string>();
+            ProductKarmaTypes = new Dictionary<int, int>();
+            ProductAmounts = new Dictionary<int, int>();
+            ProductEventIds = new Dictionary<int, int>();
+            // if no previous save data create new products
+            List<Product> defaultProducts = Products.GenerateDefaultProducts().ToList();
+            foreach (Product product in defaultProducts)
+            {
+                int id = product.id;
+                ProductIds.Add(product.abr, id);
+                ProductTypes.Add(id, product.type);
+                ProductNames.Add(id, product.name);
+                ProductKarmaTypes.Add(id, product.karmatype);
+                ProductAmounts.Add(id, product.amount);
+                ProductEventIds.Add(id, product.evtId);
+                products.Add(product);
+            }
+        }
 
   }
 }
