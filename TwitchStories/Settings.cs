@@ -198,18 +198,6 @@ namespace TwitchToolkit
       }
 
       buttonRect.y += _height;
-      if(Widgets.ButtonText(buttonRect, "Categories"))
-      {
-        _menu = 1;
-      }
-
-      buttonRect.y += _height;
-      if(Widgets.ButtonText(buttonRect, "Events"))
-      {
-        _menu = 2;
-      }
-
-      buttonRect.y += _height;
       if (Widgets.ButtonText(buttonRect, "Coins"))
       {
         _menu = 3;

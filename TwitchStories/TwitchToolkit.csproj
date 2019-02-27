@@ -137,10 +137,10 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
-    <None Include="Textures\Things\TwitchStoriesStoryteller.png">
+    <None Include="Textures\Things\TwitchToolkitHodl.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Textures\Things\TwitchStoriesStorytellerTiny.png">
+    <None Include="Textures\Things\TwitchToolkitHodlTiny.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Languages\English\Keyed\TwitchStoriesQuotes.xml">
@@ -189,6 +189,12 @@
     <None Include="Languages\Russian\Keyed\TwitchStoriesMisc.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Textures\Things\TwitchToolkitSpartan.png" />
+    <Content Include="Textures\Things\TwitchToolkitSpartanTiny.png" />
+    <Content Include="Textures\Things\TwitchToolkitUrist.png" />
+    <Content Include="Textures\Things\TwitchToolkitUristTiny.png" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

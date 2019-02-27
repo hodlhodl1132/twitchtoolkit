@@ -200,12 +200,12 @@ namespace TwitchToolkit.IRC
           Send("PONG\n");
           break;
         case "376":
-          Send(
+        Send(
             "CAP REQ :twitch.tv/membership\n" +
             "CAP REQ :twitch.tv/tags\n" +
             "CAP REQ :twitch.tv/commands\n" +
             "JOIN #" + _channel + "\n"
-          );
+            );
           _socketReady = true;
           break;
         case "PRIVMSG":
@@ -227,9 +227,11 @@ namespace TwitchToolkit.IRC
       }
     }
 
-    public void SendMessage(string message)
+    public void SendMessage(string message, bool botchannel = false)
     {
+
       _messageQueue.Enqueue("PRIVMSG #" + _channel + " :" + message + "\n");
+
       _messageHandle.Set();
     }
 
