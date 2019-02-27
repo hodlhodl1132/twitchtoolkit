@@ -143,12 +143,12 @@ namespace TwitchToolkit
 
     public static void CarePackage(string message, LetterDef type, IntVec3 vec)
     {
-    if (message == null)
-    {
-    message = "";
-    }
+        if (message == null)
+        {
+            message = "";
+        }
 
-    Current.Game.letterStack.ReceiveLetter("TwitchStoriesCarePackage".Translate(), message, type, new TargetInfo(vec, Helper.AnyPlayerMap, false));
+        Current.Game.letterStack.ReceiveLetter("TwitchStoriesCarePackage".Translate(), message, type, new TargetInfo(vec, Helper.AnyPlayerMap, false));
     }
         /*
         public static void Mushroom(string gender)
@@ -1625,174 +1625,181 @@ namespace TwitchToolkit
     public static void CargoDropItem(string quote, int amount, string item)
     {
         Helper.Log("Attemping to make item " + item);
-        var itemDef = ThingDef.Named("DropPodIncoming");
-        var itemThing = new Thing();
-        switch (item)
-        {
-        case "silver":
-        itemThing = ThingMaker.MakeThing(ThingDefOf.Silver, null);
-        break;
-        case "uranium":
-        itemThing = ThingMaker.MakeThing(ThingDefOf.Uranium, null);
-        break;
-        case "survivalmeal":
-        itemThing = ThingMaker.MakeThing(ThingDefOf.MealSurvivalPack, null);
-        break;
-        case "pastemeal":
-        itemThing = ThingMaker.MakeThing(ThingDefOf.MealNutrientPaste, null);
-        break;
-        case "simplemeal":
-        itemThing = ThingMaker.MakeThing(ThingDefOf.MealSimple, null);
-        break;
-        case "finemeal":
-        itemThing = ThingMaker.MakeThing(ThingDefOf.MealFine, null);
-        break;
-        case "kibble":
-        itemThing = ThingMaker.MakeThing(ThingDefOf.Kibble, null);
-        break;
-        case "hay":
-        itemThing = ThingMaker.MakeThing(ThingDefOf.Hay, null);
-        break;
-        case "humanmeat":
-        itemThing = ThingMaker.MakeThing(ThingDefOf.Meat_Human, null);
-        break;
-        case "luciferium":
-        itemThing = ThingMaker.MakeThing(ThingDefOf.Luciferium, null);
-        break;
-        case "pemmican":
-        itemThing = ThingMaker.MakeThing(ThingDefOf.Pemmican, null);
-        break;
-        case "techprofsubpersonacore":
-        itemThing = ThingMaker.MakeThing(ThingDefOf.TechprofSubpersonaCore, null);
-        break;
-        case "wort":
-        itemThing = ThingMaker.MakeThing(ThingDefOf.Wort, null);
-        break;
-        case "gold":
-        itemThing = ThingMaker.MakeThing(ThingDefOf.Gold, null);
-        break;
-        case "steel":
-        itemThing = ThingMaker.MakeThing(ThingDefOf.Steel, null);
-        break;
-        case "wood":
-        itemThing = ThingMaker.MakeThing(ThingDefOf.WoodLog, null);
-        break;
-        case "herbalmedicine":
-        itemThing = ThingMaker.MakeThing(ThingDefOf.MedicineHerbal, null);
-        break;
-        case "industrialmedicine":
-        itemThing = ThingMaker.MakeThing(ThingDefOf.MedicineIndustrial, null);
-        break;
-        case "glitterworldmedicine":
-        itemThing = ThingMaker.MakeThing(ThingDefOf.MedicineUltratech, null);
-        break;
-        case "graniteblocks":
-        itemThing = ThingMaker.MakeThing(ThingDefOf.BlocksGranite, null);
-        break;
-        case "plasteel":
-        itemThing = ThingMaker.MakeThing(ThingDefOf.Plasteel, null);
-        break;
-        case "beer":
-        itemThing = ThingMaker.MakeThing(ThingDefOf.Beer, null);
-        break;
-        case "aipersonacore":
-        itemThing = ThingMaker.MakeThing(ThingDefOf.AIPersonaCore, null);
-        break;
-        case "smokeleafjoint":
-        itemThing = ThingMaker.MakeThing(ThingDefOf.SmokeleafJoint, null);
-        break;
-        case "industrialcomponent":
-        itemThing = ThingMaker.MakeThing(ThingDefOf.ComponentIndustrial, null);
-        break;
-        case "advcomponent":
-        itemThing = ThingMaker.MakeThing(ThingDefOf.ComponentSpacer, null);
-        break;
-        case "insectjelly":
-        itemThing = ThingMaker.MakeThing(ThingDefOf.InsectJelly, null);
-        break;
-        case "cloth":
-        itemThing = ThingMaker.MakeThing(ThingDefOf.Cloth, null);
-        break;
-        case "plainleather":
-        itemThing = ThingMaker.MakeThing(ThingDefOf.Leather_Plain, null);
-        break;
-        case "hyperweave":
-        itemThing = ThingMaker.MakeThing(ThingDefOf.Hyperweave, null);
-        break;
-        case "chocolate":
-        itemThing = ThingMaker.MakeThing(ThingDefOf.Chocolate, null);
-        break;
-        case "elephanttusk":
-        itemThing = ThingMaker.MakeThing(ThingDefOf.ElephantTusk, null);
-        break;
-        case "potatoes":
-        itemThing = ThingMaker.MakeThing(ThingDefOf.RawPotatoes, null);
-        break;
-        case "berries":
-        itemThing = ThingMaker.MakeThing(ThingDefOf.RawBerries, null);
-        break;
-        case "heart":
-        itemThing = ThingMaker.MakeThing(ThingDefOf.Heart, null);
-        break;
+        try
+        { 
+            var itemDef = ThingDef.Named("DropPodIncoming");
+            var itemThing = new Thing();
+            switch (item)
+            {
+            case "silver":
+            itemThing = ThingMaker.MakeThing(ThingDefOf.Silver, null);
+            break;
+            case "uranium":
+            itemThing = ThingMaker.MakeThing(ThingDefOf.Uranium, null);
+            break;
+            case "survivalmeal":
+            itemThing = ThingMaker.MakeThing(ThingDefOf.MealSurvivalPack, null);
+            break;
+            case "pastemeal":
+            itemThing = ThingMaker.MakeThing(ThingDefOf.MealNutrientPaste, null);
+            break;
+            case "simplemeal":
+            itemThing = ThingMaker.MakeThing(ThingDefOf.MealSimple, null);
+            break;
+            case "finemeal":
+            itemThing = ThingMaker.MakeThing(ThingDefOf.MealFine, null);
+            break;
+            case "kibble":
+            itemThing = ThingMaker.MakeThing(ThingDefOf.Kibble, null);
+            break;
+            case "hay":
+            itemThing = ThingMaker.MakeThing(ThingDefOf.Hay, null);
+            break;
+            case "humanmeat":
+            itemThing = ThingMaker.MakeThing(ThingDefOf.Meat_Human, null);
+            break;
+            case "luciferium":
+            itemThing = ThingMaker.MakeThing(ThingDefOf.Luciferium, null);
+            break;
+            case "pemmican":
+            itemThing = ThingMaker.MakeThing(ThingDefOf.Pemmican, null);
+            break;
+            case "techprofsubpersonacore":
+            itemThing = ThingMaker.MakeThing(ThingDefOf.TechprofSubpersonaCore, null);
+            break;
+            case "wort":
+            itemThing = ThingMaker.MakeThing(ThingDefOf.Wort, null);
+            break;
+            case "gold":
+            itemThing = ThingMaker.MakeThing(ThingDefOf.Gold, null);
+            break;
+            case "steel":
+            itemThing = ThingMaker.MakeThing(ThingDefOf.Steel, null);
+            break;
+            case "wood":
+            itemThing = ThingMaker.MakeThing(ThingDefOf.WoodLog, null);
+            break;
+            case "herbalmedicine":
+            itemThing = ThingMaker.MakeThing(ThingDefOf.MedicineHerbal, null);
+            break;
+            case "industrialmedicine":
+            itemThing = ThingMaker.MakeThing(ThingDefOf.MedicineIndustrial, null);
+            break;
+            case "glitterworldmedicine":
+            itemThing = ThingMaker.MakeThing(ThingDefOf.MedicineUltratech, null);
+            break;
+            case "graniteblocks":
+            itemThing = ThingMaker.MakeThing(ThingDefOf.BlocksGranite, null);
+            break;
+            case "plasteel":
+            itemThing = ThingMaker.MakeThing(ThingDefOf.Plasteel, null);
+            break;
+            case "beer":
+            itemThing = ThingMaker.MakeThing(ThingDefOf.Beer, null);
+            break;
+            case "aipersonacore":
+            itemThing = ThingMaker.MakeThing(ThingDefOf.AIPersonaCore, null);
+            break;
+            case "smokeleafjoint":
+            itemThing = ThingMaker.MakeThing(ThingDefOf.SmokeleafJoint, null);
+            break;
+            case "industrialcomponent":
+            itemThing = ThingMaker.MakeThing(ThingDefOf.ComponentIndustrial, null);
+            break;
+            case "advcomponent":
+            itemThing = ThingMaker.MakeThing(ThingDefOf.ComponentSpacer, null);
+            break;
+            case "insectjelly":
+            itemThing = ThingMaker.MakeThing(ThingDefOf.InsectJelly, null);
+            break;
+            case "cloth":
+            itemThing = ThingMaker.MakeThing(ThingDefOf.Cloth, null);
+            break;
+            case "plainleather":
+            itemThing = ThingMaker.MakeThing(ThingDefOf.Leather_Plain, null);
+            break;
+            case "hyperweave":
+            itemThing = ThingMaker.MakeThing(ThingDefOf.Hyperweave, null);
+            break;
+            case "chocolate":
+            itemThing = ThingMaker.MakeThing(ThingDefOf.Chocolate, null);
+            break;
+            case "elephanttusk":
+            itemThing = ThingMaker.MakeThing(ThingDefOf.ElephantTusk, null);
+            break;
+            case "potatoes":
+            itemThing = ThingMaker.MakeThing(ThingDefOf.RawPotatoes, null);
+            break;
+            case "berries":
+            itemThing = ThingMaker.MakeThing(ThingDefOf.RawBerries, null);
+            break;
+            case "heart":
+            itemThing = ThingMaker.MakeThing(ThingDefOf.Heart, null);
+            break;
 
-        // weapons
-        case "chargerifle":
-        itemThing = ThingMaker.MakeThing(ThingDef.Named("Gun_ChargeRifle"), null);
-        setItemQualityRandom(itemThing);
-        break;
-        case "revolver":
-        itemThing = ThingMaker.MakeThing(ThingDef.Named("Gun_Revolver"), null);
-        setItemQualityRandom(itemThing);
-        break;
-        case "boltactionrifle":
-        itemThing = ThingMaker.MakeThing(ThingDef.Named("Gun_BoltActionRifle"), null);
-        setItemQualityRandom(itemThing);
-        break;
-        case "chainshotgun":
-        itemThing = ThingMaker.MakeThing(ThingDef.Named("Gun_ChainShotgun"), null);
-        setItemQualityRandom(itemThing);
-        break;
-        case "doomsdaylauncher":
-        itemThing = ThingMaker.MakeThing(ThingDef.Named("Gun_DoomsdayRocket"), null);
-        setItemQualityRandom(itemThing);
-        break;
+            // weapons
+            case "chargerifle":
+            itemThing = ThingMaker.MakeThing(ThingDef.Named("Gun_ChargeRifle"), null);
+            setItemQualityRandom(itemThing);
+            break;
+            case "revolver":
+            itemThing = ThingMaker.MakeThing(ThingDef.Named("Gun_Revolver"), null);
+            setItemQualityRandom(itemThing);
+            break;
+            case "boltactionrifle":
+            itemThing = ThingMaker.MakeThing(ThingDef.Named("Gun_BoltActionRifle"), null);
+            setItemQualityRandom(itemThing);
+            break;
+            case "chainshotgun":
+            itemThing = ThingMaker.MakeThing(ThingDef.Named("Gun_ChainShotgun"), null);
+            setItemQualityRandom(itemThing);
+            break;
+            case "doomsdaylauncher":
+            itemThing = ThingMaker.MakeThing(ThingDef.Named("Gun_DoomsdayRocket"), null);
+            setItemQualityRandom(itemThing);
+            break;
 
-        // apparel
-        case "advancedhelmet":
-        itemThing = ThingMaker.MakeThing(ThingDef.Named("Apparel_AdvancedHelmet"), ThingDefOf.Steel);
-        setItemQualityRandom(itemThing);
-        break;
-        case "marinehelmet":
-        itemThing = ThingMaker.MakeThing(ThingDef.Named("Apparel_PowerArmorHelmet"), null);
-        setItemQualityRandom(itemThing);
-        break;
-        case "duster":
-        itemThing = ThingMaker.MakeThing(ThingDef.Named("Apparel_Duster"), ThingDefOf.Cloth);
-        setItemQualityRandom(itemThing);
-        break;
-        case "tribalwear":
-        itemThing = ThingMaker.MakeThing(ThingDef.Named("Apparel_TribalA"), ThingDefOf.Cloth);
-        setItemQualityRandom(itemThing);
-        break;
-        case "tshirt":
-        itemThing = ThingMaker.MakeThing(ThingDef.Named("Apparel_BasicShirt"), ThingDefOf.Cloth);
-        setItemQualityRandom(itemThing);
-        break;
-        case "pants":
-        itemThing = ThingMaker.MakeThing(ThingDef.Named("Apparel_Pants"), ThingDefOf.Cloth);
-        setItemQualityRandom(itemThing);
-        break;
-        case "cowboyhat":
-        itemThing = ThingMaker.MakeThing(ThingDef.Named("Apparel_CowboyHat"), ThingDefOf.Cloth);
-        setItemQualityRandom(itemThing);
-        break;
+            // apparel
+            case "advancedhelmet":
+            itemThing = ThingMaker.MakeThing(ThingDef.Named("Apparel_AdvancedHelmet"), ThingDefOf.Steel);
+            setItemQualityRandom(itemThing);
+            break;
+            case "marinehelmet":
+            itemThing = ThingMaker.MakeThing(ThingDef.Named("Apparel_PowerArmorHelmet"), null);
+            setItemQualityRandom(itemThing);
+            break;
+            case "duster":
+            itemThing = ThingMaker.MakeThing(ThingDef.Named("Apparel_Duster"), ThingDefOf.Cloth);
+            setItemQualityRandom(itemThing);
+            break;
+            case "tribalwear":
+            itemThing = ThingMaker.MakeThing(ThingDef.Named("Apparel_TribalA"), ThingDefOf.Cloth);
+            setItemQualityRandom(itemThing);
+            break;
+            case "tshirt":
+            itemThing = ThingMaker.MakeThing(ThingDef.Named("Apparel_BasicShirt"), ThingDefOf.Cloth);
+            setItemQualityRandom(itemThing);
+            break;
+            case "pants":
+            itemThing = ThingMaker.MakeThing(ThingDef.Named("Apparel_Pants"), ThingDefOf.Cloth);
+            setItemQualityRandom(itemThing);
+            break;
+            case "cowboyhat":
+            itemThing = ThingMaker.MakeThing(ThingDef.Named("Apparel_CowboyHat"), ThingDefOf.Cloth);
+            setItemQualityRandom(itemThing);
+            break;
+            }
+            int stackLimit = itemThing.def.stackLimit;
+            itemThing.stackCount = amount;
+            itemThing.HitPoints = itemThing.MaxHitPoints;
+            IntVec3 vec = Rain(itemDef, itemThing);
+
+            CarePackage(quote, LetterDefOf.PositiveEvent, vec);
         }
-        int stackLimit = itemThing.def.stackLimit;
-        itemThing.stackCount = amount;
-        itemThing.HitPoints = itemThing.MaxHitPoints;
-        IntVec3 vec = Rain(itemDef, itemThing);
-
-        CarePackage(quote, LetterDefOf.PositiveEvent, vec);
+        catch (InvalidCastException e)
+        {
+            Helper.Log("Failed to make item " + e.Message);
+        }
     }
 
     public static void setItemQualityRandom(Thing thing)

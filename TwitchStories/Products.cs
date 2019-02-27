@@ -220,14 +220,13 @@ namespace TwitchToolkit
                 try
                 {
                     Helper.Log("Trying ItemEvent Checks");
-                    int quantity;
                     this.item = command[0];
                     int itemPrice = CarePackage.ItemPriceResolver(this.item);
-                    bool isNumeric = int.TryParse(command[2], out quantity);
+                    bool isNumeric = int.TryParse(command[2], out this.quantity);
                     if (isNumeric && itemPrice > 0)
                     { 
-                        Helper.Log($"item: {this.item} - price: {itemPrice} - isnumeric: {isNumeric} - quantity{quantity}");
-                        this.calculatedprice = quantity * itemPrice;
+                        Helper.Log($"item: {this.item} - price: {itemPrice} - isnumeric: {isNumeric} - quantity{this.quantity}");
+                        this.calculatedprice = this.quantity * itemPrice;
                         Helper.Log("ItemEvent Checks passed, buying item");
                     }
                 }
@@ -282,6 +281,13 @@ namespace TwitchToolkit
                 // care package
                 this.product.evt = CarePackage.CarePackageGenerate(this.item, this.quantity);
 
+                if (this.product.evt == null)
+                {
+                    Helper.Log("Could not generate care package");
+                    return;
+                }   
+
+                this.successmessage = $"{this.quantity} {this.item} purchased by @{this.viewer.username}";
                 this.product.evt.chatmessage = craftedmessage;
             }
             
@@ -294,9 +300,16 @@ namespace TwitchToolkit
     {
         public static Event CarePackageGenerate(string item, int amount)
         {
-            Event evt = new Event(80, EventType.Good, EventCategory.Drop, 3, "Care Package", () => true, (quote) => Helper.CargoDropItem(quote, amount, item));
-
-            return evt;
+            try
+            {
+                return new Event(80, EventType.Good, EventCategory.Drop, 3, "Gold", () => true, (quote) => Helper.CargoDropItem(quote, amount, item));
+            }
+            catch (InvalidCastException e)
+            {
+                Helper.Log("Carepackage error " + e.Message);
+            }
+            
+            return null;
         }
 
         public static int ItemPriceResolver(string itemname)
