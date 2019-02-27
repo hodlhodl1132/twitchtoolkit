@@ -1,0 +1,280 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+  <StorytellerDef ParentName="BaseStoryteller">
+    <defName>hodlbotstoryteller</defName>
+    <label>Hodlbot</label>
+    <description>Hodlbot likes to keep things fair but exciting.
+
+Hodlbot loves random numbers and was originally invented by Randy.</description>
+    <portraitLarge>Things/TwitchStoriesStoryteller</portraitLarge>
+    <portraitTiny>Things/TwitchStoriesStorytellerTiny</portraitTiny>
+    <listOrder>99</listOrder>
+    <comps>
+      <!-- Home all -->
+      <li Class="TwitchStories.StorytellerCompProperties_CustomRandomStoryTeller">
+        <allowedTargetTags>
+          <li>Map_PlayerHome</li>
+        </allowedTargetTags>
+        <minDaysPassed>1</minDaysPassed>
+        <mtbDays>1.00</mtbDays>
+        <maxThreatBigIntervalDays>13</maxThreatBigIntervalDays>
+        <minIncChancePopulationIntentFactor>0.2</minIncChancePopulationIntentFactor>
+        <randomPointsFactorRange>0.5~1.5</randomPointsFactorRange>
+        <skipThreatBigIfRaidBeacon>true</skipThreatBigIfRaidBeacon>
+        <categoryWeights>
+          <Misc>5.2</Misc>
+          <ThreatBig>1.0</ThreatBig>
+          <OrbitalVisitor>1.0</OrbitalVisitor>
+          <FactionArrival>1.0</FactionArrival>
+          <ThreatSmall>0.7</ThreatSmall>
+          <ShipChunkDrop>0.5</ShipChunkDrop>
+        </categoryWeights>
+      </li>
+      <li Class="StorytellerCompProperties_Disease">
+        <category>DiseaseHuman</category>
+        <minDaysPassed>0</minDaysPassed>
+      </li>
+      <li Class="StorytellerCompProperties_Disease">
+        <category>DiseaseAnimal</category>
+        <minDaysPassed>0</minDaysPassed>
+      </li>
+      <!-- Home special threats -->
+      <li Class="TwitchStories.StorytellerCompProperties_CustomOnOffCycle">
+        <category>RaidBeacon</category>
+        <allowedTargetTags>
+          <li>Map_RaidBeacon</li>
+        </allowedTargetTags>
+        <onDays>1.0</onDays>
+        <offDays>0.5</offDays>
+        <minSpacingDays>0.04</minSpacingDays>
+        <applyRaidBeaconThreatMtbFactor>true</applyRaidBeaconThreatMtbFactor>
+        <numIncidentsRange>1~2</numIncidentsRange>
+      </li>
+      <!-- Ally/neutral interaction -->
+      <li Class="StorytellerCompProperties_FactionInteraction">
+        <incident>RaidFriendly</incident>
+        <baseIncidentsPerYear>10</baseIncidentsPerYear>
+        <minSpacingDays>0.4</minSpacingDays>
+        <fullAlliesOnly>true</fullAlliesOnly>
+        <minDanger>High</minDanger>
+      </li>
+      <!-- Caravan / temp map -->
+      <li Class="StorytellerCompProperties_CategoryIndividualMTBByBiome">
+        <category>Misc</category>
+        <allowedTargetTags>
+          <li>Caravan</li>
+          <li>Map_TempIncident</li>
+        </allowedTargetTags>
+      </li>
+      <li Class="StorytellerCompProperties_CategoryIndividualMTBByBiome">
+        <category>ThreatSmall</category>
+        <applyCaravanVisibility>true</applyCaravanVisibility>
+        <allowedTargetTags>
+          <li>Caravan</li>
+          <li>Map_TempIncident</li>
+        </allowedTargetTags>
+      </li>
+      <li Class="StorytellerCompProperties_CategoryIndividualMTBByBiome">
+        <category>ThreatBig</category>
+        <applyCaravanVisibility>true</applyCaravanVisibility>
+        <allowedTargetTags>
+          <li>Caravan</li>
+          <li>Map_TempIncident</li>
+        </allowedTargetTags>
+      </li>
+      <!-- World -->
+      <li Class="StorytellerCompProperties_JourneyOffer"/>
+      <li Class="TwitchStories.StorytellerCompProperties_CustomOnOffCycle">
+        <category>WorldQuest</category>
+        <allowedTargetTags>
+          <li>World</li>
+        </allowedTargetTags>
+        <onDays>30</onDays>
+        <minSpacingDays>0.2</minSpacingDays>
+        <numIncidentsRange>4</numIncidentsRange>
+        <acceptFractionByDaysPassedCurve>
+          <points>
+            <li>(5, 0)</li>
+            <li>(30, 1)</li>
+          </points>
+        </acceptFractionByDaysPassedCurve>
+      </li>
+      <li Class="StorytellerCompProperties_CategoryMTB">
+        <category>Misc</category>
+        <allowedTargetTags>
+          <li>World</li>
+        </allowedTargetTags>
+        <minDaysPassed>1</minDaysPassed>
+        <mtbDays>15</mtbDays>
+      </li>
+      <!-- Triggered -->
+      <li Class="StorytellerCompProperties_Triggered">
+        <incident>StrangerInBlackJoin</incident>
+        <delayTicks>180</delayTicks>
+      </li>
+    </comps>
+  </StorytellerDef>
+  <StorytellerDef ParentName="BaseStoryteller">
+    <defName>cassybotstoryteller</defName>
+    <label>CassyBot</label>
+    <description>CassyBot was developed by Cassy through a 3rd Party Company. CassyBot will uses neural learning patterns to come up with events similar to Cassandra.</description>
+    <portraitLarge>UI/HeroArt/Storytellers/CassandraClassic</portraitLarge>
+    <portraitTiny>UI/HeroArt/Storytellers/CassandraClassicTiny</portraitTiny>
+    <listOrder>20</listOrder>
+    <comps>
+      <!-- Intro -->
+      <li Class="StorytellerCompProperties_ClassicIntro"/>
+      <!-- Home threats -->
+      <li Class="TwitchStories.StorytellerCompProperties_CustomOnOffCycle">
+        <category>ThreatBig</category>
+        <minDaysPassed>11.0</minDaysPassed>
+        <onDays>4.6</onDays>
+        <offDays>6.0</offDays>
+        <minSpacingDays>1.9</minSpacingDays>
+        <numIncidentsRange>1~2</numIncidentsRange>
+        <forceRaidEnemyBeforeDaysPassed>20</forceRaidEnemyBeforeDaysPassed>
+        <disallowedTargetTags>
+          <li>Map_RaidBeacon</li>
+        </disallowedTargetTags>
+      </li>
+      <li Class="TwitchStories.StorytellerCompProperties_CustomOnOffCycle">
+        <category>RaidBeacon</category>
+        <allowedTargetTags>
+          <li>Map_RaidBeacon</li>
+        </allowedTargetTags>
+        <onDays>1.0</onDays>
+        <offDays>0.5</offDays>
+        <minSpacingDays>0.04</minSpacingDays>
+        <applyRaidBeaconThreatMtbFactor>true</applyRaidBeaconThreatMtbFactor>
+        <numIncidentsRange>1~2</numIncidentsRange>
+      </li>
+      <li Class="TwitchStories.StorytellerCompProperties_CustomOnOffCycle">
+        <category>ThreatSmall</category>
+        <minDaysPassed>11.0</minDaysPassed>
+        <onDays>4.6</onDays>
+        <offDays>6.0</offDays>
+        <numIncidentsRange>0.2~1</numIncidentsRange>
+        <acceptPercentFactorPerThreatPointsCurve>
+          <points>
+            <li>(800, 1)</li>
+            <li>(2800, 0)</li>
+          </points>
+        </acceptPercentFactorPerThreatPointsCurve>
+      </li>
+      <!-- Home misc -->
+      <li Class="TwitchStories.StorytellerCompProperties_CustomCategoryMTB">
+        <category>Misc</category>
+        <allowedTargetTags>
+          <li>Map_PlayerHome</li>
+        </allowedTargetTags>
+        <minDaysPassed>5</minDaysPassed>
+        <mtbDays>3</mtbDays>
+      </li>
+      <li Class="StorytellerCompProperties_ShipChunkDrop"/>
+      <li Class="StorytellerCompProperties_Disease">
+        <category>DiseaseHuman</category>
+        <minDaysPassed>9</minDaysPassed>
+      </li>
+      <li Class="StorytellerCompProperties_Disease">
+        <category>DiseaseAnimal</category>
+        <minDaysPassed>9</minDaysPassed>
+      </li>
+      <!-- Ally/neutral interaction -->
+      <li Class="StorytellerCompProperties_FactionInteraction">
+        <incident>RaidFriendly</incident>
+        <baseIncidentsPerYear>15</baseIncidentsPerYear>
+        <minSpacingDays>0.4</minSpacingDays>
+        <fullAlliesOnly>true</fullAlliesOnly>
+        <minDanger>High</minDanger>
+      </li>
+      <li Class="StorytellerCompProperties_FactionInteraction">
+        <incident>TraderCaravanArrival</incident>
+        <minDaysPassed>5</minDaysPassed>
+        <baseIncidentsPerYear>5</baseIncidentsPerYear>
+        <minSpacingDays>6</minSpacingDays>
+        <allowedTargetTags>
+          <li>Map_PlayerHome</li>
+        </allowedTargetTags>
+      </li>
+      <li Class="StorytellerCompProperties_FactionInteraction">
+        <incident>VisitorGroup</incident>
+        <minDaysPassed>3</minDaysPassed>
+        <baseIncidentsPerYear>4</baseIncidentsPerYear>
+        <minSpacingDays>5</minSpacingDays>
+        <allowedTargetTags>
+          <li>Map_PlayerHome</li>
+        </allowedTargetTags>
+      </li>
+      <li Class="StorytellerCompProperties_FactionInteraction">
+        <incident>TravelerGroup</incident>
+        <minDaysPassed>1</minDaysPassed>
+        <baseIncidentsPerYear>6</baseIncidentsPerYear>
+        <minSpacingDays>1</minSpacingDays>
+        <allowedTargetTags>
+          <li>Map_PlayerHome</li>
+        </allowedTargetTags>
+      </li>
+      <!-- Caravan / temp map -->
+      <li Class="StorytellerCompProperties_CategoryIndividualMTBByBiome">
+        <category>Misc</category>
+        <allowedTargetTags>
+          <li>Caravan</li>
+          <li>Map_TempIncident</li>
+        </allowedTargetTags>
+      </li>
+      <li Class="StorytellerCompProperties_CategoryIndividualMTBByBiome">
+        <category>ThreatSmall</category>
+        <applyCaravanVisibility>true</applyCaravanVisibility>
+        <allowedTargetTags>
+          <li>Caravan</li>
+          <li>Map_TempIncident</li>
+        </allowedTargetTags>
+      </li>
+      <li Class="StorytellerCompProperties_CategoryIndividualMTBByBiome">
+        <category>ThreatBig</category>
+        <applyCaravanVisibility>true</applyCaravanVisibility>
+        <allowedTargetTags>
+          <li>Caravan</li>
+          <li>Map_TempIncident</li>
+        </allowedTargetTags>
+      </li>
+      <!-- World -->
+      <li Class="StorytellerCompProperties_JourneyOffer"/>
+      <li Class="TwitchStories.StorytellerCompProperties_CustomOnOffCycle">
+        <category>WorldQuest</category>
+        <allowedTargetTags>
+          <li>World</li>
+        </allowedTargetTags>
+        <onDays>15</onDays>
+        <minSpacingDays>0.2</minSpacingDays>
+        <numIncidentsRange>2</numIncidentsRange>
+        <acceptFractionByDaysPassedCurve>
+          <points>
+            <li>(5, 0)</li>
+            <li>(30, 1)</li>
+          </points>
+        </acceptFractionByDaysPassedCurve>
+      </li>
+      <li Class="TwitchStories.StorytellerCompProperties_CustomCategoryMTB">
+        <category>Misc</category>
+        <allowedTargetTags>
+          <li>World</li>
+        </allowedTargetTags>
+        <minDaysPassed>15</minDaysPassed>
+        <mtbDays>15</mtbDays>
+      </li>
+      <!-- Orbital -->
+      <li Class="TwitchStories.StorytellerCompProperties_CustomOnOffCycle">
+        <incident>OrbitalTraderArrival</incident>
+        <onDays>7</onDays>
+        <offDays>8</offDays>
+        <numIncidentsRange>1</numIncidentsRange>
+      </li>
+      <!-- Triggered -->
+      <li Class="StorytellerCompProperties_Triggered">
+        <incident>StrangerInBlackJoin</incident>
+        <delayTicks>180</delayTicks>
+      </li>
+    </comps>
+  </StorytellerDef>
+</Defs>

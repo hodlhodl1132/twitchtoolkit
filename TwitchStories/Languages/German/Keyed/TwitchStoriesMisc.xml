@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<LanguageData>
+  <TwitchStoriesReconnect>Reconnect</TwitchStoriesReconnect>
+  <TwitchStoriesDisconnect>Disconnect</TwitchStoriesDisconnect>
+  <TwitchStoriesEnabled>aktiviert</TwitchStoriesEnabled>
+  <TwitchStoriesDisabled>deaktiviert</TwitchStoriesDisabled>
+  <TwitchStoriesMinutes>Minuten</TwitchStoriesMinutes>
+  <TwitchStoriesOptions>Optionen</TwitchStoriesOptions>
+  <TwitchStoriesVote>Abstimmung</TwitchStoriesVote>
+  <TwitchStoriesVoteGood>Gut</TwitchStoriesVoteGood>
+  <TwitchStoriesVoteNeutral>Neutral</TwitchStoriesVoteNeutral>
+  <TwitchStoriesVoteBad>Schlecht</TwitchStoriesVoteBad>
+  <TwitchStoriesVoteAnimal>Tier</TwitchStoriesVoteAnimal>
+  <TwitchStoriesVoteColonist>Kolonist</TwitchStoriesVoteColonist>
+  <TwitchStoriesVoteDrop>Drop</TwitchStoriesVoteDrop>
+  <TwitchStoriesVoteEnvironment>Umwelt</TwitchStoriesVoteEnvironment>
+  <TwitchStoriesVoteForeigner>Fremde</TwitchStoriesVoteForeigner>
+  <TwitchStoriesVoteDisease>Krankheit</TwitchStoriesVoteDisease>
+  <TwitchStoriesVoteHazard>Gefahr</TwitchStoriesVoteHazard>
+  <TwitchStoriesVoteInvasion>Invasion</TwitchStoriesVoteInvasion>
+  <TwitchStoriesVoteMind>Psyche</TwitchStoriesVoteMind>
+  <TwitchStoriesVoteWeather>Wetter</TwitchStoriesVoteWeather>
+  <TwitchStoriesSettingsTwitchChannel>Twitch Kanal</TwitchStoriesSettingsTwitchChannel>
+  <TwitchStoriesSettingsTwitchUsername>Twitch Benutzername</TwitchStoriesSettingsTwitchUsername>
+  <TwitchStoriesSettingsOAuth>Twitch OAuth</TwitchStoriesSettingsOAuth>
+  <TwitchStoriesSettingsOAuthWarning0>Zeige OAuth Eingabe (ACHTUNG: NICHT IM STREAM ZEIGEN)</TwitchStoriesSettingsOAuthWarning0>
+  <TwitchStoriesSettingsOAuthWarning1>Bist du sicher? Diese Information ist sehr sensibel.</TwitchStoriesSettingsOAuthWarning1>
+  <TwitchStoriesSettingsOAuthWarning2>Bist du wirklich sicher?</TwitchStoriesSettingsOAuthWarning2>
+  <TwitchStoriesSettingsTwitchAutoConnect>Twitch Autoverbindung</TwitchStoriesSettingsTwitchAutoConnect>
+  <TwitchStoriesSettingsVoteInterval>Abstimmungsintervall</TwitchStoriesSettingsVoteInterval>
+  <TwitchStoriesSettingsVoteTime>Abstimmungsdauer</TwitchStoriesSettingsVoteTime>
+  <TwitchStoriesSettingsVoteOptions>Abstimmungsoptionen</TwitchStoriesSettingsVoteOptions>
+  <TwitchStoriesSettingsVotes>Abstimmungen</TwitchStoriesSettingsVotes>
+  <TwitchStoriesSettingsDifficulty5>Schwierigkeitsgrad 5</TwitchStoriesSettingsDifficulty5>
+  <TwitchStoriesSettingsOtherStorytellers>Andere Erzähler</TwitchStoriesSettingsOtherStorytellers>
+  <TwitchStoriesSettingsOtherCommands>Befehle</TwitchStoriesSettingsOtherCommands>
+  <TwitchStoriesSettingsQuotes>Zitate</TwitchStoriesSettingsQuotes>
+  <TwitchStoriesMenuButtonDifficultyIncrease>Erhöhen</TwitchStoriesMenuButtonDifficultyIncrease>
+  <TwitchStoriesMenuButtonDifficultyDecrease>Senken</TwitchStoriesMenuButtonDifficultyDecrease>
+  <TwitchStoriesChatMessageDoomsday>Weltuntergang eingeleitet!</TwitchStoriesChatMessageDoomsday>
+  <TwitchStoriesChatMessageDifficultyIncreased>Schwierigkeitsgrad erhöht zu {difficulty}</TwitchStoriesChatMessageDifficultyIncreased>
+  <TwitchStoriesChatMessageColonyAlive>Kolonie besteht seit</TwitchStoriesChatMessageColonyAlive>
+  <TwitchStoriesChatMessageGamePlayed>Spiel gespielt seit</TwitchStoriesChatMessageGamePlayed>
+  <TwitchStoriesChatMessageNewVote>Eine neue Abstimmung hat begonnen</TwitchStoriesChatMessageNewVote>
+  <TwitchStoriesChatMessageVoteEnd>Chat stimmte ab für</TwitchStoriesChatMessageVoteEnd>
+  <TwitchStoriesChatMessageVoteCategory>ein {category} Ereignis wird eintreten</TwitchStoriesChatMessageVoteCategory>
+  <TwitchStoriesChatMessageVoteDifficulty>Schw. {difficulty}</TwitchStoriesChatMessageVoteDifficulty>
+  <TwitchStoriesMenuButtonDoomsday>Leite Weltuntergang ein</TwitchStoriesMenuButtonDoomsday>
+  <TwitchStoriesMenuButtonFun>Klicke für Spaß</TwitchStoriesMenuButtonFun>
+  <TwitchStoriesMenuButtonVote>Abstimmung starten</TwitchStoriesMenuButtonVote>
+  <TwitchStoriesMenuDifficulty>Schwierigkeitsgrad</TwitchStoriesMenuDifficulty>
+  <TwitchStoriesMenuDoomsday>Weltuntergang</TwitchStoriesMenuDoomsday>
+</LanguageData>

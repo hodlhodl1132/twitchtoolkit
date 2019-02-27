@@ -1,0 +1,49 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.329
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwitchStories", "TwitchStories\TwitchStories.csproj", "{358D961A-2FB9-49A0-87BB-AF72A4BC1D29}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{358D961A-2FB9-49A0-87BB-AF72A4BC1D29}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{358D961A-2FB9-49A0-87BB-AF72A4BC1D29}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{358D961A-2FB9-49A0-87BB-AF72A4BC1D29}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{358D961A-2FB9-49A0-87BB-AF72A4BC1D29}.Debug|x86.Build.0 = Debug|Any CPU
+		{358D961A-2FB9-49A0-87BB-AF72A4BC1D29}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{358D961A-2FB9-49A0-87BB-AF72A4BC1D29}.Release|Any CPU.Build.0 = Release|Any CPU
+		{358D961A-2FB9-49A0-87BB-AF72A4BC1D29}.Release|x86.ActiveCfg = Release|Any CPU
+		{358D961A-2FB9-49A0-87BB-AF72A4BC1D29}.Release|x86.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {9E5A459E-F23C-4986-9CDA-5F990BCDA3DF}
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		Policies = $0
+		$0.DotNetNamingPolicy = $1
+		$1.DirectoryNamespaceAssociation = PrefixedHierarchical
+		$0.TextStylePolicy = $4
+		$2.FileWidth = 80
+		$2.TabWidth = 2
+		$2.TabsToSpaces = True
+		$2.IndentWidth = 2
+		$2.scope = text/x-csharp
+		$0.CSharpFormattingPolicy = $3
+		$3.scope = text/x-csharp
+		$4.FileWidth = 80
+		$4.TabWidth = 2
+		$4.TabsToSpaces = True
+		$4.IndentWidth = 2
+		$4.scope = text/plain
+		$0.StandardHeader = $5
+	EndGlobalSection
+EndGlobal

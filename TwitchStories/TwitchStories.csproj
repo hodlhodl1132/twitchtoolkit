@@ -1,0 +1,195 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{358D961A-2FB9-49A0-87BB-AF72A4BC1D29}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>TwitchStories</RootNamespace>
+    <AssemblyName>TwitchStories</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <UseMSBuildEngine>false</UseMSBuildEngine>
+    <SynchReleaseVersion>false</SynchReleaseVersion>
+    <PackageId>Twitch Stories</PackageId>
+    <PackageVersion>0.1</PackageVersion>
+    <Authors>finally</Authors>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug</OutputPath>
+    <DefineConstants>DEBUG;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+    <DebugType>none</DebugType>
+    <DebugSymbols>false</DebugSymbols>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Net" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel.Web" />
+    <Reference Include="UnityEngine">
+      <HintPath>..\UnityEngine.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Xml" />
+    <Reference Include="Assembly-CSharp">
+      <HintPath>..\Assembly-CSharp.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Products.cs" />
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+    <Compile Include="SimpleJSON.cs" />
+    <Compile Include="SimpleJSONBinary.cs" />
+    <Compile Include="SimpleJSONUnity.cs" />
+    <Compile Include="StorytellerCompProperties_CustomCategoryMTB.cs" />
+    <Compile Include="StorytellerCompProperties_CustomOnOffCycle.cs" />
+    <Compile Include="StorytellerCompProperties_CustomRandomStoryTeller.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="StorytellerComp_CustomCategoryMTB.cs" />
+    <Compile Include="StorytellerComp_CustomOnOffCycle.cs" />
+    <Compile Include="StorytellerComp_CustomRandomStoryTeller.cs" />
+    <Compile Include="TwitchStories.cs" />
+    <Compile Include="TwitchStories_MainTabWindow.cs" />
+    <Compile Include="Helper.cs" />
+    <Compile Include="Settings.cs" />
+    <Compile Include="Events.cs" />
+    <Compile Include="ConcurrentCircularBuffer.cs" />
+    <Compile Include="Ticker.cs" />
+    <Compile Include="Extensions.cs" />
+    <Compile Include="Incidents\IncidentWorker_ShipPartCrash.cs" />
+    <Compile Include="Incidents\IncidentWorker_PsychicEmanatorShipPartCrash.cs" />
+    <Compile Include="Incidents\IncidentWorker_PoisonShipPartCrash.cs" />
+    <Compile Include="Incidents\IncidentWorker_SpecificAnimalsWanderIn.cs" />
+    <Compile Include="IRC\IRCClient.cs" />
+    <Compile Include="IRC\IRCMessage.cs" />
+    <Compile Include="IRC\IRCParser.cs" />
+    <Compile Include="Incidents\IncidentWorker_RaidEnemy.cs" />
+    <Compile Include="Incidents\IncidentWorker_Infestation.cs" />
+    <Compile Include="Incidents\IncidentWorker_Quote.cs" />
+    <Compile Include="Incidents\IncidentWorker_CropBlight.cs" />
+    <Compile Include="Incidents\IncidentWorker_RefugeeChased.cs" />
+    <Compile Include="Incidents\IncidentWorker_SelfTame.cs" />
+    <Compile Include="Incidents\IncidentWorker_WandererJoin.cs" />
+    <Compile Include="Incidents\IncidentWorker_ResourcePodCrash.cs" />
+    <Compile Include="Incidents\IncidentWorker_TransportPodCrash.cs" />
+    <Compile Include="Incidents\IncidentWorker_TraderCaravanArrival.cs" />
+    <Compile Include="Incidents\IncidentWorker_OrbitalTraderArrival.cs" />
+    <Compile Include="Incidents\IncidentWorker_Ambush_ManhunterPack.cs" />
+    <Compile Include="Incidents\IncidentWorker_AnimalInsanityMass.cs" />
+    <Compile Include="Incidents\IncidentWorker_PsychicDrone.cs" />
+    <Compile Include="Incidents\IncidentWorker_AmbrosiaSprout.cs" />
+    <Compile Include="Incidents\IncidentWorker_HerdMigration.cs" />
+    <Compile Include="Incidents\IncidentWorker_PsychicSoothe.cs" />
+    <Compile Include="Incidents\IncidentWorker_WildManWandersIn.cs" />
+    <Compile Include="Incidents\IncidentWorker_ThrumboPasses.cs" />
+    <Compile Include="Incidents\IncidentWorker_ShipChunkDrop.cs" />
+    <Compile Include="Incidents\IncidentWorker_TravelerGroup.cs" />
+    <Compile Include="Incidents\IncidentWorker_VisitorGroup.cs" />
+    <Compile Include="Incidents\IncidentWorker_ManhunterPack.cs" />
+    <Compile Include="Incidents\IncidentWorker_Aurora.cs" />
+    <Compile Include="Incidents\IncidentWorker_MakeGameCondition.cs" />
+    <Compile Include="Incidents\IncidentWorker_MeteoriteImpact.cs" />
+    <Compile Include="Incidents\IncidentWorker_AnimalInsanitySingle.cs" />
+    <Compile Include="TwitchStories_Overlay.cs" />
+    <Compile Include="Incidents\IncidentWorker_Raid.cs" />
+    <Compile Include="Viewer.cs" />
+    <Compile Include="VoteEvent.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Patches\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="About\About.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="About\Preview.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Defs\Misc\MainButtonDefs\TwitchStories.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Defs\StorytellerDefs\TwitchStories.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="Textures\Things\TwitchStoriesStoryteller.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Textures\Things\TwitchStoriesStorytellerTiny.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Languages\English\Keyed\TwitchStoriesQuotes.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Languages\English\Keyed\TwitchStoriesDescriptions.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Languages\English\Keyed\TwitchStoriesLetters.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Defs\SoundDefs\Tornado.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="About\PublishedFileId.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Languages\Russian\Keyed\TwitchStoriesDescriptions.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Languages\Russian\Keyed\TwitchStoriesLetters.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Languages\Russian\Keyed\TwitchStoriesQuotes.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Languages\English\Keyed\TwitchStoriesMisc.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Languages\Polish\Keyed\TwitchStoriesMisc.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Languages\German\Keyed\TwitchStoriesMisc.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Languages\German\Keyed\TwitchStoriesQuotes.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Languages\German\Keyed\TwitchStoriesDescriptions.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Languages\German\Keyed\TwitchStoriesLetters.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Languages\Russian\Keyed\TwitchStoriesMisc.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Defs\Misc\Viewers.xml" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+</Project>

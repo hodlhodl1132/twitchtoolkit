@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <name>Hodl Stories</name>
+  <author>Finally and Hodl</author>
+  <url></url>
+  <targetVersion>1.0</targetVersion>
+  <description>Twitch integration for RimWorld.
+
+  This is the modified version of the mod. This is not for public release. There are several bugs, It is planned for release several months from now. Follow me twitch.tv/hodlhodl for updates and development.
+
+  Special thanks to:
+    rachey
+    swenee
+    Xenon
+  </description>
+</ModMetaData>
