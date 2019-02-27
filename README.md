@@ -8,3 +8,20 @@ Also feel free to join the [Discord](https://discord.gg/qrtg224) if you have any
 
 # Translations
 We are currently not accepting translations, I am sorry for the inconvenience.
+
+# Commands
+Admin Commands:
+!refreshviewers - updates viewers watching channel, this is for debugging mostly
+!karmaround - simulates a coin reward round
+!givecoins - Syntax: !givecoins @username 1000 - gives user 1000 coins
+!giveallcoins - Syntax: !giveallcoins 1000 - gives all users 1000 coins
+!resetviewers - resets all viewers data back to default, must confirm twice
+!checkuser - Syntax: !checkuser @username - do a balance check on the user
+!setuserkarma - Syntax: !setuserkarma @username 100 - set user karma to 100% (needs message)
+!togglestore - toggle ability for users to purchase items/events
+!togglecoins - toggle ability for users to earn coins while viewing
+
+User Commands:
+!balance, !bal, !coins - check balance and karma rate
+!buyevent - Syntax: !buyevent skillincrease - purchase an event
+!buyitem - Syntax: !buyitem beer 2 - purchase an item

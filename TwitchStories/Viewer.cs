@@ -42,15 +42,25 @@ namespace TwitchToolkit
             return Settings.listOfViewers.Find(x => x.username == user);
         }
 
-        public static void AwardViewersCoins()
+        public static void AwardViewersCoins(int setamount = 0)
         {
             List<string> usernames = ParseViewersFromJson();
-            foreach(string username in usernames)
+            if (usernames != null)
             {
-                Viewer viewer = Viewer.GetViewer(username);
-                double karmabonus = ((double) viewer.GetViewerKarma() / 100d) * (double) Settings.CoinAmount;
-                Helper.Log($"Karma bonus for {username} is {karmabonus}");
-                viewer.GiveViewerCoins( Convert.ToInt32(karmabonus) );
+                foreach(string username in usernames)
+                {
+                    Viewer viewer = Viewer.GetViewer(username);
+                    if (setamount > 0)
+                    {
+                        viewer.GiveViewerCoins(setamount);
+                    }
+                    else
+                    {
+                        double karmabonus = ((double) viewer.GetViewerKarma() / 100d) * (double) Settings.CoinAmount;
+                        Helper.Log($"Karma bonus for {username} is {karmabonus}");
+                        viewer.GiveViewerCoins( Convert.ToInt32(karmabonus) );
+                    }
+                }
             }
         }
 
@@ -59,6 +69,12 @@ namespace TwitchToolkit
             List<string> usernames = new List<string>();
 
             string json = WebRequest_BeginGetResponse.jsonString;
+
+            if (json.NullOrEmpty())
+            {
+                return null;
+            }
+
             var parsed = JSON.Parse(json);
             List<JSONArray> groups = new List<JSONArray>();
             groups.Add(parsed["chatters"]["moderators"].AsArray);

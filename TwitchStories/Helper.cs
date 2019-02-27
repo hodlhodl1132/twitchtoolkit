@@ -88,7 +88,7 @@ namespace TwitchToolkit
 
         public static void Log(string message)
     {
-      Verse.Log.Message("[TwitchStories] " + message);
+      Verse.Log.Message("[TwitchToolkit] " + message);
     }
 
     public static void Vote(string message, LetterDef type)

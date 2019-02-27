@@ -28,6 +28,10 @@ namespace TwitchToolkit
     public static int CoinInterval = 3;
     public static int CoinAmount = 15;
     public static int MinimumPurchasePrice = 50;
+    public static int KarmaCap = 300;
+
+    public static bool EarningCoins = true;
+    public static bool StoreOpen = true;
     
     // viewer storage
     public static Dictionary<string, int> ViewerIds = new Dictionary<string, int>();
@@ -84,9 +88,7 @@ namespace TwitchToolkit
       Scribe_Values.Look(ref Channel, "Channel", "", true);
       Scribe_Values.Look(ref Username, "Username", "", true);
       Scribe_Values.Look(ref OAuth, "OAuth", "", true);
-      Scribe_Values.Look(ref VoteInterval, "VoteInterval", 5, true);
-      Scribe_Values.Look(ref CoinInterval, "CoinInterval", 3, true);
-      Scribe_Values.Look(ref CoinAmount, "CoinAmount", 15, true);
+
       Scribe_Values.Look(ref VoteTime, "VoteTime", 1, true);
       Scribe_Values.Look(ref VoteOptions, "VoteOptions", 3, true);
       Scribe_Values.Look(ref VoteEnabled, "VoteEnabled", false, true);
@@ -96,6 +98,14 @@ namespace TwitchToolkit
       Scribe_Values.Look(ref CommandsModsEnabled, "CommandsModsEnabled", true, true);
       Scribe_Values.Look(ref CommandsAliveEnabled, "CommandsAliveEnabled", true, true);
       Scribe_Values.Look(ref QuotesEnabled, "QuotesEnabled", true, true);
+
+      Scribe_Values.Look(ref VoteInterval, "VoteInterval", 5, true);
+      Scribe_Values.Look(ref CoinInterval, "CoinInterval", 3, true);
+      Scribe_Values.Look(ref CoinAmount, "CoinAmount", 15, true);
+      Scribe_Values.Look(ref KarmaCap, "KarmaCap", 300, true);
+
+      Scribe_Values.Look(ref EarningCoins, "EarningCoins", false, true);
+      Scribe_Values.Look(ref StoreOpen, "StoreOpen", false, true);
     
       Scribe_Collections.Look(ref ViewerIds, "ViewerIds", LookMode.Value, LookMode.Value);
       Scribe_Collections.Look(ref ViewerCoins, "ViewerCoins", LookMode.Value, LookMode.Value);

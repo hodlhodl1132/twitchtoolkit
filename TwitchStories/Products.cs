@@ -275,6 +275,7 @@ namespace TwitchToolkit
             {
                 // normal event
                 this.successmessage = $"Event {this.product.name} purchased by @{this.viewer.username}";
+                this.viewer.SetViewerKarma(Karma.CalculateNewKarma(this.viewer.GetViewerKarma(), this.product.karmatype));
             }
             else if (this.product.type == 1)
             {
@@ -289,6 +290,7 @@ namespace TwitchToolkit
 
                 this.successmessage = $"{this.quantity} {this.item} purchased by @{this.viewer.username}";
                 this.product.evt.chatmessage = craftedmessage;
+                this.viewer.SetViewerKarma(Karma.CalculateNewKarma(this.viewer.GetViewerKarma(), this.product.karmatype, this.calculatedprice));
             }
             
             // create purchase event
