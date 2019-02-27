@@ -3,7 +3,9 @@
   <name>TwitchToolkit</name>
   <author>hodlhodl</author>
   <url></url>
-  <supportedVersions>1.0</supportedVersions>
+  <supportedVersions>
+    <li>1.0</li>
+  </supportedVersions>
   <description>Twitch integration for RimWorld.
 
   This is the modified version of the mod. This is not for public release. There are several bugs, It is planned for release several months from now. Follow me twitch.tv/hodlhodl for updates and development.
