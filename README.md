@@ -4,7 +4,7 @@ Or you can use the provided Makefile, which also automates the copying part incl
 
 # Contribute
 Just fork this repository, add your changes, push them to your fork and open a merge request to merge your changes into this repository.
-Also feel free to join the [Discord](https://discord.gg/9YQgxhf) if you have any questions or want to hang out.
+Also feel free to join the [Discord](https://discord.gg/qrtg224) if you have any questions or want to hang out.
 
 # Translations
-We have a [Google Sheet](https://docs.google.com/spreadsheets/d/13hHolSrowLZv3_1krxngNAaXnNznvK4aK3tCK9im0Hg/edit?usp=sharing) with the translations, currently only German & Russian is complete, feel free to ask for permissions if you need to edit it or would like to add one or more languages.
+We are currently not accepting translations, I am sorry for the inconvenience.
