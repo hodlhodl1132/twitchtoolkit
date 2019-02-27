@@ -29,11 +29,21 @@ namespace TwitchToolkit
     public static int CoinAmount = 15;
     public static int MinimumPurchasePrice = 50;
     
+    // viewer storage
     public static Dictionary<string, int> ViewerIds = new Dictionary<string, int>();
     public static Dictionary<int, int> ViewerCoins = new Dictionary<int, int>();
     public static Dictionary<int, int> ViewerKarma = new Dictionary<int, int>();
 
     public static List<Viewer> listOfViewers;
+
+    // product storage
+    public static Dictionary<string, int> ProductIds = new Dictionary<string, int>();
+    public static Dictionary<int, int> ProductTypes = new Dictionary<int, int>();
+    public static Dictionary<int, string> ProductNames = new Dictionary<int, string>();
+    public static Dictionary<int, int> ProductKarmaTypes = new Dictionary<int, int>();
+    public static Dictionary<int, int> ProductAmounts = new Dictionary<int, int>();
+    public static Dictionary<int, int> ProductEventIds = new Dictionary<int, int>();
+
     public static List<Product> products;
 
     private static List<string> _Categories = Enum.GetNames(typeof(EventCategory)).ToList();
@@ -91,11 +101,15 @@ namespace TwitchToolkit
       Scribe_Collections.Look(ref ViewerCoins, "ViewerCoins", LookMode.Value, LookMode.Value);
       Scribe_Collections.Look(ref ViewerKarma, "ViewerKarma", LookMode.Value, LookMode.Value);
 
+      Scribe_Collections.Look(ref ProductIds, "ProductIds", LookMode.Value, LookMode.Value);  
+      Scribe_Collections.Look(ref ProductTypes, "ProductTypes", LookMode.Value, LookMode.Value);
+      Scribe_Collections.Look(ref ProductNames, "ProductNames", LookMode.Value, LookMode.Value);
+      Scribe_Collections.Look(ref ProductKarmaTypes, "ProductKarmaTypes", LookMode.Value, LookMode.Value);
+      Scribe_Collections.Look(ref ProductAmounts, "ProductAmounts", LookMode.Value, LookMode.Value);
+      Scribe_Collections.Look(ref ProductEventIds, "ProductEventIds", LookMode.Value, LookMode.Value);
 
       Scribe_Collections.Look(ref CategoryWeights, "CategoryWeights", LookMode.Value);
 
-      //Scribe_Collections.Look(ref listOfViewers, "ListOfViewers", LookMode.Reference);    
-      //Scribe_Collections.Look(ref products, "products", LookMode.Reference); 
     
       if(ViewerIds == null)
       {
@@ -130,8 +144,44 @@ namespace TwitchToolkit
       
       if (products == null)
       {
-        List<Product> defaultProducts = Products.GenerateDefaultProducts().ToList();
-        products = defaultProducts;
+        products = new List<Product>();
+        if (ProductIds == null)
+        { 
+            ProductIds = new Dictionary<string, int>();
+            ProductTypes = new Dictionary<int, int>();
+            ProductNames = new Dictionary<int, string>();
+            ProductKarmaTypes = new Dictionary<int, int>();
+            ProductAmounts = new Dictionary<int, int>();
+            ProductEventIds = new Dictionary<int, int>();
+            // if no previous save data create new products
+            List<Product> defaultProducts = Products.GenerateDefaultProducts().ToList();
+            foreach(Product product in defaultProducts)
+            {
+                int id = product.id;
+                ProductIds.Add(product.abr, id);
+                ProductTypes.Add(id, product.type);
+                ProductNames.Add(id, product.name);
+                ProductKarmaTypes.Add(id, product.karmatype);
+                ProductAmounts.Add(id, product.amount);
+                ProductEventIds.Add(id, product.evtId);
+                products.Add(product);
+            }
+        }
+        else
+        {   
+            // load products from settings, then load them into settings class
+            foreach(KeyValuePair<string, int> product in ProductIds)
+            {
+                int id = product.Value;
+                string abr = product.Key;
+                int type = ProductTypes[id];
+                string name = ProductNames[id];
+                int karmatype = ProductKarmaTypes[id];
+                int amount = ProductAmounts[id];
+                int evtId = ProductEventIds[id];
+                products.Add(new Product(id, type, name, abr, karmatype, amount, evtId));
+            }
+        }
       }
     }
 
