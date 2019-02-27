@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using RimWorld;
 
-namespace TwitchStories
+namespace TwitchToolkit
 {
     public class VoteEvent
     {

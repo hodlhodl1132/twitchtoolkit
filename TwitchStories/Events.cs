@@ -4,7 +4,7 @@ using System.Linq;
 using Verse;
 using RimWorld;
 
-namespace TwitchStories
+namespace TwitchToolkit
 {
   public delegate void EventStart(string quote);
   public delegate bool EventPossible();

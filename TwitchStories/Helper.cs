@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using RimWorld;
 using Verse;
-using TSIncidents = TwitchStories.Incidents;
+using TSIncidents = TwitchToolkit.Incidents;
 
-namespace TwitchStories
+namespace TwitchToolkit
 {
   public static class Helper
   {

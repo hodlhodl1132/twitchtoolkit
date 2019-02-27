@@ -4,7 +4,7 @@ using RimWorld;
 using Verse;
 using UnityEngine;
 
-namespace TwitchStories.Incidents
+namespace TwitchToolkit.Incidents
 {
   public class IncidentWorker_ShipPartCrash : IncidentWorker_Quote
   {

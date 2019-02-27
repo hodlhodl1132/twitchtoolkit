@@ -7,11 +7,11 @@ using RimWorld;
 using System.Linq;
 using UnityEngine;
 
-namespace TwitchStories
+namespace TwitchToolkit
 {
   public class Ticker : Thing
   {
-    TwitchStories _mod;
+    TwitchToolkit _mod;
     public static Queue<Event> Events = new Queue<Event>();
     public static Queue<FiringIncident> FiringIncidents = new Queue<FiringIncident>();
     public static Queue<VoteEvent> VoteEvents = new Queue<VoteEvent>();
@@ -42,7 +42,7 @@ namespace TwitchStories
       _registerThread.Start();
     }
 
-    public static void Initialize(TwitchStories mod)
+    public static void Initialize(TwitchToolkit mod)
     {
       Instance._mod = mod;
     }

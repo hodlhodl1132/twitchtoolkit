@@ -5,7 +5,7 @@ using System.Text;
 using System.Collections.Generic;
 using System.Threading;
 
-namespace TwitchStories.IRC
+namespace TwitchToolkit.IRC
 {
   public delegate void OnPrivMsg(string channel, string user, string message);
 

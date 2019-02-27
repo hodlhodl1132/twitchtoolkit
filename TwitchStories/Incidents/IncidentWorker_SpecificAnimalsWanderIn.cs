@@ -5,7 +5,7 @@ using Verse;
 using UnityEngine;
 using System.Linq;
 
-namespace TwitchStories.Incidents
+namespace TwitchToolkit.Incidents
 {
   public class IncidentWorker_SpecificAnimalsWanderIn : IncidentWorker
   {

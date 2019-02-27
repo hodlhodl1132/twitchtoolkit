@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Verse;
 using RimWorld;
 
-namespace TwitchStories.Incidents
+namespace TwitchToolkit.Incidents
 {
   [HasDebugOutput]
   public class IncidentWorker_ManhunterPack : IncidentWorker

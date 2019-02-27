@@ -3,7 +3,7 @@ using System.Linq;
 using Verse;
 using RimWorld;
 
-namespace TwitchStories.Incidents
+namespace TwitchToolkit.Incidents
 {
   public class IncidentWorker_AnimalInsanitySingle : IncidentWorker
   {

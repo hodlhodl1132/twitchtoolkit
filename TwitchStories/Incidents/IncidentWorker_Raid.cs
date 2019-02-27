@@ -6,7 +6,7 @@ using UnityEngine;
 using Verse;
 using RimWorld;
 
-namespace TwitchStories.Incidents
+namespace TwitchToolkit.Incidents
 {
   public abstract class IncidentWorker_Raid : IncidentWorker_PawnsArrive
   {

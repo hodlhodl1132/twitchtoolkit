@@ -2,7 +2,7 @@
 using Verse;
 using RimWorld;
 
-namespace TwitchStories.Incidents
+namespace TwitchToolkit.Incidents
 {
   public class IncidentWorker_PsychicSoothe : IncidentWorker_PsychicEmanation
   {

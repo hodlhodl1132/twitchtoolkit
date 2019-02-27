@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using Verse;
 
-namespace TwitchStories
+namespace TwitchToolkit
 { 
 
     public class StorytellerCompProperties_CustomRandomStoryTeller : StorytellerCompProperties

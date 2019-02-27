@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace TwitchStories.IRC
+namespace TwitchToolkit.IRC
 {
   public delegate void OnMessage(IRCMessage message);
 

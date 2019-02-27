@@ -3,9 +3,9 @@ using RimWorld;
 using UnityEngine;
 using Verse;
 
-namespace TwitchStories
+namespace TwitchToolkit
 {
-  public class TwitchStories_Overlay : Window
+  public class TwitchToolkit_Overlay : Window
   {
     public override void DoWindowContents(Rect inRect)
     {

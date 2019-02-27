@@ -5,7 +5,7 @@ using System.Text;
 using RimWorld;
 using Verse;
 
-namespace TwitchStories
+namespace TwitchToolkit
 {
     public class StorytellerComp_CustomCategoryMTB : StorytellerComp
     {

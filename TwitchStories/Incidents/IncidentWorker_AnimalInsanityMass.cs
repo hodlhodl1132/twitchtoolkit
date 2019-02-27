@@ -5,7 +5,7 @@ using Verse;
 using Verse.Sound;
 using RimWorld;
 
-namespace TwitchStories.Incidents
+namespace TwitchToolkit.Incidents
 {
   public class IncidentWorker_AnimalInsanityMass : IncidentWorker
   {

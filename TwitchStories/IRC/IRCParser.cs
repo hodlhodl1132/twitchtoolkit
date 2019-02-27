@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TwitchStories.IRC
+namespace TwitchToolkit.IRC
 {
   public class IRCParser
   {

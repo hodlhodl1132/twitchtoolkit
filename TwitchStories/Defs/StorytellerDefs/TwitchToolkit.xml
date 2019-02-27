@@ -11,7 +11,7 @@ Hodlbot loves random numbers and was originally invented by Randy.</description>
     <listOrder>99</listOrder>
     <comps>
       <!-- Home all -->
-      <li Class="TwitchStories.StorytellerCompProperties_CustomRandomStoryTeller">
+      <li Class="TwitchToolkit.StorytellerCompProperties_CustomRandomStoryTeller">
         <allowedTargetTags>
           <li>Map_PlayerHome</li>
         </allowedTargetTags>
@@ -39,7 +39,7 @@ Hodlbot loves random numbers and was originally invented by Randy.</description>
         <minDaysPassed>0</minDaysPassed>
       </li>
       <!-- Home special threats -->
-      <li Class="TwitchStories.StorytellerCompProperties_CustomOnOffCycle">
+      <li Class="TwitchToolkit.StorytellerCompProperties_CustomOnOffCycle">
         <category>RaidBeacon</category>
         <allowedTargetTags>
           <li>Map_RaidBeacon</li>
@@ -84,7 +84,7 @@ Hodlbot loves random numbers and was originally invented by Randy.</description>
       </li>
       <!-- World -->
       <li Class="StorytellerCompProperties_JourneyOffer"/>
-      <li Class="TwitchStories.StorytellerCompProperties_CustomOnOffCycle">
+      <li Class="TwitchToolkit.StorytellerCompProperties_CustomOnOffCycle">
         <category>WorldQuest</category>
         <allowedTargetTags>
           <li>World</li>
@@ -125,7 +125,7 @@ Hodlbot loves random numbers and was originally invented by Randy.</description>
       <!-- Intro -->
       <li Class="StorytellerCompProperties_ClassicIntro"/>
       <!-- Home threats -->
-      <li Class="TwitchStories.StorytellerCompProperties_CustomOnOffCycle">
+      <li Class="TwitchToolkit.StorytellerCompProperties_CustomOnOffCycle">
         <category>ThreatBig</category>
         <minDaysPassed>11.0</minDaysPassed>
         <onDays>4.6</onDays>
@@ -137,7 +137,7 @@ Hodlbot loves random numbers and was originally invented by Randy.</description>
           <li>Map_RaidBeacon</li>
         </disallowedTargetTags>
       </li>
-      <li Class="TwitchStories.StorytellerCompProperties_CustomOnOffCycle">
+      <li Class="TwitchToolkit.StorytellerCompProperties_CustomOnOffCycle">
         <category>RaidBeacon</category>
         <allowedTargetTags>
           <li>Map_RaidBeacon</li>
@@ -148,7 +148,7 @@ Hodlbot loves random numbers and was originally invented by Randy.</description>
         <applyRaidBeaconThreatMtbFactor>true</applyRaidBeaconThreatMtbFactor>
         <numIncidentsRange>1~2</numIncidentsRange>
       </li>
-      <li Class="TwitchStories.StorytellerCompProperties_CustomOnOffCycle">
+      <li Class="TwitchToolkit.StorytellerCompProperties_CustomOnOffCycle">
         <category>ThreatSmall</category>
         <minDaysPassed>11.0</minDaysPassed>
         <onDays>4.6</onDays>
@@ -162,7 +162,7 @@ Hodlbot loves random numbers and was originally invented by Randy.</description>
         </acceptPercentFactorPerThreatPointsCurve>
       </li>
       <!-- Home misc -->
-      <li Class="TwitchStories.StorytellerCompProperties_CustomCategoryMTB">
+      <li Class="TwitchToolkit.StorytellerCompProperties_CustomCategoryMTB">
         <category>Misc</category>
         <allowedTargetTags>
           <li>Map_PlayerHome</li>
@@ -240,7 +240,7 @@ Hodlbot loves random numbers and was originally invented by Randy.</description>
       </li>
       <!-- World -->
       <li Class="StorytellerCompProperties_JourneyOffer"/>
-      <li Class="TwitchStories.StorytellerCompProperties_CustomOnOffCycle">
+      <li Class="TwitchToolkit.StorytellerCompProperties_CustomOnOffCycle">
         <category>WorldQuest</category>
         <allowedTargetTags>
           <li>World</li>
@@ -255,7 +255,7 @@ Hodlbot loves random numbers and was originally invented by Randy.</description>
           </points>
         </acceptFractionByDaysPassedCurve>
       </li>
-      <li Class="TwitchStories.StorytellerCompProperties_CustomCategoryMTB">
+      <li Class="TwitchToolkit.StorytellerCompProperties_CustomCategoryMTB">
         <category>Misc</category>
         <allowedTargetTags>
           <li>World</li>
@@ -264,7 +264,7 @@ Hodlbot loves random numbers and was originally invented by Randy.</description>
         <mtbDays>15</mtbDays>
       </li>
       <!-- Orbital -->
-      <li Class="TwitchStories.StorytellerCompProperties_CustomOnOffCycle">
+      <li Class="TwitchToolkit.StorytellerCompProperties_CustomOnOffCycle">
         <incident>OrbitalTraderArrival</incident>
         <onDays>7</onDays>
         <offDays>8</offDays>

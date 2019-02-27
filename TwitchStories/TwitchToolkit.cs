@@ -3,15 +3,15 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Timers;
-using TwitchStories.IRC;
+using TwitchToolkit.IRC;
 using UnityEngine;
 using Verse;
 using System.Reflection;
 using System.Text.RegularExpressions;
 
-namespace TwitchStories
+namespace TwitchToolkit
 {
-    public class TwitchStories : Mod
+    public class TwitchToolkit : Mod
     {
         Timer _timer;
         readonly System.Random _rand;
@@ -91,7 +91,7 @@ namespace TwitchStories
             }
         }
 
-        public TwitchStories(ModContentPack content) : base(content)
+        public TwitchToolkit(ModContentPack content) : base(content)
         {
         _timer = new Timer();
         _rand = new System.Random();
@@ -132,7 +132,7 @@ namespace TwitchStories
 
         public override string SettingsCategory()
         {
-        return "Twitch Stories";
+        return "Twitch Toolkit";
         }
 
         public override void DoSettingsWindowContents(Rect inRect)

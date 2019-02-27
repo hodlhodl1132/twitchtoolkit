@@ -13,7 +13,7 @@ using SimpleJSON;
 using Verse;
 using System.Linq;
 
-namespace TwitchStories
+namespace TwitchToolkit
 {
     public class Viewer
     {

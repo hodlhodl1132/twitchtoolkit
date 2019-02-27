@@ -6,7 +6,7 @@ using UnityEngine;
 using RimWorld;
 using Verse;
 
-namespace TwitchStories
+namespace TwitchToolkit
 {
   public class Settings : ModSettings
   {
@@ -283,7 +283,7 @@ namespace TwitchStories
         QuotesEnabled = !QuotesEnabled;
       }
 
-      var mod = LoadedModManager.GetMod<TwitchStories>();
+      var mod = LoadedModManager.GetMod<TwitchToolkit>();
       labelRect.y += _height;
       labelRect.height = 30f;
       labelRect.width = 100f;

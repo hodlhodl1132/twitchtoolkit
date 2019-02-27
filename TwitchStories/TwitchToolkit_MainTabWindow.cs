@@ -3,11 +3,11 @@ using RimWorld;
 using UnityEngine;
 using Verse;
 
-namespace TwitchStories
+namespace TwitchToolkit
 {
-  public class TwitchStories_MainTabWindow : MainTabWindow
+  public class TwitchToolkit_MainTabWindow : MainTabWindow
   {
-    readonly TwitchStories _mod = LoadedModManager.GetMod<TwitchStories>();
+    readonly TwitchToolkit _mod = LoadedModManager.GetMod<TwitchToolkit>();
 
     public override MainTabWindowAnchor Anchor 
     {

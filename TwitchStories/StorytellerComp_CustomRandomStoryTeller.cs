@@ -7,7 +7,7 @@ using System.Text;
 using UnityEngine;
 using Verse;
 
-namespace TwitchStories
+namespace TwitchToolkit
 {
     public class StorytellerComp_CustomRandomStoryTeller : StorytellerComp
     {
@@ -19,7 +19,7 @@ namespace TwitchStories
             }
         }
 
-        readonly TwitchStories _twitchstories = LoadedModManager.GetMod<TwitchStories>();
+        readonly TwitchToolkit _twitchstories = LoadedModManager.GetMod<TwitchToolkit>();
 
         public IncidentParms parms { get; private set; }
 

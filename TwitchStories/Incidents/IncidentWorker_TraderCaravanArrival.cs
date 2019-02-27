@@ -4,7 +4,7 @@ using Verse;
 using Verse.AI.Group;
 using RimWorld;
 
-namespace TwitchStories.Incidents
+namespace TwitchToolkit.Incidents
 {
   public class IncidentWorker_TraderCaravanArrival : IncidentWorker_NeutralGroup
   {

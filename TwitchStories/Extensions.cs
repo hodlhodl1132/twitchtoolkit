@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Collections.Generic;
 
-namespace TwitchStories
+namespace TwitchToolkit
 {
   public static class Extensions
   {

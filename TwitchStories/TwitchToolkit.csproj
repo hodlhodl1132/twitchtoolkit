@@ -68,8 +68,8 @@
     <Compile Include="StorytellerComp_CustomCategoryMTB.cs" />
     <Compile Include="StorytellerComp_CustomOnOffCycle.cs" />
     <Compile Include="StorytellerComp_CustomRandomStoryTeller.cs" />
-    <Compile Include="TwitchStories.cs" />
-    <Compile Include="TwitchStories_MainTabWindow.cs" />
+    <Compile Include="TwitchToolkit.cs" />
+    <Compile Include="TwitchToolkit_MainTabWindow.cs" />
     <Compile Include="Helper.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="Events.cs" />
@@ -110,7 +110,7 @@
     <Compile Include="Incidents\IncidentWorker_MakeGameCondition.cs" />
     <Compile Include="Incidents\IncidentWorker_MeteoriteImpact.cs" />
     <Compile Include="Incidents\IncidentWorker_AnimalInsanitySingle.cs" />
-    <Compile Include="TwitchStories_Overlay.cs" />
+    <Compile Include="TwitchToolkit_Overlay.cs" />
     <Compile Include="Incidents\IncidentWorker_Raid.cs" />
     <Compile Include="Viewer.cs" />
     <Compile Include="VoteEvent.cs" />
@@ -125,10 +125,10 @@
     <None Include="About\Preview.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Defs\Misc\MainButtonDefs\TwitchStories.xml">
+    <None Include="Defs\Misc\MainButtonDefs\TwitchToolkit.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Defs\StorytellerDefs\TwitchStories.xml">
+    <None Include="Defs\StorytellerDefs\TwitchToolkit.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Properties\Settings.settings">
@@ -187,9 +187,6 @@
     <None Include="Languages\Russian\Keyed\TwitchStoriesMisc.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Defs\Misc\Viewers.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>
