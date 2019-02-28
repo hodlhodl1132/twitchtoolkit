@@ -59,7 +59,7 @@ namespace TwitchToolkit
 
                 new Product(37, 0, "Eclipse", "eclipse", 0, 400, 37),
                 new Product(38, 0, "Aurora", "aurora", 1, 150, 38),
-                new Product(39, 0, "Vomit rain", "vomitrain", 0, 150, 39),
+                new Product(39, 0, "Vomit rain", "vomitrain", 0, -1, 39),
                 new Product(40, 0, "Ambrosia sprout", "ambrosiasprout", 1, 150, 40),
                 new Product(41, 0, "Meteorite", "meteorite", 2, 150, 41),
                 new Product(42, 0, "Meteorite shower", "meteoriteshower", 2, 600, 42),
@@ -105,7 +105,7 @@ namespace TwitchToolkit
                 new Product(77, 0, "Transport pod dropped", "transportpoddropped", 1, 600, 77),
                 new Product(78, 0, "Ship part poison", "shippartpoison", 0, 900, 78),
                 new Product(79, 0, "Ship part psychic", "shippartpsychic", 0, 1000, 79),
-                new Product(80, 1, "Care package", "carepackage", 1, 0, 80),
+                new Product(80, 1, "Care package", "carepackage", 1, -1, 80),
 
                 new Product(81, 0, "Man in black", "maninblack", 1, 250, 81),
                 new Product(82, 0, "Refugee chased", "refugeechased", 2, 450, 82),
@@ -206,6 +206,10 @@ namespace TwitchToolkit
             if (product.type == 0)
             { //event
                 Helper.Log("Calculating price for event");
+                if (this.product.amount < 0)
+                {
+                    return;
+                }
                 this.calculatedprice = this.product.amount;
                 string[] chatmessage = command;
                 craftedmessage = $"{this.viewer.username}: ";
@@ -258,7 +262,7 @@ namespace TwitchToolkit
             else if (calculatedprice < Settings.MinimumPurchasePrice)
             {
                 // does not meet minimum purchase price
-                this.errormessage = $"@{this.viewer.username} purchase does not meet minimum amount. Your selected purchase price is {this.calculatedprice} coins and you have {this.viewer.GetViewerCoins()}";
+                this.errormessage = $"@{this.viewer.username} purchase does not meet minimum amount. Your selected purchase price is {this.calculatedprice} coins but you need to spend a minimum of {Settings.MinimumPurchasePrice}";
             }
             else
             {
@@ -439,7 +443,7 @@ namespace TwitchToolkit
                         price = 350;
                 break;
                 case "doomsdaylauncher":
-                        price = 450;
+                        price = 4500;
                 break;
 
                 // apparel

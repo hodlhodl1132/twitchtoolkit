@@ -475,6 +475,12 @@ namespace TwitchToolkit
                 string item = command[1];
                 command[1] = "carepackage";
                 command[0] = item;
+
+                if (command.Length < 3)
+                {
+                    return;
+                }
+
                 string newcommand = string.Join(" ", command);
                 Helper.Log("Attemping item purchase " + newcommand);
                 ShopCommand command2 = new ShopCommand(newcommand, Viewer.GetViewer(user));

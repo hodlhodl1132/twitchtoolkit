@@ -499,6 +499,17 @@ namespace TwitchToolkit
             Rect productline = listingStandard.GetRect(24f);
 
         	productline.width = 40f;
+		    if (Widgets.ButtonText(productline, "-" + 500))
+		    {
+			    SoundDefOf.AmountDecrement.PlayOneShotOnCamera();
+			    newprice -= 500 * GenUI.CurrentAdjustmentMultiplier();
+			    if (newprice < 50)
+			    {
+				    newprice = 500;
+			    }
+		    }
+
+        	productline.x += productline.width + 2f;
 		    if (Widgets.ButtonText(productline, "-" + 50))
 		    {
 			    SoundDefOf.AmountDecrement.PlayOneShotOnCamera();
@@ -542,6 +553,24 @@ namespace TwitchToolkit
 			    }
 		    }
 
+            productline.x += productline.width + 2f;
+		    if (Widgets.ButtonText(productline, "+" + 500))
+		    {
+			    SoundDefOf.AmountIncrement.PlayOneShotOnCamera();
+			    newprice += 500 * GenUI.CurrentAdjustmentMultiplier();
+			    if (newprice < 50)
+			    {
+				    newprice = 500;
+			    }
+		    }
+
+            productline.x += productline.width + 2f;
+		    if (Widgets.ButtonText(productline, "Disable"))
+		    {
+			    SoundDefOf.AmountIncrement.PlayOneShotOnCamera();
+			    newprice = -1;
+            }
+		    
 		    listingStandard.Gap(listingStandard.verticalSpacing);
 
             ProductAmounts[product.id] = newprice;      
