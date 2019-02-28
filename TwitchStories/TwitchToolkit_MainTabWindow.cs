@@ -85,9 +85,9 @@ namespace TwitchToolkit
             }
 
             rectBtn.y += btnHeight + padding;
-            if (Widgets.ButtonText(rectBtn, ""))
+            if (Widgets.ButtonText(rectBtn, "Prices to Output"))
             {
-                //_mod.StartVote();
+                Helper.PastePricesToOutputLog();
             }
 
             rectBtn.x += btnWidth + padding;

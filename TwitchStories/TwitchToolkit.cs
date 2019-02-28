@@ -435,7 +435,7 @@ namespace TwitchToolkit
                     string[] command = message.Split(' ');
                     string item = command[1];
                     command[1] = "carepackage";
-                    command[0] = item;
+                    command[0] = item.ToLower();
 
                     if (command.Length < 2)
                     {

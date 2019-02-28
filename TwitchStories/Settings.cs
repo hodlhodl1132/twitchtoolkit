@@ -450,6 +450,10 @@ namespace TwitchToolkit
                 {
                     SoundDefOf.AmountDecrement.PlayOneShotOnCamera();
                     newprice -= 500 * GenUI.CurrentAdjustmentMultiplier();
+                    if (newprice < 50)
+                    {
+                        newprice = 50;
+                    }
                 }
 
                 productline.x += productline.width + 2f;
@@ -457,6 +461,10 @@ namespace TwitchToolkit
                 {
                     SoundDefOf.AmountDecrement.PlayOneShotOnCamera();
                     newprice -= 50 * GenUI.CurrentAdjustmentMultiplier();
+                    if (newprice < 50)
+                    {
+                        newprice = 50;
+                    }
                 }
 
                 productline.x += productline.width + 2f;
@@ -464,6 +472,10 @@ namespace TwitchToolkit
                 {
                     SoundDefOf.AmountDecrement.PlayOneShotOnCamera();
                     newprice -= 10 * GenUI.CurrentAdjustmentMultiplier();
+                    if (newprice < 50)
+                    {
+                        newprice = 50;
+                    }
                 }
 
                 productline.x += productline.width + 2f;
@@ -486,10 +498,39 @@ namespace TwitchToolkit
                     SoundDefOf.AmountIncrement.PlayOneShotOnCamera();
                     newprice += 500 * GenUI.CurrentAdjustmentMultiplier();
                 }
+                string karmabutton = "";
 
-                if (newprice < 50)
+                if (product.karmatype == 0)
                 {
-                    newprice = 50;
+                    karmabutton = "Bad";
+                }
+                else if (product.karmatype == 1)
+                {
+                    karmabutton = "Good";
+                }
+                else if (product.karmatype == 2)
+                {
+                    karmabutton = "Neutral";
+                }
+                else
+                {
+                    karmabutton = "Doom";
+                }
+
+                productline.x += productline.width + 2f;
+                if (Widgets.ButtonText(productline, karmabutton))
+                {
+                    SoundDefOf.AmountIncrement.PlayOneShotOnCamera();
+                    if (product.karmatype == 3)
+                    {
+                        product.karmatype = 0;
+                        Settings.ProductKarmaTypes[product.id] = 0;
+                    }
+                    else
+                    {
+                        product.karmatype = product.karmatype + 1;
+                        Settings.ProductKarmaTypes[product.id] = Settings.ProductKarmaTypes[product.id] + 1;
+                    }
                 }
 
                 productline.x += productline.width + 2f;
@@ -587,6 +628,10 @@ namespace TwitchToolkit
                 {
                     SoundDefOf.AmountDecrement.PlayOneShotOnCamera();
                     newprice -= 100 * GenUI.CurrentAdjustmentMultiplier();
+                    if (newprice < 1)
+                    {
+                        newprice = 1;
+                    }
                 }
 
                 productline.x += productline.width + 2f;
@@ -594,6 +639,10 @@ namespace TwitchToolkit
                 {
                     SoundDefOf.AmountDecrement.PlayOneShotOnCamera();
                     newprice -= 10 * GenUI.CurrentAdjustmentMultiplier();
+                    if (newprice < 1)
+                    {
+                        newprice = 1;
+                    }
                 }
 
                 productline.x += productline.width + 2f;
@@ -601,6 +650,10 @@ namespace TwitchToolkit
                 {
                     SoundDefOf.AmountDecrement.PlayOneShotOnCamera();
                     newprice -= 1 * GenUI.CurrentAdjustmentMultiplier();
+                    if (newprice < 1)
+                    {
+                        newprice = 1;
+                    }
                 }
 
                 productline.x += productline.width + 2f;
@@ -622,11 +675,6 @@ namespace TwitchToolkit
                 {
                     SoundDefOf.AmountIncrement.PlayOneShotOnCamera();
                     newprice += 100 * GenUI.CurrentAdjustmentMultiplier();
-                }
-
-                if (newprice < 1)
-                {
-                    newprice = 1;
                 }
 
                 productline.x += productline.width + 2f;

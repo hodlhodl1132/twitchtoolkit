@@ -12,6 +12,7 @@ namespace TwitchToolkit
     {
         private static bool _infestationPossible = false;
         static System.Random _random = new System.Random();
+        private static string paste;
 
         public static void Reset()
         {
@@ -89,6 +90,11 @@ namespace TwitchToolkit
         public static void Log(string message)
         {
             Verse.Log.Message("[TwitchToolkit] " + message);
+        }
+
+        public static void LogPaste(string message)
+        {
+            Verse.Log.Message(message);
         }
 
         public static void Vote(string message, LetterDef type)
@@ -1846,5 +1852,47 @@ namespace TwitchToolkit
         }
 
         #endregion
+
+        public static void PastePricesToOutputLog()
+        {
+            int linecount = 3 + Settings.products.Count() + Settings.items.Count();
+            string[] lines = new string[linecount];
+            lines[0] = "\"Events\", \"Price\", \"Type\", \"Code\"";
+            int currentline = 1;
+            foreach(Product product in Settings.products)
+            {
+                string type = "malformed product";
+                if (product.type == 0)
+                {
+                    type = "Bad";
+                }
+                else if (product.type == 1)
+                {
+                    type = "Good";
+                }
+                else if (product.type == 2)
+                {
+                    type = "Neutral";
+                }
+                else if (product.type == 3)
+                {
+                    type = "Doom";
+                }
+                      
+                lines[currentline] = $"\"{product.name}\", \"{product.amount}\", \"{type}\", \"{product.abr}\"";
+                currentline++;
+            }
+            lines[currentline] = "";
+            currentline++;
+            lines[currentline] = "\n\"Items\", \"Price\"";
+            currentline++;
+
+            foreach(Item item in Settings.items)
+            {
+                lines[currentline] = $"\"{item.abr}\", \"{item.price}\"";
+                currentline++;
+            }
+            System.IO.File.WriteAllLines(@"" + Application.persistentDataPath + "/productlist.csv", lines);
+        }
     }
 }
