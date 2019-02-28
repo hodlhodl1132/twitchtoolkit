@@ -48,7 +48,15 @@ namespace TwitchToolkit
         public static Dictionary<int, int> ProductAmounts = new Dictionary<int, int>();
         public static Dictionary<int, int> ProductEventIds = new Dictionary<int, int>();
 
-        public static List<Product> products;
+        public static List<Product> products = null;
+
+        // item storage
+        public static Dictionary<string, int> ItemIds = new Dictionary<string, int>();
+        public static Dictionary<int, int> ItemPrices = new Dictionary<int, int>();
+        public static Dictionary<int, string> ItemDefnames = new Dictionary<int, string>();
+        public static Dictionary<int, string> ItemStuffnames = new Dictionary<int, string>();
+
+        public static List<Item> items = null;
 
         private static List<string> _Categories = Enum.GetNames(typeof(EventCategory)).ToList();
         public static List<int> CategoryWeights = Enumerable.Repeat<int>(100, _Categories.Count).ToList();
@@ -110,6 +118,11 @@ namespace TwitchToolkit
             Scribe_Collections.Look(ref ViewerCoins, "ViewerCoins", LookMode.Value, LookMode.Value);
             Scribe_Collections.Look(ref ViewerKarma, "ViewerKarma", LookMode.Value, LookMode.Value);
 
+            Scribe_Collections.Look(ref ItemIds, "ItemIds", LookMode.Value, LookMode.Value);
+            Scribe_Collections.Look(ref ItemPrices, "ItemPrices", LookMode.Value, LookMode.Value);
+            Scribe_Collections.Look(ref ItemDefnames, "ItemDefnames", LookMode.Value, LookMode.Value);
+            Scribe_Collections.Look(ref ItemStuffnames, "ItemStuffnames", LookMode.Value, LookMode.Value);
+
             Scribe_Collections.Look(ref ProductIds, "ProductIds", LookMode.Value, LookMode.Value);
             Scribe_Collections.Look(ref ProductTypes, "ProductTypes", LookMode.Value, LookMode.Value);
             Scribe_Collections.Look(ref ProductNames, "ProductNames", LookMode.Value, LookMode.Value);
@@ -155,10 +168,12 @@ namespace TwitchToolkit
             {
                 if (ProductIds == null)
                 {
+                    Helper.Log("Ressetting Products");
                     ResetProductData();
                 }
                 else
                 {
+                    Helper.Log("Loading Product Settings");
                     products = new List<Product>();
                     // load products from settings, then load them into settings class
                     foreach (KeyValuePair<string, int> product in ProductIds)
@@ -171,6 +186,28 @@ namespace TwitchToolkit
                         int amount = ProductAmounts[id];
                         int evtId = ProductEventIds[id];
                         products.Add(new Product(id, type, name, abr, karmatype, amount, evtId));
+                    }
+                }
+            }
+
+            if (items == null)
+            {
+                if (ItemIds == null)
+                {
+                    ResetItemData();
+                }
+                else
+                {
+                    items = new List<Item>();
+                    
+                    foreach(KeyValuePair<string, int> item in ItemIds)
+                    {
+                        int id = item.Value;
+                        string abr = item.Key;
+                        int price = ItemPrices[id];
+                        string defname = ItemDefnames[id];
+                        string stuffname = ItemStuffnames[id];
+                        items.Add(new Item(price, abr, defname, id, stuffname));
                     }
                 }
             }
@@ -207,6 +244,12 @@ namespace TwitchToolkit
                 _menu = 4;
             }
 
+            buttonRect.y += _height;
+            if (Widgets.ButtonText(buttonRect, "Items"))
+            {
+                _menu = 1;
+            }
+
             rect.width -= buttonWidth + _padding;
             switch (_menu)
             {
@@ -215,16 +258,13 @@ namespace TwitchToolkit
                     MainMenu(rect);
                     break;
                 case 1:
-                    CategoryMenu(rect);
-                    break;
-                case 2:
-                    EventMenu(rect);
+                    ItemMenu(rect);
                     break;
                 case 3:
                     CoinMenu(rect);
                     break;
                 case 4:
-                    ProductMenu(rect);
+                    EventMenu(rect);
                     break;
             }
         }
@@ -313,99 +353,6 @@ namespace TwitchToolkit
             Widgets.TextArea(labelRect, string.Join("\r\n", mod.MessageLog), true);
         }
 
-        private static void CategoryMenu(Rect rect)
-        {
-            var labelRect = new Rect(_padding, _padding + _height, rect.width - (_padding * 2), rect.height - (_padding * 2));
-            var inputRect = new Rect(_padding + 140f, _padding + _height, rect.width - (_padding * 2) - 140f, 20f);
-            Text.Anchor = TextAnchor.UpperLeft;
-
-            for (var i = 0; i < _Categories.Count; i++)
-            {
-                Widgets.Label(labelRect, _Categories[i] + ": ");
-
-                inputRect.x = _padding + 140f;
-                inputRect.width = 75f;
-                if (Widgets.ButtonText(inputRect, (CategoryWeights[i] > 0 ? "TwitchStoriesEnabled".Translate() : "TwitchStoriesDisabled".Translate())))
-                {
-                    CategoryWeights[i] = (CategoryWeights[i] > 0 ? 0 : 100);
-                }
-
-                inputRect.x += inputRect.width + _padding;
-                inputRect.width = rect.width - (_padding * 3) - inputRect.width - 140f;
-
-                CategoryWeights[i] = (int)Widgets.HorizontalSlider(inputRect, CategoryWeights[i], 0, 100, false, CategoryWeights[i].ToString() + " %", null, null, 1);
-
-                labelRect.y += _height;
-                inputRect.y += _height;
-            }
-        }
-
-        private static int _eventScroll = 0;
-        private static void EventMenu(Rect rect)
-        {
-            var labelRect = new Rect(_padding, _padding + _height, rect.width - (_padding * 2), rect.height - (_padding * 2));
-            var inputRect = new Rect(_padding + 140f, _padding + _height, rect.width - (_padding * 2) - 140f, 20f);
-            Text.Anchor = TextAnchor.UpperLeft;
-
-            if (_eventScroll > 0)
-            {
-                inputRect.x = _padding;
-                inputRect.width = rect.width - (_padding * 2);
-                if (Widgets.ButtonText(inputRect, "^"))
-                {
-                    _eventScroll = Math.Max(0, _eventScroll - 1);
-                }
-            }
-
-            labelRect.y += _height;
-            inputRect.y += _height;
-
-            int scroll = 0;
-            int count = 0;
-            foreach (KeyValuePair<int, string> evt in _Events)
-            {
-
-                if (++scroll <= _eventScroll)
-                {
-                    continue;
-                }
-
-                if (labelRect.y >= (rect.height - _height - _padding))
-                {
-                    break;
-                }
-
-                Widgets.Label(labelRect, evt.Value + ": ");
-
-                inputRect.x = _padding + 140f;
-                inputRect.width = 75f;
-                if (Widgets.ButtonText(inputRect, (EventWeights[evt.Key] > 0 ? "TwitchStoriesEnabled".Translate() : "TwitchStoriesDisabled".Translate())))
-                {
-                    EventWeights[evt.Key] = (EventWeights[evt.Key] > 0 ? 0 : 100);
-                }
-
-                inputRect.x += inputRect.width + _padding;
-                inputRect.width = rect.width - (_padding * 3) - inputRect.width - 140f;
-
-                EventWeights[evt.Key] = (int)Widgets.HorizontalSlider(inputRect, EventWeights[evt.Key], 0, 100, false, EventWeights[evt.Key].ToString() + " %", null, null, 1);
-
-                labelRect.y += _height;
-                inputRect.y += _height;
-
-                count++;
-            }
-
-            if (_eventScroll < (_Events.Count - count))
-            {
-                inputRect.x = _padding;
-                inputRect.width = rect.width - (_padding * 2);
-                if (Widgets.ButtonText(inputRect, "v"))
-                {
-                    _eventScroll++;
-                }
-            }
-        }
-
         private static void CoinMenu(Rect rect)
         {
             Listing_TwitchToolkit listingStandard = new Listing_TwitchToolkit();
@@ -422,8 +369,10 @@ namespace TwitchToolkit
 
         public static int ResetViewerStage { get; private set; }
         public static string ResetViewerWarning { get; private set; }
+        public static int ItemScroll { get; private set; }
+        public static int ResetItemStage { get; private set; }
 
-        private static void ProductMenu(Rect rect)
+        private static void EventMenu(Rect rect)
         {
             var labelRect = new Rect(_padding, _padding + _height, rect.width - (_padding * 2), rect.height - (_padding * 2));
             var inputRect = new Rect(_padding + 140f, _padding + _height, rect.width - (_padding * 2) - 140f, 20f);
@@ -470,7 +419,7 @@ namespace TwitchToolkit
             {
                 ResetViewerStage = 0;
                 ResetProductData();
-                ProductMenu(rect);
+                EventMenu(rect);
             }
 
             if (Widgets.ButtonText(inputRect, ResetViewerWarning))
@@ -501,10 +450,6 @@ namespace TwitchToolkit
                 {
                     SoundDefOf.AmountDecrement.PlayOneShotOnCamera();
                     newprice -= 500 * GenUI.CurrentAdjustmentMultiplier();
-                    if (newprice < 50)
-                    {
-                        newprice = 500;
-                    }
                 }
 
                 productline.x += productline.width + 2f;
@@ -512,10 +457,6 @@ namespace TwitchToolkit
                 {
                     SoundDefOf.AmountDecrement.PlayOneShotOnCamera();
                     newprice -= 50 * GenUI.CurrentAdjustmentMultiplier();
-                    if (newprice < 50)
-                    {
-                        newprice = 50;
-                    }
                 }
 
                 productline.x += productline.width + 2f;
@@ -523,10 +464,6 @@ namespace TwitchToolkit
                 {
                     SoundDefOf.AmountDecrement.PlayOneShotOnCamera();
                     newprice -= 10 * GenUI.CurrentAdjustmentMultiplier();
-                    if (newprice < 50)
-                    {
-                        newprice = 50;
-                    }
                 }
 
                 productline.x += productline.width + 2f;
@@ -534,10 +471,6 @@ namespace TwitchToolkit
                 {
                     SoundDefOf.AmountIncrement.PlayOneShotOnCamera();
                     newprice += 10 * GenUI.CurrentAdjustmentMultiplier();
-                    if (newprice < 50)
-                    {
-                        newprice = 50;
-                    }
                 }
 
                 productline.x += productline.width + 2f;
@@ -545,10 +478,6 @@ namespace TwitchToolkit
                 {
                     SoundDefOf.AmountIncrement.PlayOneShotOnCamera();
                     newprice += 50 * GenUI.CurrentAdjustmentMultiplier();
-                    if (newprice < 50)
-                    {
-                        newprice = 50;
-                    }
                 }
 
                 productline.x += productline.width + 2f;
@@ -556,10 +485,11 @@ namespace TwitchToolkit
                 {
                     SoundDefOf.AmountIncrement.PlayOneShotOnCamera();
                     newprice += 500 * GenUI.CurrentAdjustmentMultiplier();
-                    if (newprice < 50)
-                    {
-                        newprice = 500;
-                    }
+                }
+
+                if (newprice < 50)
+                {
+                    newprice = 50;
                 }
 
                 productline.x += productline.width + 2f;
@@ -573,6 +503,143 @@ namespace TwitchToolkit
 
                 ProductAmounts[product.id] = newprice;
                 product.amount = newprice;
+
+                count++;
+            }
+        }
+
+
+        private static void ItemMenu(Rect rect)
+        {
+            var labelRect = new Rect(_padding, _padding + _height, rect.width - (_padding * 2), rect.height - (_padding * 2));
+            var inputRect = new Rect(_padding + 140f, _padding + _height, rect.width - (_padding * 2) - 140f, 20f);
+
+            if (ItemScroll > 0)
+            {
+                inputRect.x = _padding + (rect.width - (_padding * 2)) / 4;
+                inputRect.width = (rect.width - (_padding * 2)) / 4;
+                if (Widgets.ButtonText(inputRect, "^"))
+                {
+                    ItemScroll = Math.Max(0, ItemScroll - 3);
+                }
+            }
+
+            int count = 0;
+            int scroll = 0;
+
+            if (ItemScroll < (products.Count - count))
+            {
+                inputRect.x = _padding + (rect.width - (_padding * 2)) / 2;
+                inputRect.width = (rect.width - (_padding * 2)) / 4;
+                if (Widgets.ButtonText(inputRect, "v"))
+                {
+                    ItemScroll += 3;
+                }
+            }
+
+            inputRect.x = _padding + (rect.width - (_padding * 2)) / 2 + (rect.width - (_padding * 2)) / 4;
+            inputRect.width = (rect.width - (_padding * 2)) / 4;
+
+            if (ResetItemStage == 0)
+            {
+                ResetViewerWarning = "Reset to Default";
+            }
+            else if (ResetItemStage == 1)
+            {
+                ResetViewerWarning = "Are you sure?";
+            }
+            else if (ResetItemStage == 2)
+            {
+                ResetViewerWarning = "One more time";
+            }
+            else if (ResetItemStage == 3)
+            {
+                ResetItemStage = 0;
+                ResetItemData();
+                ItemMenu(rect);
+            }
+
+            if (Widgets.ButtonText(inputRect, ResetViewerWarning))
+            {
+                ResetItemStage += 1;
+            }
+
+            inputRect.y += _height;
+
+            Listing_TwitchToolkit listingStandard = new Listing_TwitchToolkit();
+            listingStandard.Begin(rect);
+
+
+            foreach (Item item in items)
+            {
+                if (++scroll <= ItemScroll)
+                {
+                    continue;
+                }
+
+                listingStandard.Label($"{item.abr}: {item.price}");
+                int newprice = item.price;
+
+                Rect productline = listingStandard.GetRect(24f);
+
+                productline.width = 40f;
+                if (Widgets.ButtonText(productline, "-" + 100))
+                {
+                    SoundDefOf.AmountDecrement.PlayOneShotOnCamera();
+                    newprice -= 100 * GenUI.CurrentAdjustmentMultiplier();
+                }
+
+                productline.x += productline.width + 2f;
+                if (Widgets.ButtonText(productline, "-" + 10))
+                {
+                    SoundDefOf.AmountDecrement.PlayOneShotOnCamera();
+                    newprice -= 10 * GenUI.CurrentAdjustmentMultiplier();
+                }
+
+                productline.x += productline.width + 2f;
+                if (Widgets.ButtonText(productline, "-" + 1))
+                {
+                    SoundDefOf.AmountDecrement.PlayOneShotOnCamera();
+                    newprice -= 1 * GenUI.CurrentAdjustmentMultiplier();
+                }
+
+                productline.x += productline.width + 2f;
+                if (Widgets.ButtonText(productline, "+" + 1))
+                {
+                    SoundDefOf.AmountIncrement.PlayOneShotOnCamera();
+                    newprice += 1 * GenUI.CurrentAdjustmentMultiplier();
+                }
+
+                productline.x += productline.width + 2f;
+                if (Widgets.ButtonText(productline, "+" + 10))
+                {
+                    SoundDefOf.AmountIncrement.PlayOneShotOnCamera();
+                    newprice += 10 * GenUI.CurrentAdjustmentMultiplier();
+                }
+
+                productline.x += productline.width + 2f;
+                if (Widgets.ButtonText(productline, "+" + 100))
+                {
+                    SoundDefOf.AmountIncrement.PlayOneShotOnCamera();
+                    newprice += 100 * GenUI.CurrentAdjustmentMultiplier();
+                }
+
+                if (newprice < 1)
+                {
+                    newprice = 1;
+                }
+
+                productline.x += productline.width + 2f;
+                if (Widgets.ButtonText(productline, "Disable"))
+                {
+                    SoundDefOf.AmountIncrement.PlayOneShotOnCamera();
+                    newprice = -1;
+                }
+
+                listingStandard.Gap(listingStandard.verticalSpacing);
+
+                ItemPrices[item.id] = newprice;
+                item.price = newprice;
 
                 count++;
             }
@@ -599,6 +666,34 @@ namespace TwitchToolkit
                 ProductAmounts.Add(id, product.amount);
                 ProductEventIds.Add(id, product.evtId);
                 products.Add(product);
+            }
+        }
+
+        public static void ResetItemData()
+        {
+            items = new List<Item>();
+            ItemIds = new Dictionary<string, int>();
+            ItemPrices = new Dictionary<int, int>();
+            ItemDefnames = new Dictionary<int, string>();
+            ItemStuffnames = new Dictionary<int, string>();
+
+            List<Item> defaultitems = Item.GetDefaultItems().ToList();
+
+            foreach(Item item in defaultitems)
+            {
+                int id = item.id;
+                ItemIds.Add(item.abr, id);
+                ItemPrices.Add(id, item.price);
+                ItemDefnames.Add(id, item.defname);
+                if (item.stuffname != "null")
+                {
+                    ItemStuffnames[id] = item.stuffname;
+                }
+                else
+                {
+                    ItemStuffnames[id] = "null";
+                }
+                items.Add(item);
             }
         }
 

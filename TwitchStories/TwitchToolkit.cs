@@ -216,7 +216,7 @@ namespace TwitchToolkit
             }
 
             //admin commands
-            if (user == Settings.Channel)
+            if (user == Settings.Channel.ToLower())
             {
                 if (message.StartsWith("!refreshviewers"))
                 {
@@ -264,7 +264,7 @@ namespace TwitchToolkit
                         {
                             return;
                         }
-
+                        
                         string giftee = command[1].Replace("@", "");
                         int amount;
                         bool isNumeric = int.TryParse(command[2], out amount);
@@ -413,6 +413,11 @@ namespace TwitchToolkit
             {
                 if (message.StartsWith("!buyevent"))
                 {
+                    if (message.Split(' ')[1] == "carepackage")
+                    {
+                        return;
+                    }
+
                     Helper.Log("Attempting event purchase");
                     ShopCommand command = new ShopCommand(message, Viewer.GetViewer(user));
                     if (command.errormessage != null)
@@ -432,7 +437,7 @@ namespace TwitchToolkit
                     command[1] = "carepackage";
                     command[0] = item;
 
-                    if (command.Length < 3)
+                    if (command.Length < 2)
                     {
                         return;
                     }

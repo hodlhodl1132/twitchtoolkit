@@ -5,7 +5,7 @@
     <label>Hodlbot</label>
     <description>Hodlbot likes to keep things fair but exciting.
 
-Hodlbot loves random numbers and was originally invented by Randy.</description>
+HodlBot, created by Randy, mimics his storytelling through having absolutely no filter in what events he chooses for the colony, all while consulting with chat about what should happen to colonies. This bot is based off of the created of the mod and streamer, Hodl! twitch.tv/hodlhodl</description>
     <portraitLarge>Things/TwitchToolkitHodl</portraitLarge>
     <portraitTiny>Things/TwitchToolkitHodlTiny</portraitTiny>
     <listOrder>1</listOrder>
@@ -117,7 +117,7 @@ Hodlbot loves random numbers and was originally invented by Randy.</description>
   <StorytellerDef ParentName="BaseStoryteller">
     <defName>cassybotstoryteller</defName>
     <label>UristBot</label>
-    <description>UristBot was developed by Cassy through a 3rd Party Company. CassyBot will uses neural learning patterns to come up with events similar to Cassandra.</description>
+    <description>UristBot, created by Cassy, mimics her form of storytelling through lulling you into a false sense of security, then being absolutely ruthless later on, all while consulting with chat about what should happen to colonies. This bot is based off the streamer, Zenfrox! twitch.tv/Zenfrox</description>
     <portraitLarge>Things/TwitchToolkitUrist</portraitLarge>
     <portraitTiny>Things/TwitchToolkitUristTiny</portraitTiny>
     <listOrder>2</listOrder>
@@ -281,7 +281,7 @@ Hodlbot loves random numbers and was originally invented by Randy.</description>
   <StorytellerDef ParentName="BaseStoryteller">
     <defName>phoebebot</defName>
     <label>SpartanBot</label>
-    <description>SpartanBot</description>
+    <description>SpartanBot, much like his creator, Phoebe, is calm and collected, mimicking her storytelling while also consulting with chat about what should happen to colonies. This bot is based off of the streamer, SpartanStu23! twitch.tv/SpartanStu23</description>
     <portraitLarge>Things/TwitchToolkitSpartan</portraitLarge>
     <portraitTiny>Things/TwitchToolkitSpartanTiny</portraitTiny>
     <listOrder>3</listOrder>

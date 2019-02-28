@@ -186,6 +186,7 @@ namespace TwitchToolkit
         private string item = null;
         private int quantity = 0;
         private string craftedmessage;
+        public Item itemtobuy = null;
 
         public ShopCommand(string message, Viewer viewer)
         {
@@ -224,14 +225,26 @@ namespace TwitchToolkit
                 try
                 {
                     Helper.Log("Trying ItemEvent Checks");
-                    this.item = command[0];
-                    int itemPrice = CarePackage.ItemPriceResolver(this.item);
+
+                    Item itemtobuy = Item.GetItemFromAbr(command[0]);
+
+                    if (itemtobuy.price < 0)
+                    {
+                        return;
+                    }
+
+                    int itemPrice = itemtobuy.price;
                     bool isNumeric = int.TryParse(command[2], out this.quantity);
-                    if (isNumeric && itemPrice > 0)
+                    if (!isNumeric)
+                    {
+                        this.quantity = 1;
+                    }
+
+                    if (itemPrice > 0)
                     {
                         Helper.Log($"item: {this.item} - price: {itemPrice} - isnumeric: {isNumeric} - quantity{this.quantity}");
-                        this.calculatedprice = this.quantity * itemPrice;
-                        Helper.Log("ItemEvent Checks passed, buying item");
+                        this.calculatedprice = itemtobuy.CalculatePrice(this.quantity);
+                        this.itemtobuy = itemtobuy;
                     }
                 }
                 catch (InvalidCastException e)
@@ -283,8 +296,15 @@ namespace TwitchToolkit
             }
             else if (this.product.type == 1)
             {
-                // care package
-                this.product.evt = CarePackage.CarePackageGenerate(this.item, this.quantity);
+                // care package 
+                try
+                {
+                    this.product.evt = new Event(80, EventType.Good, EventCategory.Drop, 3, "Gold", () => true, (quote) => this.itemtobuy.PutItemInCargoPod(quote, this.quantity));
+                }
+                catch (InvalidCastException e)
+                {
+                    Helper.Log("Carepackage error " + e.Message);
+                }
 
                 if (this.product.evt == null)
                 {
@@ -300,182 +320,6 @@ namespace TwitchToolkit
             // create purchase event
             Ticker.Events.Enqueue(this.product.evt);
         }
-    }
-
-    public class CarePackage
-    {
-        public static Event CarePackageGenerate(string item, int amount)
-        {
-            try
-            {
-                return new Event(80, EventType.Good, EventCategory.Drop, 3, "Gold", () => true, (quote) => Helper.CargoDropItem(quote, amount, item));
-            }
-            catch (InvalidCastException e)
-            {
-                Helper.Log("Carepackage error " + e.Message);
-            }
-
-            return null;
-        }
-
-        public static int ItemPriceResolver(string itemname)
-        {
-            int price = 0;
-            switch (itemname)
-            {
-                case "silver":
-                    price = 5;
-                    break;
-                case "uranium":
-                    price = 30;
-                    break;
-                case "survivalmeal":
-                    price = 30;
-                    break;
-                case "pastemeal":
-                    price = 15;
-                    break;
-                case "simplemeal":
-                    price = 45;
-                    break;
-                case "finemeal":
-                    price = 60;
-                    break;
-                case "kibble":
-                    price = 5;
-                    break;
-                case "hay":
-                    price = 2;
-                    break;
-                case "humanmeat":
-                    price = 4;
-                    break;
-                case "luciferium":
-                    price = 300;
-                    break;
-                case "pemmican":
-                    price = 4;
-                    break;
-                case "techprofsubpersonacore":
-                    price = 5000;
-                    break;
-                case "wort":
-                    price = 12;
-                    break;
-                case "gold":
-                    price = 50;
-                    break;
-                case "steel":
-                    price = 8;
-                    break;
-                case "wood":
-                    price = 2;
-                    break;
-                case "herbalmedicine":
-                    price = 25;
-                    break;
-                case "industrialmedicine":
-                    price = 80;
-                    break;
-                case "glitterworldmedicine":
-                    price = 200;
-                    break;
-                case "graniteblocks":
-                    price = 4;
-                    break;
-                case "plasteel":
-                    price = 45;
-                    break;
-                case "beer":
-                    price = 40;
-                    break;
-                case "aipersonacore":
-                    price = 8000;
-                    break;
-                case "smokeleafjoint":
-                    price = 55;
-                    break;
-                case "industrialcomponent":
-                    price = 60;
-                    break;
-                case "advcomponent":
-                    price = 1000;
-                    break;
-                case "insectjelly":
-                    price = 40;
-                    break;
-                case "cloth":
-                    price = 40;
-                    break;
-                case "plainleather":
-                    price = 10;
-                    break;
-                case "hyperweave":
-                    price = 45;
-                    break;
-                case "chocolate":
-                    price = 15;
-                    break;
-                case "elephanttusk":
-                    price = 400;
-                    break;
-                case "potatoes":
-                    price = 5;
-                    break;
-                case "berries":
-                    price = 5;
-                    break;
-                case "heart":
-                    price = 2500;
-                    break;
-
-                // weapons
-                case "chargerifle":
-                    price = 5000;
-                    break;
-                case "revolver":
-                    price = 100;
-                    break;
-                case "boltactionrifle":
-                    price = 250;
-                    break;
-                case "chainshotgun":
-                    price = 350;
-                    break;
-                case "doomsdaylauncher":
-                    price = 4500;
-                    break;
-
-                // apparel
-                case "advancedhelmet":
-                    price = 450;
-                    break;
-                case "marinehelmet":
-                    price = 1100;
-                    break;
-                case "duster":
-                    price = 300;
-                    break;
-                case "tribalwear":
-                    price = 50;
-                    break;
-                case "tshirt":
-                    price = 55;
-                    break;
-                case "pants":
-                    price = 55;
-                    break;
-                case "cowboyhat":
-                    price = 25;
-                    break;
-                default:
-                    price = 0;
-                    break;
-            }
-
-            return price;
-        }
-
     }
 }
 
