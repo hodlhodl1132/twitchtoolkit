@@ -167,6 +167,7 @@ namespace TwitchToolkit
         {
             try
             {
+                Helper.Log("If this is the last message in the log check Viewer.WebRequest_BeginGetResposne");
                 ServicePointManager.ServerCertificateValidationCallback = MyRemoteCertificateValidationCallback;
                 WebRequest myWebRequest = WebRequest.Create("https://tmi.twitch.tv/group/user/" + Settings.Channel + "/chatters");
                 RequestState myRequestState = new RequestState();
@@ -184,7 +185,7 @@ namespace TwitchToolkit
             }
             catch (Exception e)
             {
-                Helper.Log("Exception raised!");
+                Helper.Log("Exception raised! - get");
                 Helper.Log("Source : " + e.Source);
                 Helper.Log("Message : " + e.Message + " " + e.StackTrace);
             }
@@ -204,7 +205,7 @@ namespace TwitchToolkit
             }
             catch (WebException e)
             {
-                Helper.Log("WebException raised!");
+                Helper.Log("WebException raised - callback!");
                 Helper.Log($"\n{e.Message}");
                 Helper.Log($"\n{e.Status}");
             }
@@ -245,7 +246,7 @@ namespace TwitchToolkit
             }
             catch (WebException e)
             {
-                Helper.Log("WebException raised!");
+                Helper.Log("WebException raised - read!");
                 Helper.Log($"\n{e.Message}");
                 Helper.Log($"\n{e.Status}");
             }

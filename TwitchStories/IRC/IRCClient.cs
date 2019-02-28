@@ -40,14 +40,14 @@ namespace TwitchToolkit.IRC
             _socketReady = false;
             _host = host;
             _port = port;
-            _user = user;
+            _user = user.ToLower();
 
             if (!pass.StartsWith("oauth:", StringComparison.InvariantCultureIgnoreCase))
                 _pass = "oauth:" + pass;
             else
                 _pass = pass;
 
-            _channel = channel;
+            _channel = channel.ToLower();
             _messageQueue = new Queue<string>();
             _buffer = new byte[8192];
             _parser = new IRCParser();
