@@ -15,7 +15,7 @@ namespace TwitchToolkit
         {
             get
             {
-            return (StorytellerCompProperties_CustomRandomStoryTeller)this.props;
+                return (StorytellerCompProperties_CustomRandomStoryTeller)this.props;
             }
         }
 
@@ -31,16 +31,16 @@ namespace TwitchToolkit
                 List<IncidentCategoryDef> triedCategories = new List<IncidentCategoryDef>();
                 IncidentDef incDef;
                 IEnumerable<IncidentDef> options;
-                for (;;)
+                for (; ; )
                 {
                     IncidentCategoryDef category = this.ChooseRandomCategory(target, triedCategories);
                     Helper.Log($"Trying Category{category}");
                     parms = this.GenerateParms(category, target);
                     options = from d in base.UsableIncidentsInCategory(category, target)
-                    where !d.NeedsParmsPoints || parms.points >= d.minThreatPoints
-                    select d;
+                              where !d.NeedsParmsPoints || parms.points >= d.minThreatPoints
+                              select d;
 
-                
+
                     if (options.TryRandomElementByWeight(new Func<IncidentDef, float>(base.IncidentChanceFinal), out incDef))
                     {
                         break;
@@ -50,16 +50,18 @@ namespace TwitchToolkit
                     {
                         goto Block_6;
                     }
-                 }
-                
+                }
+
                 Helper.Log($"Events Possible: {options.Count()}");
-                
+
                 // _twitchstories.StartVote(options, this, parms);
                 if (options.Count() > 1)
-                { 
+                {
                     VoteEvent evt = new VoteEvent(options, this, parms);
                     Ticker.VoteEvents.Enqueue(evt);
-                } else if (options.Count() == 1) { 
+                }
+                else if (options.Count() == 1)
+                {
                     yield return new FiringIncident(incDef, this, parms);
                 }
 
@@ -69,9 +71,9 @@ namespace TwitchToolkit
                     // yield return new FiringIncident(incDef, this, parms);
                     // _twitchstories.StartVote(options, this, parms);
                 }
-                    Block_6:;
-                }
-                yield break;
+            Block_6:;
+            }
+            yield break;
         }
 
         private IncidentCategoryDef ChooseRandomCategory(IIncidentTarget target, List<IncidentCategoryDef> skipCategories)
@@ -86,8 +88,8 @@ namespace TwitchToolkit
                 }
             }
             return (from cw in this.Props.categoryWeights
-            where !skipCategories.Contains(cw.category)
-            select cw).RandomElementByWeight((IncidentCategoryEntry cw) => cw.weight).category;
+                    where !skipCategories.Contains(cw.category)
+                    select cw).RandomElementByWeight((IncidentCategoryEntry cw) => cw.weight).category;
         }
 
         public override IncidentParms GenerateParms(IncidentCategoryDef incCat, IIncidentTarget target)

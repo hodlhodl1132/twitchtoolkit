@@ -44,8 +44,8 @@ using UnityEngine;
 namespace SimpleJSON
 {
     public enum JSONContainerType { Array, Object }
-	public partial class JSONNode
-	{
+    public partial class JSONNode
+    {
         public static JSONContainerType VectorContainerType = JSONContainerType.Array;
         public static JSONContainerType QuaternionContainerType = JSONContainerType.Array;
         public static JSONContainerType RectContainerType = JSONContainerType.Array;
@@ -58,37 +58,37 @@ namespace SimpleJSON
 
         #region implicit conversion operators
         public static implicit operator JSONNode(Vector2 aVec)
-		{
+        {
             JSONNode n = GetContainer(VectorContainerType);
             n.WriteVector2(aVec);
-			return n;
-		}
-		public static implicit operator JSONNode(Vector3 aVec)
-		{
+            return n;
+        }
+        public static implicit operator JSONNode(Vector3 aVec)
+        {
             JSONNode n = GetContainer(VectorContainerType);
             n.WriteVector3(aVec);
             return n;
         }
         public static implicit operator JSONNode(Vector4 aVec)
-		{
+        {
             JSONNode n = GetContainer(VectorContainerType);
             n.WriteVector4(aVec);
             return n;
         }
         public static implicit operator JSONNode(Quaternion aRot)
-		{
+        {
             JSONNode n = GetContainer(QuaternionContainerType);
             n.WriteQuaternion(aRot);
             return n;
         }
         public static implicit operator JSONNode(Rect aRect)
-		{
+        {
             JSONNode n = GetContainer(RectContainerType);
             n.WriteRect(aRect);
             return n;
         }
         public static implicit operator JSONNode(RectOffset aRect)
-		{
+        {
             JSONNode n = GetContainer(RectContainerType);
             n.WriteRectOffset(aRect);
             return n;

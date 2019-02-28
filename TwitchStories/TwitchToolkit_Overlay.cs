@@ -5,11 +5,11 @@ using Verse;
 
 namespace TwitchToolkit
 {
-  public class TwitchToolkit_Overlay : Window
-  {
-    public override void DoWindowContents(Rect inRect)
+    public class TwitchToolkit_Overlay : Window
     {
-      //TODO: Implement overlay
+        public override void DoWindowContents(Rect inRect)
+        {
+            //TODO: Implement overlay
+        }
     }
-  }
 }

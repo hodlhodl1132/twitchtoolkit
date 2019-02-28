@@ -25,59 +25,62 @@ namespace TwitchToolkit
                 //bad event
                 case 0:
 
-			        if (karma >= 100) {
-				        newkarma = (double)karma * 0.5d;
-			        }
+                    if (karma >= 100)
+                    {
+                        newkarma = (double)karma * 0.5d;
+                    }
                     else if (karma >= 80 && karma < 100)
                     {
-				        newkarma = (double)karma * 0.3d;
-			        }
+                        newkarma = (double)karma * 0.3d;
+                    }
                     else if (karma >= 60 && karma < 80)
                     {
-				        newkarma = (double)karma * 0.35d;
-			        }
+                        newkarma = (double)karma * 0.35d;
+                    }
                     else if (karma >= 40 && karma < 60)
                     {
-				        newkarma = (double)karma * 0.4d;
-			        }
+                        newkarma = (double)karma * 0.4d;
+                    }
                     else if (karma >= 20 && karma < 40)
                     {
-				        newkarma = (double)karma * 0.45d;
-			        }
+                        newkarma = (double)karma * 0.45d;
+                    }
                     else
                     {
-				        newkarma = (double)karma * 0.5d;
-			        }
+                        newkarma = (double)karma * 0.5d;
+                    }
 
-                break;
+                    break;
                 //good event
                 case 1:
 
                     if (karma >= 100)
                     {
-				            newkarma = (double)karma * 1.05d;
+                        newkarma = (double)karma * 1.05d;
                     }
-                    else if(karma >= 82 && karma < 100)
+                    else if (karma >= 82 && karma < 100)
                     {
-                    // hard stop at 100 karma.
-                    newkarma = karma * 1.18;
+                        // hard stop at 100 karma.
+                        newkarma = karma * 1.18;
                         if (karma > 100)
                         {
                             newkarma = 100;
                         }
                     }
-                    else if(karma >= 67 && karma < 82)
+                    else if (karma >= 67 && karma < 82)
                     {
                         newkarma = (double)karma * 1.22d;
                     }
-                    else if(karma >= 50 && karma < 67)
+                    else if (karma >= 50 && karma < 67)
                     {
                         newkarma = (double)karma * 1.34d;
                     }
-                    else if(karma >= 6 && karma < 50)
+                    else if (karma >= 6 && karma < 50)
                     {
                         newkarma = (double)karma * 1.38d;
-                    } else {
+                    }
+                    else
+                    {
                         newkarma = (double)karma * 1.45d;
                     }
 
@@ -87,19 +90,19 @@ namespace TwitchToolkit
 
                     newkarma = karma * 1.02;
 
-                break;
+                    break;
                 //doom event
                 case 3:
 
                     newkarma = karma - 80;
 
-                break;
+                    break;
                 default:
 
-                break;
+                    break;
             }
             Helper.Log($"New Karma is {Convert.ToInt32(Math.Round(newkarma))}");
-            
+
             return Convert.ToInt32(Math.Round(newkarma));
         }
     }

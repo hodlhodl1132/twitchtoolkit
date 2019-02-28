@@ -4,43 +4,43 @@ using System.Collections.Generic;
 
 namespace TwitchToolkit
 {
-  public class ConcurrentCircularBuffer<T>
-  {
-    readonly LinkedList<T> _buffer;
-    int _maxItemCount;
-
-    public ConcurrentCircularBuffer(int maxItemCount)
+    public class ConcurrentCircularBuffer<T>
     {
-      _maxItemCount = maxItemCount;
-      _buffer = new LinkedList<T>();
-    }
+        readonly LinkedList<T> _buffer;
+        int _maxItemCount;
 
-    public void Put(T item)
-    {
-      lock (_buffer)
-      {
-        _buffer.AddFirst(item);
-        if (_buffer.Count > _maxItemCount)
+        public ConcurrentCircularBuffer(int maxItemCount)
         {
-          _buffer.RemoveLast();
+            _maxItemCount = maxItemCount;
+            _buffer = new LinkedList<T>();
         }
-      }
-    }
 
-    public T[] Read()
-    {
-      lock (_buffer) 
-      { 
-        return _buffer.ToArray(); 
-      }
-    }
+        public void Put(T item)
+        {
+            lock (_buffer)
+            {
+                _buffer.AddFirst(item);
+                if (_buffer.Count > _maxItemCount)
+                {
+                    _buffer.RemoveLast();
+                }
+            }
+        }
 
-    public void Clear()
-    {
-      lock (_buffer)
-      {
-        _buffer.Clear();
-      }
+        public T[] Read()
+        {
+            lock (_buffer)
+            {
+                return _buffer.ToArray();
+            }
+        }
+
+        public void Clear()
+        {
+            lock (_buffer)
+            {
+                _buffer.Clear();
+            }
+        }
     }
-  }
 }

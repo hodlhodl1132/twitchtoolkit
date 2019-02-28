@@ -6,14 +6,14 @@ using System.Text;
 using Verse;
 
 namespace TwitchToolkit
-{ 
+{
 
     public class StorytellerCompProperties_CustomRandomStoryTeller : StorytellerCompProperties
     {
 
         public StorytellerCompProperties_CustomRandomStoryTeller()
         {
-        this.compClass = typeof(StorytellerComp_CustomRandomStoryTeller);
+            this.compClass = typeof(StorytellerComp_CustomRandomStoryTeller);
         }
 
         public float mtbDays;

@@ -6,129 +6,129 @@ using RimWorld;
 
 namespace TwitchToolkit
 {
-  public delegate void EventStart(string quote);
-  public delegate bool EventPossible();
+    public delegate void EventStart(string quote);
+    public delegate bool EventPossible();
 
-  public class Quote
-  {
-    public int[] Ids;
-    public string[] Quotes;
-
-    public Quote(int[] ids, string[] quotes)
+    public class Quote
     {
-      Ids = ids;
-      Quotes = quotes;
-    }
-  }
+        public int[] Ids;
+        public string[] Quotes;
 
-  public class Difficulty
-  {
-    public int Diff;
-    public double Weight = 1.0;
-    public double WeightSum;
-
-    public Difficulty(int diff)
-    {
-      Diff = diff;
-    }
-  }
-
-  [Flags]
-  public enum EventType
-  {
-    Bad = 1,
-    Good = 2,
-    Neutral = 4
-  };
-
-  [Flags]
-  public enum EventCategory
-  {
-    Animal = 8,
-    Colonist = 4,
-    Drop = 128,
-    Environment = 2,
-    Foreigner = 256,
-    Disease = 512,
-    Hazard = 32,
-    Invasion = 1,
-    Mind = 64,
-    Weather = 16,
-  };
-
-  public class Event
-  {
-    public int Id;
-    public EventType Type;
-    public EventCategory MainCategory;
-    public EventCategory SubCategories;
-    public int Difficulty;
-    public string Description;
-    public string[] Quotes;
-    public int Count;
-    readonly EventStart _start;
-    readonly EventPossible _possible;
-
-    public double Weight = 1.0;
-    public double WeightSum;
-    public string chatmessage = null;
-
-    public Event(int id, EventType type, EventCategory mainCategory, int difficulty, string description, EventPossible possible, EventStart start)
-    {
-      Id = id;
-      Type = type;
-      MainCategory = mainCategory;
-      Difficulty = difficulty;
-      Description = description;
-      Count = 0;
-      _possible = possible;
-      _start = start;
-    }
-
-    public void Reset()
-    {
-      Weight = 1.0;
-    }
-
-    public bool IsPossible()
-    {
-      try
-      {
-        if (Weight < 1.0)
+        public Quote(int[] ids, string[] quotes)
         {
-          Weight += 0.1;
+            Ids = ids;
+            Quotes = quotes;
         }
-        return _possible();
-      }
-      catch(Exception)
-      {
-        return false;
-      }
     }
 
-    public void Start(bool simulation = false)
+    public class Difficulty
     {
-      try
-      {
-        Weight = 0.1;
+        public int Diff;
+        public double Weight = 1.0;
+        public double WeightSum;
 
-        if (!simulation)
+        public Difficulty(int diff)
         {
-          _start(Events.GetQuote(this.Id, this.chatmessage));
+            Diff = diff;
         }
-      }
-      catch(Exception ex)
-      {
-        Helper.Log("Exception: " + ex.Message + ex.StackTrace);
-      }
     }
-  }
 
-  public static class Events
-  {
-    static Random _rand = new Random();
+    [Flags]
+    public enum EventType
+    {
+        Bad = 1,
+        Good = 2,
+        Neutral = 4
+    };
 
-    static Event[] _events = {
+    [Flags]
+    public enum EventCategory
+    {
+        Animal = 8,
+        Colonist = 4,
+        Drop = 128,
+        Environment = 2,
+        Foreigner = 256,
+        Disease = 512,
+        Hazard = 32,
+        Invasion = 1,
+        Mind = 64,
+        Weather = 16,
+    };
+
+    public class Event
+    {
+        public int Id;
+        public EventType Type;
+        public EventCategory MainCategory;
+        public EventCategory SubCategories;
+        public int Difficulty;
+        public string Description;
+        public string[] Quotes;
+        public int Count;
+        readonly EventStart _start;
+        readonly EventPossible _possible;
+
+        public double Weight = 1.0;
+        public double WeightSum;
+        public string chatmessage = null;
+
+        public Event(int id, EventType type, EventCategory mainCategory, int difficulty, string description, EventPossible possible, EventStart start)
+        {
+            Id = id;
+            Type = type;
+            MainCategory = mainCategory;
+            Difficulty = difficulty;
+            Description = description;
+            Count = 0;
+            _possible = possible;
+            _start = start;
+        }
+
+        public void Reset()
+        {
+            Weight = 1.0;
+        }
+
+        public bool IsPossible()
+        {
+            try
+            {
+                if (Weight < 1.0)
+                {
+                    Weight += 0.1;
+                }
+                return _possible();
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
+        public void Start(bool simulation = false)
+        {
+            try
+            {
+                Weight = 0.1;
+
+                if (!simulation)
+                {
+                    _start(Events.GetQuote(this.Id, this.chatmessage));
+                }
+            }
+            catch (Exception ex)
+            {
+                Helper.Log("Exception: " + ex.Message + ex.StackTrace);
+            }
+        }
+    }
+
+    public static class Events
+    {
+        static Random _rand = new Random();
+
+        static Event[] _events = {
       #region Invasion
       new Event(1,   EventType.Bad,     EventCategory.Invasion,        2, "Small raid",         () => Helper.RaidPossible(100, PawnsArrivalModeDefOf.EdgeWalkIn), (quote) => Helper.Raid(quote, 100, PawnsArrivalModeDefOf.EdgeWalkIn)),
       new Event(2,   EventType.Bad,     EventCategory.Invasion,        3, "Medium raid",        () => Helper.RaidPossible(250, PawnsArrivalModeDefOf.EdgeWalkIn), (quote) => Helper.Raid(quote, 250, PawnsArrivalModeDefOf.EdgeWalkIn)),
@@ -250,68 +250,69 @@ namespace TwitchToolkit
       #endregion
     };
 
-    public static Event[] GetEvents()
-    {
-      return _events;
-    }
-
-    public static void Start(int id)
-    {
-      foreach(Event e in _events)
-      {
-        if(e.Id == id)
+        public static Event[] GetEvents()
         {
-          e.Start();
-          break;
+            return _events;
         }
-      }
-    }
 
-    public static void Start(int minimumDifficulty, int maximumDifficulty)
-    {
-      Event[] e = GetEvents(1, null, minimumDifficulty, maximumDifficulty);
-      if(e == null || e.Length <= 0)
-      {
-        return;
-      }
-      e[0].Start();
-    }
-
-    public static string GetQuote(int id, string chatmsg = null)
-    {
-      return GetQuote(id.ToString(), chatmsg);
-    }
-
-    public static string GetQuote(string id, string chatmsg = null)
-    {
-      var q = "";
-
-      string s;
-      if(("TwitchStoriesDescription" + id).TryTranslate(out s)){
-        q += s;
-        q += "\n\n";
-      }
-
-        if (("TwitchStoriesQuote" + id).TryTranslate(out s))
+        public static void Start(int id)
         {
-            q += "<b><i><color=#00ffffff>";
+            foreach (Event e in _events)
+            {
+                if (e.Id == id)
+                {
+                    e.Start();
+                    break;
+                }
+            }
+        }
 
-            if (chatmsg == null)
+        public static void Start(int minimumDifficulty, int maximumDifficulty)
+        {
+            Event[] e = GetEvents(1, null, minimumDifficulty, maximumDifficulty);
+            if (e == null || e.Length <= 0)
+            {
+                return;
+            }
+            e[0].Start();
+        }
+
+        public static string GetQuote(int id, string chatmsg = null)
+        {
+            return GetQuote(id.ToString(), chatmsg);
+        }
+
+        public static string GetQuote(string id, string chatmsg = null)
+        {
+            var q = "";
+
+            string s;
+            if (("TwitchStoriesDescription" + id).TryTranslate(out s))
             {
                 q += s;
-            }
-            else
-            {
-                q += chatmsg;
+                q += "\n\n";
             }
 
-            q += "</color></i></b>";
+            if (("TwitchStoriesQuote" + id).TryTranslate(out s))
+            {
+                q += "<b><i><color=#00ffffff>";
+
+                if (chatmsg == null)
+                {
+                    q += s;
+                }
+                else
+                {
+                    q += chatmsg;
+                }
+
+                q += "</color></i></b>";
+            }
+
+            return q;
         }
 
-        return q;  
-    }
-
-    static Difficulty[] _difficulties = {
+        static Difficulty[] _difficulties = {
       new Difficulty(1),
       new Difficulty(2),
       new Difficulty(3),
@@ -320,158 +321,160 @@ namespace TwitchToolkit
       new Difficulty(6)
     };
 
-    public static void Reset()
-    {
-      foreach(Event evt in _events)
-      {
-        evt.Reset();
-      }
+        public static void Reset()
+        {
+            foreach (Event evt in _events)
+            {
+                evt.Reset();
+            }
 
-      foreach(Difficulty difficulty in _difficulties)
-      {
-        difficulty.Weight = 1;
-      }
+            foreach (Difficulty difficulty in _difficulties)
+            {
+                difficulty.Weight = 1;
+            }
+        }
+
+        public static Event[] GetEvents(int number, Event previous, int minimumDifficulty, int maximumDifficulty)
+        {
+            int tries = 0;
+            Helper.Log("Get events for " + minimumDifficulty + " : " + maximumDifficulty);
+            /*
+      1. Filter out impossible events (e.g. infestation)
+      2. Filter out previous main category
+      3. Filter difficulties (min. & max.)
+      4. If type filter is "full", reset (in case of more than 3 vote options)
+      5. Filter out events by categories & types & difficulty in case first option (should be max difficulty)
+      6. Calculate difficulty weights based on event count
+      7. Get random event based on weights
+      8. If got enough events return otherwise goto 4
+             */
+
+            if (previous == null)
+            {
+                previous = new Event(0, 0, 0, 0, null, () => true, null);
+            }
+
+            //Calculate new difficulty weights
+            for (int i = 0; i < _difficulties.Length; i++)
+            {
+                float b = (i == maximumDifficulty - 1) ? 1.0f : 0.3f;
+
+                if (i == previous.Difficulty - 1)
+                {
+                    _difficulties[i].Weight = b - 0.2f;
+                }
+                else
+                {
+                    _difficulties[i].Weight = Math.Min(_difficulties[i].Weight + 0.2f, b);
+                }
+            }
+
+            //1, 2, 3
+            var eventPool = _events.Where(
+              x =>
+                x.IsPossible() &&
+                x.MainCategory != previous.MainCategory &&
+                x.Difficulty >= minimumDifficulty &&
+                x.Difficulty <= maximumDifficulty
+            ).ToList();
+
+            if (!eventPool.Any())
+            {
+                return null;
+            }
+
+            var events = new List<Event>();
+        next_all:
+            var types = (EventType)0;
+            var categories = (EventCategory)0;
+        next:
+            if (events.Count >= number || tries >= 100)
+            {
+                goto done;
+            }
+            tries++;
+            //4
+            if (types == (EventType.Good | EventType.Neutral | EventType.Bad))
+            {
+                types = 0;
+            }
+
+            //5
+            var possibleEvents = eventPool.Where(
+              x =>
+              {
+                  bool a = (types & x.Type) == 0;
+                  bool b = (categories & x.MainCategory) == 0;
+                  bool c = events.Count > 0 || x.Difficulty == maximumDifficulty;
+
+                  return a && b && c;
+              });
+
+            if (!possibleEvents.Any())
+            {
+                goto next_all;
+            }
+
+            //6
+            var count = possibleEvents.Count();
+            var diffWeights = new double[] { 0, 0, 0, 0, 0 };
+            foreach (Event e in possibleEvents)
+            {
+                diffWeights[e.Difficulty - 1]++;
+            }
+
+            for (var i = 0; i < diffWeights.Length; i++)
+            {
+                diffWeights[i] /= count;
+                if (i == maximumDifficulty - 1)
+                {
+                    diffWeights[i] *= 1.2;
+                }
+            }
+
+            //7
+            double sum = 0;
+            foreach (Event evt in possibleEvents)
+            {
+                var weight = ((evt.Weight * diffWeights[evt.Difficulty - 1]) * Settings.CategoryWeight(evt.MainCategory)) * Settings.EventWeight(evt.Id);
+                sum += weight;
+                evt.WeightSum = (weight <= 0 ? 0 : sum);
+            }
+
+            var selectedEvent = default(Event);
+            sum = _rand.NextDouble() * sum;
+            foreach (Event evt in possibleEvents)
+            {
+                if (evt.WeightSum == 0)
+                {
+                    continue;
+                }
+
+                if (evt.WeightSum >= sum)
+                {
+                    selectedEvent = evt;
+                    break;
+                }
+            }
+
+            if (selectedEvent != null)
+            {
+                categories = categories | selectedEvent.MainCategory;
+                types = types | selectedEvent.Type;
+                events.Add(selectedEvent);
+                eventPool.Remove(selectedEvent);
+            }
+
+            //8
+            goto next;
+
+
+        done:
+            return events.Shuffle(_rand).ToArray();
+        }
+
+        static Events()
+        {
+        }
     }
-
-    public static Event[] GetEvents(int number, Event previous, int minimumDifficulty, int maximumDifficulty)
-    {
-      int tries = 0;
-      Helper.Log("Get events for " + minimumDifficulty + " : " + maximumDifficulty);
-      /*
-1. Filter out impossible events (e.g. infestation)
-2. Filter out previous main category
-3. Filter difficulties (min. & max.)
-4. If type filter is "full", reset (in case of more than 3 vote options)
-5. Filter out events by categories & types & difficulty in case first option (should be max difficulty)
-6. Calculate difficulty weights based on event count
-7. Get random event based on weights
-8. If got enough events return otherwise goto 4
-       */
-
-      if (previous == null){
-        previous = new Event(0, 0, 0, 0, null, () => true, null);
-      }
-
-      //Calculate new difficulty weights
-      for (int i = 0; i < _difficulties.Length; i++)
-      {
-        float b = (i == maximumDifficulty - 1) ? 1.0f : 0.3f;
-
-        if (i == previous.Difficulty - 1)
-        {
-          _difficulties[i].Weight = b - 0.2f;
-        }
-        else
-        {
-          _difficulties[i].Weight = Math.Min(_difficulties[i].Weight + 0.2f, b);
-        }
-      }
-
-      //1, 2, 3
-      var eventPool = _events.Where(
-        x =>
-          x.IsPossible() &&
-          x.MainCategory != previous.MainCategory &&
-          x.Difficulty >= minimumDifficulty &&
-          x.Difficulty <= maximumDifficulty
-      ).ToList();
-
-      if (!eventPool.Any())
-      {
-        return null;
-      }
-
-      var events = new List<Event>();
-      next_all:
-      var types = (EventType)0;
-      var categories = (EventCategory)0;
-      next:
-      if(events.Count >= number || tries >= 100)
-      {
-        goto done;
-      }
-      tries++;
-      //4
-      if (types == (EventType.Good |  EventType.Neutral | EventType.Bad))
-      {
-        types = 0;
-      }
-
-      //5
-      var possibleEvents = eventPool.Where(
-        x => {
-          bool a = (types & x.Type) == 0;
-          bool b = (categories & x.MainCategory) == 0;
-          bool c = events.Count > 0 || x.Difficulty == maximumDifficulty;
-
-          return a && b && c;
-      });
-
-      if(!possibleEvents.Any())
-      {
-        goto next_all;
-      }
-
-      //6
-      var count = possibleEvents.Count();
-      var diffWeights = new double[] { 0, 0, 0, 0, 0 };
-      foreach(Event e in possibleEvents)
-      {
-        diffWeights[e.Difficulty - 1]++;
-      }
-
-      for (var i = 0; i < diffWeights.Length; i++)
-      {
-        diffWeights[i] /= count;
-        if(i == maximumDifficulty - 1)
-        {
-          diffWeights[i] *= 1.2;
-        }
-      }
-
-      //7
-      double sum = 0;
-      foreach (Event evt in possibleEvents)
-      {
-        var weight = ((evt.Weight * diffWeights[evt.Difficulty - 1]) * Settings.CategoryWeight(evt.MainCategory)) * Settings.EventWeight(evt.Id);
-        sum += weight;
-        evt.WeightSum = (weight <= 0 ? 0 : sum);
-      }
-
-      var selectedEvent = default(Event);
-      sum = _rand.NextDouble() * sum;
-      foreach (Event evt in possibleEvents)
-      {
-        if(evt.WeightSum == 0)
-        {
-          continue;
-        }
-
-        if(evt.WeightSum >= sum)
-        {
-          selectedEvent = evt;
-          break;
-        }
-      }
-
-      if(selectedEvent != null)
-      {
-        categories = categories | selectedEvent.MainCategory;
-        types = types | selectedEvent.Type;
-        events.Add(selectedEvent);
-        eventPool.Remove(selectedEvent);
-      }
-
-      //8
-      goto next;
-
-
-      done:
-      return events.Shuffle(_rand).ToArray();
-    }
-
-    static Events()
-    {
-    }
-  }
 }

@@ -13,7 +13,7 @@ namespace TwitchToolkit
 
         public static Product[] GenerateDefaultProducts()
         {
-            Product[] defaultProducts = 
+            Product[] defaultProducts =
             {
                 new Product(0, 0, "Small raid", "smallraid", 0, 450, 0),
                 new Product(1, 0, "Medium raid", "mediumraid", 0, 500, 1),
@@ -155,7 +155,7 @@ namespace TwitchToolkit
             this.karmatype = karmatype;
             this.amount = amount;
             this.evtId = evtId;
-            this.evt = Products.defaultEvents[this.evtId];    
+            this.evt = Products.defaultEvents[this.evtId];
         }
 
         public static int GetProductIdFromAbr(string abr)
@@ -228,7 +228,7 @@ namespace TwitchToolkit
                     int itemPrice = CarePackage.ItemPriceResolver(this.item);
                     bool isNumeric = int.TryParse(command[2], out this.quantity);
                     if (isNumeric && itemPrice > 0)
-                    { 
+                    {
                         Helper.Log($"item: {this.item} - price: {itemPrice} - isnumeric: {isNumeric} - quantity{this.quantity}");
                         this.calculatedprice = this.quantity * itemPrice;
                         Helper.Log("ItemEvent Checks passed, buying item");
@@ -250,14 +250,14 @@ namespace TwitchToolkit
             }
 
             if (this.calculatedprice <= 0)
-            {               
+            {
                 // invalid price
                 Helper.Log("Invalid price detected?");
             }
             else if (viewer.GetViewerCoins() < this.calculatedprice)
             {
                 // send message not enough coins
-               this.errormessage = $"@{this.viewer.username} you do not have enough coins. Your selected item(s) price is {this.calculatedprice} coins. You have {viewer.GetViewerCoins()} coins.";
+                this.errormessage = $"@{this.viewer.username} you do not have enough coins. Your selected item(s) price is {this.calculatedprice} coins. You have {viewer.GetViewerCoins()} coins.";
             }
             else if (calculatedprice < Settings.MinimumPurchasePrice)
             {
@@ -290,13 +290,13 @@ namespace TwitchToolkit
                 {
                     Helper.Log("Could not generate care package");
                     return;
-                }   
+                }
 
                 this.successmessage = $"{this.quantity} {this.item} purchased by @{this.viewer.username}";
                 this.product.evt.chatmessage = craftedmessage;
                 this.viewer.SetViewerKarma(Karma.CalculateNewKarma(this.viewer.GetViewerKarma(), this.product.karmatype, this.calculatedprice));
             }
-            
+
             // create purchase event
             Ticker.Events.Enqueue(this.product.evt);
         }
@@ -314,7 +314,7 @@ namespace TwitchToolkit
             {
                 Helper.Log("Carepackage error " + e.Message);
             }
-            
+
             return null;
         }
 
@@ -325,154 +325,154 @@ namespace TwitchToolkit
             {
                 case "silver":
                     price = 5;
-                break;
+                    break;
                 case "uranium":
-                        price = 30;
-                break;
+                    price = 30;
+                    break;
                 case "survivalmeal":
-                        price = 30;
-                break;
+                    price = 30;
+                    break;
                 case "pastemeal":
-                        price = 15;
-                break;
+                    price = 15;
+                    break;
                 case "simplemeal":
-                        price = 45;
-                break;
+                    price = 45;
+                    break;
                 case "finemeal":
-                        price = 60;
-                break;
+                    price = 60;
+                    break;
                 case "kibble":
-                        price = 5;
-                break;
+                    price = 5;
+                    break;
                 case "hay":
-                        price = 2;
-                break;
+                    price = 2;
+                    break;
                 case "humanmeat":
-                        price = 4;
-                break;
+                    price = 4;
+                    break;
                 case "luciferium":
-                        price = 300;
-                break;
+                    price = 300;
+                    break;
                 case "pemmican":
-                        price = 4;
-                break;
+                    price = 4;
+                    break;
                 case "techprofsubpersonacore":
-                        price = 5000;
-                break;
+                    price = 5000;
+                    break;
                 case "wort":
-                        price = 12;
-                break;
+                    price = 12;
+                    break;
                 case "gold":
-                        price = 50;
-                break;
+                    price = 50;
+                    break;
                 case "steel":
-                        price = 8;
-                break;
+                    price = 8;
+                    break;
                 case "wood":
-                        price = 2;
-                break;
+                    price = 2;
+                    break;
                 case "herbalmedicine":
-                        price = 25;
-                break;
+                    price = 25;
+                    break;
                 case "industrialmedicine":
-                        price = 80;
-                break;
+                    price = 80;
+                    break;
                 case "glitterworldmedicine":
-                        price = 200;
-                break;
+                    price = 200;
+                    break;
                 case "graniteblocks":
-                        price = 4;
-                break;
+                    price = 4;
+                    break;
                 case "plasteel":
-                        price = 45;
-                break;
+                    price = 45;
+                    break;
                 case "beer":
-                        price = 40;
-                break;
+                    price = 40;
+                    break;
                 case "aipersonacore":
-                        price = 8000;
-                break;
+                    price = 8000;
+                    break;
                 case "smokeleafjoint":
-                        price = 55;
-                break;
+                    price = 55;
+                    break;
                 case "industrialcomponent":
-                        price = 60;
-                break;
+                    price = 60;
+                    break;
                 case "advcomponent":
-                        price = 1000;
-                break;
+                    price = 1000;
+                    break;
                 case "insectjelly":
-                        price = 40;
-                break;
+                    price = 40;
+                    break;
                 case "cloth":
-                        price = 40;
-                break;
+                    price = 40;
+                    break;
                 case "plainleather":
-                        price = 10;
-                break;
+                    price = 10;
+                    break;
                 case "hyperweave":
-                        price = 45;
-                break;
+                    price = 45;
+                    break;
                 case "chocolate":
-                        price = 15;
-                break;
+                    price = 15;
+                    break;
                 case "elephanttusk":
-                        price = 400;
-                break;
+                    price = 400;
+                    break;
                 case "potatoes":
-                        price = 5;
-                break;
+                    price = 5;
+                    break;
                 case "berries":
-                        price = 5;
-                break;
+                    price = 5;
+                    break;
                 case "heart":
-                        price = 2500;
-                break;
+                    price = 2500;
+                    break;
 
                 // weapons
                 case "chargerifle":
-                        price = 5000;
-                break;
+                    price = 5000;
+                    break;
                 case "revolver":
-                        price = 100;
-                break;
+                    price = 100;
+                    break;
                 case "boltactionrifle":
-                        price = 250;
-                break;
+                    price = 250;
+                    break;
                 case "chainshotgun":
-                        price = 350;
-                break;
+                    price = 350;
+                    break;
                 case "doomsdaylauncher":
-                        price = 4500;
-                break;
+                    price = 4500;
+                    break;
 
                 // apparel
                 case "advancedhelmet":
-                        price = 450;
-                break;
+                    price = 450;
+                    break;
                 case "marinehelmet":
-                        price = 1100;
-                break;
+                    price = 1100;
+                    break;
                 case "duster":
-                        price = 300;
-                break;
+                    price = 300;
+                    break;
                 case "tribalwear":
-                        price = 50;
-                break;
+                    price = 50;
+                    break;
                 case "tshirt":
-                        price = 55;
-                break;
+                    price = 55;
+                    break;
                 case "pants":
-                        price = 55;
-                break;
+                    price = 55;
+                    break;
                 case "cowboyhat":
-                        price = 25;
-                break;
+                    price = 25;
+                    break;
                 default:
-                        price = 0;
-                break;
+                    price = 0;
+                    break;
             }
-            
+
             return price;
         }
 

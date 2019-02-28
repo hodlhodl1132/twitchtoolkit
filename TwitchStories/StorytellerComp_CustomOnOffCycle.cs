@@ -15,84 +15,86 @@ namespace TwitchToolkit
         {
             get
             {
-            return (StorytellerCompProperties_CustomOnOffCycle)this.props;
+                return (StorytellerCompProperties_CustomOnOffCycle)this.props;
             }
         }
 
         public override IEnumerable<FiringIncident> MakeIntervalIncidents(IIncidentTarget target)
-		{
-			float difficultyFactor = (!this.Props.applyRaidBeaconThreatMtbFactor) ? 1f : Find.Storyteller.difficulty.raidBeaconThreatCountFactor;
-			float acceptFraction = 1f;
-			if (this.Props.acceptFractionByDaysPassedCurve != null)
-			{
-				acceptFraction *= this.Props.acceptFractionByDaysPassedCurve.Evaluate(GenDate.DaysPassedFloat);
-			}
-			if (this.Props.acceptPercentFactorPerThreatPointsCurve != null)
-			{
-				acceptFraction *= this.Props.acceptPercentFactorPerThreatPointsCurve.Evaluate(StorytellerUtility.DefaultThreatPointsNow(target));
-			}
-			int incCount = IncidentCycleUtility.IncidentCountThisInterval(target, Find.Storyteller.storytellerComps.IndexOf(this), this.Props.minDaysPassed, this.Props.onDays, this.Props.offDays, this.Props.minSpacingDays, this.Props.numIncidentsRange.min * difficultyFactor, this.Props.numIncidentsRange.max * difficultyFactor, acceptFraction);
-			for (int i = 0; i < incCount; i++)
-			{
+        {
+            float difficultyFactor = (!this.Props.applyRaidBeaconThreatMtbFactor) ? 1f : Find.Storyteller.difficulty.raidBeaconThreatCountFactor;
+            float acceptFraction = 1f;
+            if (this.Props.acceptFractionByDaysPassedCurve != null)
+            {
+                acceptFraction *= this.Props.acceptFractionByDaysPassedCurve.Evaluate(GenDate.DaysPassedFloat);
+            }
+            if (this.Props.acceptPercentFactorPerThreatPointsCurve != null)
+            {
+                acceptFraction *= this.Props.acceptPercentFactorPerThreatPointsCurve.Evaluate(StorytellerUtility.DefaultThreatPointsNow(target));
+            }
+            int incCount = IncidentCycleUtility.IncidentCountThisInterval(target, Find.Storyteller.storytellerComps.IndexOf(this), this.Props.minDaysPassed, this.Props.onDays, this.Props.offDays, this.Props.minSpacingDays, this.Props.numIncidentsRange.min * difficultyFactor, this.Props.numIncidentsRange.max * difficultyFactor, acceptFraction);
+            for (int i = 0; i < incCount; i++)
+            {
                 Helper.Log("Trying to gen OFC Inc");
-				FiringIncident fi = this.GenerateIncident(target);
-				if (fi != null)
-				{
-					yield return fi;
-				}
-			}
-			yield break;
-		}
+                FiringIncident fi = this.GenerateIncident(target);
+                if (fi != null)
+                {
+                    yield return fi;
+                }
+            }
+            yield break;
+        }
 
-		private FiringIncident GenerateIncident(IIncidentTarget target)
-		{
+        private FiringIncident GenerateIncident(IIncidentTarget target)
+        {
             Helper.Log("Trying OnOffCycle Incident");
-			IncidentParms parms = this.GenerateParms(this.Props.IncidentCategory, target);
-			IncidentDef def2;
-			if ((float)GenDate.DaysPassed < this.Props.forceRaidEnemyBeforeDaysPassed)
-			{
-				if (!IncidentDefOf.RaidEnemy.Worker.CanFireNow(parms, false))
-				{
-					return null;
-				}
-				def2 = IncidentDefOf.RaidEnemy;
-			}
-			else if (this.Props.incident != null)
-			{
-				if (!this.Props.incident.Worker.CanFireNow(parms, false))
-				{
-					return null;
-				}
-				def2 = this.Props.incident;
-			}
-			else
-			{
+            IncidentParms parms = this.GenerateParms(this.Props.IncidentCategory, target);
+            IncidentDef def2;
+            if ((float)GenDate.DaysPassed < this.Props.forceRaidEnemyBeforeDaysPassed)
+            {
+                if (!IncidentDefOf.RaidEnemy.Worker.CanFireNow(parms, false))
+                {
+                    return null;
+                }
+                def2 = IncidentDefOf.RaidEnemy;
+            }
+            else if (this.Props.incident != null)
+            {
+                if (!this.Props.incident.Worker.CanFireNow(parms, false))
+                {
+                    return null;
+                }
+                def2 = this.Props.incident;
+            }
+            else
+            {
                 options = from def in base.UsableIncidentsInCategory(this.Props.IncidentCategory, parms)
-                where parms.points >= def.minThreatPoints
-                select def;
+                          where parms.points >= def.minThreatPoints
+                          select def;
                 Helper.Log($"Trying OFC Category: ${this.Props.IncidentCategory}");
                 if (options.TryRandomElementByWeight(new Func<IncidentDef, float>(base.IncidentChanceFinal), out def2))
                 {
                     if (options.Count() > 1)
-                    { 
+                    {
                         Helper.Log($"Sending OFC events to vote, total of {options.Count()}");
                         VoteEvent evt = new VoteEvent(options, this, parms);
                         Ticker.VoteEvents.Enqueue(evt);
                         return null;
-                    } else if (options.Count() == 1) { 
+                    }
+                    else if (options.Count() == 1)
+                    {
                         Helper.Log("Firing one incident OFC");
                         return new FiringIncident(def2, this, parms);
                     }
                 }
 
                 return null;
-			}
-			return new FiringIncident(def2, this, parms);
-		}
+            }
+            return new FiringIncident(def2, this, parms);
+        }
 
-		public override string ToString()
-		{
-			return base.ToString() + " (" + ((this.Props.incident == null) ? this.Props.IncidentCategory.defName : this.Props.incident.defName) + ")";
-		}
+        public override string ToString()
+        {
+            return base.ToString() + " (" + ((this.Props.incident == null) ? this.Props.IncidentCategory.defName : this.Props.incident.defName) + ")";
+        }
     }
 }

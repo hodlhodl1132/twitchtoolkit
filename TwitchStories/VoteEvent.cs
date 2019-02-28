@@ -17,26 +17,26 @@ namespace TwitchToolkit
 
         public VoteEvent(IEnumerable<IncidentDef> options, StorytellerComp_CustomRandomStoryTeller storytellerComp_CustomRandomStoryTeller, IncidentParms parms)
         {
-        this.options = options;
-        this.storytellerComp_CustomStoryTeller = storytellerComp_CustomRandomStoryTeller;
-        this.parms = parms;
-        Helper.Log("VoteEvent Created, Random");
+            this.options = options;
+            this.storytellerComp_CustomStoryTeller = storytellerComp_CustomRandomStoryTeller;
+            this.parms = parms;
+            Helper.Log("VoteEvent Created, Random");
         }
 
         public VoteEvent(IEnumerable<IncidentDef> options, StorytellerComp_CustomCategoryMTB storytellerComp_CustomCategoryMTB, IncidentParms parms)
         {
-        this.options = options;
-        this.storytellerComp_CustomCategoryMTB = storytellerComp_CustomCategoryMTB;
-        this.parms = parms;
-        Helper.Log("VoteEvent Created, MTB");
+            this.options = options;
+            this.storytellerComp_CustomCategoryMTB = storytellerComp_CustomCategoryMTB;
+            this.parms = parms;
+            Helper.Log("VoteEvent Created, MTB");
         }
 
         public VoteEvent(IEnumerable<IncidentDef> options, StorytellerComp_CustomOnOffCycle storytellerComp_CustomOnOffCycle, IncidentParms parms)
         {
-        this.options = options;
-        this.storytellerComp_CustomOnOffCycle = storytellerComp_CustomOnOffCycle;
-        this.parms = parms;
-        Helper.Log("VoteEvent Created, OFC");
+            this.options = options;
+            this.storytellerComp_CustomOnOffCycle = storytellerComp_CustomOnOffCycle;
+            this.parms = parms;
+            Helper.Log("VoteEvent Created, OFC");
         }
     }
 }
