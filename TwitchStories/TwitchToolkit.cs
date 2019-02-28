@@ -47,51 +47,6 @@ namespace TwitchToolkit
             }
         }
 
-        int _difficulty;
-        bool _difficultySet;
-        public void SetDifficulty(int difficulty, bool manual = false)
-        {
-            if (_difficultySet && !manual)
-            {
-                return;
-            }
-
-            if (manual)
-            {
-                _difficultySet = true;
-            }
-
-            if (difficulty <= 0 || difficulty > 5)
-            {
-                return;
-            }
-
-            if (
-              !Doomsday &&
-              difficulty > _difficulty &&
-              _client != null &&
-              !manual &&
-              Helper.ModActive)
-            {
-                _client.SendMessage("TwitchStoriesChatMessageDifficultyIncreased".Translate().Replace("{difficulty}", difficulty.ToString()));
-            }
-
-            _difficulty = difficulty;
-        }
-
-        public int Difficulty
-        {
-            get
-            {
-                if (Doomsday)
-                {
-                    return 5;
-                }
-
-                return _difficulty;
-            }
-        }
-
         public TwitchToolkit(ModContentPack content) : base(content)
         {
             _timer = new Timer();
@@ -102,7 +57,6 @@ namespace TwitchToolkit
             _voteType = 0;
 
             _doomsday = false;
-            _difficulty = 1;
 
             Ticker.Initialize(this);
 
@@ -124,8 +78,6 @@ namespace TwitchToolkit
             Events.Reset();
             Helper.Reset();
             _doomsday = false;
-            _difficulty = 1;
-            _difficultySet = false;
             _voteEvents = null;
             _extraWait = 0;
             StartTimer();
@@ -622,10 +574,6 @@ namespace TwitchToolkit
                         return;
                     }
                     _voteActive = true;
-                    //Current.Game.AnyPlayerHomeMap.PlayerWealthForStoryteller;
-                    //Current.Game.tickManager.TicksGame;
-
-                    //_voteEvents = Events.GetEvents(Settings.VoteOptions, _voteWinningEvent, Doomsday ? Difficulty : 1, Difficulty);
                     _voteAnswers.Clear();
 
 
@@ -722,19 +670,12 @@ namespace TwitchToolkit
                     double wonPercentage = ((double)evt / (double)(voteCount == 0 ? 1 : voteCount));
 
                     string msg = "TwitchStoriesChatMessageVoteEnd".Translate() + " ";
-                    if (_voteType == 0)
-                    {
-                        //msg += ("TwitchStoriesVote" + evt.Type.ToString()).Translate() + ", " + "TwitchStoriesChatMessageVoteCategory".Translate().Replace("{category}", ("TwitchStoriesVote" + evt.MainCategory.ToString()).Translate()) + ".";
-                    }
-                    else
-                    {
-                        msg += $"{_eventsPossibleChosen[evt].LabelCap}";
-                    }
-                    // msg += " (" + wonPercentage.ToString("P0") + " - " + "TwitchStoriesChatMessageVoteDifficulty".Translate().Replace("{difficulty}", evt.Difficulty.ToString()) + ")";
+
+                    msg += $"{_eventsPossibleChosen[evt].LabelCap}";
+
+
                     _client.SendMessage(msg);
 
-                    //_voteWinningEvent = evt;
-                    //Ticker.Events.Enqueue(evt);
                     FiringIncident chosen = new FiringIncident(_eventsPossibleChosen[evt], _currentVote.storytellerComp_CustomStoryTeller, _currentVote.parms);
                     Ticker.FiringIncidents.Enqueue(chosen);
 

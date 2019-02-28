@@ -37,19 +37,18 @@ namespace TwitchToolkit
             float btnHeight = 30f;
 
             var rectDifficulty = new Rect(padding, padding, btnWidth, 20);
-            Widgets.TextArea(rectDifficulty, "TwitchStoriesMenuDifficulty".Translate() + ": " + (_mod.Doomsday ? "TwitchStoriesMenuDoomsday".Translate() : _mod.Difficulty.ToString()), true);
 
 
             var rectBtn = new Rect(rectDifficulty.width + rectDifficulty.x + padding, rectDifficulty.y, (inRect.width - rectDifficulty.width - (padding * 3)) / 2, btnHeight);
-            if (Widgets.ButtonText(rectBtn, "TwitchStoriesMenuButtonDifficultyIncrease".Translate()))
+            if (Widgets.ButtonText(rectBtn, ""))
             {
-                _mod.SetDifficulty(_mod.Difficulty + 1, true);
+
             }
 
             rectBtn.x += rectBtn.width + padding;
-            if (Widgets.ButtonText(rectBtn, "TwitchStoriesMenuButtonDifficultyDecrease".Translate()))
+            if (Widgets.ButtonText(rectBtn, ""))
             {
-                _mod.SetDifficulty(_mod.Difficulty - 1, true);
+
             }
 
 

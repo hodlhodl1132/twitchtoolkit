@@ -90,17 +90,6 @@ namespace TwitchToolkit
         private int _lastMinute = -1;
         private int _lastCoinReward = -1;
 
-        int NextDifficulty(int currentDifficulty)
-        {
-            if (_game == null)
-            {
-                return 999999;
-            }
-
-            int difficultyModifier = Math.Abs(_game.storyteller.difficulty.difficulty - 5);
-            return (int)(_baseTimes[currentDifficulty - 1] * Math.Pow(1.5d, difficultyModifier));
-        }
-
         public override void Tick()
         {
             try
@@ -113,20 +102,8 @@ namespace TwitchToolkit
                 _mod.Tick();
 
                 var minutes = (int)(_game.Info.RealPlayTimeInteracting / 60f);
-                var newDifficulty = _mod.Difficulty;
                 double getTime = (double)Time.time / 60f;
                 int time = Convert.ToInt32(Math.Truncate(getTime));
-                while (minutes >= NextDifficulty(newDifficulty))
-                {
-                    newDifficulty++;
-                }
-
-                if (!Settings.DifficultyFiveEnabled && newDifficulty >= 5)
-                {
-                    newDifficulty = 4;
-                }
-
-                _mod.SetDifficulty(newDifficulty);
 
                 if (FiringIncidents.Count > 0)
                 {

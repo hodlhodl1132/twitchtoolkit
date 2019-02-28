@@ -21,7 +21,6 @@ namespace TwitchToolkit
         public static bool VoteEnabled = true;
         public static bool AutoConnect = true;
         public static bool OtherStorytellersEnabled = true;
-        public static bool DifficultyFiveEnabled;
         public static bool CommandsModsEnabled = true;
         public static bool CommandsAliveEnabled = true;
         public static bool QuotesEnabled = true;
@@ -95,7 +94,6 @@ namespace TwitchToolkit
             Scribe_Values.Look(ref VoteEnabled, "VoteEnabled", false, true);
             Scribe_Values.Look(ref AutoConnect, "AutoConnect", false, true);
             Scribe_Values.Look(ref OtherStorytellersEnabled, "OtherStorytellersEnabled", false, true);
-            Scribe_Values.Look(ref DifficultyFiveEnabled, "DifficultyFiveEnabled", false, true);
             Scribe_Values.Look(ref CommandsModsEnabled, "CommandsModsEnabled", true, true);
             Scribe_Values.Look(ref CommandsAliveEnabled, "CommandsAliveEnabled", true, true);
             Scribe_Values.Look(ref QuotesEnabled, "QuotesEnabled", true, true);

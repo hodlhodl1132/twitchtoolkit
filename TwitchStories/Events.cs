@@ -312,15 +312,6 @@ namespace TwitchToolkit
             return q;
         }
 
-        static Difficulty[] _difficulties = {
-      new Difficulty(1),
-      new Difficulty(2),
-      new Difficulty(3),
-      new Difficulty(4),
-      new Difficulty(5),
-      new Difficulty(6)
-    };
-
         public static void Reset()
         {
             foreach (Event evt in _events)
@@ -328,16 +319,11 @@ namespace TwitchToolkit
                 evt.Reset();
             }
 
-            foreach (Difficulty difficulty in _difficulties)
-            {
-                difficulty.Weight = 1;
-            }
         }
 
         public static Event[] GetEvents(int number, Event previous, int minimumDifficulty, int maximumDifficulty)
         {
             int tries = 0;
-            Helper.Log("Get events for " + minimumDifficulty + " : " + maximumDifficulty);
             /*
       1. Filter out impossible events (e.g. infestation)
       2. Filter out previous main category
@@ -352,21 +338,6 @@ namespace TwitchToolkit
             if (previous == null)
             {
                 previous = new Event(0, 0, 0, 0, null, () => true, null);
-            }
-
-            //Calculate new difficulty weights
-            for (int i = 0; i < _difficulties.Length; i++)
-            {
-                float b = (i == maximumDifficulty - 1) ? 1.0f : 0.3f;
-
-                if (i == previous.Difficulty - 1)
-                {
-                    _difficulties[i].Weight = b - 0.2f;
-                }
-                else
-                {
-                    _difficulties[i].Weight = Math.Min(_difficulties[i].Weight + 0.2f, b);
-                }
             }
 
             //1, 2, 3
