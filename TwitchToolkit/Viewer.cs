@@ -194,20 +194,13 @@ namespace TwitchToolkit
         {
             try
             {
-                Helper.Log("Step 1");
                 RequestState myRequestState = (RequestState)asynchronousResult.AsyncState;
-                Helper.Log("Step 2");
                 WebRequest myWebRequest1 = myRequestState.request;
-                Helper.Log("Step 3");
                 myRequestState.response = myWebRequest1.EndGetResponse(asynchronousResult);
                 Stream responseStream = myRequestState.response.GetResponseStream();
-                Helper.Log("Step 4");
                 myRequestState.responseStream = responseStream;
-                Helper.Log("Step 5");
                 IAsyncResult asynchronousResultRead = responseStream.BeginRead(myRequestState.bufferRead, 0, BUFFER_SIZE, new AsyncCallback(ReadCallBack), myRequestState);
-                Helper.Log("Step 6");
                 myRequestState.response.Close();
-                Helper.Log("Step 7");
 
             }
             catch (WebException e)
