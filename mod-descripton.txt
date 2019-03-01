@@ -51,7 +51,6 @@ Not currently supported but will in the future.
 2. Open the mod settings and include your channel name, the username of the account you want to use as well as it's oauth token
 3. Press reconnect in the mod settings
 4. There is a glitch we are working on, you need to restart your game after doing your inital settings
-5. Go into mod settings under products & items, and reset both to default
 
 
 
