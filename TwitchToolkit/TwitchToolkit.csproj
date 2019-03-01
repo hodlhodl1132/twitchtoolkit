@@ -189,10 +189,18 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Textures\Things\TwitchToolkitSpartan.png" />
-    <Content Include="Textures\Things\TwitchToolkitSpartanTiny.png" />
-    <Content Include="Textures\Things\TwitchToolkitUrist.png" />
-    <Content Include="Textures\Things\TwitchToolkitUristTiny.png" />
+    <Content Include="Textures\Things\TwitchToolkitSpartan.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Textures\Things\TwitchToolkitSpartanTiny.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Textures\Things\TwitchToolkitUrist.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Textures\Things\TwitchToolkitUristTiny.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -129,18 +129,22 @@ namespace TwitchToolkit.IRC
 
         public void Disconnect()
         {
-            _ircMessages.Clear();
-            _ping = false;
-            _socketReady = false;
-
-            if (_socket != null)
+            if (Connected)
             {
-                _socket.Disconnect(false);
+                _ircMessages.Clear();
+                _ping = false;
+                _socketReady = false;
+
+                if (_socket != null)
+                {
+                    _socket.Disconnect(false);
+                }
             }
         }
 
         public void Reconnect()
         {
+
             Disconnect();
             Connect();
         }

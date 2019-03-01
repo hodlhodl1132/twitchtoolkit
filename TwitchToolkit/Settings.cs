@@ -182,7 +182,7 @@ namespace TwitchToolkit
                         string abr = product.Key;
                         int type = ProductTypes[id];
                         string name = ProductNames[id];
-                        int karmatype = ProductKarmaTypes[id];
+                        KarmaType karmatype = (KarmaType)ProductKarmaTypes[id];
                         int amount = ProductAmounts[id];
                         int evtId = ProductEventIds[id];
                         products.Add(new Product(id, type, name, abr, karmatype, amount, evtId));
@@ -498,30 +498,13 @@ namespace TwitchToolkit
                     SoundDefOf.AmountIncrement.PlayOneShotOnCamera();
                     newprice += 500 * GenUI.CurrentAdjustmentMultiplier();
                 }
-                string karmabutton = "";
-
-                if (product.karmatype == 0)
-                {
-                    karmabutton = "Bad";
-                }
-                else if (product.karmatype == 1)
-                {
-                    karmabutton = "Good";
-                }
-                else if (product.karmatype == 2)
-                {
-                    karmabutton = "Neutral";
-                }
-                else
-                {
-                    karmabutton = "Doom";
-                }
+                string karmabutton = product.karmatype.ToString();
 
                 productline.x += productline.width + 2f;
                 if (Widgets.ButtonText(productline, karmabutton))
                 {
                     SoundDefOf.AmountIncrement.PlayOneShotOnCamera();
-                    if (product.karmatype == 3)
+                    if (product.karmatype == KarmaType.Doom)
                     {
                         product.karmatype = 0;
                         Settings.ProductKarmaTypes[product.id] = 0;
@@ -710,7 +693,7 @@ namespace TwitchToolkit
                 ProductIds.Add(product.abr, id);
                 ProductTypes.Add(id, product.type);
                 ProductNames.Add(id, product.name);
-                ProductKarmaTypes.Add(id, product.karmatype);
+                ProductKarmaTypes.Add(id, (int)product.karmatype);
                 ProductAmounts.Add(id, product.amount);
                 ProductEventIds.Add(id, product.evtId);
                 products.Add(product);
