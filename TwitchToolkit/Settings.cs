@@ -366,6 +366,7 @@ namespace TwitchToolkit
         }
 
         public static int ProductScroll = 0;
+        private static string searchquery;
 
         public static int ResetViewerStage { get; private set; }
         public static string ResetViewerWarning { get; private set; }
@@ -432,8 +433,13 @@ namespace TwitchToolkit
             Listing_TwitchToolkit listingStandard = new Listing_TwitchToolkit();
             listingStandard.Begin(rect);
 
+            labelRect.y += _height;
+            searchquery = Widgets.TextField(inputRect, searchquery, 999, new Regex("^[a-z0-9_]*$", RegexOptions.IgnoreCase));
+            
+            List<Product> query = products.Where(a => (a.abr.Contains(searchquery))).ToList();
 
-            foreach (Product product in products)
+            inputRect.y += _height;
+            foreach (Product product in query)
             {
                 if (++scroll <= ProductScroll)
                 {
@@ -610,8 +616,13 @@ namespace TwitchToolkit
             Listing_TwitchToolkit listingStandard = new Listing_TwitchToolkit();
             listingStandard.Begin(rect);
 
+            labelRect.y += _height;
+            searchquery = Widgets.TextField(inputRect, searchquery, 999, new Regex("^[a-z0-9_]*$", RegexOptions.IgnoreCase));
+            
+            List<Item> query = items.Where(a => (a.abr.Contains(searchquery))).ToList();
 
-            foreach (Item item in items)
+            inputRect.y += _height;
+            foreach (Item item in query)
             {
                 if (++scroll <= ItemScroll)
                 {
