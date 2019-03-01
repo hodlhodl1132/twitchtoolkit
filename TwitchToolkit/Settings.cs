@@ -34,14 +34,14 @@ namespace TwitchToolkit
         public static bool StoreOpen = true;
 
         // viewer storage
-        public static Dictionary<string, int> ViewerIds = new Dictionary<string, int>();
+        public static Dictionary<string, int> ViewerIds = null;
         public static Dictionary<int, int> ViewerCoins = new Dictionary<int, int>();
         public static Dictionary<int, int> ViewerKarma = new Dictionary<int, int>();
 
         public static List<Viewer> listOfViewers;
 
         // product storage
-        public static Dictionary<string, int> ProductIds = new Dictionary<string, int>();
+        public static Dictionary<string, int> ProductIds = null;
         public static Dictionary<int, int> ProductTypes = new Dictionary<int, int>();
         public static Dictionary<int, string> ProductNames = new Dictionary<int, string>();
         public static Dictionary<int, int> ProductKarmaTypes = new Dictionary<int, int>();
@@ -239,7 +239,7 @@ namespace TwitchToolkit
             }
 
             buttonRect.y += _height;
-            if (Widgets.ButtonText(buttonRect, "Products"))
+            if (Widgets.ButtonText(buttonRect, "Events"))
             {
                 _menu = 4;
             }

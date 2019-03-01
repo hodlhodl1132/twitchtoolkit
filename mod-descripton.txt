@@ -10,6 +10,10 @@ This mod adds 3 new storytellers based on vanilla storytellers. They will take i
 [h1]Coin Store[/h1]
 Your viewers earn coins every 2 minutes that can be spent on items/events ingame. For example, the command "!buyevent skillincrease" will give one of your pawns a random skill increase.
 
+Broadcaster does not earn coins.
+
+This entire feature can be disabled in mod settings by disabling coin earning and turning off store purchases.
+
 [h1]Karma System[/h1]
 As much as we'd all love to send 50 raids to our favorite twitch streamers, we need to balance things out. To do this a karma system is in use that rewards users for good events & items while punishing users for bad events. Your karma rate will decide how many coins you earn per interval up to 300% the base rate. You can change coins per interval in settings.
 
@@ -41,6 +45,13 @@ It should be name productlist.csv. You can distribute this file by creating a ne
 
 [h1]Alternate Languages[/h1]
 Not currently supported but will in the future.
+
+[h1]Setup Instructions[/h1]
+1. You will need an Oauth token from https://twitchapps.com/tmi/
+2. Open the mod settings and include your channel name, the username of the account you want to use as well as it's oauth token
+3. Press reconnect in the mod settings
+4. There is a glitch we are working on, you need to restart your game after doing your inital settings
+5. Go into mod settings under products & items, and reset both to default
 
 
 
