@@ -10,7 +10,7 @@
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <UseMSBuildEngine>false</UseMSBuildEngine>
     <SynchReleaseVersion>false</SynchReleaseVersion>
-    <PackageId>Twitch Stories</PackageId>
+    <PackageId>TwitchToolkit</PackageId>
     <PackageVersion>0.1</PackageVersion>
     <Authors>finally</Authors>
   </PropertyGroup>
