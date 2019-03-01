@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -25,6 +26,8 @@ namespace TwitchToolkit
             }
         }
 
+        public string ResetAdminWarning = "Reset Viewers";
+
         public static int inputValue = 0;
         public static string inputBuffer = "00";
 
@@ -40,9 +43,9 @@ namespace TwitchToolkit
 
 
             var rectBtn = new Rect(rectDifficulty.width + rectDifficulty.x + padding, rectDifficulty.y, (inRect.width - rectDifficulty.width - (padding * 3)) / 2, btnHeight);
-            if (Widgets.ButtonText(rectBtn, ""))
+            if (Widgets.ButtonText(rectBtn, "Settings"))
             {
-
+                Find.WindowStack.Add(new Dialog_CustomModSettings());
             }
 
             rectBtn.x += rectBtn.width + padding;
@@ -104,9 +107,29 @@ namespace TwitchToolkit
             }
 
             rectBtn.y += btnHeight + padding;
-            if (Widgets.ButtonText(rectBtn, ""))
+            if (Widgets.ButtonText(rectBtn, ResetAdminWarning))
             {
-                //Helper.Mushroom(null);
+                if (Settings.ResetViewerStage == 0)
+                {
+                    ResetAdminWarning = "Are you sure?";
+                    Settings.ResetViewerStage = 1;
+                }
+                else if (Settings.ResetViewerStage == 1)
+                {
+                    ResetAdminWarning = "One more time";
+                    Settings.ResetViewerStage = 2;
+                }
+                else if (Settings.ResetViewerStage == 2)
+                {
+                    ResetAdminWarning = "Reset Viewers";
+                    Settings.ResetViewerStage = 0;
+                    
+                    Settings.ViewerIds = null;
+                    Settings.ViewerCoins = null;
+                    Settings.ViewerKarma = null;
+                    Settings.listOfViewers = new List<Viewer>();
+                    _mod.WriteSettings();
+                }
             }
         }
     }

@@ -52,6 +52,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Dialog_CustomModSettings.cs" />
     <Compile Include="Item.cs" />
     <Compile Include="Karma.cs" />
     <Compile Include="Listing_TwitchToolkit.cs" />

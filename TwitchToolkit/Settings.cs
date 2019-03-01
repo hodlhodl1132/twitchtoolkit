@@ -368,12 +368,13 @@ namespace TwitchToolkit
         public static int ProductScroll = 0;
         private static string searchquery;
 
-        public static int ResetViewerStage { get; private set; }
-        public static string ResetViewerWarning { get; private set; }
+        public static int ResetProductStage { get; private set; }
+        public static string ResetAdminWarning { get; private set; }
         public static int ItemScroll { get; private set; }
         public static int ResetItemStage { get; private set; }
+        public static int ResetViewerStage { get; internal set; }
 
-        private static void EventMenu(Rect rect)
+        public static void EventMenu(Rect rect)
         {
             var labelRect = new Rect(_padding, _padding + _height, rect.width - (_padding * 2), rect.height - (_padding * 2));
             var inputRect = new Rect(_padding + 140f, _padding + _height, rect.width - (_padding * 2) - 140f, 20f);
@@ -404,28 +405,28 @@ namespace TwitchToolkit
             inputRect.x = _padding + (rect.width - (_padding * 2)) / 2 + (rect.width - (_padding * 2)) / 4;
             inputRect.width = (rect.width - (_padding * 2)) / 4;
 
-            if (ResetViewerStage == 0)
+            if (ResetProductStage == 0)
             {
-                ResetViewerWarning = "Reset to Default";
+                ResetAdminWarning = "Reset to Default";
             }
-            else if (ResetViewerStage == 1)
+            else if (ResetProductStage == 1)
             {
-                ResetViewerWarning = "Are you sure?";
+                ResetAdminWarning = "Are you sure?";
             }
-            else if (ResetViewerStage == 2)
+            else if (ResetProductStage == 2)
             {
-                ResetViewerWarning = "One more time";
+                ResetAdminWarning = "One more time";
             }
-            else if (ResetViewerStage == 3)
+            else if (ResetProductStage == 3)
             {
-                ResetViewerStage = 0;
+                ResetProductStage = 0;
                 ResetProductData();
                 EventMenu(rect);
             }
 
-            if (Widgets.ButtonText(inputRect, ResetViewerWarning))
+            if (Widgets.ButtonText(inputRect, ResetAdminWarning))
             {
-                ResetViewerStage += 1;
+                ResetProductStage += 1;
             }
 
             inputRect.y += _height;
@@ -556,7 +557,7 @@ namespace TwitchToolkit
         }
 
 
-        private static void ItemMenu(Rect rect)
+        public static void ItemMenu(Rect rect)
         {
             var labelRect = new Rect(_padding, _padding + _height, rect.width - (_padding * 2), rect.height - (_padding * 2));
             var inputRect = new Rect(_padding + 140f, _padding + _height, rect.width - (_padding * 2) - 140f, 20f);
@@ -589,15 +590,15 @@ namespace TwitchToolkit
 
             if (ResetItemStage == 0)
             {
-                ResetViewerWarning = "Reset to Default";
+                ResetAdminWarning = "Reset to Default";
             }
             else if (ResetItemStage == 1)
             {
-                ResetViewerWarning = "Are you sure?";
+                ResetAdminWarning = "Are you sure?";
             }
             else if (ResetItemStage == 2)
             {
-                ResetViewerWarning = "One more time";
+                ResetAdminWarning = "One more time";
             }
             else if (ResetItemStage == 3)
             {
@@ -606,7 +607,7 @@ namespace TwitchToolkit
                 ItemMenu(rect);
             }
 
-            if (Widgets.ButtonText(inputRect, ResetViewerWarning))
+            if (Widgets.ButtonText(inputRect, ResetAdminWarning))
             {
                 ResetItemStage += 1;
             }
