@@ -216,7 +216,7 @@ namespace TwitchToolkit
             }
 
             //admin commands
-            if (user == Settings.Channel.ToLower())
+            if (user.ToLower() == Settings.Channel.ToLower())
             {
                 if (message.StartsWith("!refreshviewers"))
                 {
@@ -396,7 +396,7 @@ namespace TwitchToolkit
                 _client.SendMessage($"@{viewer.username} Coins: {viewer.GetViewerCoins()} Karma: {viewer.GetViewerKarma()}%. !whatiskarma");
             }
 
-            if (message.StartsWith("!whatiskarma") || message.StartsWith("!karma"))
+            if (message.StartsWith("!whatiskarma") || message.StartsWith("!karma") && !message.Contains("!karmaround"))
             {
                 Viewer viewer = Viewer.GetViewer(user);
                 _client.SendMessage($"@{viewer.username} karma is the rate at which you earn coins. Buying bad events lowers karma while good events/items raise your karma. You are currently earning karma at a rate of {viewer.GetViewerKarma()}%");

@@ -31,7 +31,7 @@ namespace TwitchToolkit
             Viewer viewer = Settings.listOfViewers.Find(x => x.username == user.ToLower());
             if (viewer == null)
             {
-                Helper.Log("Creating new user");
+                Helper.Log("Creating new user " + user.ToLower());
                 viewer = new Viewer(user, Settings.ViewerIds.Count());
                 Settings.ViewerIds.Add(viewer.username.ToLower(), viewer.id);
                 Settings.ViewerCoins.Add(viewer.id, 150);
@@ -39,7 +39,7 @@ namespace TwitchToolkit
                 Settings.listOfViewers.Add(viewer);
             }
             Helper.Log(viewer.username);
-            return Settings.listOfViewers.Find(x => x.username == user);
+            return viewer;
         }
 
         public static void AwardViewersCoins(int setamount = 0)
