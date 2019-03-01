@@ -85,7 +85,7 @@ namespace TwitchToolkit
             }
 
             rectBtn.y += btnHeight + padding;
-            if (Widgets.ButtonText(rectBtn, "Prices to Output"))
+            if (Widgets.ButtonText(rectBtn, "Price Spreadsheet"))
             {
                 Helper.PastePricesToOutputLog();
             }

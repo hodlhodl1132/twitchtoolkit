@@ -2,7 +2,7 @@
 <Defs>
   <MainButtonDef>
     <defName>TwitchToolkitMainButton</defName>
-    <label>HodlBot</label>
+    <label>Toolkit</label>
     <description>Options</description>
     <tabWindowClass>TwitchToolkit.TwitchToolkit_MainTabWindow</tabWindowClass>
     <order>99</order>
