@@ -244,7 +244,10 @@ namespace TwitchToolkit
 
                         if (isNumeric)
                         {
-                            Viewer.AwardViewersCoins(amount);
+                            foreach(Viewer viewer in Settings.listOfViewers)
+                            {
+                                viewer.GiveViewerCoins(amount);
+                            }
                             _client.SendMessage($"@{user} giving all viewers {amount} coins.");
                         }
                     }
