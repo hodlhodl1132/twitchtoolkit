@@ -401,7 +401,7 @@ namespace TwitchToolkit
 
             if (message.StartsWith("!modinfo"))
             {
-                _client.SendMessage($"@{user} TwitchToolkit is a mod written by Twitch.tv/hodlhodl that integrates storytelling decisions into chat votes, awards viewers coins for watching, and those coins can be spent on items/events in game. Use !purchaselist to get more info. Join the discord https://discord.gg/qrtg224!");
+                _client.SendMessage($"@{user} TwitchToolkit is a mod written by Twitch.tv/hodlhodl that integrates storytelling decisions into chat votes, awards viewers coins for watching, and those coins can be spent on items/events in game. Use !purchaselist to get more info. Join the discord https://discord.gg/qrtg224 !");
             }
 
             if (message.StartsWith("!purchaselist") || message.StartsWith("!instructions"))

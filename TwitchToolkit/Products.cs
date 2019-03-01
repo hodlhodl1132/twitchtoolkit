@@ -228,6 +228,11 @@ namespace TwitchToolkit
 
                     Item itemtobuy = Item.GetItemFromAbr(command[0]);
 
+                    if (itemtobuy == null)
+                    {
+                        return;
+                    }
+
                     if (itemtobuy.price < 0)
                     {
                         return;
@@ -312,7 +317,7 @@ namespace TwitchToolkit
                     return;
                 }
 
-                this.successmessage = $"{this.quantity} {this.item} purchased by @{this.viewer.username}";
+                this.successmessage = $"{this.quantity} {this.itemtobuy.abr} purchased by @{this.viewer.username}";
                 this.product.evt.chatmessage = craftedmessage;
                 this.viewer.SetViewerKarma(Karma.CalculateNewKarma(this.viewer.GetViewerKarma(), this.product.karmatype, this.calculatedprice));
             }
