@@ -12,11 +12,12 @@ namespace TwitchToolkit
         {
             Helper.Log($"Calculating new karma with {karma}, and karma type {karmatype}");
             double newkarma = 0;
+            int maxkarma;
 
             if (calculatedprice > 0)
             {
                 newkarma = (double)karma + (calculatedprice / 25);
-                int maxkarma = Convert.ToInt32(Math.Round(newkarma)) > 300 ? 300 : Convert.ToInt32(Math.Round(newkarma));
+                maxkarma = Convert.ToInt32(Math.Round(newkarma)) > 300 ? 300 : Convert.ToInt32(Math.Round(newkarma));
                 return maxkarma;
             }
 
@@ -104,7 +105,7 @@ namespace TwitchToolkit
             }
             Helper.Log($"New Karma is {Convert.ToInt32(Math.Round(newkarma))}");
 
-            int maxkarma = Convert.ToInt32(Math.Round(newkarma)) > 300 ? 300 : Convert.ToInt32(Math.Round(newkarma));
+            maxkarma = Convert.ToInt32(Math.Round(newkarma)) > 300 ? 300 : Convert.ToInt32(Math.Round(newkarma));
             return maxkarma;
         }
     }
