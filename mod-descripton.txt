@@ -1,0 +1,74 @@
+[h1]Another twitch integration mod based on the popular mod Twitch Stories.[/h1]
+
+Check out that mod here: https://steamcommunity.com/sharedfiles/filedetails/?id=1575408914
+
+This mod is currently in Beta because their are some bugs still that I am finding. Please report bugs in my discord https://discord.gg/qrtg224 , you can also find more information, updates, and the source code there as well.
+
+[u]If you are streaming this mod hop in the channel-promotion section of the discord and let us know![/u]
+
+[h1]Storyteller Voting[/h1]
+This mod adds 3 new storytellers based on vanilla storytellers. They will take incidents they would normally create in game but give those options to the chat to vote on. This also supports incidents created by other mods. I haven't tested this with all mods but the few I have it worked fine.
+
+[h1]Coin Store[/h1]
+Your viewers earn coins every 2 minutes that can be spent on items/events ingame. For example, the command "!buyevent skillincrease" will give one of your pawns a random skill increase.
+
+Broadcaster does not earn coins.
+
+This entire feature can be disabled in mod settings by disabling coin earning and turning off store purchases.
+
+[h1]Karma System[/h1]
+As much as we'd all love to send 50 raids to our favorite twitch streamers, we need to balance things out. To do this a karma system is in use that rewards users for good events & items while punishing users for bad events. Your karma rate will decide how many coins you earn per interval up to 300% the base rate. You can change coins per interval in settings.
+
+[h1]Admin Commands[/h1]
+[b]!refreshviewers[/b] - updates viewers watching channel, this is for debugging mostly
+[b]!karmaround[/b] - simulates a coin reward round
+[b]!givecoins[/b] - Syntax: !givecoins @username 1000 - gives user 1000 coins
+[b]!giveallcoins[/b] - Syntax: !giveallcoins 1000 - gives all users 1000 coins
+[b]!resetviewers[/b] - resets all viewers data back to default, must confirm twice
+[b]!checkuser[/b] - Syntax: !checkuser @username - do a balance check on the user
+[b]!setuserkarma[/b] - Syntax: !setuserkarma @username 100 - set user karma to 100% 
+[b]!togglestore[/b] - toggle ability for users to purchase items/events
+[b]!togglecoins[/b] - toggle ability for users to earn coins while viewing
+
+[h1]User Commands[/h1]
+[b]!balance, !bal, !coins[/b] - check balance and karma rate
+[b]!buyevent[/b] - Syntax: !buyevent skillincrease - purchase an event
+[b]!buyitem[/b] - Syntax: !buyitem beer 2 - purchase an item
+[b]!whatiskarma, !karma[/b] - explains what the karma system is
+[b]!purchaselist, !instructions[/b] - gives users a link to the public purchase list and info on using the mod
+[b]!modinfo[/b] - gives users info about the mod
+
+[h1]Custom Pricing[/h1]
+Items are available for purchase as well. You can edit the pricing of items/events in the settings. Currently the best way of sharing your custom pricing sheet with your chat is through a public spreadsheet. Ingame on your bottom menu bar click on toolkit. Here you can generate a spreadsheet with your current pricing. The spreadsheet will output to your rimworld data file. For windows users this is
+
+%USERPROFILE%\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios
+
+It should be name productlist.csv. You can distribute this file by creating a new Google Sheets file and going to File -> Import -> Upload. I intend to make this easier in the future.
+
+[h1]Alternate Languages[/h1]
+Not currently supported but will in the future.
+
+[h1]Setup Instructions[/h1]
+1. You will need an Oauth token from https://twitchapps.com/tmi/
+2. Open the mod settings and include your channel name, the username of the account you want to use as well as it's oauth token
+3. Press reconnect in the mod settings
+4. There is a glitch we are working on, you need to restart your game after doing your inital settings
+
+
+
+Special thanks to:
+ -help
+ Codingale
+
+-stream testers
+ zenfrox
+ spartanstu23
+ suwey
+ kruffles
+ and the viewers of their streams
+
+ -based off source code from mod TwitchStories written by
+ finally
+ rachey
+ swenee
+ Xenon

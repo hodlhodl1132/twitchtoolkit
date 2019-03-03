@@ -1,146 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net;
+using System.Net.Security;
+using System.Reflection;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading;
-using System.Security.Cryptography.X509Certificates;
-using System.Net.Security;
-using System.Runtime.Serialization.Json;
-using System.Collections;
-using UnityEngine;
-using SimpleJSON;
-using Verse;
-using System.Linq;
+using TwitchToolkit;
 
-namespace TwitchToolkit
+namespace TwitchToolkitDev
 {
-    public class Viewer
-    {
-        public string username;
-        public int id;
-
-        public Viewer(string username, int id)
-        {
-            this.username = username;
-            this.id = id;
-        }
-
-        public static Viewer GetViewer(string user)
-        {
-            Viewer viewer = Settings.listOfViewers.Find(x => x.username == user.ToLower());
-            if (viewer == null)
-            {
-                Helper.Log("Creating new user " + user.ToLower());
-                viewer = new Viewer(user, Settings.ViewerIds.Count());
-                Settings.ViewerIds.Add(viewer.username.ToLower(), viewer.id);
-                Settings.ViewerCoins.Add(viewer.id, 150);
-                Settings.ViewerKarma.Add(viewer.id, 100);
-                Settings.listOfViewers.Add(viewer);
-            }
-            Helper.Log(viewer.username);
-            return viewer;
-        }
-
-        public static void AwardViewersCoins(int setamount = 0)
-        {
-            List<string> usernames = ParseViewersFromJson();
-            if (usernames != null)
-            {
-                foreach (string username in usernames)
-                {
-                    Viewer viewer = Viewer.GetViewer(username);
-                    if (setamount > 0)
-                    {
-                        viewer.GiveViewerCoins(setamount);
-                    }
-                    else
-                    {
-                        double karmabonus = ((double)viewer.GetViewerKarma() / 100d) * (double)Settings.CoinAmount;
-                        Helper.Log($"Karma bonus for {username} is {karmabonus}");
-                        viewer.GiveViewerCoins(Convert.ToInt32(karmabonus));
-                    }
-                }
-            }
-        }
-
-        public static List<string> ParseViewersFromJson()
-        {
-            List<string> usernames = new List<string>();
-
-            string json = WebRequest_BeginGetResponse.jsonString;
-
-            if (json.NullOrEmpty())
-            {
-                return null;
-            }
-
-            var parsed = JSON.Parse(json);
-            List<JSONArray> groups = new List<JSONArray>();
-            groups.Add(parsed["chatters"]["moderators"].AsArray);
-            groups.Add(parsed["chatters"]["staff"].AsArray);
-            groups.Add(parsed["chatters"]["admins"].AsArray);
-            groups.Add(parsed["chatters"]["global_mods"].AsArray);
-            groups.Add(parsed["chatters"]["viewers"].AsArray);
-            groups.Add(parsed["chatters"]["vips"].AsArray);
-            foreach (JSONArray group in groups)
-            {
-                foreach (JSONNode username in group)
-                {
-                    string usernameconvert = username.ToString();
-                    usernameconvert = usernameconvert.Remove(0, 1);
-                    usernameconvert = usernameconvert.Remove(usernameconvert.Length - 1, 1);
-                    Helper.Log(usernameconvert);
-                    usernames.Add(usernameconvert);
-                }
-            }
-            return usernames;
-        }
-
-        public int GetViewerCoins()
-        {
-            return Settings.ViewerCoins[this.id];
-        }
-
-        public int GetViewerKarma()
-        {
-            return Settings.ViewerKarma[this.id];
-        }
-
-        public void SetViewerKarma(int karma)
-        {
-            Settings.ViewerKarma[this.id] = karma;
-        }
-
-        public int GiveViewerKarma(int karma)
-        {
-            Settings.ViewerKarma[this.id] = this.GetViewerKarma() + karma;
-            return this.GetViewerKarma();
-        }
-
-        public int TakeViewerKarma(int karma)
-        {
-            Settings.ViewerKarma[this.id] = this.GetViewerKarma() - karma;
-            return this.GetViewerKarma();
-        }
-        public void SetViewerCoins(int coins)
-        {
-            Settings.ViewerCoins[this.id] = coins;
-        }
-
-        public int GiveViewerCoins(int coins)
-        {
-            Settings.ViewerCoins[this.id] = this.GetViewerCoins() + coins;
-            return this.GetViewerCoins();
-        }
-
-        public int TakeViewerCoins(int coins)
-        {
-            Settings.ViewerCoins[this.id] = this.GetViewerCoins() - coins;
-            return this.GetViewerCoins();
-        }
-    }
-
     public class RequestState
     {
         // This class stores the state of the request.
@@ -150,6 +21,9 @@ namespace TwitchToolkit
         public WebRequest request;
         public WebResponse response;
         public Stream responseStream;
+        public Func<bool> Callback;
+        public string jsonString;
+
         public RequestState()
         {
             bufferRead = new byte[BUFFER_SIZE];
@@ -157,20 +31,22 @@ namespace TwitchToolkit
             request = null;
             responseStream = null;
         }
+
+        public object CallbackClass { get; internal set; }
     }
     public class WebRequest_BeginGetResponse
     {
         public static ManualResetEvent allDone = new ManualResetEvent(false);
         const int BUFFER_SIZE = 1024;
-        public static string jsonString;
-        public static void Main()
+        public static void Main(string requesturl, Func<bool> func = null)
         {
             try
             {
                 Helper.Log("If this is the last message in the log check Viewer.WebRequest_BeginGetResposne");
                 ServicePointManager.ServerCertificateValidationCallback = MyRemoteCertificateValidationCallback;
-                WebRequest myWebRequest = WebRequest.Create("https://tmi.twitch.tv/group/user/" + Settings.Channel.ToLower() + "/chatters");
+                WebRequest myWebRequest = WebRequest.Create(requesturl);
                 RequestState myRequestState = new RequestState();
+                myRequestState.Callback = func;
                 myRequestState.request = myWebRequest;
                 IAsyncResult asyncResult = (IAsyncResult)myWebRequest.BeginGetResponse(new AsyncCallback(RespCallback), myRequestState);
                 allDone.WaitOne();
@@ -237,7 +113,12 @@ namespace TwitchToolkit
                         string stringContent;
                         stringContent = myRequestState.requestData.ToString();
                         Helper.Log(stringContent);
-                        jsonString = stringContent;
+                        myRequestState.jsonString = stringContent;
+                        
+                        if (myRequestState.Callback != null)
+                        {
+                            myRequestState.Callback();
+                        }
 
                     }
                     responseStream.Close();

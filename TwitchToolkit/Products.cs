@@ -195,7 +195,7 @@ namespace TwitchToolkit
             this.message = message;
             this.viewer = viewer;
 
-            this.product = Products.GetProduct(productabr);
+            this.product = Products.GetProduct(productabr.ToLower());
 
             if (this.product == null)
             {
@@ -228,21 +228,36 @@ namespace TwitchToolkit
 
                     Item itemtobuy = Item.GetItemFromAbr(command[0]);
 
+                    if (itemtobuy == null)
+                    {
+                        return;
+                    }
+
                     if (itemtobuy.price < 0)
                     {
                         return;
                     }
 
                     int itemPrice = itemtobuy.price;
-                    bool isNumeric = int.TryParse(command[2], out this.quantity);
-                    if (!isNumeric)
+
+                    // check if 2nd index of command is a number
+                    if (command.Count() > 2)
+                    { 
+                        bool isNumeric = int.TryParse(command[2], out this.quantity);
+                        if (!isNumeric)
+                        {
+                            this.quantity = 1;
+                        }
+                    }
+                    else if (command.Count() == 2)
                     {
+                        // short command
                         this.quantity = 1;
                     }
 
                     if (itemPrice > 0)
                     {
-                        Helper.Log($"item: {this.item} - price: {itemPrice} - isnumeric: {isNumeric} - quantity{this.quantity}");
+                        Helper.Log($"item: {this.item} - price: {itemPrice} - quantity{this.quantity}");
                         this.calculatedprice = itemtobuy.CalculatePrice(this.quantity);
                         this.itemtobuy = itemtobuy;
                     }
@@ -312,7 +327,7 @@ namespace TwitchToolkit
                     return;
                 }
 
-                this.successmessage = $"{this.quantity} {this.item} purchased by @{this.viewer.username}";
+                this.successmessage = $"{this.quantity} {this.itemtobuy.abr} purchased by @{this.viewer.username}";
                 this.product.evt.chatmessage = craftedmessage;
                 this.viewer.SetViewerKarma(Karma.CalculateNewKarma(this.viewer.GetViewerKarma(), this.product.karmatype, this.calculatedprice));
             }

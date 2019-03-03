@@ -216,7 +216,7 @@ namespace TwitchToolkit
             }
 
             //admin commands
-            if (user == Settings.Channel.ToLower())
+            if (user.ToLower() == Settings.Channel.ToLower())
             {
                 if (message.StartsWith("!refreshviewers"))
                 {
@@ -244,7 +244,10 @@ namespace TwitchToolkit
 
                         if (isNumeric)
                         {
-                            Viewer.AwardViewersCoins(amount);
+                            foreach(Viewer viewer in Settings.listOfViewers)
+                            {
+                                viewer.GiveViewerCoins(amount);
+                            }
                             _client.SendMessage($"@{user} giving all viewers {amount} coins.");
                         }
                     }
@@ -386,27 +389,31 @@ namespace TwitchToolkit
                 }
             }
 
-            if (message.StartsWith("!balance") || message.StartsWith("!bal") || message.StartsWith("!coins"))
-            {
-                Helper.Log("Trying to find User");
-                Viewer viewer = Viewer.GetViewer(user);
-                _client.SendMessage($"@{viewer.username} Coins: {viewer.GetViewerCoins()} Karma: {viewer.GetViewerKarma()}%. !whatiskarma");
-            }
+            // commands are suppressed when not earning coins
+            if (Settings.EarningCoins)
+            {    
+                if (message.StartsWith("!balance") || message.StartsWith("!bal") || message.StartsWith("!coins"))
+                {
+                    Helper.Log("Trying to find User");
+                    Viewer viewer = Viewer.GetViewer(user);
+                    _client.SendMessage($"@{viewer.username} Coins: {viewer.GetViewerCoins()} Karma: {viewer.GetViewerKarma()}%. !whatiskarma");
+                }
 
-            if (message.StartsWith("!whatiskarma") || message.StartsWith("!karma"))
-            {
-                Viewer viewer = Viewer.GetViewer(user);
-                _client.SendMessage($"@{viewer.username} karma is the rate at which you earn coins. Buying bad events lowers karma while good events/items raise your karma. You are currently earning karma at a rate of {viewer.GetViewerKarma()}%");
+                if (message.StartsWith("!whatiskarma") || message.StartsWith("!karma") && !message.Contains("!karmaround"))
+                {
+                    Viewer viewer = Viewer.GetViewer(user);
+                    _client.SendMessage($"@{viewer.username} karma is the rate at which you earn coins. Buying bad events lowers karma while good events/items raise your karma. You are currently earning karma at a rate of {viewer.GetViewerKarma()}%");
+                }
+
+                if (message.StartsWith("!purchaselist") || message.StartsWith("!instructions"))
+                {
+                    _client.SendMessage($"@{user} events/items can be purchased in game. Example: '!buyitem skillincrease' or '!buyitem beer 5'. Full list here: https://bit.ly/2tHiyu6");
+                }
             }
 
             if (message.StartsWith("!modinfo"))
             {
-                _client.SendMessage($"@{user} TwitchToolkit is a mod written by Twitch.tv/hodlhodl that integrates storytelling decisions into chat votes, awards viewers coins for watching, and those coins can be spent on items/events in game. Use !purchaselist to get more info. Join the discord https://discord.gg/qrtg224!");
-            }
-
-            if (message.StartsWith("!purchaselist") || message.StartsWith("!instructions"))
-            {
-                _client.SendMessage($"@{user} events/items can be purchased in game. Example: '!buyitem skillincrease' or '!buyitem beer 5'. Full list here: https://bit.ly/2tHiyu6");
+                _client.SendMessage($"@{user} TwitchToolkit is a mod written by Twitch.tv/hodlhodl that integrates storytelling decisions into chat votes, awards viewers coins for watching, and those coins can be spent on items/events in game. Use !purchaselist to get more info. Join the discord https://discord.gg/qrtg224 !");
             }
 
             if (Settings.StoreOpen)

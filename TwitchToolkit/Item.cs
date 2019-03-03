@@ -37,6 +37,11 @@ namespace TwitchToolkit
             return Settings.items.Find(x => x.abr == abr);
         }
 
+        public static Item GetItemFromDefName(string defname)
+        {
+            return Settings.items.Find(x => x.defname == defname);
+        }
+
         public void SetItemPrice(int price)
         {
             this.price = price;
@@ -52,7 +57,22 @@ namespace TwitchToolkit
         {
             var itemDef = ThingDef.Named("DropPodIncoming");
             var itemThing = new Thing();
-            itemThing = ThingMaker.MakeThing(ThingDef.Named(this.defname), (this.stuffname != "null") ? ThingDef.Named(this.stuffname) : null);
+
+            // Lets see if a new item needs to be made from stuff
+            ThingDef stuff = null;
+            ThingDef itemThingDef = ThingDef.Named(this.defname);
+
+			if (itemThingDef.MadeFromStuff)
+			{
+				if (!(from x in GenStuff.AllowedStuffsFor(itemThingDef, TechLevel.Undefined)
+				where !PawnWeaponGenerator.IsDerpWeapon(itemThingDef, x)
+				select x).TryRandomElementByWeight((ThingDef x) => x.stuffProps.commonality, out stuff))
+				{
+					stuff = GenStuff.RandomStuffByCommonalityFor(itemThingDef, TechLevel.Undefined);
+				}
+			}
+
+            itemThing = ThingMaker.MakeThing(ThingDef.Named(this.defname), (stuff != null) ? stuff : null);
 
             QualityCategory q = new QualityCategory();
 
@@ -61,9 +81,7 @@ namespace TwitchToolkit
                 setItemQualityRandom(itemThing);
             }
 
-            int stackLimit = itemThing.def.stackLimit;
             itemThing.stackCount = amount;
-            itemThing.HitPoints = itemThing.MaxHitPoints;
             IntVec3 vec = Helper.Rain(itemDef, itemThing);
 
             Helper.CarePackage(quote, LetterDefOf.PositiveEvent, vec);
@@ -115,7 +133,7 @@ namespace TwitchToolkit
                 new Item(5, "berries", "RawBerries", 33),
                 new Item(2500, "heart", "Heart", 34),
                 new Item(5000, "chargerifle", "Gun_ChargeRifle", 35),
-                new Item(100, "revolver", "Revolver", 36),
+                new Item(100, "revolver", "Gun_Revolver", 36),
                 new Item(250, "boltactionrifle", "Gun_BoltActionRifle", 37),
                 new Item(350, "chainshotgun", "Gun_ChainShotgun", 38),
                 new Item(4500, "doomsdaylauncher", "Gun_DoomsdayRocket", 39),
@@ -129,6 +147,44 @@ namespace TwitchToolkit
             };
 
             return defaultitems;
+        }
+
+        public static void TryMakeAllItems()
+        {
+            IEnumerable<ThingDef> tradeableitems = from t in DefDatabase<ThingDef>.AllDefs
+                             where t.tradeability.TraderCanSell()
+                             select t;
+
+
+            Helper.Log("Found " + tradeableitems.Count() + " items");
+            foreach(ThingDef item in tradeableitems)
+            {
+                string label = string.Join("", item.label.Split(' ')).ToLower();
+                Item checkforexistingitembydefname = Item.GetItemFromDefName(item.defName);
+                Item checkforexistingitembylabel = Item.GetItemFromAbr(label);
+                if (checkforexistingitembydefname == null && checkforexistingitembylabel == null)
+                {
+                    try
+                    { 
+                        // item needs to be worth money, also not an animal
+                        if (item.BaseMarketValue > 0f && item.race == null)
+                        {
+                            Helper.Log("Adding item " + item.label);
+                            int id = Settings.items.Count();
+                            Settings.items.Add(new Item(Convert.ToInt32(item.BaseMarketValue * 10 / 6), label, item.defName));
+                    
+                            Settings.ItemIds.Add(label, id);
+                            Settings.ItemPrices.Add(id, Convert.ToInt32(item.BaseMarketValue * 10 / 6));
+                            Settings.ItemDefnames.Add(id, item.defName);
+                            Settings.ItemStuffnames.Add(id, "null");
+                        }
+                    }
+                    catch (InvalidCastException e)
+                    {
+                        Helper.Log("Existing item except " + e.Message);
+                    }
+                }
+            }
         }
     }
 }
