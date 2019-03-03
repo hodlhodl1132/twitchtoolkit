@@ -53,6 +53,7 @@ Not currently supported but will in the future.
 2. Open the mod settings and include your channel name, the username of the account you want to use as well as it's oauth token
 3. Press reconnect in the mod settings
 4. There is a glitch we are working on, you need to restart your game after doing your inital settings
+5. Setup items for purchasing. Make sure you have all mods you want to pull items from loaded, then under Mod Settings -> Items, do reset to default. This will pull every item in game and put it into your purchase list.
 
 
 

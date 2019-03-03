@@ -296,7 +296,7 @@ namespace TwitchToolkit
             else if (calculatedprice < Settings.MinimumPurchasePrice)
             {
                 // does not meet minimum purchase price
-                this.errormessage = $"@{this.viewer.username} purchase does not meet minimum amount. Your selected purchase price is {this.calculatedprice} coins but you need to spend a minimum of {Settings.MinimumPurchasePrice}";
+                this.errormessage = $"@{this.viewer.username}, your selected purchase price is {this.calculatedprice} coins but you need to spend a minimum of {Settings.MinimumPurchasePrice}";
             }
             else if (this.product.type == 0 && !this.product.evt.IsPossible())
             {

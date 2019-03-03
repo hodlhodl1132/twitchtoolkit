@@ -214,9 +214,80 @@ namespace TwitchToolkit
                 }
                 return;
             }
-
+            
             //admin commands
             if (user.ToLower() == Settings.Channel.ToLower())
+            {
+                if (message.StartsWith("!resetviewers"))
+                {
+                    if (resetWarning == 0)
+                    {
+                        _client.SendMessage($"@{user} this will delete all coins and karma date. Please do !resetviewers again to confirm");
+                        resetWarning = 1;
+                    }
+                    else if (resetWarning == 1)
+                    {
+                        _client.SendMessage($"@{user} are you absolutely sure you want to delete your viewers? !resetviewers one more");
+                        resetWarning = 2;
+                    }
+                    else if (resetWarning == 2)
+                    {
+                        Helper.Log("Resetting all viewers data");
+                        _client.SendMessage($"@{user} resetting all viewers data.");
+                        Settings.ViewerIds = null;
+                        Settings.ViewerCoins = null;
+                        Settings.ViewerKarma = null;
+                        Settings.listOfViewers = new List<Viewer>();
+                        WriteSettings();
+                        resetWarning = 0;
+                    }
+                }
+
+                if (message.StartsWith("!addmod"))
+                {
+                        string[] command = message.Split(' ');
+
+                        if (command.Length < 2)
+                        {
+                            return;
+                        }
+                        
+                        string mod = command[1].Replace("@", "").ToLower();
+
+                        if (Settings.Moderators.Contains(mod))
+                        {
+                            _client.SendMessage($"@{user} @{mod} is already a TwitchToolkit Moderator.");
+                            return;
+                        }
+
+                        _client.SendMessage($"@{user} added @{mod} as TwitchToolkit Moderator.");
+                        Settings.Moderators.Add(mod);
+                        _client.SendMessage($"@{user} added @{mod} as TwitchToolkit Moderator.");
+                }
+
+                if (message.StartsWith("!removemod"))
+                {
+                        string[] command = message.Split(' ');
+
+                        if (command.Length < 2)
+                        {
+                            return;
+                        }
+                        
+                        string mod = command[1].Replace("@", "");
+
+                        if (!Settings.Moderators.Contains(mod.ToLower()))
+                        {
+                            return;
+                        }
+
+                        Settings.Moderators.Remove(mod.ToLower());
+                        _client.SendMessage($"@{user} removed @{mod} as TwitchToolkit Moderator.");
+                }
+            }
+
+            //moderator commands
+            if (user.ToLower() == Settings.Channel.ToLower() || Settings.Moderators.Contains(user.ToLower()))
             {
                 if (message.StartsWith("!refreshviewers"))
                 {
@@ -269,6 +340,12 @@ namespace TwitchToolkit
                         }
                         
                         string giftee = command[1].Replace("@", "");
+
+                        if (user.ToLower() != Settings.Channel.ToLower() && giftee.ToLower() == user.ToLower())
+                        {
+                            _client.SendMessage($"@{user} moderators cannot give themselves coins.");
+                        }
+
                         int amount;
                         bool isNumeric = int.TryParse(command[2], out amount);
                         if (isNumeric)
@@ -282,31 +359,6 @@ namespace TwitchToolkit
                     catch (InvalidCastException e)
                     {
                         Helper.Log("Invalid Give Viewer Coins Command " + e.Message);
-                    }
-                }
-
-                if (message.StartsWith("!resetviewers"))
-                {
-                    if (resetWarning == 0)
-                    {
-                        _client.SendMessage($"@{user} this will delete all coins and karma date. Please do !resetviewers again to confirm");
-                        resetWarning = 1;
-                    }
-                    else if (resetWarning == 1)
-                    {
-                        _client.SendMessage($"@{user} are you absolutely sure you want to delete your viewers? !resetviewers one more");
-                        resetWarning = 2;
-                    }
-                    else if (resetWarning == 2)
-                    {
-                        Helper.Log("Resetting all viewers data");
-                        _client.SendMessage($"@{user} resetting all viewers data.");
-                        Settings.ViewerIds = null;
-                        Settings.ViewerCoins = null;
-                        Settings.ViewerKarma = null;
-                        Settings.listOfViewers = new List<Viewer>();
-                        WriteSettings();
-                        resetWarning = 0;
                     }
                 }
 
@@ -407,7 +459,7 @@ namespace TwitchToolkit
 
                 if (message.StartsWith("!purchaselist") || message.StartsWith("!instructions"))
                 {
-                    _client.SendMessage($"@{user} events/items can be purchased in game. Example: '!buyitem skillincrease' or '!buyitem beer 5'. Full list here: https://bit.ly/2tHiyu6");
+                    _client.SendMessage($"@{user} events/items can be purchased in game. Example: '!buyitem skillincrease' or '!buyitem beer 5'. Full list here: {Settings.CustomPricingSheetLink}");
                 }
             }
 
