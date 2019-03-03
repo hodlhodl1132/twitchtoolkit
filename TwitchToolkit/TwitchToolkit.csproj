@@ -53,6 +53,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Dialog_CustomModSettings.cs" />
+    <Compile Include="IRC\ConcurrentCircularBuffer.cs" />
     <Compile Include="Item.cs" />
     <Compile Include="Karma.cs" />
     <Compile Include="Listing_TwitchToolkit.cs" />
@@ -78,7 +79,6 @@
     <Compile Include="Helper.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="Events.cs" />
-    <Compile Include="ConcurrentCircularBuffer.cs" />
     <Compile Include="Ticker.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="Incidents\IncidentWorker_ShipPartCrash.cs" />

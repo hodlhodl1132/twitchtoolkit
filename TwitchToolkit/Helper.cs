@@ -1861,22 +1861,10 @@ namespace TwitchToolkit
             int currentline = 1;
             foreach(Product product in Settings.products)
             {
-                string type = "malformed product";
-                if (product.karmatype == 0)
+                string type = "malformed type";
+                if (Enum.IsDefined(typeof(KarmaType), product.karmatype))
                 {
-                    type = "Bad";
-                }
-                else if (product.karmatype == 1)
-                {
-                    type = "Good";
-                }
-                else if (product.karmatype == 2)
-                {
-                    type = "Neutral";
-                }
-                else if (product.karmatype == 3)
-                {
-                    type = "Doom";
+                    type = product.type.ToString();
                 }
                       
                 lines[currentline] = $"\"{product.name}\", \"{product.amount}\", \"{type}\", \"{product.abr}\"";
