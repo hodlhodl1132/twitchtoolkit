@@ -130,7 +130,16 @@ namespace TwitchToolkit
 
         public int GiveViewerCoins(int coins)
         {
-            Settings.ViewerCoins[this.id] = this.GetViewerCoins() + coins;
+            // do not let user go below 0 coins
+            if (this.GetViewerCoins() + coins < 0)
+            {
+                Settings.ViewerCoins[this.id] = 0;
+            }
+            else
+            {
+                Settings.ViewerCoins[this.id] = this.GetViewerCoins() + coins;
+            }
+
             return this.GetViewerCoins();
         }
 

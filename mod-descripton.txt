@@ -22,11 +22,11 @@ As much as we'd all love to send 50 raids to our favorite twitch streamers, we n
 [h1]Admin Commands[/h1]
 [b]!refreshviewers[/b] - updates viewers watching channel, this is for debugging mostly
 [b]!karmaround[/b] - simulates a coin reward round
-[b]!givecoins[/b] - Syntax: !givecoins @username 1000 - gives user 1000 coins
+[b]!givecoins[/b] - Syntax: !givecoins @username 1000 - gives user 1000 coins (can also be used with negative numbers to take coins)
 [b]!giveallcoins[/b] - Syntax: !giveallcoins 1000 - gives all users 1000 coins
 [b]!resetviewers[/b] - resets all viewers data back to default, must confirm twice
 [b]!checkuser[/b] - Syntax: !checkuser @username - do a balance check on the user
-[b]!setuserkarma[/b] - Syntax: !setuserkarma @username 100 - set user karma to 100% 
+[b]!setkarma[/b] - Syntax: !setuserkarma @username 100 - set user karma to 100% 
 [b]!togglestore[/b] - toggle ability for users to purchase items/events
 [b]!togglecoins[/b] - toggle ability for users to earn coins while viewing
 

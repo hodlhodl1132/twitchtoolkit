@@ -26,7 +26,7 @@ namespace TwitchToolkit
         public static bool CommandsAliveEnabled = true;
         public static bool QuotesEnabled = true;
 
-        public static int CoinInterval = 3;
+        public static int CoinInterval = 2;
         public static int CoinAmount = 15;
         public static int MinimumPurchasePrice = 50;
         public static int KarmaCap = 300;
@@ -111,7 +111,7 @@ namespace TwitchToolkit
             Scribe_Values.Look(ref QuotesEnabled, "QuotesEnabled", true, true);
 
             Scribe_Values.Look(ref VoteInterval, "VoteInterval", 5, true);
-            Scribe_Values.Look(ref CoinInterval, "CoinInterval", 3, true);
+            Scribe_Values.Look(ref CoinInterval, "CoinInterval", 2, true);
             Scribe_Values.Look(ref CoinAmount, "CoinAmount", 15, true);
             Scribe_Values.Look(ref KarmaCap, "KarmaCap", 300, true);
 
@@ -381,8 +381,14 @@ namespace TwitchToolkit
             listingStandard.Begin(rect);
             listingStandard.CheckboxLabeled("Reward Coins:", ref Settings.EarningCoins, "Should viewers earn coins while watching?");
             listingStandard.CheckboxLabeled("Store Open:", ref Settings.StoreOpen, "Enable purchasing of events and items");
-            listingStandard.Label("Coins Per Interval: " + Settings.CoinAmount);
-            Settings.CoinAmount = listingStandard.Slider((float)Settings.CoinAmount, 1, 50);
+            listingStandard.Label("Coins Per Interval:" + Settings.CoinAmount);
+            Settings.CoinAmount = listingStandard.Slider((float)Settings.CoinAmount, 1, 250);
+            listingStandard.Label("Max Karma:" + Settings.KarmaCap);
+            Settings.KarmaCap = listingStandard.Slider((float)Settings.KarmaCap, 100, 1000);
+            listingStandard.Label("Minimum Purchase Price:" + Settings.MinimumPurchasePrice);
+            Settings.MinimumPurchasePrice = listingStandard.Slider((float)Settings.MinimumPurchasePrice, 10, 500);
+            listingStandard.Label("Minutes between coin reward:" + Settings.CoinInterval);
+            Settings.CoinInterval = listingStandard.Slider((float)Settings.CoinInterval, 1, 60);
 
             listingStandard.End();
         }

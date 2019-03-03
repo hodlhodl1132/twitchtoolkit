@@ -333,7 +333,7 @@ namespace TwitchToolkit
                     }
                 }
 
-                if (message.StartsWith("!setuserkarma"))
+                if (message.StartsWith("!setkarma"))
                 {
                     try
                     {
@@ -440,14 +440,15 @@ namespace TwitchToolkit
                 if (message.StartsWith("!buyitem"))
                 {
                     string[] command = message.Split(' ');
-                    string item = command[1];
-                    command[1] = "carepackage";
-                    command[0] = item.ToLower();
 
                     if (command.Length < 2)
                     {
                         return;
                     }
+
+                    string item = command[1];
+                    command[1] = "carepackage";
+                    command[0] = item.ToLower();
 
                     string newcommand = string.Join(" ", command);
                     Helper.Log("Attemping item purchase " + newcommand);

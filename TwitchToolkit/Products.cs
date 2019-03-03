@@ -16,7 +16,7 @@ namespace TwitchToolkit
             Product[] defaultProducts =
             {
                 new Product(0, 0, "Small raid", "smallraid", 0, 450, 0),
-                new Product(1, 0, "Medium raid", "mediumraid", 0, 500, 1),
+                new Product(1, 0, "Medium raid", "mediumraid", 0, 600, 1),
                 new Product(2, 0, "Big raid", "bigraid", 0, 950, 2),
                 new Product(3, 0, "Medium raid drop", "mediumraiddrop", 0, 1050, 3),
                 new Product(4, 0, "Big raid drop", "bigraiddrop", 0, 1050, 4),
@@ -66,15 +66,15 @@ namespace TwitchToolkit
 
                 new Product(43, 0, "Blight", "blight", 0, 500, 43),
                 new Product(44, 0, "Solar flare", "solarflare", 0, 300, 44),
-                new Product(45, 0, "Volcanic winter", "volcanicwinter", 3, 900, 45),
-                new Product(46, 0, "Toxic fallout", "toxicfallout", 3, 1500, 46),
+                new Product(45, 0, "Volcanic winter", "volcanicwinter", 3, 1500, 45),
+                new Product(46, 0, "Toxic fallout", "toxicfallout", 3, 3000, 46),
                 new Product(47, 0, "Heat wave", "heatwave", 0, 500, 47),
                 new Product(48, 0, "Cold snap", "coldsnap", 0, 550, 48),
-                new Product(49, 0, "Tornado", "tornado", 0, 500, 49),
-                new Product(50, 0, "Tornados", "tornados", 3, 1100, 50),
+                new Product(49, 0, "Tornado", "tornado", 0, -1, 49),
+                new Product(50, 0, "Tornados", "tornados", 3, -1, 50),
 
                 new Product(51, 0, "Wild human", "wildhuman", 1, 200, 51),
-                new Product(52, 0, "Wanderer joins", "wandererjoins", 2, 250, 52),
+                new Product(52, 0, "Wanderer joins", "wandererjoins", 1, 250, 52),
                 new Product(53, 0, "Gender swap", "genderswap", 2, 150, 53),
                 new Product(54, 0, "Skill increase", "skillincrease", 1, 150, 54),
                 new Product(55, 0, "Party", "party", 1, 300, 55),
@@ -96,7 +96,7 @@ namespace TwitchToolkit
                 new Product(69, 0, "Psychic drone", "psychicdrone", 0, 400, 69),
                 new Product(70, 0, "Psychic soothe", "psychicsoothe", 1, 250, 70),
                 new Product(71, 0, "Minor mental break", "minormentalbreak", 0, 200, 71),
-                new Product(72, 0, "Major mental break", "majormentalbreak", 0, 200, 72),
+                new Product(72, 0, "Major mental break", "majormentalbreak", 0, 800, 72),
                 new Product(73, 0, "Extreme mental break", "extremementalbreak", 3, 1800, 73),
                 new Product(74, 0, "Berserk mental break", "berserkmentalbreak", 3, 10000, 74),
 
@@ -255,6 +255,12 @@ namespace TwitchToolkit
                         this.quantity = 1;
                     }
 
+                    //Thing itemThing = ThingMaker.MakeThing(ThingDef.Named(itemtobuy.defname));
+                    //if (itemThing.def.Minifiable)
+                    //{
+                    //    this.quantity = 1;
+                    //}
+
                     if (itemPrice > 0)
                     {
                         Helper.Log($"item: {this.item} - price: {itemPrice} - quantity{this.quantity}");
@@ -292,6 +298,10 @@ namespace TwitchToolkit
                 // does not meet minimum purchase price
                 this.errormessage = $"@{this.viewer.username} purchase does not meet minimum amount. Your selected purchase price is {this.calculatedprice} coins but you need to spend a minimum of {Settings.MinimumPurchasePrice}";
             }
+            else if (this.product.type == 0 && !this.product.evt.IsPossible())
+            {
+                 this.errormessage = $"@{this.viewer.username} Event not possible";
+            }
             else
             {
                 this.ExecuteCommand();
@@ -305,9 +315,12 @@ namespace TwitchToolkit
             // create success message
             if (this.product.type == 0)
             {
-                // normal event
-                this.successmessage = $"Event {this.product.name} purchased by @{this.viewer.username}";
-                this.viewer.SetViewerKarma(Karma.CalculateNewKarma(this.viewer.GetViewerKarma(), this.product.karmatype));
+                if (this.product.evt.IsPossible())
+                { 
+                    // normal event
+                    this.successmessage = $"Event {this.product.name} purchased by @{this.viewer.username}";
+                    this.viewer.SetViewerKarma(Karma.CalculateNewKarma(this.viewer.GetViewerKarma(), this.product.karmatype));
+                }
             }
             else if (this.product.type == 1)
             {

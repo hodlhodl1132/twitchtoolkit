@@ -127,7 +127,7 @@ namespace TwitchToolkit
                 {
                     _lastCoinReward = time;
                 }
-                else if (Settings.EarningCoins && ((time - _lastCoinReward) >= 2) && WebRequest_BeginGetResponse.jsonString != null)
+                else if (Settings.EarningCoins && ((time - _lastCoinReward) >= Settings.CoinInterval) && WebRequest_BeginGetResponse.jsonString != null)
                 {
                     _lastCoinReward = time;
                     Viewer.AwardViewersCoins();
