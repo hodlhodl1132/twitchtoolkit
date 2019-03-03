@@ -1862,19 +1862,19 @@ namespace TwitchToolkit
             foreach(Product product in Settings.products)
             {
                 string type = "malformed product";
-                if (product.type == 0)
+                if (product.karmatype == 0)
                 {
                     type = "Bad";
                 }
-                else if (product.type == 1)
+                else if (product.karmatype == 1)
                 {
                     type = "Good";
                 }
-                else if (product.type == 2)
+                else if (product.karmatype == 2)
                 {
                     type = "Neutral";
                 }
-                else if (product.type == 3)
+                else if (product.karmatype == 3)
                 {
                     type = "Doom";
                 }

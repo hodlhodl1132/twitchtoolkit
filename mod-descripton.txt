@@ -4,6 +4,8 @@ Check out that mod here: https://steamcommunity.com/sharedfiles/filedetails/?id=
 
 This mod is currently in Beta because their are some bugs still that I am finding. Please report bugs in my discord https://discord.gg/qrtg224 , you can also find more information, updates, and the source code there as well.
 
+[u]If you are streaming this mod hop in the channel-promotion section of the discord and let us know![/u]
+
 [h1]Storyteller Voting[/h1]
 This mod adds 3 new storytellers based on vanilla storytellers. They will take incidents they would normally create in game but give those options to the chat to vote on. This also supports incidents created by other mods. I haven't tested this with all mods but the few I have it worked fine.
 

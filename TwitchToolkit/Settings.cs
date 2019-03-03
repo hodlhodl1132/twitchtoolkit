@@ -6,6 +6,7 @@ using UnityEngine;
 using RimWorld;
 using Verse;
 using Verse.Sound;
+using TwitchToolkitDev;
 
 namespace TwitchToolkit
 {
@@ -32,6 +33,9 @@ namespace TwitchToolkit
 
         public static bool EarningCoins = true;
         public static bool StoreOpen = true;
+
+        public static string JWTToken;
+        public static string AccountID;
 
         // viewer storage
         public static Dictionary<string, int> ViewerIds = null;
@@ -114,6 +118,9 @@ namespace TwitchToolkit
             Scribe_Values.Look(ref EarningCoins, "EarningCoins", false, true);
             Scribe_Values.Look(ref StoreOpen, "StoreOpen", false, true);
 
+            Scribe_Values.Look(ref JWTToken, "JWTToken", "", true);
+            Scribe_Values.Look(ref AccountID, "AccountID", "", true);
+
             Scribe_Collections.Look(ref ViewerIds, "ViewerIds", LookMode.Value, LookMode.Value);
             Scribe_Collections.Look(ref ViewerCoins, "ViewerCoins", LookMode.Value, LookMode.Value);
             Scribe_Collections.Look(ref ViewerKarma, "ViewerKarma", LookMode.Value, LookMode.Value);
@@ -194,10 +201,12 @@ namespace TwitchToolkit
             {
                 if (ItemIds == null)
                 {
+                    Helper.Log("Creating all items");
                     ResetItemData();
                 }
                 else
                 {
+                    Helper.Log("Loading items from settings");
                     items = new List<Item>();
                     
                     foreach(KeyValuePair<string, int> item in ItemIds)
@@ -208,6 +217,7 @@ namespace TwitchToolkit
                         string defname = ItemDefnames[id];
                         string stuffname = ItemStuffnames[id];
                         items.Add(new Item(price, abr, defname, id, stuffname));
+                        Helper.Log("Loaded item " + items[id].abr);
                     }
                 }
             }
@@ -250,6 +260,15 @@ namespace TwitchToolkit
                 _menu = 1;
             }
 
+            if (Prefs.DevMode)
+            {
+                buttonRect.y += _height;
+                if (Widgets.ButtonText(buttonRect, "StreamElements"))
+                {
+                    _menu = 2;
+                }
+            }
+
             rect.width -= buttonWidth + _padding;
             switch (_menu)
             {
@@ -259,6 +278,9 @@ namespace TwitchToolkit
                     break;
                 case 1:
                     ItemMenu(rect);
+                    break;
+                case 2:
+                    StreamElementsMenu(rect);
                     break;
                 case 3:
                     CoinMenu(rect);
@@ -365,6 +387,24 @@ namespace TwitchToolkit
             listingStandard.End();
         }
 
+        private static void StreamElementsMenu(Rect rect)
+        {
+            Listing_TwitchToolkit listingStandard = new Listing_TwitchToolkit();
+            listingStandard.Begin(rect);
+            JWTToken = listingStandard.TextEntry(JWTToken, 3);
+            AccountID = listingStandard.TextEntry(AccountID);
+
+            var inputRect = new Rect(_padding + 140f, _padding + _height * 3, rect.width - (_padding * 2) - 140f, 20f);
+
+            if (Widgets.ButtonText(inputRect, "Import Points"))
+            {
+                StreamElements element = new StreamElements(AccountID, JWTToken);
+                element.ImportPoints();
+            }
+
+            listingStandard.End();
+        }
+
         public static int ProductScroll = 0;
         private static string searchquery;
 
@@ -376,34 +416,34 @@ namespace TwitchToolkit
 
         public static void EventMenu(Rect rect)
         {
-            var labelRect = new Rect(_padding, _padding + _height, rect.width - (_padding * 2), rect.height - (_padding * 2));
-            var inputRect = new Rect(_padding + 140f, _padding + _height, rect.width - (_padding * 2) - 140f, 20f);
+            var scrollRect = new Rect(_padding + 300f, _padding + _height, 40f, 20f);
+
+            var searchRect = new Rect(_padding, _padding + _height, 300f, 20f);
+
+            searchquery = Widgets.TextField(searchRect, searchquery, 999, new Regex("^[a-z0-9_]*$", RegexOptions.IgnoreCase));
 
             if (ProductScroll > 0)
             {
-                inputRect.x = _padding + (rect.width - (_padding * 2)) / 4;
-                inputRect.width = (rect.width - (_padding * 2)) / 4;
-                if (Widgets.ButtonText(inputRect, "^"))
+                if (Widgets.ButtonText(scrollRect, "up"))
                 {
-                    ProductScroll = Math.Max(0, ProductScroll - 3);
+                    ProductScroll = Math.Max(0, ProductScroll - 1);
                 }
             }
 
             int count = 0;
             int scroll = 0;
 
-            if (ProductScroll < (products.Count - count))
+            if (ProductScroll < (products.Count - count) - 8)
             {
-                inputRect.x = _padding + (rect.width - (_padding * 2)) / 2;
-                inputRect.width = (rect.width - (_padding * 2)) / 4;
-                if (Widgets.ButtonText(inputRect, "v"))
+                scrollRect.x += 40f;
+                if (Widgets.ButtonText(scrollRect, "down"))
                 {
-                    ProductScroll += 3;
+                    ProductScroll++;
                 }
             }
 
-            inputRect.x = _padding + (rect.width - (_padding * 2)) / 2 + (rect.width - (_padding * 2)) / 4;
-            inputRect.width = (rect.width - (_padding * 2)) / 4;
+            scrollRect.x = _padding + (rect.width - (_padding * 2)) / 2 + (rect.width - (_padding * 2)) / 4;
+            scrollRect.width = (rect.width - (_padding * 2)) / 4;
 
             if (ResetProductStage == 0)
             {
@@ -424,22 +464,16 @@ namespace TwitchToolkit
                 EventMenu(rect);
             }
 
-            if (Widgets.ButtonText(inputRect, ResetAdminWarning))
+            if (Widgets.ButtonText(scrollRect, ResetAdminWarning))
             {
                 ResetProductStage += 1;
             }
 
-            inputRect.y += _height;
-
-            Listing_TwitchToolkit listingStandard = new Listing_TwitchToolkit();
-            listingStandard.Begin(rect);
-
-            labelRect.y += _height;
-            searchquery = Widgets.TextField(inputRect, searchquery, 999, new Regex("^[a-z0-9_]*$", RegexOptions.IgnoreCase));
+            scrollRect.y += _height;
+            
+            Rect productline = new Rect(_padding, _padding + _height, 600f, 30f);
             
             List<Product> query = products.Where(a => (a.abr.Contains(searchquery))).ToList();
-
-            inputRect.y += _height;
             foreach (Product product in query)
             {
                 if (++scroll <= ProductScroll)
@@ -447,13 +481,21 @@ namespace TwitchToolkit
                     continue;
                 }
 
-                listingStandard.Label($"{product.name}: {product.amount}");
+                productline.y += 30f;
+
+                if (productline.y  > rect.height - 50f)
+                {
+                    continue;
+                }
+
+                Rect smallButton = new Rect(300f, productline.y, 40f, 30f);
+
+                string pricelabel = (product.amount) < 0 ? "Disabled" : product.amount.ToString();
+                Widgets.Label(productline, $"{product.name}: {pricelabel}");
+                
                 int newprice = product.amount;
 
-                Rect productline = listingStandard.GetRect(24f);
-
-                productline.width = 40f;
-                if (Widgets.ButtonText(productline, "-" + 500))
+                if (Widgets.ButtonText(smallButton, "-" + 500))
                 {
                     SoundDefOf.AmountDecrement.PlayOneShotOnCamera();
                     newprice -= 500 * GenUI.CurrentAdjustmentMultiplier();
@@ -463,8 +505,8 @@ namespace TwitchToolkit
                     }
                 }
 
-                productline.x += productline.width + 2f;
-                if (Widgets.ButtonText(productline, "-" + 50))
+                smallButton.x += 40f;
+                if (Widgets.ButtonText(smallButton, "-" + 50))
                 {
                     SoundDefOf.AmountDecrement.PlayOneShotOnCamera();
                     newprice -= 50 * GenUI.CurrentAdjustmentMultiplier();
@@ -474,8 +516,8 @@ namespace TwitchToolkit
                     }
                 }
 
-                productline.x += productline.width + 2f;
-                if (Widgets.ButtonText(productline, "-" + 10))
+                smallButton.x += 40f;
+                if (Widgets.ButtonText(smallButton, "-" + 10))
                 {
                     SoundDefOf.AmountDecrement.PlayOneShotOnCamera();
                     newprice -= 10 * GenUI.CurrentAdjustmentMultiplier();
@@ -485,26 +527,29 @@ namespace TwitchToolkit
                     }
                 }
 
-                productline.x += productline.width + 2f;
-                if (Widgets.ButtonText(productline, "+" + 10))
+                smallButton.x += 40f;
+                if (Widgets.ButtonText(smallButton, "+" + 10))
                 {
                     SoundDefOf.AmountIncrement.PlayOneShotOnCamera();
                     newprice += 10 * GenUI.CurrentAdjustmentMultiplier();
                 }
 
-                productline.x += productline.width + 2f;
-                if (Widgets.ButtonText(productline, "+" + 50))
+                smallButton.x += 40f;
+                if (Widgets.ButtonText(smallButton, "+" + 50))
                 {
                     SoundDefOf.AmountIncrement.PlayOneShotOnCamera();
                     newprice += 50 * GenUI.CurrentAdjustmentMultiplier();
                 }
 
-                productline.x += productline.width + 2f;
-                if (Widgets.ButtonText(productline, "+" + 500))
+                smallButton.x += 40f;
+                if (Widgets.ButtonText(smallButton, "+" + 500))
                 {
                     SoundDefOf.AmountIncrement.PlayOneShotOnCamera();
                     newprice += 500 * GenUI.CurrentAdjustmentMultiplier();
                 }
+
+                smallButton.x += 40f;
+
                 string karmabutton = "";
 
                 if (product.karmatype == 0)
@@ -524,8 +569,9 @@ namespace TwitchToolkit
                     karmabutton = "Doom";
                 }
 
-                productline.x += productline.width + 2f;
-                if (Widgets.ButtonText(productline, karmabutton))
+                smallButton.x += 60f;
+                smallButton.width = 60f;
+                if (Widgets.ButtonText(smallButton, karmabutton))
                 {
                     SoundDefOf.AmountIncrement.PlayOneShotOnCamera();
                     if (product.karmatype == 3)
@@ -540,14 +586,12 @@ namespace TwitchToolkit
                     }
                 }
 
-                productline.x += productline.width + 2f;
-                if (Widgets.ButtonText(productline, "Disable"))
+                smallButton.x += 60f;
+                if (Widgets.ButtonText(smallButton, "Disable"))
                 {
                     SoundDefOf.AmountIncrement.PlayOneShotOnCamera();
                     newprice = -1;
                 }
-
-                listingStandard.Gap(listingStandard.verticalSpacing);
 
                 ProductAmounts[product.id] = newprice;
                 product.amount = newprice;
@@ -559,34 +603,34 @@ namespace TwitchToolkit
 
         public static void ItemMenu(Rect rect)
         {
-            var labelRect = new Rect(_padding, _padding + _height, rect.width - (_padding * 2), rect.height - (_padding * 2));
-            var inputRect = new Rect(_padding + 140f, _padding + _height, rect.width - (_padding * 2) - 140f, 20f);
+            var scrollRect = new Rect(_padding + 300f, _padding + _height, 40f, 20f);
+
+            var searchRect = new Rect(_padding, _padding + _height, 300f, 20f);
+
+            searchquery = Widgets.TextField(searchRect, searchquery, 999, new Regex("^[a-z0-9_]*$", RegexOptions.IgnoreCase));
 
             if (ItemScroll > 0)
             {
-                inputRect.x = _padding + (rect.width - (_padding * 2)) / 4;
-                inputRect.width = (rect.width - (_padding * 2)) / 4;
-                if (Widgets.ButtonText(inputRect, "^"))
+                if (Widgets.ButtonText(scrollRect, "up"))
                 {
-                    ItemScroll = Math.Max(0, ItemScroll - 3);
+                    ItemScroll = Math.Max(0, ItemScroll - 1);
                 }
             }
 
             int count = 0;
             int scroll = 0;
 
-            if (ItemScroll < (products.Count - count))
+            if (ItemScroll < (items.Count - count) - 8)
             {
-                inputRect.x = _padding + (rect.width - (_padding * 2)) / 2;
-                inputRect.width = (rect.width - (_padding * 2)) / 4;
-                if (Widgets.ButtonText(inputRect, "v"))
+                scrollRect.x += 40f;
+                if (Widgets.ButtonText(scrollRect, "down"))
                 {
-                    ItemScroll += 3;
+                    ItemScroll++;
                 }
             }
 
-            inputRect.x = _padding + (rect.width - (_padding * 2)) / 2 + (rect.width - (_padding * 2)) / 4;
-            inputRect.width = (rect.width - (_padding * 2)) / 4;
+            scrollRect.x = _padding + (rect.width - (_padding * 2)) / 2 + (rect.width - (_padding * 2)) / 4;
+            scrollRect.width = (rect.width - (_padding * 2)) / 4;
 
             if (ResetItemStage == 0)
             {
@@ -607,22 +651,16 @@ namespace TwitchToolkit
                 ItemMenu(rect);
             }
 
-            if (Widgets.ButtonText(inputRect, ResetAdminWarning))
+            if (Widgets.ButtonText(scrollRect, ResetAdminWarning))
             {
                 ResetItemStage += 1;
             }
 
-            inputRect.y += _height;
-
-            Listing_TwitchToolkit listingStandard = new Listing_TwitchToolkit();
-            listingStandard.Begin(rect);
-
-            labelRect.y += _height;
-            searchquery = Widgets.TextField(inputRect, searchquery, 999, new Regex("^[a-z0-9_]*$", RegexOptions.IgnoreCase));
+            scrollRect.y += _height;
+            
+            Rect itemline = new Rect(_padding, _padding + _height, 600f, 30f);
             
             List<Item> query = items.Where(a => (a.abr.Contains(searchquery))).ToList();
-
-            inputRect.y += _height;
             foreach (Item item in query)
             {
                 if (++scroll <= ItemScroll)
@@ -630,13 +668,20 @@ namespace TwitchToolkit
                     continue;
                 }
 
-                listingStandard.Label($"{item.abr}: {item.price}");
+                itemline.y += 30f;
+
+                if (itemline.y  > rect.height - 50f)
+                {
+                    continue;
+                }
+
+                Rect smallButton = new Rect(300f, itemline.y, 40f, 30f);
+
+                string pricelabel = (item.price) < 0 ? "Disabled" : item.price.ToString();
+                Widgets.Label(itemline, $"{item.abr}: {pricelabel}");
+
                 int newprice = item.price;
-
-                Rect productline = listingStandard.GetRect(24f);
-
-                productline.width = 40f;
-                if (Widgets.ButtonText(productline, "-" + 100))
+                if (Widgets.ButtonText(smallButton, "-" + 100))
                 {
                     SoundDefOf.AmountDecrement.PlayOneShotOnCamera();
                     newprice -= 100 * GenUI.CurrentAdjustmentMultiplier();
@@ -646,8 +691,8 @@ namespace TwitchToolkit
                     }
                 }
 
-                productline.x += productline.width + 2f;
-                if (Widgets.ButtonText(productline, "-" + 10))
+                smallButton.x += 40f;
+                if (Widgets.ButtonText(smallButton, "-" + 10))
                 {
                     SoundDefOf.AmountDecrement.PlayOneShotOnCamera();
                     newprice -= 10 * GenUI.CurrentAdjustmentMultiplier();
@@ -657,8 +702,8 @@ namespace TwitchToolkit
                     }
                 }
 
-                productline.x += productline.width + 2f;
-                if (Widgets.ButtonText(productline, "-" + 1))
+                smallButton.x += 40f;
+                if (Widgets.ButtonText(smallButton, "-" + 1))
                 {
                     SoundDefOf.AmountDecrement.PlayOneShotOnCamera();
                     newprice -= 1 * GenUI.CurrentAdjustmentMultiplier();
@@ -668,35 +713,34 @@ namespace TwitchToolkit
                     }
                 }
 
-                productline.x += productline.width + 2f;
-                if (Widgets.ButtonText(productline, "+" + 1))
+                smallButton.x += 40f;
+                if (Widgets.ButtonText(smallButton, "+" + 1))
                 {
                     SoundDefOf.AmountIncrement.PlayOneShotOnCamera();
                     newprice += 1 * GenUI.CurrentAdjustmentMultiplier();
                 }
 
-                productline.x += productline.width + 2f;
-                if (Widgets.ButtonText(productline, "+" + 10))
+                smallButton.x += 40f;
+                if (Widgets.ButtonText(smallButton, "+" + 10))
                 {
                     SoundDefOf.AmountIncrement.PlayOneShotOnCamera();
                     newprice += 10 * GenUI.CurrentAdjustmentMultiplier();
                 }
 
-                productline.x += productline.width + 2f;
-                if (Widgets.ButtonText(productline, "+" + 100))
+                smallButton.x += 40f;
+                if (Widgets.ButtonText(smallButton, "+" + 100))
                 {
                     SoundDefOf.AmountIncrement.PlayOneShotOnCamera();
                     newprice += 100 * GenUI.CurrentAdjustmentMultiplier();
                 }
 
-                productline.x += productline.width + 2f;
-                if (Widgets.ButtonText(productline, "Disable"))
+                smallButton.x += 40f;
+                smallButton.width = 60f;
+                if (Widgets.ButtonText(smallButton, "Disable"))
                 {
                     SoundDefOf.AmountIncrement.PlayOneShotOnCamera();
                     newprice = -1;
                 }
-
-                listingStandard.Gap(listingStandard.verticalSpacing);
 
                 ItemPrices[item.id] = newprice;
                 item.price = newprice;
@@ -739,22 +783,24 @@ namespace TwitchToolkit
 
             List<Item> defaultitems = Item.GetDefaultItems().ToList();
 
-            foreach(Item item in defaultitems)
-            {
-                int id = item.id;
-                ItemIds.Add(item.abr, id);
-                ItemPrices.Add(id, item.price);
-                ItemDefnames.Add(id, item.defname);
-                if (item.stuffname != "null")
-                {
-                    ItemStuffnames[id] = item.stuffname;
-                }
-                else
-                {
-                    ItemStuffnames[id] = "null";
-                }
-                items.Add(item);
-            }
+            Item.TryMakeAllItems();
+
+            //foreach(Item item in defaultitems)
+            //{
+            //    int id = item.id;
+            //    ItemIds.Add(item.abr, id);
+            //    ItemPrices.Add(id, item.price);
+            //    ItemDefnames.Add(id, item.defname);
+            //    if (item.stuffname != "null")
+            //    {
+            //        ItemStuffnames[id] = item.stuffname;
+            //    }
+            //    else
+            //    {
+            //        ItemStuffnames[id] = "null";
+            //    }
+            //    items.Add(item);
+            //}
         }
 
     }

@@ -72,6 +72,7 @@
     <Compile Include="StorytellerComp_CustomCategoryMTB.cs" />
     <Compile Include="StorytellerComp_CustomOnOffCycle.cs" />
     <Compile Include="StorytellerComp_CustomRandomStoryTeller.cs" />
+    <Compile Include="StreamElements.cs" />
     <Compile Include="TwitchToolkit.cs" />
     <Compile Include="TwitchToolkit_MainTabWindow.cs" />
     <Compile Include="Helper.cs" />
@@ -118,6 +119,7 @@
     <Compile Include="Incidents\IncidentWorker_Raid.cs" />
     <Compile Include="Viewer.cs" />
     <Compile Include="VoteEvent.cs" />
+    <Compile Include="WebRequest.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Patches\" />
