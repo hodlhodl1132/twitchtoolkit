@@ -444,7 +444,7 @@ namespace TwitchToolkit
             // commands are suppressed when not earning coins
             if (Settings.EarningCoins)
             {    
-                if (message.StartsWith("!balance") || message.StartsWith("!bal") || message.StartsWith("!coins"))
+                if (message.StartsWith(Settings.BalanceCmd))
                 {
                     Helper.Log("Trying to find User");
                     Viewer viewer = Viewer.GetViewer(user);
@@ -457,20 +457,25 @@ namespace TwitchToolkit
                     _client.SendMessage($"@{viewer.username} karma is the rate at which you earn coins. Buying bad events lowers karma while good events/items raise your karma. You are currently earning karma at a rate of {viewer.GetViewerKarma()}%");
                 }
 
-                if (message.StartsWith("!purchaselist") || message.StartsWith("!instructions"))
+                if (message.StartsWith(Settings.InstructionsCmd))
                 {
                     _client.SendMessage($"@{user} events/items can be purchased in game. Example: '!buyitem skillincrease' or '!buyitem beer 5'. Full list here: {Settings.CustomPricingSheetLink}");
                 }
+
+                if (message.StartsWith(Settings.PurchaselistCmd))
+                {
+                    _client.SendMessage($"@{user} Full list here: {Settings.CustomPricingSheetLink}");
+                }
             }
 
-            if (message.StartsWith("!modinfo"))
+            if (message.StartsWith(Settings.ModinfoCmd))
             {
                 _client.SendMessage($"@{user} TwitchToolkit is a mod written by Twitch.tv/hodlhodl that integrates storytelling decisions into chat votes, awards viewers coins for watching, and those coins can be spent on items/events in game. Use !purchaselist to get more info. Join the discord https://discord.gg/qrtg224 !");
             }
 
             if (Settings.StoreOpen)
             {
-                if (message.StartsWith("!buyevent"))
+                if (message.StartsWith(Settings.BuyeventCmd))
                 {
                     if (message.Split(' ')[1] == "carepackage")
                     {
@@ -489,7 +494,7 @@ namespace TwitchToolkit
                     }
                 }
 
-                if (message.StartsWith("!buyitem"))
+                if (message.StartsWith(Settings.BuyitemCmd))
                 {
                     string[] command = message.Split(' ');
 

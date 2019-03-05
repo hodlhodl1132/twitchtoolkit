@@ -167,7 +167,7 @@ namespace TwitchToolkit
         public static void TryMakeAllItems()
         {
             IEnumerable<ThingDef> tradeableitems = from t in DefDatabase<ThingDef>.AllDefs
-                             where t.tradeability.TraderCanSell()
+                             where t.tradeability.TraderCanSell() && (t.building == null || t.Minifiable || Settings.MinifiableBuildings)
                              select t;
 
 

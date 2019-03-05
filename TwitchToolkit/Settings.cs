@@ -39,6 +39,15 @@ namespace TwitchToolkit
         public static string JWTToken;
         public static string AccountID;
 
+        public static bool MinifiableBuildings = false;
+
+        public static string BalanceCmd;
+        public static string BuyeventCmd;
+        public static string BuyitemCmd;
+        public static string InstructionsCmd;
+        public static string PurchaselistCmd;
+        public static string ModinfoCmd;
+
         // viewer storage
         public static Dictionary<string, int> ViewerIds = null;
         public static Dictionary<int, int> ViewerCoins = new Dictionary<int, int>();
@@ -127,6 +136,15 @@ namespace TwitchToolkit
 
             Scribe_Values.Look(ref JWTToken, "JWTToken", "", true);
             Scribe_Values.Look(ref AccountID, "AccountID", "", true);
+
+            Scribe_Values.Look(ref MinifiableBuildings, "MinifiableBuildings", false, true);
+
+            Scribe_Values.Look(ref BalanceCmd, "BalanceCmd", "!bal", true);
+            Scribe_Values.Look(ref BuyeventCmd, "BuyeventCmd", "!buyevent", true);
+            Scribe_Values.Look(ref BuyitemCmd, "BuyitemCmd", "!buyitem", true);
+            Scribe_Values.Look(ref InstructionsCmd, "InstructionsCmd", "!instructions", true);
+            Scribe_Values.Look(ref PurchaselistCmd, "PurchaselistCmd", "!purchaselist", true);
+            Scribe_Values.Look(ref ModinfoCmd, "ModinfoCmd", "!modinfo", true);
 
             Scribe_Collections.Look(ref ViewerIds, "ViewerIds", LookMode.Value, LookMode.Value);
             Scribe_Collections.Look(ref ViewerCoins, "ViewerCoins", LookMode.Value, LookMode.Value);
@@ -277,6 +295,18 @@ namespace TwitchToolkit
                 }
             }
 
+            buttonRect.y += _height;
+            if (Widgets.ButtonText(buttonRect, "Experimental"))
+            {
+                _menu = 5;
+            }
+
+            buttonRect.y += _height;
+            if (Widgets.ButtonText(buttonRect, "Commands"))
+            {
+                _menu = 6;
+            }
+
             rect.width -= buttonWidth + _padding;
             switch (_menu)
             {
@@ -300,6 +330,12 @@ namespace TwitchToolkit
                         ResetProductData();
                     }
                     EventMenu(rect);
+                    break;
+                case 5:
+                    DevMenu(rect);
+                    break;
+                case 6:
+                    CommandMenu(rect);
                     break;
             }
         }
@@ -406,6 +442,34 @@ namespace TwitchToolkit
             CustomPricingSheetLink = listingStandard.TextEntry(CustomPricingSheetLink);
 
             listingStandard.End();
+        }
+
+        public static void DevMenu(Rect rect)
+        {
+            Listing_TwitchToolkit listingStandard = new Listing_TwitchToolkit();
+            listingStandard.Begin(rect);
+            listingStandard.CheckboxLabeled("Should buildings unable to be uninstalled be included in the item list? ", ref MinifiableBuildings, "Non-Minifiable Buildings?");
+            listingStandard.End();
+        }
+
+        public static void CommandMenu(Rect rect)
+        {
+            Listing_TwitchToolkit listingStandard = new Listing_TwitchToolkit();
+            listingStandard.Begin(rect);
+            listingStandard.Label("Check your coin balance");
+            BalanceCmd = listingStandard.TextEntry(BalanceCmd);
+            listingStandard.Label("Buy an event");
+            BuyeventCmd = listingStandard.TextEntry(BuyeventCmd);
+            listingStandard.Label("Buy an item");
+            BuyitemCmd = listingStandard.TextEntry(BuyitemCmd);
+            listingStandard.Label("Instructions");
+            InstructionsCmd = listingStandard.TextEntry(InstructionsCmd);
+            listingStandard.Label("Purchase list");
+            PurchaselistCmd = listingStandard.TextEntry(PurchaselistCmd);
+            listingStandard.Label("Mod info");
+            ModinfoCmd = listingStandard.TextEntry(ModinfoCmd);
+
+        listingStandard.End();
         }
 
         private static void StreamElementsMenu(Rect rect)
@@ -521,7 +585,7 @@ namespace TwitchToolkit
                 Rect smallButton = new Rect(300f, productline.y, 40f, 30f);
 
                 string pricelabel = (product.amount) < 0 ? "Disabled" : product.amount.ToString();
-                Widgets.Label(productline, $"{product.name}: {pricelabel}");
+                Widgets.Label(productline, $"{ProductScroll + count + 1} - {product.name}: {pricelabel}");
                 
                 int newprice = product.amount;
 
@@ -620,7 +684,7 @@ namespace TwitchToolkit
                 if (Widgets.ButtonText(smallButton, "Disable"))
                 {
                     SoundDefOf.AmountIncrement.PlayOneShotOnCamera();
-                    newprice = -1;
+                    newprice = -10;
                 }
 
                 ProductAmounts[product.id] = newprice;
@@ -699,7 +763,7 @@ namespace TwitchToolkit
             
             Rect itemline = new Rect(_padding, _padding + _height, 600f, 30f);
             
-            List<Item> query = items.Where(a => (a.abr.Contains(searchquery))).ToList();
+            List<Item> query = items.Where(a => (a.abr.Contains(searchquery.ToLower()))).ToList();
             foreach (Item item in query)
             {
                 if (++scroll <= ItemScroll)
@@ -717,7 +781,7 @@ namespace TwitchToolkit
                 Rect smallButton = new Rect(300f, itemline.y, 40f, 30f);
 
                 string pricelabel = (item.price) < 0 ? "Disabled" : item.price.ToString();
-                Widgets.Label(itemline, $"{item.abr}: {pricelabel}");
+                Widgets.Label(itemline, $"{ItemScroll + count + 1} - {item.abr}: {pricelabel}");
 
                 int newprice = item.price;
                 if (Widgets.ButtonText(smallButton, "-" + 100))
@@ -778,7 +842,7 @@ namespace TwitchToolkit
                 if (Widgets.ButtonText(smallButton, "Disable"))
                 {
                     SoundDefOf.AmountIncrement.PlayOneShotOnCamera();
-                    newprice = -1;
+                    newprice = -10;
                 }
 
                 ItemPrices[item.id] = newprice;

@@ -113,7 +113,6 @@ namespace TwitchToolkit
                 new Product(84, 0, "Visitor", "visitor", 1, 200, 84),
                 new Product(85, 0, "Trader visting", "tradervisiting", 1, 275, 85),
                 new Product(86, 0, "Trader ship", "tradership", 1, 350, 86),
-                new Product(87, 0, "Wanderer Named", "wanderernamed", 1, 750, 87),
             };
 
             return defaultProducts;
