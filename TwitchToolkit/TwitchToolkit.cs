@@ -287,7 +287,7 @@ namespace TwitchToolkit
             }
 
             //moderator commands
-            if (user.ToLower() == Settings.Channel.ToLower() || Settings.Moderators.Contains(user.ToLower()))
+            if (user.ToLower() == Settings.Channel.ToLower())
             {
                 if (message.StartsWith("!refreshviewers"))
                 {

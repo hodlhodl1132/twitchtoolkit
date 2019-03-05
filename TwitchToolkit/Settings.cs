@@ -116,8 +116,8 @@ namespace TwitchToolkit
 
             Scribe_Values.Look(ref VoteInterval, "VoteInterval", 5, true);
             Scribe_Values.Look(ref CoinInterval, "CoinInterval", 2, true);
-            Scribe_Values.Look(ref CoinAmount, "CoinAmount", 15, true);
-            Scribe_Values.Look(ref KarmaCap, "KarmaCap", 300, true);
+            Scribe_Values.Look(ref CoinAmount, "CoinAmount", 30, true);
+            Scribe_Values.Look(ref KarmaCap, "KarmaCap", 500, true);
             Scribe_Values.Look(ref MinimumPurchasePrice, "MinimumPurchasePrice", 50, true);
 
             Scribe_Values.Look(ref CustomPricingSheetLink, "CustomPricingSheetLink", "https://bit.ly/2GT5daR", true);
@@ -226,7 +226,6 @@ namespace TwitchToolkit
                         string defname = ItemDefnames[id];
                         string stuffname = ItemStuffnames[id];
                         items.Add(new Item(price, abr, defname, id, stuffname));
-                        Helper.Log("Loaded item " + items[id].abr);
                     }
                 }
             }
@@ -295,6 +294,11 @@ namespace TwitchToolkit
                     CoinMenu(rect);
                     break;
                 case 4:
+                    if (products == null)
+                    {
+                        Helper.Log("Ressetting Products");
+                        ResetProductData();
+                    }
                     EventMenu(rect);
                     break;
             }

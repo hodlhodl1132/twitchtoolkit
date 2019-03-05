@@ -43,6 +43,8 @@ Items are available for purchase as well. You can edit the pricing of items/even
 
 %USERPROFILE%\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios
 
+[u]paste the above into your file explorer address bar, including the %USERPROFILE%[/u]
+
 It should be name productlist.csv. You can distribute this file by creating a new Google Sheets file and going to File -> Import -> Upload. I intend to make this easier in the future.
 
 [h1]Alternate Languages[/h1]
