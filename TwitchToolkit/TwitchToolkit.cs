@@ -195,7 +195,7 @@ namespace TwitchToolkit
         DateTime _aliveCommand = DateTime.MinValue;
         void _client_OnPrivMsg(string channel, string user, string message)
         {
-            if (Settings.CommandsModsEnabled && message.Contains("!mods") && (DateTime.Now - _modsCommand).TotalSeconds >= 10)
+            if (Settings.CommandsModsEnabled && message.Contains("!installedmods") && (DateTime.Now - _modsCommand).TotalSeconds >= 10)
             {
                 _modsCommand = DateTime.Now;
                 string msg = "Version: " + Version + ", Mods: ";
@@ -376,7 +376,7 @@ namespace TwitchToolkit
                         string target = command[1].Replace("@", "");
 
                         Viewer viewer = Viewer.GetViewer(target);
-                        _client.SendMessage($"@{user} - @{viewer.username} Coins: {viewer.GetViewerCoins()} Karma: {viewer.GetViewerKarma()}%. !whatiskarma");
+                        _client.SendMessage($"@{user} - @{viewer.username} Coins: {viewer.GetViewerCoins()} Karma: {viewer.GetViewerKarma()}%. {Settings.KarmaCmd}");
 
                     }
                     catch (InvalidCastException e)
@@ -451,7 +451,7 @@ namespace TwitchToolkit
                     _client.SendMessage($"@{viewer.username} Coins: {viewer.GetViewerCoins()} Karma: {viewer.GetViewerKarma()}%. !whatiskarma");
                 }
 
-                if (message.StartsWith("!whatiskarma") || message.StartsWith("!karma") && !message.Contains("!karmaround"))
+                if (message.StartsWith(Settings.KarmaCmd) && !message.Contains("!karmaround"))
                 {
                     Viewer viewer = Viewer.GetViewer(user);
                     _client.SendMessage($"@{viewer.username} karma is the rate at which you earn coins. Buying bad events lowers karma while good events/items raise your karma. You are currently earning karma at a rate of {viewer.GetViewerKarma()}%");
@@ -520,6 +520,18 @@ namespace TwitchToolkit
                     }
                 }
 
+            }
+
+            if (message.StartsWith(Settings.ModsettingsCmd))
+            {
+                string minutess = Settings.CoinInterval > 1 ? "s" : "";
+                string storeon = Settings.StoreOpen ? "on" : "off";
+                string earningcoins = Settings.EarningCoins ? "on" : "off";
+                string stats_message = 
+                $"Twitch toolkit is rewarding viewers {Settings.CoinAmount} coins every {Settings.CoinInterval} minute{minutess}, " +
+                $"the store is {storeon} and coin rewards are {earningcoins}. Karma cap is {Settings.KarmaCap}%";
+
+                _client.SendMessage(stats_message);
             }
 
 

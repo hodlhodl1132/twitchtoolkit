@@ -47,6 +47,8 @@ namespace TwitchToolkit
         public static string InstructionsCmd;
         public static string PurchaselistCmd;
         public static string ModinfoCmd;
+        public static string ModsettingsCmd;
+        public static string KarmaCmd;
 
         // viewer storage
         public static Dictionary<string, int> ViewerIds = null;
@@ -145,6 +147,8 @@ namespace TwitchToolkit
             Scribe_Values.Look(ref InstructionsCmd, "InstructionsCmd", "!instructions", true);
             Scribe_Values.Look(ref PurchaselistCmd, "PurchaselistCmd", "!purchaselist", true);
             Scribe_Values.Look(ref ModinfoCmd, "ModinfoCmd", "!modinfo", true);
+            Scribe_Values.Look(ref ModsettingsCmd, "ModsettingsCmd", "!modsettings", true);
+            Scribe_Values.Look(ref KarmaCmd, "KarmaCmd", "!whatiskarma", true);
 
             Scribe_Collections.Look(ref ViewerIds, "ViewerIds", LookMode.Value, LookMode.Value);
             Scribe_Collections.Look(ref ViewerCoins, "ViewerCoins", LookMode.Value, LookMode.Value);
@@ -391,7 +395,7 @@ namespace TwitchToolkit
             inputRect.y += _height;
             inputRect.width = ((inputRect.width - _padding) / 2);
             Widgets.Label(labelRect, "TwitchStoriesSettingsOtherCommands".Translate() + ": ");
-            if (Widgets.ButtonText(inputRect, "!mods " + (CommandsModsEnabled ? "TwitchStoriesEnabled".Translate() : "TwitchStoriesDisabled".Translate())))
+            if (Widgets.ButtonText(inputRect, "!installedmods " + (CommandsModsEnabled ? "TwitchStoriesEnabled".Translate() : "TwitchStoriesDisabled".Translate())))
             {
                 CommandsModsEnabled = !CommandsModsEnabled;
             }
@@ -468,8 +472,12 @@ namespace TwitchToolkit
             PurchaselistCmd = listingStandard.TextEntry(PurchaselistCmd);
             listingStandard.Label("Mod info");
             ModinfoCmd = listingStandard.TextEntry(ModinfoCmd);
+            listingStandard.Label("Mod settings");
+            ModsettingsCmd = listingStandard.TextEntry(ModsettingsCmd);
+            listingStandard.Label("Karma explanation");
+            KarmaCmd = listingStandard.TextEntry(KarmaCmd);
 
-        listingStandard.End();
+            listingStandard.End();
         }
 
         private static void StreamElementsMenu(Rect rect)

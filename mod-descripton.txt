@@ -31,11 +31,15 @@ As much as we'd all love to send 50 raids to our favorite twitch streamers, we n
 [b]!togglecoins[/b] - toggle ability for users to earn coins while viewing
 
 [h1]User Commands[/h1]
-[b]!balance, !bal, !coins[/b] - check balance and karma rate
+
+These commands can be changed in the settings except for !whatiskarma
+
+[b]!bal[/b] - check balance and karma rate
 [b]!buyevent[/b] - Syntax: !buyevent skillincrease - purchase an event
 [b]!buyitem[/b] - Syntax: !buyitem beer 2 - purchase an item
 [b]!whatiskarma, !karma[/b] - explains what the karma system is
-[b]!purchaselist, !instructions[/b] - gives users a link to the public purchase list and info on using the mod
+[b]!purchaselist[/b] - gives users a link to the public purchase list
+[b]!instructions[/b] - gives users info on using the mod
 [b]!modinfo[/b] - gives users info about the mod
 
 [h1]Custom Pricing[/h1]
@@ -44,6 +48,8 @@ Items are available for purchase as well. You can edit the pricing of items/even
 %USERPROFILE%\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios
 
 [u]paste the above into your file explorer address bar, including the %USERPROFILE%[/u]
+
+Or if you pause and go to options, you will see a button for open save data folder. It should be in there.
 
 It should be name productlist.csv. You can distribute this file by creating a new Google Sheets file and going to File -> Import -> Upload. I intend to make this easier in the future.
 
