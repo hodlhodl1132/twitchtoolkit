@@ -41,6 +41,7 @@ These commands can be changed in the settings except for !whatiskarma
 [b]!purchaselist[/b] - gives users a link to the public purchase list
 [b]!instructions[/b] - gives users info on using the mod
 [b]!modinfo[/b] - gives users info about the mod
+[b]!modsettings[/b] - gives user info on how many coins are being earned and global settings
 
 [h1]Custom Pricing[/h1]
 Items are available for purchase as well. You can edit the pricing of items/events in the settings. Currently the best way of sharing your custom pricing sheet with your chat is through a public spreadsheet. Ingame on your bottom menu bar click on toolkit. Here you can generate a spreadsheet with your current pricing. The spreadsheet will output to your rimworld data file. For windows users this is
