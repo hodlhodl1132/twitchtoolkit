@@ -211,12 +211,16 @@ namespace TwitchToolkit.IRC
                     _socketReady = true;
                     break;
                 case "PRIVMSG":
-                    if (OnPrivMsg != null)
+                    if (OnPrivMsg != null && !Settings.WhisperCmdsOnly)
                     {
                         OnPrivMsg.Invoke(message.Channel, message.User, message.Message);
                     }
                     break;
                 case "WHISPER":
+                    if (OnPrivMsg != null && Settings.WhisperCmdsAllowed)
+                    {
+                        OnPrivMsg.Invoke(message.Channel, message.User, message.Message);
+                    }
                     break;
                 case "PONG":
                     break;

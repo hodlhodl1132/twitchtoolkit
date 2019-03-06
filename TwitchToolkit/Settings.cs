@@ -37,6 +37,10 @@ namespace TwitchToolkit
         public static bool StoreOpen = true;
         public static bool GiftingCoins;
 
+        public static bool WhisperCmdsOnly;
+        public static bool WhisperCmdsAllowed;
+        public static bool PurchaseConfirmations;
+
         public static string JWTToken;
         public static string AccountID;
 
@@ -138,6 +142,9 @@ namespace TwitchToolkit
             Scribe_Values.Look(ref EarningCoins, "EarningCoins", false, true);
             Scribe_Values.Look(ref StoreOpen, "StoreOpen", false, true);
             Scribe_Values.Look(ref GiftingCoins, "GiftingCoins", false, true);
+            Scribe_Values.Look(ref WhisperCmdsAllowed, "WhisperCmdsAllowed", true, true);
+            Scribe_Values.Look(ref WhisperCmdsOnly, "WhisperCmdsOnly", false, true);
+            Scribe_Values.Look(ref PurchaseConfirmations, "PurchaseConfirmations", true, true);
 
             Scribe_Values.Look(ref JWTToken, "JWTToken", "", true);
             Scribe_Values.Look(ref AccountID, "AccountID", "", true);
@@ -464,6 +471,9 @@ namespace TwitchToolkit
         {
             Listing_TwitchToolkit listingStandard = new Listing_TwitchToolkit();
             listingStandard.Begin(rect);
+            listingStandard.CheckboxLabeled($"Commands can be whispered to {Username}: ", ref WhisperCmdsAllowed, "Allow whispers");
+            listingStandard.CheckboxLabeled($"Commands must be whispered to {Username}: ", ref WhisperCmdsOnly, "Require whispers");  
+            listingStandard.CheckboxLabeled("Should purchases be confirmed in chat: ", ref PurchaseConfirmations, "Purchase confirmations");
             listingStandard.Label("Check your coin balance");
             BalanceCmd = listingStandard.TextEntry(BalanceCmd);
             listingStandard.Label("Buy an event");

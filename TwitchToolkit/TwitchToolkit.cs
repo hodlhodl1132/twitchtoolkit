@@ -214,6 +214,15 @@ namespace TwitchToolkit
                 }
                 return;
             }
+
+            if (message.Split(' ')[0] == "/w")
+            {
+                List<string> messagewhisper = message.Split(' ').ToList();
+                messagewhisper.RemoveAt(0);
+                message = string.Join(" ", messagewhisper.ToArray());
+                Helper.Log(message);
+        
+            }
             
             //admin commands
             if (user.ToLower() == Settings.Channel.ToLower())
@@ -471,7 +480,7 @@ namespace TwitchToolkit
 
                 if (message.StartsWith(Settings.PurchaselistCmd))
                 {
-                    _client.SendMessage($"@{user} " + "TwitchToolkitPurchaseList".Translate() + ": {Settings.CustomPricingSheetLink}");
+                    _client.SendMessage($"@{user} " + "TwitchToolkitPurchaseList".Translate() + $": {Settings.CustomPricingSheetLink}");
                 }
 
                 if (message.StartsWith(Settings.GiftCmd) && Settings.GiftingCoins)
@@ -521,7 +530,7 @@ namespace TwitchToolkit
                     {
                         _client.SendMessage(command.errormessage);
                     }
-                    else if (command.successmessage != null)
+                    else if (command.successmessage != null && Settings.PurchaseConfirmations)
                     {
                         _client.SendMessage(command.successmessage);
                     }
@@ -547,7 +556,7 @@ namespace TwitchToolkit
                     {
                         _client.SendMessage(command2.errormessage);
                     }
-                    else if (command2.successmessage != null)
+                    else if (command2.successmessage != null && Settings.PurchaseConfirmations)
                     {
                         _client.SendMessage(command2.successmessage);
                     }
