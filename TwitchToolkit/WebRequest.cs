@@ -21,7 +21,7 @@ namespace TwitchToolkitDev
         public WebRequest request;
         public WebResponse response;
         public Stream responseStream;
-        public Func<bool> Callback;
+        public Func<RequestState, bool> Callback;
         public string jsonString;
 
         public RequestState()
@@ -38,7 +38,7 @@ namespace TwitchToolkitDev
     {
         public static ManualResetEvent allDone = new ManualResetEvent(false);
         const int BUFFER_SIZE = 1024;
-        public static void Main(string requesturl, Func<bool> func = null)
+        public static void Main(string requesturl, Func<RequestState, bool> func = null)
         {
             try
             {
@@ -117,7 +117,7 @@ namespace TwitchToolkitDev
                         
                         if (myRequestState.Callback != null)
                         {
-                            myRequestState.Callback();
+                            myRequestState.Callback(myRequestState);
                         }
 
                     }

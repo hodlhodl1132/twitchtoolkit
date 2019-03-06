@@ -519,7 +519,7 @@ namespace TwitchToolkit
             {
                 if (message.StartsWith(Settings.BuyeventCmd))
                 {
-                    if (message.Split(' ')[1] == "carepackage")
+                    if (message.Split(' ')[1] == "carepackage" || message.Split(' ').Count() < 2)
                     {
                         return;
                     }

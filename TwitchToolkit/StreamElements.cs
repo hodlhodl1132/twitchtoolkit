@@ -20,7 +20,7 @@ namespace TwitchToolkitDev
         public void ImportPoints()
         {
             Helper.Log($"https://api.streamelements.com/kappa/v2/points/{AccountID}/alltime?offset=0&page=1");
-            //WebRequest_BeginGetResponse.Main($"https://api.streamelements.com/kappa/v2/points/{AccountID}/alltime?offset=0&page=1", "ParseJsonResponse", this);
+            WebRequest_BeginGetResponse.Main($"https://api.streamelements.com/kappa/v2/points/{AccountID}/alltime?offset=0&page=1", new Func<RequestState, bool>(ParseJsonResponse));
         }
 
         public void SavePoints()
@@ -28,10 +28,11 @@ namespace TwitchToolkitDev
 
         }
 
-        public void ParseJsonResponse(RequestState Request)
+        public bool ParseJsonResponse(RequestState Request)
         {
             string json = Request.jsonString;
             Helper.Log("Streamlabs Request: " + json);
+            return true;
         }
     }
 }

@@ -239,29 +239,30 @@ namespace TwitchToolkit
                     }
 
                     int itemPrice = itemtobuy.price;
+                    int messageStartsAt = 3;
 
                     // check if 2nd index of command is a number
                     if (command.Count() > 2)
                     { 
                         bool isNumeric = int.TryParse(command[2], out this.quantity);
-                        int messageStartsAt = 3;
+                        
                         if (!isNumeric)
                         {
                             this.quantity = 1;
                             messageStartsAt = 2;
-                        }
-
-                        string[] chatmessage = command;
-                        craftedmessage = $"{this.viewer.username}: ";
-                        for (int i = messageStartsAt; i < chatmessage.Length; i++)
-                        {
-                            craftedmessage += chatmessage[i] + " ";
                         }
                     }
                     else if (command.Count() == 2)
                     {
                         // short command
                         this.quantity = 1;
+                    }
+
+                    string[] chatmessage = command;
+                    craftedmessage = $"{this.viewer.username}: ";
+                    for (int i = messageStartsAt; i < chatmessage.Length; i++)
+                    {
+                        craftedmessage += chatmessage[i] + " ";
                     }
 
                     //Thing itemThing = ThingMaker.MakeThing(ThingDef.Named(itemtobuy.defname));
