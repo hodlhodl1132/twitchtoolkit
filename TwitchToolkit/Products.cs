@@ -244,9 +244,18 @@ namespace TwitchToolkit
                     if (command.Count() > 2)
                     { 
                         bool isNumeric = int.TryParse(command[2], out this.quantity);
+                        int messageStartsAt = 3;
                         if (!isNumeric)
                         {
                             this.quantity = 1;
+                            messageStartsAt = 2;
+                        }
+
+                        string[] chatmessage = command;
+                        craftedmessage = $"{this.viewer.username}: ";
+                        for (int i = messageStartsAt; i < chatmessage.Length; i++)
+                        {
+                            craftedmessage += chatmessage[i] + " ";
                         }
                     }
                     else if (command.Count() == 2)
@@ -271,15 +280,6 @@ namespace TwitchToolkit
                 catch (InvalidCastException e)
                 {
                     Helper.Log("Invalid product or quantity - " + e.Message);
-                }
-                finally
-                {
-                    string[] chatmessage = command;
-                    craftedmessage = $"{this.viewer.username}: ";
-                    for (int i = 3; i < chatmessage.Length; i++)
-                    {
-                        craftedmessage += chatmessage[i] + " ";
-                    }
                 }
             }
 

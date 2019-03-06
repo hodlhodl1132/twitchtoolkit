@@ -20,8 +20,8 @@ This entire feature can be disabled in mod settings by disabling coin earning an
 As much as we'd all love to send 50 raids to our favorite twitch streamers, we need to balance things out. To do this a karma system is in use that rewards users for good events & items while punishing users for bad events. Your karma rate will decide how many coins you earn per interval up to 300% the base rate. You can change coins per interval in settings.
 
 [h1]Admin Commands[/h1]
-[b]!addmod[/b] - Syntax: !addmod @username - give viewer access to mod commands below
-[b]!removemod[/b] - Syntax: !removemod @username - take viewer access to mod commands below
+[b]!addtoolkitmod[/b] - Syntax: !addmod @username - give viewer access to mod commands below
+[b]!removetoolkitmod[/b] - Syntax: !removemod @username - take viewer access to mod commands below
 [b]!resetviewers[/b] - resets all viewers data back to default, must confirm twice
 
 [h1]Mod Commands[/h1]

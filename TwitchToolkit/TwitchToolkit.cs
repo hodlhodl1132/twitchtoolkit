@@ -243,7 +243,7 @@ namespace TwitchToolkit
                     }
                 }
 
-                if (message.StartsWith("!addmod"))
+                if (message.StartsWith("!addtoolkitmod"))
                 {
                         string[] command = message.Split(' ');
 
@@ -267,7 +267,7 @@ namespace TwitchToolkit
                         _client.SendMessage($"@{user} added @{mod} as TwitchToolkit Moderator.");
                 }
 
-                if (message.StartsWith("!removemod"))
+                if (message.StartsWith("!removetoolkitmod"))
                 {
                         string[] command = message.Split(' ');
 
