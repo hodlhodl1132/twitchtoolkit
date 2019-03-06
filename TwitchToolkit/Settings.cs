@@ -525,12 +525,23 @@ namespace TwitchToolkit
 
         public static void EventMenu(Rect rect)
         {
-            var scrollRect = new Rect(_padding + 300f, _padding + _height, 40f, 20f);
+            var scrollRect = new Rect(_padding + 300f, _padding + _height, 60f, 20f);
 
             var searchRect = new Rect(_padding, _padding + _height, 300f, 20f);
 
             searchquery = Widgets.TextField(searchRect, searchquery, 999, new Regex("^[a-z0-9_]*$", RegexOptions.IgnoreCase));
 
+
+            if (searchquery != "")
+            {
+                if (Widgets.ButtonText(scrollRect, "search"))
+                {
+                    ProductScroll = 0;
+                }
+            }
+             
+            scrollRect.width = 40f;
+            scrollRect.x += 60f;
             if (ProductScroll > 0)
             {
                 if (Widgets.ButtonText(scrollRect, "up"))
@@ -548,15 +559,6 @@ namespace TwitchToolkit
                 if (Widgets.ButtonText(scrollRect, "down"))
                 {
                     ProductScroll++;
-                }
-            }
-
-            if (ProductScroll > 0)
-            {
-                scrollRect.x += 40f;
-                if (Widgets.ButtonText(scrollRect, "top"))
-                {
-                    ProductScroll = 0;
                 }
             }
 
@@ -721,11 +723,22 @@ namespace TwitchToolkit
 
         public static void ItemMenu(Rect rect)
         {
-            var scrollRect = new Rect(_padding + 300f, _padding + _height, 40f, 20f);
+            var scrollRect = new Rect(_padding + 300f, _padding + _height, 60f, 20f);
 
             var searchRect = new Rect(_padding, _padding + _height, 300f, 20f);
 
             searchquery = Widgets.TextField(searchRect, searchquery, 999, new Regex("^[a-z0-9_]*$", RegexOptions.IgnoreCase));
+
+            if (searchquery != "")
+            {
+                if (Widgets.ButtonText(scrollRect, "search"))
+                {
+                    ItemScroll = 0;
+                }
+            }
+
+            scrollRect.width = 40f;
+            scrollRect.x += 60f;
 
             if (ItemScroll > 0)
             {
@@ -744,15 +757,6 @@ namespace TwitchToolkit
                 if (Widgets.ButtonText(scrollRect, "down"))
                 {
                     ItemScroll++;
-                }
-            }
-
-            if (ItemScroll > 0)
-            {
-                scrollRect.x += 40f;
-                if (Widgets.ButtonText(scrollRect, "top"))
-                {
-                    ItemScroll = 0;
                 }
             }
 
