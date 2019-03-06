@@ -5,10 +5,18 @@ using System.Text;
 
 namespace TwitchToolkit
 {
+    public enum KarmaType
+    {
+        Bad,
+        Good,
+        Neutral,
+        Doom
+    }
+
     public class Karma
     {
 
-        public static int CalculateNewKarma(int karma, int karmatype, int calculatedprice = 0)
+        public static int CalculateNewKarma(int karma, KarmaType karmatype, int calculatedprice = 0)
         {
             Helper.Log($"Calculating new karma with {karma}, and karma type {karmatype}");
             double newkarma = 0;
@@ -25,7 +33,7 @@ namespace TwitchToolkit
             switch (karmatype)
             {
                 //bad event
-                case 0:
+                case KarmaType.Bad:
 
                     if (karma >= 100)
                     {
@@ -54,7 +62,7 @@ namespace TwitchToolkit
 
                     break;
                 //good event
-                case 1:
+                case KarmaType.Good:
 
                     if (karma >= 100)
                     {
@@ -88,13 +96,13 @@ namespace TwitchToolkit
 
                     break;
                 //neutral event
-                case 2:
+                case KarmaType.Neutral:
 
                     newkarma = karma * 1.02;
 
                     break;
                 //doom event
-                case 3:
+                case KarmaType.Doom:
 
                     newkarma = karma - 80;
 

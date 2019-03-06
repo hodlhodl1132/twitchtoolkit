@@ -143,6 +143,7 @@ namespace TwitchToolkit.IRC
 
         public void Reconnect()
         {
+
             Disconnect();
             Connect();
         }
