@@ -57,7 +57,7 @@ namespace TwitchToolkit
         public static Dictionary<int, int> ViewerCoins = new Dictionary<int, int>();
         public static Dictionary<int, int> ViewerKarma = new Dictionary<int, int>();
 
-        public static List<string> Moderators;
+        public static Dictionary<string, bool> ViewerModerators = new Dictionary<string, bool>();
 
         public static List<Viewer> listOfViewers;
 
@@ -157,8 +157,7 @@ namespace TwitchToolkit
             Scribe_Collections.Look(ref ViewerIds, "ViewerIds", LookMode.Value, LookMode.Value);
             Scribe_Collections.Look(ref ViewerCoins, "ViewerCoins", LookMode.Value, LookMode.Value);
             Scribe_Collections.Look(ref ViewerKarma, "ViewerKarma", LookMode.Value, LookMode.Value);
-
-            Scribe_Collections.Look(ref Moderators, "Moderators", LookMode.Value);
+            Scribe_Collections.Look(ref ViewerModerators, "ViewerModerators", LookMode.Value, LookMode.Value);
 
             Scribe_Collections.Look(ref ItemIds, "ItemIds", LookMode.Value, LookMode.Value);
             Scribe_Collections.Look(ref ItemPrices, "ItemPrices", LookMode.Value, LookMode.Value);

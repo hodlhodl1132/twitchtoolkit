@@ -42,6 +42,36 @@ namespace TwitchToolkit
             return viewer;
         }
 
+        public static bool IsModerator(string user)
+        {
+            if (Settings.ViewerModerators == null)
+            {
+                return false;
+            }
+            return Settings.ViewerModerators.ContainsKey(user);
+        }
+
+        public void SetAsModerator()
+        {
+            if (Settings.ViewerModerators == null)
+            {
+                Settings.ViewerModerators = new Dictionary<string, bool>();
+            }
+
+            if (!IsModerator(this.username))
+            {
+                Settings.ViewerModerators.Add(this.username, true);
+            }
+        }
+
+        public void RemoveAsModerator()
+        {
+            if (IsModerator(this.username))
+            {
+                Settings.ViewerModerators.Remove(this.username);
+            }
+        }
+
         public static void AwardViewersCoins(int setamount = 0)
         {
             List<string> usernames = ParseViewersFromJson();

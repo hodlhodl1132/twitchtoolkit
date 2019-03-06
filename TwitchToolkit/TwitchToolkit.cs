@@ -254,14 +254,16 @@ namespace TwitchToolkit
                         
                         string mod = command[1].Replace("@", "").ToLower();
 
-                        if (Settings.Moderators.Contains(mod))
+                        Helper.Log("Checking if mod");
+                        if (Viewer.IsModerator(mod))
                         {
                             _client.SendMessage($"@{user} @{mod} is already a TwitchToolkit Moderator.");
                             return;
                         }
 
-                        _client.SendMessage($"@{user} added @{mod} as TwitchToolkit Moderator.");
-                        Settings.Moderators.Add(mod);
+                        Viewer modviewer = Viewer.GetViewer(mod);
+
+                        modviewer.SetAsModerator();
                         _client.SendMessage($"@{user} added @{mod} as TwitchToolkit Moderator.");
                 }
 
@@ -274,20 +276,24 @@ namespace TwitchToolkit
                             return;
                         }
                         
-                        string mod = command[1].Replace("@", "");
+                        string mod = command[1].Replace("@", "").ToLower();
 
-                        if (!Settings.Moderators.Contains(mod.ToLower()))
+
+                        Helper.Log("checking if mod");
+                        if (!Viewer.IsModerator(mod))
                         {
                             return;
                         }
 
-                        Settings.Moderators.Remove(mod.ToLower());
+                        Viewer modviewer = Viewer.GetViewer(mod);
+
+                        modviewer.RemoveAsModerator();
                         _client.SendMessage($"@{user} removed @{mod} as TwitchToolkit Moderator.");
                 }
             }
 
             //moderator commands
-            if (user.ToLower() == Settings.Channel.ToLower())
+            if (user.ToLower() == Settings.Channel.ToLower() || Viewer.IsModerator(user))
             {
                 if (message.StartsWith("!refreshviewers"))
                 {
@@ -344,6 +350,7 @@ namespace TwitchToolkit
                         if (user.ToLower() != Settings.Channel.ToLower() && giftee.ToLower() == user.ToLower())
                         {
                             _client.SendMessage($"@{user} moderators cannot give themselves coins.");
+                            return;
                         }
 
                         int amount;
