@@ -353,7 +353,7 @@ namespace TwitchToolkit
                             Viewer viewer = Viewer.GetViewer(giftee);
                             Helper.Log($"Giving viewer {viewer.username} {amount} coins");
                             viewer.GiveViewerCoins(amount);
-                            _client.SendMessage($"@{user} " + "TwitchToolkitGiving".Translate() + "TwitchToolkitViewer".Translate() + $" {viewer.username} {amount} " + "TwitchToolkitCoins".Translate()  + "." + "TwitchtoolkitBalance".Translate() + $" {viewer.GetViewerCoins()}" + "TwitchToolkitCoins".Translate());
+                            _client.SendMessage($"@{user} " + "TwitchToolkitGiving".Translate() + ' ' + "TwitchToolkitViewer".Translate() + $" {viewer.username} {amount} " + "TwitchToolkitCoins".Translate()  + " " + "TwitchToolkitBalance".Translate() + $" {viewer.GetViewerCoins()}" + ' ' + "TwitchToolkitCoins".Translate());
                         }
                     }
                     catch (InvalidCastException e)
@@ -465,6 +465,32 @@ namespace TwitchToolkit
                 if (message.StartsWith(Settings.PurchaselistCmd))
                 {
                     _client.SendMessage($"@{user} " + "TwitchToolkitPurchaseList".Translate() + ": {Settings.CustomPricingSheetLink}");
+                }
+
+                if (message.StartsWith(Settings.GiftCmd) && Settings.GiftingCoins)
+                {
+                    string[] command = message.Split(' ');
+
+                    if (command.Count() < 3)
+                    {
+                        return;
+                    }
+
+                    string target = command[1].Replace("@", "");
+
+                    int amount;
+                    bool isNumeric = int.TryParse(command[2], out amount);
+                    if (isNumeric)
+                    {
+                        Viewer giftee = Viewer.GetViewer(target);
+                        Viewer gifter = Viewer.GetViewer(user);
+                        if (gifter.GetViewerCoins() >= amount)
+                        {
+                            gifter.TakeViewerCoins(amount);
+                            giftee.GiveViewerCoins(amount);
+                            _client.SendMessage($"@{giftee.username} " + "TwitchToolkitGiftingCoins".Translate() + $" {amount} " + "TwitchToolkitCoins".Translate() + ' ' + "TwitchToolkitFrom".Translate() + " @" + gifter.username);
+                        }
+                    }
                 }
             }
 

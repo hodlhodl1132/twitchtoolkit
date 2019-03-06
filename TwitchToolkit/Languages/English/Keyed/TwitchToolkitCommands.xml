@@ -11,6 +11,8 @@
   <TwitchToolkitModInfo>TwitchToolkit is a mod written by Twitch.tv/hodlhodl that integrates storytelling decisions into chat votes, awards viewers coins for watching, and those coins can be spent on items/events in game. Use !purchaselist to get more info. Join the discord</TwitchToolkitModInfo>
   <TwitchToolkitGivingAll>giving all viewers</TwitchToolkitGivingAll>
   <TwitchToolKitVoteInstructions>Say the number of the option you want to vote!</TwitchToolKitVoteInstructions>
+  <TwitchToolkitGiftingCoins>you have been gifted</TwitchToolkitGiftingCoins>
+  <TwitchToolkitFrom>from</TwitchToolkitFrom>
   <TwitchToolkitVote>vote</TwitchToolkitVote>
   <TwitchToolitWon>won</TwitchToolitWon>
   <TwitchToolkitCoins>coins</TwitchToolkitCoins>
@@ -21,4 +23,12 @@
   <TwitchToolkitViewer>viewer</TwitchToolkitViewer>
   <TwitchToolkitOn>on</TwitchToolkitOn>
   <TwitchToolkitOff>off</TwitchToolkitOff>
+  <TwitchToolkitBalCmd>bal</TwitchToolkitBalCmd>
+  <TwitchToolkitBuyEventCmd>buyevent</TwitchToolkitBuyEventCmd>
+  <TwitchTookitBuyItemCmd>buyitem</TwitchTookitBuyItemCmd>
+  <TwitchToolkitInstructionsCmd>instructions</TwitchToolkitInstructionsCmd>
+  <TwitchToolkitPurchaseListCmd>purchaselist</TwitchToolkitPurchaseListCmd>
+  <TwitchToolkitModInfoCmd>modinfo</TwitchToolkitModInfoCmd>
+  <TwitchToolkitModSettingsCmd>modsettings</TwitchToolkitModSettingsCmd>
+  <TwitchToolkitKarmaCmd>whatiskarma</TwitchToolkitKarmaCmd>
 </LanguageData>

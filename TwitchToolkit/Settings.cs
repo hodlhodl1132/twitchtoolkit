@@ -35,6 +35,7 @@ namespace TwitchToolkit
 
         public static bool EarningCoins = true;
         public static bool StoreOpen = true;
+        public static bool GiftingCoins;
 
         public static string JWTToken;
         public static string AccountID;
@@ -49,6 +50,7 @@ namespace TwitchToolkit
         public static string ModinfoCmd;
         public static string ModsettingsCmd;
         public static string KarmaCmd;
+        public static string GiftCmd;
 
         // viewer storage
         public static Dictionary<string, int> ViewerIds = null;
@@ -135,6 +137,7 @@ namespace TwitchToolkit
 
             Scribe_Values.Look(ref EarningCoins, "EarningCoins", false, true);
             Scribe_Values.Look(ref StoreOpen, "StoreOpen", false, true);
+            Scribe_Values.Look(ref GiftingCoins, "GiftingCoins", false, true);
 
             Scribe_Values.Look(ref JWTToken, "JWTToken", "", true);
             Scribe_Values.Look(ref AccountID, "AccountID", "", true);
@@ -149,6 +152,7 @@ namespace TwitchToolkit
             Scribe_Values.Look(ref ModinfoCmd, "ModinfoCmd", "!modinfo", true);
             Scribe_Values.Look(ref ModsettingsCmd, "ModsettingsCmd", "!modsettings", true);
             Scribe_Values.Look(ref KarmaCmd, "KarmaCmd", "!whatiskarma", true);
+            Scribe_Values.Look(ref GiftCmd, "GiftCmd", "!giftcoins", true);
 
             Scribe_Collections.Look(ref ViewerIds, "ViewerIds", LookMode.Value, LookMode.Value);
             Scribe_Collections.Look(ref ViewerCoins, "ViewerCoins", LookMode.Value, LookMode.Value);
@@ -434,6 +438,7 @@ namespace TwitchToolkit
             listingStandard.Begin(rect);
             listingStandard.CheckboxLabeled("Reward Coins: ", ref EarningCoins, "Should viewers earn coins while watching?");
             listingStandard.CheckboxLabeled("Store Open: ", ref StoreOpen, "Enable purchasing of events and items");
+            listingStandard.CheckboxLabeled("Viewers can gift other viewers coins: ", ref GiftingCoins, "Enable gifting");
             listingStandard.Label("Coins Per Interval: " + CoinAmount);
             CoinAmount = listingStandard.Slider((float)CoinAmount, 1, 250);
             listingStandard.Label("Max Karma: " + KarmaCap);
@@ -476,6 +481,8 @@ namespace TwitchToolkit
             ModsettingsCmd = listingStandard.TextEntry(ModsettingsCmd);
             listingStandard.Label("Karma explanation");
             KarmaCmd = listingStandard.TextEntry(KarmaCmd);
+            listingStandard.Label("Gift coins");
+            GiftCmd = listingStandard.TextEntry(GiftCmd);
 
             listingStandard.End();
         }
