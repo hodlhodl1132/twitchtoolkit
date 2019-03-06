@@ -156,6 +156,9 @@
     <None Include="Languages\English\Keyed\TwitchStoriesLetters.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="Languages\English\Keyed\TwitchToolkitCommands.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Defs\SoundDefs\Tornado.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

@@ -222,18 +222,18 @@ namespace TwitchToolkit
                 {
                     if (resetWarning == 0)
                     {
-                        _client.SendMessage($"@{user} this will delete all coins and karma date. Please do !resetviewers again to confirm");
+                        _client.SendMessage($"@{user} " + "TwitchToolkitResetViewersWarningOne".Translate());
                         resetWarning = 1;
                     }
                     else if (resetWarning == 1)
                     {
-                        _client.SendMessage($"@{user} are you absolutely sure you want to delete your viewers? !resetviewers one more");
+                        _client.SendMessage($"@{user} " + "TwitchToolkitResetViewersWarningTwo".Translate());
                         resetWarning = 2;
                     }
                     else if (resetWarning == 2)
                     {
                         Helper.Log("Resetting all viewers data");
-                        _client.SendMessage($"@{user} resetting all viewers data.");
+                        _client.SendMessage($"@{user} " + "TwitchToolkitResetViewersWarningThree".Translate());
                         Settings.ViewerIds = null;
                         Settings.ViewerCoins = null;
                         Settings.ViewerKarma = null;
@@ -319,7 +319,7 @@ namespace TwitchToolkit
                             {
                                 viewer.GiveViewerCoins(amount);
                             }
-                            _client.SendMessage($"@{user} giving all viewers {amount} coins.");
+                            _client.SendMessage($"@{user} " + "TwitchToolkitGivingAll".Translate() + $" {amount} " + "TwitchToolkitVote".Translate());
                         }
                     }
                     catch (InvalidCastException e)
@@ -353,7 +353,7 @@ namespace TwitchToolkit
                             Viewer viewer = Viewer.GetViewer(giftee);
                             Helper.Log($"Giving viewer {viewer.username} {amount} coins");
                             viewer.GiveViewerCoins(amount);
-                            _client.SendMessage($"@{user} giving viewer {viewer.username} {amount} coins. New balance {viewer.GetViewerCoins()} coins.");
+                            _client.SendMessage($"@{user} " + "TwitchToolkitGiving".Translate() + "TwitchToolkitViewer".Translate() + $" {viewer.username} {amount} " + "TwitchToolkitCoins".Translate()  + "." + "TwitchtoolkitBalance".Translate() + $" {viewer.GetViewerCoins()}" + "TwitchToolkitCoins".Translate());
                         }
                     }
                     catch (InvalidCastException e)
@@ -376,7 +376,7 @@ namespace TwitchToolkit
                         string target = command[1].Replace("@", "");
 
                         Viewer viewer = Viewer.GetViewer(target);
-                        _client.SendMessage($"@{user} - @{viewer.username} Coins: {viewer.GetViewerCoins()} Karma: {viewer.GetViewerKarma()}%. {Settings.KarmaCmd}");
+                        _client.SendMessage($"@{user} - @{viewer.username} " + "TwitchToolkitCoins".Translate() + $": {viewer.GetViewerCoins()} " + "TwitchToolkitKarma".Translate() + $": { viewer.GetViewerKarma()}%. {Settings.KarmaCmd}");
 
                     }
                     catch (InvalidCastException e)
@@ -403,7 +403,7 @@ namespace TwitchToolkit
                         {
                             Viewer viewer = Viewer.GetViewer(target);
                             viewer.SetViewerKarma(amount);
-                            _client.SendMessage($"@{user} setting {viewer.username} karma to {amount}%");
+                            _client.SendMessage($"@{user} " + "TwitchToolkitUpdating".Translate() + $" { viewer.username} " + "TwitchToolkitKarma".Translate() + $" {amount}%");
                         }
                     }
                     catch (InvalidCastException e)
@@ -417,12 +417,12 @@ namespace TwitchToolkit
                     if (Settings.EarningCoins)
                     {
                         Settings.EarningCoins = false;
-                        _client.SendMessage($"@{user} earning coins is now toggled off.");
+                        _client.SendMessage($"@{user} " + "TwitchToolkitEarningCoinsMessage".Translate() + "TwitchToolkitOff".Translate());
                     }
                     else
                     {
                         Settings.EarningCoins = true;
-                        _client.SendMessage($"@{user} earning coins is now toggled on.");
+                        _client.SendMessage($"@{user} " + "TwitchToolkitEarningCoinsMessage".Translate() + "TwitchToolkitOn".Translate());
                     }
                 }
 
@@ -431,12 +431,12 @@ namespace TwitchToolkit
                     if (Settings.StoreOpen)
                     {
                         Settings.StoreOpen = false;
-                        _client.SendMessage($"@{user} store purchases are now toggled off.");
+                        _client.SendMessage($"@{user} " + "TwitchToolkitStorePurchasesMessage".Translate() + "TwitchToolkitOn".Translate());
                     }
                     else
                     {
                         Settings.StoreOpen = true;
-                        _client.SendMessage($"@{user} store purchases are now toggled on.");
+                        _client.SendMessage($"@{user} " + "TwitchToolkitStorePurchasesMessage".Translate() + "TwitchToolkitOn".Translate());
                     }
                 }
             }
@@ -448,29 +448,29 @@ namespace TwitchToolkit
                 {
                     Helper.Log("Trying to find User");
                     Viewer viewer = Viewer.GetViewer(user);
-                    _client.SendMessage($"@{viewer.username} Coins: {viewer.GetViewerCoins()} Karma: {viewer.GetViewerKarma()}%. !whatiskarma");
+                    _client.SendMessage($"@{viewer.username} " + "TwitchToolkitCoins".Translate() + $": {viewer.GetViewerCoins()} " + "TwitchToolkitKarma".Translate() + $": {viewer.GetViewerKarma()}%. {Settings.KarmaCmd}");
                 }
 
                 if (message.StartsWith(Settings.KarmaCmd) && !message.Contains("!karmaround"))
                 {
                     Viewer viewer = Viewer.GetViewer(user);
-                    _client.SendMessage($"@{viewer.username} karma is the rate at which you earn coins. Buying bad events lowers karma while good events/items raise your karma. You are currently earning karma at a rate of {viewer.GetViewerKarma()}%");
+                    _client.SendMessage($"@{viewer.username} " + "TwitchToolkitWhatIsKarma".Translate() +  $" { viewer.GetViewerKarma()}%");
                 }
 
                 if (message.StartsWith(Settings.InstructionsCmd))
                 {
-                    _client.SendMessage($"@{user} events/items can be purchased in game. Example: '!buyitem skillincrease' or '!buyitem beer 5'. Full list here: {Settings.CustomPricingSheetLink}");
+                    _client.SendMessage($"@{user} " + "TwitchToolkitInstructions".Translate() + $": { Settings.CustomPricingSheetLink}");
                 }
 
                 if (message.StartsWith(Settings.PurchaselistCmd))
                 {
-                    _client.SendMessage($"@{user} Full list here: {Settings.CustomPricingSheetLink}");
+                    _client.SendMessage($"@{user} " + "TwitchToolkitPurchaseList".Translate() + ": {Settings.CustomPricingSheetLink}");
                 }
             }
 
             if (message.StartsWith(Settings.ModinfoCmd))
             {
-                _client.SendMessage($"@{user} TwitchToolkit is a mod written by Twitch.tv/hodlhodl that integrates storytelling decisions into chat votes, awards viewers coins for watching, and those coins can be spent on items/events in game. Use !purchaselist to get more info. Join the discord https://discord.gg/qrtg224 !");
+                _client.SendMessage($"@{user} " + "TwitchToolkitModInfo".Translate() + " https://discord.gg/qrtg224 !");
             }
 
             if (Settings.StoreOpen)
@@ -688,7 +688,7 @@ namespace TwitchToolkit
                     }
 
 
-                    _client.SendMessage("TwitchStoriesChatMessageNewVote".Translate() + ": Say the number of the option you want to vote!");
+                    _client.SendMessage("TwitchStoriesChatMessageNewVote".Translate() + ": " + "TwitchToolKitVoteInstructions".Translate());
                     //_voteType = _rand.Next(0, 2);
                     _voteType = 2;
                     for (int i = 0; i < _eventsPossibleChosen.Count(); i++)

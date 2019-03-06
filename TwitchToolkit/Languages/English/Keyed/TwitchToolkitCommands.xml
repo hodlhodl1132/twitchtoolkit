@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<LanguageData>
+  <TwitchToolkitResetViewersWarningOne>this will delete all coins and karma date. Please do !resetviewers again to confirm</TwitchToolkitResetViewersWarningOne>
+  <TwitchToolkitResetViewersWarningTwo>are you absolutely sure you want to delete your viewers? !resetviewers one more</TwitchToolkitResetViewersWarningTwo>
+  <TwitchToolkitResetViewersWarningThree>resetting all viewers data</TwitchToolkitResetViewersWarningThree>
+  <TwitchToolkitEarningCoinsMessage>earning coins is now toggled</TwitchToolkitEarningCoinsMessage>
+  <TwitchToolkitStorePurchasesMessage>store purchases are now toggled</TwitchToolkitStorePurchasesMessage>
+  <TwitchToolkitWhatIsKarma>karma is the rate at which you earn coins. Buying bad events lowers karma while good events/items raise your karma. You are currently earning karma at a rate of</TwitchToolkitWhatIsKarma>
+  <TwitchToolkitInstructions>events/items can be purchased in game. Example: '!buyitem skillincrease' or '!buyitem beer 5'. Full list here</TwitchToolkitInstructions>
+  <TwitchToolkitPurchaseList>Full list here</TwitchToolkitPurchaseList>
+  <TwitchToolkitModInfo>TwitchToolkit is a mod written by Twitch.tv/hodlhodl that integrates storytelling decisions into chat votes, awards viewers coins for watching, and those coins can be spent on items/events in game. Use !purchaselist to get more info. Join the discord</TwitchToolkitModInfo>
+  <TwitchToolkitGivingAll>giving all viewers</TwitchToolkitGivingAll>
+  <TwitchToolKitVoteInstructions>Say the number of the option you want to vote!</TwitchToolKitVoteInstructions>
+  <TwitchToolkitVote>vote</TwitchToolkitVote>
+  <TwitchToolitWon>won</TwitchToolitWon>
+  <TwitchToolkitCoins>coins</TwitchToolkitCoins>
+  <TwitchToolkitGiving>giving</TwitchToolkitGiving>
+  <TwitchToolkitBalance>balance</TwitchToolkitBalance>
+  <TwitchToolkitKarma>karma</TwitchToolkitKarma>
+  <TwitchToolkitUpdating>setting to</TwitchToolkitUpdating>
+  <TwitchToolkitViewer>viewer</TwitchToolkitViewer>
+  <TwitchToolkitOn>on</TwitchToolkitOn>
+  <TwitchToolkitOff>off</TwitchToolkitOff>
+</LanguageData>

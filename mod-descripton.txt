@@ -55,7 +55,8 @@ Or if you pause and go to options, you will see a button for open save data fold
 It should be name productlist.csv. You can distribute this file by creating a new Google Sheets file and going to File -> Import -> Upload. I intend to make this easier in the future.
 
 [h1]Alternate Languages[/h1]
-Not currently supported but will in the future.
+Please join my discord to participate in translating this mod into other languages.
+https://discord.gg/qrtg224
 
 [h1]Setup Instructions[/h1]
 1. You will need an Oauth token from https://twitchapps.com/tmi/

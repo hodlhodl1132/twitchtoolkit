@@ -35,7 +35,7 @@ namespace TwitchToolkit.Incidents
         bool TryFindAnimalKind(int tile, out PawnKindDef animalKind)
         {
             return (from k in DefDatabase<PawnKindDef>.AllDefs
-                    where k.RaceProps.CanDoHerdMigration && Find.World.tileTemperatures.SeasonAndOutdoorTemperatureAcceptableFor(tile, k.race)
+                    where k.RaceProps.Animal && k.RaceProps.wildness < 0.35f && Find.World.tileTemperatures.SeasonAndOutdoorTemperatureAcceptableFor(tile, k.race)
                     select k).TryRandomElementByWeight((PawnKindDef x) => Mathf.Lerp(0.2f, 1f, x.RaceProps.wildness), out animalKind);
         }
 
