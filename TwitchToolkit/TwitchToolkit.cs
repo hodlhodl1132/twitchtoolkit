@@ -195,7 +195,7 @@ namespace TwitchToolkit
         DateTime _aliveCommand = DateTime.MinValue;
         void _client_OnPrivMsg(string channel, string user, string message)
         {
-            if (Settings.CommandsModsEnabled && message.Contains("!mods") && (DateTime.Now - _modsCommand).TotalSeconds >= 10)
+            if (Settings.CommandsModsEnabled && message.Contains("!installedmods") && (DateTime.Now - _modsCommand).TotalSeconds >= 10)
             {
                 _modsCommand = DateTime.Now;
                 string msg = "Version: " + Version + ", Mods: ";
@@ -214,8 +214,79 @@ namespace TwitchToolkit
                 }
                 return;
             }
-
+            
             //admin commands
+            if (user.ToLower() == Settings.Channel.ToLower())
+            {
+                if (message.StartsWith("!resetviewers"))
+                {
+                    if (resetWarning == 0)
+                    {
+                        _client.SendMessage($"@{user} this will delete all coins and karma date. Please do !resetviewers again to confirm");
+                        resetWarning = 1;
+                    }
+                    else if (resetWarning == 1)
+                    {
+                        _client.SendMessage($"@{user} are you absolutely sure you want to delete your viewers? !resetviewers one more");
+                        resetWarning = 2;
+                    }
+                    else if (resetWarning == 2)
+                    {
+                        Helper.Log("Resetting all viewers data");
+                        _client.SendMessage($"@{user} resetting all viewers data.");
+                        Settings.ViewerIds = null;
+                        Settings.ViewerCoins = null;
+                        Settings.ViewerKarma = null;
+                        Settings.listOfViewers = new List<Viewer>();
+                        WriteSettings();
+                        resetWarning = 0;
+                    }
+                }
+
+                if (message.StartsWith("!addmod"))
+                {
+                        string[] command = message.Split(' ');
+
+                        if (command.Length < 2)
+                        {
+                            return;
+                        }
+                        
+                        string mod = command[1].Replace("@", "").ToLower();
+
+                        if (Settings.Moderators.Contains(mod))
+                        {
+                            _client.SendMessage($"@{user} @{mod} is already a TwitchToolkit Moderator.");
+                            return;
+                        }
+
+                        _client.SendMessage($"@{user} added @{mod} as TwitchToolkit Moderator.");
+                        Settings.Moderators.Add(mod);
+                        _client.SendMessage($"@{user} added @{mod} as TwitchToolkit Moderator.");
+                }
+
+                if (message.StartsWith("!removemod"))
+                {
+                        string[] command = message.Split(' ');
+
+                        if (command.Length < 2)
+                        {
+                            return;
+                        }
+                        
+                        string mod = command[1].Replace("@", "");
+
+                        if (!Settings.Moderators.Contains(mod.ToLower()))
+                        {
+                            return;
+                        }
+
+                        Settings.Moderators.Remove(mod.ToLower());
+                        _client.SendMessage($"@{user} removed @{mod} as TwitchToolkit Moderator.");
+                }
+            }
+
+            //moderator commands
             if (user.ToLower() == Settings.Channel.ToLower())
             {
                 if (message.StartsWith("!refreshviewers"))
@@ -269,6 +340,12 @@ namespace TwitchToolkit
                         }
                         
                         string giftee = command[1].Replace("@", "");
+
+                        if (user.ToLower() != Settings.Channel.ToLower() && giftee.ToLower() == user.ToLower())
+                        {
+                            _client.SendMessage($"@{user} moderators cannot give themselves coins.");
+                        }
+
                         int amount;
                         bool isNumeric = int.TryParse(command[2], out amount);
                         if (isNumeric)
@@ -282,31 +359,6 @@ namespace TwitchToolkit
                     catch (InvalidCastException e)
                     {
                         Helper.Log("Invalid Give Viewer Coins Command " + e.Message);
-                    }
-                }
-
-                if (message.StartsWith("!resetviewers"))
-                {
-                    if (resetWarning == 0)
-                    {
-                        _client.SendMessage($"@{user} this will delete all coins and karma date. Please do !resetviewers again to confirm");
-                        resetWarning = 1;
-                    }
-                    else if (resetWarning == 1)
-                    {
-                        _client.SendMessage($"@{user} are you absolutely sure you want to delete your viewers? !resetviewers one more");
-                        resetWarning = 2;
-                    }
-                    else if (resetWarning == 2)
-                    {
-                        Helper.Log("Resetting all viewers data");
-                        _client.SendMessage($"@{user} resetting all viewers data.");
-                        Settings.ViewerIds = null;
-                        Settings.ViewerCoins = null;
-                        Settings.ViewerKarma = null;
-                        Settings.listOfViewers = new List<Viewer>();
-                        WriteSettings();
-                        resetWarning = 0;
                     }
                 }
 
@@ -324,7 +376,7 @@ namespace TwitchToolkit
                         string target = command[1].Replace("@", "");
 
                         Viewer viewer = Viewer.GetViewer(target);
-                        _client.SendMessage($"@{user} - @{viewer.username} Coins: {viewer.GetViewerCoins()} Karma: {viewer.GetViewerKarma()}%. !whatiskarma");
+                        _client.SendMessage($"@{user} - @{viewer.username} Coins: {viewer.GetViewerCoins()} Karma: {viewer.GetViewerKarma()}%. {Settings.KarmaCmd}");
 
                     }
                     catch (InvalidCastException e)
@@ -333,7 +385,7 @@ namespace TwitchToolkit
                     }
                 }
 
-                if (message.StartsWith("!setuserkarma"))
+                if (message.StartsWith("!setkarma"))
                 {
                     try
                     {
@@ -392,33 +444,38 @@ namespace TwitchToolkit
             // commands are suppressed when not earning coins
             if (Settings.EarningCoins)
             {    
-                if (message.StartsWith("!balance") || message.StartsWith("!bal") || message.StartsWith("!coins"))
+                if (message.StartsWith(Settings.BalanceCmd))
                 {
                     Helper.Log("Trying to find User");
                     Viewer viewer = Viewer.GetViewer(user);
                     _client.SendMessage($"@{viewer.username} Coins: {viewer.GetViewerCoins()} Karma: {viewer.GetViewerKarma()}%. !whatiskarma");
                 }
 
-                if (message.StartsWith("!whatiskarma") || message.StartsWith("!karma") && !message.Contains("!karmaround"))
+                if (message.StartsWith(Settings.KarmaCmd) && !message.Contains("!karmaround"))
                 {
                     Viewer viewer = Viewer.GetViewer(user);
                     _client.SendMessage($"@{viewer.username} karma is the rate at which you earn coins. Buying bad events lowers karma while good events/items raise your karma. You are currently earning karma at a rate of {viewer.GetViewerKarma()}%");
                 }
 
-                if (message.StartsWith("!purchaselist") || message.StartsWith("!instructions"))
+                if (message.StartsWith(Settings.InstructionsCmd))
                 {
-                    _client.SendMessage($"@{user} events/items can be purchased in game. Example: '!buyitem skillincrease' or '!buyitem beer 5'. Full list here: https://bit.ly/2tHiyu6");
+                    _client.SendMessage($"@{user} events/items can be purchased in game. Example: '!buyitem skillincrease' or '!buyitem beer 5'. Full list here: {Settings.CustomPricingSheetLink}");
+                }
+
+                if (message.StartsWith(Settings.PurchaselistCmd))
+                {
+                    _client.SendMessage($"@{user} Full list here: {Settings.CustomPricingSheetLink}");
                 }
             }
 
-            if (message.StartsWith("!modinfo"))
+            if (message.StartsWith(Settings.ModinfoCmd))
             {
                 _client.SendMessage($"@{user} TwitchToolkit is a mod written by Twitch.tv/hodlhodl that integrates storytelling decisions into chat votes, awards viewers coins for watching, and those coins can be spent on items/events in game. Use !purchaselist to get more info. Join the discord https://discord.gg/qrtg224 !");
             }
 
             if (Settings.StoreOpen)
             {
-                if (message.StartsWith("!buyevent"))
+                if (message.StartsWith(Settings.BuyeventCmd))
                 {
                     if (message.Split(' ')[1] == "carepackage")
                     {
@@ -437,17 +494,18 @@ namespace TwitchToolkit
                     }
                 }
 
-                if (message.StartsWith("!buyitem"))
+                if (message.StartsWith(Settings.BuyitemCmd))
                 {
                     string[] command = message.Split(' ');
-                    string item = command[1];
-                    command[1] = "carepackage";
-                    command[0] = item.ToLower();
 
                     if (command.Length < 2)
                     {
                         return;
                     }
+
+                    string item = command[1];
+                    command[1] = "carepackage";
+                    command[0] = item.ToLower();
 
                     string newcommand = string.Join(" ", command);
                     Helper.Log("Attemping item purchase " + newcommand);
@@ -462,6 +520,18 @@ namespace TwitchToolkit
                     }
                 }
 
+            }
+
+            if (message.StartsWith(Settings.ModsettingsCmd))
+            {
+                string minutess = Settings.CoinInterval > 1 ? "s" : "";
+                string storeon = Settings.StoreOpen ? "on" : "off";
+                string earningcoins = Settings.EarningCoins ? "on" : "off";
+                string stats_message = 
+                $"Twitch toolkit is rewarding viewers {Settings.CoinAmount} coins every {Settings.CoinInterval} minute{minutess}, " +
+                $"the store is {storeon} and coin rewards are {earningcoins}. Karma cap is {Settings.KarmaCap}%";
+
+                _client.SendMessage(stats_message);
             }
 
 

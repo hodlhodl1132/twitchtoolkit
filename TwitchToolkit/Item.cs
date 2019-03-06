@@ -72,7 +72,7 @@ namespace TwitchToolkit
 				}
 			}
 
-            itemThing = ThingMaker.MakeThing(ThingDef.Named(this.defname), (stuff != null) ? stuff : null);
+            itemThing = ThingMaker.MakeThing(itemThingDef, (stuff != null) ? stuff : null);
 
             QualityCategory q = new QualityCategory();
 
@@ -81,8 +81,23 @@ namespace TwitchToolkit
                 setItemQualityRandom(itemThing);
             }
 
-            itemThing.stackCount = amount;
-            IntVec3 vec = Helper.Rain(itemDef, itemThing);
+            IntVec3 vec;
+
+            if (itemThingDef.Minifiable)
+            {
+                itemThingDef = itemThingDef.minifiedDef;
+                MinifiedThing minifiedThing = (MinifiedThing)ThingMaker.MakeThing(itemThingDef, null);
+			    minifiedThing.InnerThing = itemThing;
+                minifiedThing.stackCount = amount;
+                vec = Helper.Rain(itemDef, minifiedThing);
+            }
+            else
+            {
+                itemThing.stackCount = amount;
+                vec = Helper.Rain(itemDef, itemThing);
+            }
+
+
 
             Helper.CarePackage(quote, LetterDefOf.PositiveEvent, vec);
         }
@@ -152,7 +167,7 @@ namespace TwitchToolkit
         public static void TryMakeAllItems()
         {
             IEnumerable<ThingDef> tradeableitems = from t in DefDatabase<ThingDef>.AllDefs
-                             where t.tradeability.TraderCanSell()
+                             where t.tradeability.TraderCanSell() && (t.building == null || t.Minifiable || Settings.MinifiableBuildings)
                              select t;
 
 

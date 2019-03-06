@@ -1272,6 +1272,8 @@ namespace TwitchToolkit
             {
                 target = Helper.AnyPlayerMap
             });
+
+            Vote(quote, LetterDefOf.PositiveEvent);
         }
 
         public static bool ThrumbosPossible()
@@ -1567,8 +1569,26 @@ namespace TwitchToolkit
 
             //SkyfallerMaker.SpawnSkyfaller(thingDef, new List<Thing> { thing }, intVec, Helper.AnyPlayerMap);
             //DropPodUtility.DropThingsNear(intVec, Helper.AnyPlayerMap, new List<Thing> { thing }, 110, false, true, true);
+            Map any = Helper.AnyPlayerMap;
+            intVec = DropCellFinder.TradeDropSpot(any);
+            TradeUtility.SpawnDropPod(intVec, any, thing);
 
-            TradeUtility.SpawnDropPod(intVec, Helper.AnyPlayerMap, thing);
+            return intVec;
+        }
+
+        public static IntVec3 Rain(ThingDef thingDef, MinifiedThing thing)
+        {
+            IntVec3 intVec;
+            if (!GetRandomVec3(thingDef, Helper.AnyPlayerMap, out intVec, 5))
+            {
+                return intVec;
+            }
+
+            //SkyfallerMaker.SpawnSkyfaller(thingDef, new List<Thing> { thing }, intVec, Helper.AnyPlayerMap);
+            //DropPodUtility.DropThingsNear(intVec, Helper.AnyPlayerMap, new List<Thing> { thing }, 110, false, true, true);
+            Map any = Helper.AnyPlayerMap;
+            intVec = DropCellFinder.TradeDropSpot(any);
+            TradeUtility.SpawnDropPod(intVec, any, thing);
 
             return intVec;
         }
@@ -1866,9 +1886,12 @@ namespace TwitchToolkit
                 {
                     type = product.type.ToString();
                 }
-                      
-                lines[currentline] = $"\"{product.name}\", \"{product.amount}\", \"{type}\", \"{product.abr}\"";
-                currentline++;
+                
+                if (product.amount > 0)
+                {
+                    lines[currentline] = $"\"{product.name}\", \"{product.amount}\", \"{type}\", \"{product.abr}\"";
+                    currentline++;
+                }
             }
             lines[currentline] = "";
             currentline++;
@@ -1877,8 +1900,11 @@ namespace TwitchToolkit
 
             foreach(Item item in Settings.items)
             {
-                lines[currentline] = $"\"{item.abr}\", \"{item.price}\"";
-                currentline++;
+                if (item.price > 0)
+                {
+                    lines[currentline] = $"\"{item.abr}\", \"{item.price}\"";
+                    currentline++;
+                }
             }
             System.IO.File.WriteAllLines(@"" + Application.persistentDataPath + "/productlist.csv", lines);
         }

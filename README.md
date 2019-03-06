@@ -32,13 +32,13 @@ We are currently not accepting translations, I am sorry for the inconvenience.
 
 **!givecoins** - Syntax: !givecoins @username 1000 - gives user 1000 coins
 
-**!giveallcoins** - Syntax: !giveallcoins 1000 - gives all users 1000 coins
+**!giveallcoins** - Syntax: !giveallcoins 1000 - gives all users 1000 coins (can also be used with negative numbers to take coins)
 
 **!resetviewers** - resets all viewers data back to default, must confirm twice
 
 **!checkuser** - Syntax: !checkuser @username - do a balance check on the user
 
-**!setuserkarma** - Syntax: !setuserkarma @username 100 - set user karma to 100% (needs message)
+**!setkarma** - Syntax: !setuserkarma @username 100 - set user karma to 100% (needs message)
 
 **!togglestore** - toggle ability for users to purchase items/events
 

@@ -17,8 +17,8 @@ namespace TwitchToolkit
         public static string OAuth = "";
 
         public static int VoteInterval = 5;
-        public static int VoteTime = 1;
-        public static int VoteOptions = 3;
+        public static int VoteTime;
+        public static int VoteOptions;
         public static bool VoteEnabled = true;
         public static bool AutoConnect = true;
         public static bool OtherStorytellersEnabled = true;
@@ -26,10 +26,12 @@ namespace TwitchToolkit
         public static bool CommandsAliveEnabled = true;
         public static bool QuotesEnabled = true;
 
-        public static int CoinInterval = 3;
-        public static int CoinAmount = 15;
-        public static int MinimumPurchasePrice = 50;
-        public static int KarmaCap = 300;
+        public static int CoinInterval;
+        public static int CoinAmount;
+        public static int MinimumPurchasePrice;
+        public static int KarmaCap;
+
+        public static string CustomPricingSheetLink;
 
         public static bool EarningCoins = true;
         public static bool StoreOpen = true;
@@ -37,10 +39,23 @@ namespace TwitchToolkit
         public static string JWTToken;
         public static string AccountID;
 
+        public static bool MinifiableBuildings = false;
+
+        public static string BalanceCmd;
+        public static string BuyeventCmd;
+        public static string BuyitemCmd;
+        public static string InstructionsCmd;
+        public static string PurchaselistCmd;
+        public static string ModinfoCmd;
+        public static string ModsettingsCmd;
+        public static string KarmaCmd;
+
         // viewer storage
         public static Dictionary<string, int> ViewerIds = null;
         public static Dictionary<int, int> ViewerCoins = new Dictionary<int, int>();
         public static Dictionary<int, int> ViewerKarma = new Dictionary<int, int>();
+
+        public static List<string> Moderators;
 
         public static List<Viewer> listOfViewers;
 
@@ -111,9 +126,12 @@ namespace TwitchToolkit
             Scribe_Values.Look(ref QuotesEnabled, "QuotesEnabled", true, true);
 
             Scribe_Values.Look(ref VoteInterval, "VoteInterval", 5, true);
-            Scribe_Values.Look(ref CoinInterval, "CoinInterval", 3, true);
-            Scribe_Values.Look(ref CoinAmount, "CoinAmount", 15, true);
-            Scribe_Values.Look(ref KarmaCap, "KarmaCap", 300, true);
+            Scribe_Values.Look(ref CoinInterval, "CoinInterval", 2, true);
+            Scribe_Values.Look(ref CoinAmount, "CoinAmount", 30, true);
+            Scribe_Values.Look(ref KarmaCap, "KarmaCap", 500, true);
+            Scribe_Values.Look(ref MinimumPurchasePrice, "MinimumPurchasePrice", 50, true);
+
+            Scribe_Values.Look(ref CustomPricingSheetLink, "CustomPricingSheetLink", "https://bit.ly/2GT5daR", true);
 
             Scribe_Values.Look(ref EarningCoins, "EarningCoins", false, true);
             Scribe_Values.Look(ref StoreOpen, "StoreOpen", false, true);
@@ -121,9 +139,22 @@ namespace TwitchToolkit
             Scribe_Values.Look(ref JWTToken, "JWTToken", "", true);
             Scribe_Values.Look(ref AccountID, "AccountID", "", true);
 
+            Scribe_Values.Look(ref MinifiableBuildings, "MinifiableBuildings", false, true);
+
+            Scribe_Values.Look(ref BalanceCmd, "BalanceCmd", "!bal", true);
+            Scribe_Values.Look(ref BuyeventCmd, "BuyeventCmd", "!buyevent", true);
+            Scribe_Values.Look(ref BuyitemCmd, "BuyitemCmd", "!buyitem", true);
+            Scribe_Values.Look(ref InstructionsCmd, "InstructionsCmd", "!instructions", true);
+            Scribe_Values.Look(ref PurchaselistCmd, "PurchaselistCmd", "!purchaselist", true);
+            Scribe_Values.Look(ref ModinfoCmd, "ModinfoCmd", "!modinfo", true);
+            Scribe_Values.Look(ref ModsettingsCmd, "ModsettingsCmd", "!modsettings", true);
+            Scribe_Values.Look(ref KarmaCmd, "KarmaCmd", "!whatiskarma", true);
+
             Scribe_Collections.Look(ref ViewerIds, "ViewerIds", LookMode.Value, LookMode.Value);
             Scribe_Collections.Look(ref ViewerCoins, "ViewerCoins", LookMode.Value, LookMode.Value);
             Scribe_Collections.Look(ref ViewerKarma, "ViewerKarma", LookMode.Value, LookMode.Value);
+
+            Scribe_Collections.Look(ref Moderators, "Moderators", LookMode.Value);
 
             Scribe_Collections.Look(ref ItemIds, "ItemIds", LookMode.Value, LookMode.Value);
             Scribe_Collections.Look(ref ItemPrices, "ItemPrices", LookMode.Value, LookMode.Value);
@@ -217,7 +248,6 @@ namespace TwitchToolkit
                         string defname = ItemDefnames[id];
                         string stuffname = ItemStuffnames[id];
                         items.Add(new Item(price, abr, defname, id, stuffname));
-                        Helper.Log("Loaded item " + items[id].abr);
                     }
                 }
             }
@@ -269,6 +299,18 @@ namespace TwitchToolkit
                 }
             }
 
+            buttonRect.y += _height;
+            if (Widgets.ButtonText(buttonRect, "Experimental"))
+            {
+                _menu = 5;
+            }
+
+            buttonRect.y += _height;
+            if (Widgets.ButtonText(buttonRect, "Commands"))
+            {
+                _menu = 6;
+            }
+
             rect.width -= buttonWidth + _padding;
             switch (_menu)
             {
@@ -286,7 +328,18 @@ namespace TwitchToolkit
                     CoinMenu(rect);
                     break;
                 case 4:
+                    if (products == null)
+                    {
+                        Helper.Log("Ressetting Products");
+                        ResetProductData();
+                    }
                     EventMenu(rect);
+                    break;
+                case 5:
+                    DevMenu(rect);
+                    break;
+                case 6:
+                    CommandMenu(rect);
                     break;
             }
         }
@@ -342,7 +395,7 @@ namespace TwitchToolkit
             inputRect.y += _height;
             inputRect.width = ((inputRect.width - _padding) / 2);
             Widgets.Label(labelRect, "TwitchStoriesSettingsOtherCommands".Translate() + ": ");
-            if (Widgets.ButtonText(inputRect, "!mods " + (CommandsModsEnabled ? "TwitchStoriesEnabled".Translate() : "TwitchStoriesDisabled".Translate())))
+            if (Widgets.ButtonText(inputRect, "!installedmods " + (CommandsModsEnabled ? "TwitchStoriesEnabled".Translate() : "TwitchStoriesDisabled".Translate())))
             {
                 CommandsModsEnabled = !CommandsModsEnabled;
             }
@@ -379,10 +432,50 @@ namespace TwitchToolkit
         {
             Listing_TwitchToolkit listingStandard = new Listing_TwitchToolkit();
             listingStandard.Begin(rect);
-            listingStandard.CheckboxLabeled("Reward Coins:", ref Settings.EarningCoins, "Should viewers earn coins while watching?");
-            listingStandard.CheckboxLabeled("Store Open:", ref Settings.StoreOpen, "Enable purchasing of events and items");
-            listingStandard.Label("Coins Per Interval: " + Settings.CoinAmount);
-            Settings.CoinAmount = listingStandard.Slider((float)Settings.CoinAmount, 1, 50);
+            listingStandard.CheckboxLabeled("Reward Coins: ", ref EarningCoins, "Should viewers earn coins while watching?");
+            listingStandard.CheckboxLabeled("Store Open: ", ref StoreOpen, "Enable purchasing of events and items");
+            listingStandard.Label("Coins Per Interval: " + CoinAmount);
+            CoinAmount = listingStandard.Slider((float)CoinAmount, 1, 250);
+            listingStandard.Label("Max Karma: " + KarmaCap);
+            KarmaCap = listingStandard.Slider((float)KarmaCap, 100, 1000);
+            listingStandard.Label("Minimum Purchase Price: " + MinimumPurchasePrice);
+            MinimumPurchasePrice = listingStandard.Slider((float)MinimumPurchasePrice, 10, 500);
+            listingStandard.Label("Minutes between coin reward: " + CoinInterval);
+            CoinInterval = listingStandard.Slider((float)CoinInterval, 1, 60);
+            listingStandard.Label("Link to custom pricing sheet: (check steamworkshop description for instructions)");
+            CustomPricingSheetLink = listingStandard.TextEntry(CustomPricingSheetLink);
+
+            listingStandard.End();
+        }
+
+        public static void DevMenu(Rect rect)
+        {
+            Listing_TwitchToolkit listingStandard = new Listing_TwitchToolkit();
+            listingStandard.Begin(rect);
+            listingStandard.CheckboxLabeled("Should buildings unable to be uninstalled be included in the item list? ", ref MinifiableBuildings, "Non-Minifiable Buildings?");
+            listingStandard.End();
+        }
+
+        public static void CommandMenu(Rect rect)
+        {
+            Listing_TwitchToolkit listingStandard = new Listing_TwitchToolkit();
+            listingStandard.Begin(rect);
+            listingStandard.Label("Check your coin balance");
+            BalanceCmd = listingStandard.TextEntry(BalanceCmd);
+            listingStandard.Label("Buy an event");
+            BuyeventCmd = listingStandard.TextEntry(BuyeventCmd);
+            listingStandard.Label("Buy an item");
+            BuyitemCmd = listingStandard.TextEntry(BuyitemCmd);
+            listingStandard.Label("Instructions");
+            InstructionsCmd = listingStandard.TextEntry(InstructionsCmd);
+            listingStandard.Label("Purchase list");
+            PurchaselistCmd = listingStandard.TextEntry(PurchaselistCmd);
+            listingStandard.Label("Mod info");
+            ModinfoCmd = listingStandard.TextEntry(ModinfoCmd);
+            listingStandard.Label("Mod settings");
+            ModsettingsCmd = listingStandard.TextEntry(ModsettingsCmd);
+            listingStandard.Label("Karma explanation");
+            KarmaCmd = listingStandard.TextEntry(KarmaCmd);
 
             listingStandard.End();
         }
@@ -442,6 +535,15 @@ namespace TwitchToolkit
                 }
             }
 
+            if (ProductScroll > 0)
+            {
+                scrollRect.x += 40f;
+                if (Widgets.ButtonText(scrollRect, "top"))
+                {
+                    ProductScroll = 0;
+                }
+            }
+
             scrollRect.x = _padding + (rect.width - (_padding * 2)) / 2 + (rect.width - (_padding * 2)) / 4;
             scrollRect.width = (rect.width - (_padding * 2)) / 4;
 
@@ -491,7 +593,7 @@ namespace TwitchToolkit
                 Rect smallButton = new Rect(300f, productline.y, 40f, 30f);
 
                 string pricelabel = (product.amount) < 0 ? "Disabled" : product.amount.ToString();
-                Widgets.Label(productline, $"{product.name}: {pricelabel}");
+                Widgets.Label(productline, $"{ProductScroll + count + 1} - {product.name}: {pricelabel}");
                 
                 int newprice = product.amount;
 
@@ -558,12 +660,12 @@ namespace TwitchToolkit
                     if (product.karmatype == KarmaType.Doom)
                     {
                         product.karmatype = 0;
-                        Settings.ProductKarmaTypes[product.id] = 0;
+                        ProductKarmaTypes[product.id] = 0;
                     }
                     else
                     {
                         product.karmatype = product.karmatype + 1;
-                        Settings.ProductKarmaTypes[product.id] = Settings.ProductKarmaTypes[product.id] + 1;
+                        ProductKarmaTypes[product.id] = ProductKarmaTypes[product.id] + 1;
                     }
                 }
 
@@ -571,7 +673,7 @@ namespace TwitchToolkit
                 if (Widgets.ButtonText(smallButton, "Disable"))
                 {
                     SoundDefOf.AmountIncrement.PlayOneShotOnCamera();
-                    newprice = -1;
+                    newprice = -10;
                 }
 
                 ProductAmounts[product.id] = newprice;
@@ -610,6 +712,15 @@ namespace TwitchToolkit
                 }
             }
 
+            if (ItemScroll > 0)
+            {
+                scrollRect.x += 40f;
+                if (Widgets.ButtonText(scrollRect, "top"))
+                {
+                    ItemScroll = 0;
+                }
+            }
+
             scrollRect.x = _padding + (rect.width - (_padding * 2)) / 2 + (rect.width - (_padding * 2)) / 4;
             scrollRect.width = (rect.width - (_padding * 2)) / 4;
 
@@ -641,7 +752,7 @@ namespace TwitchToolkit
             
             Rect itemline = new Rect(_padding, _padding + _height, 600f, 30f);
             
-            List<Item> query = items.Where(a => (a.abr.Contains(searchquery))).ToList();
+            List<Item> query = items.Where(a => (a.abr.Contains(searchquery.ToLower()))).ToList();
             foreach (Item item in query)
             {
                 if (++scroll <= ItemScroll)
@@ -659,7 +770,7 @@ namespace TwitchToolkit
                 Rect smallButton = new Rect(300f, itemline.y, 40f, 30f);
 
                 string pricelabel = (item.price) < 0 ? "Disabled" : item.price.ToString();
-                Widgets.Label(itemline, $"{item.abr}: {pricelabel}");
+                Widgets.Label(itemline, $"{ItemScroll + count + 1} - {item.abr}: {pricelabel}");
 
                 int newprice = item.price;
                 if (Widgets.ButtonText(smallButton, "-" + 100))
@@ -720,7 +831,7 @@ namespace TwitchToolkit
                 if (Widgets.ButtonText(smallButton, "Disable"))
                 {
                     SoundDefOf.AmountIncrement.PlayOneShotOnCamera();
-                    newprice = -1;
+                    newprice = -10;
                 }
 
                 ItemPrices[item.id] = newprice;

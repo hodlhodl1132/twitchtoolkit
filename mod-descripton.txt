@@ -22,26 +22,35 @@ As much as we'd all love to send 50 raids to our favorite twitch streamers, we n
 [h1]Admin Commands[/h1]
 [b]!refreshviewers[/b] - updates viewers watching channel, this is for debugging mostly
 [b]!karmaround[/b] - simulates a coin reward round
-[b]!givecoins[/b] - Syntax: !givecoins @username 1000 - gives user 1000 coins
+[b]!givecoins[/b] - Syntax: !givecoins @username 1000 - gives user 1000 coins (can also be used with negative numbers to take coins)
 [b]!giveallcoins[/b] - Syntax: !giveallcoins 1000 - gives all users 1000 coins
 [b]!resetviewers[/b] - resets all viewers data back to default, must confirm twice
 [b]!checkuser[/b] - Syntax: !checkuser @username - do a balance check on the user
-[b]!setuserkarma[/b] - Syntax: !setuserkarma @username 100 - set user karma to 100% 
+[b]!setkarma[/b] - Syntax: !setuserkarma @username 100 - set user karma to 100% 
 [b]!togglestore[/b] - toggle ability for users to purchase items/events
 [b]!togglecoins[/b] - toggle ability for users to earn coins while viewing
 
 [h1]User Commands[/h1]
-[b]!balance, !bal, !coins[/b] - check balance and karma rate
+
+These commands can be changed in the settings except for !whatiskarma
+
+[b]!bal[/b] - check balance and karma rate
 [b]!buyevent[/b] - Syntax: !buyevent skillincrease - purchase an event
 [b]!buyitem[/b] - Syntax: !buyitem beer 2 - purchase an item
 [b]!whatiskarma, !karma[/b] - explains what the karma system is
-[b]!purchaselist, !instructions[/b] - gives users a link to the public purchase list and info on using the mod
+[b]!purchaselist[/b] - gives users a link to the public purchase list
+[b]!instructions[/b] - gives users info on using the mod
 [b]!modinfo[/b] - gives users info about the mod
+[b]!modsettings[/b] - gives user info on how many coins are being earned and global settings
 
 [h1]Custom Pricing[/h1]
 Items are available for purchase as well. You can edit the pricing of items/events in the settings. Currently the best way of sharing your custom pricing sheet with your chat is through a public spreadsheet. Ingame on your bottom menu bar click on toolkit. Here you can generate a spreadsheet with your current pricing. The spreadsheet will output to your rimworld data file. For windows users this is
 
 %USERPROFILE%\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios
+
+[u]paste the above into your file explorer address bar, including the %USERPROFILE%[/u]
+
+Or if you pause and go to options, you will see a button for open save data folder. It should be in there.
 
 It should be name productlist.csv. You can distribute this file by creating a new Google Sheets file and going to File -> Import -> Upload. I intend to make this easier in the future.
 
@@ -53,6 +62,7 @@ Not currently supported but will in the future.
 2. Open the mod settings and include your channel name, the username of the account you want to use as well as it's oauth token
 3. Press reconnect in the mod settings
 4. There is a glitch we are working on, you need to restart your game after doing your inital settings
+5. Setup items for purchasing. Make sure you have all mods you want to pull items from loaded, then under Mod Settings -> Items, do reset to default. This will pull every item in game and put it into your purchase list.
 
 
 
