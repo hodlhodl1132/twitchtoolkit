@@ -127,10 +127,10 @@ namespace TwitchToolkit
                 {
                     _lastCoinReward = time;
                 }
-                else if (Settings.EarningCoins && ((time - _lastCoinReward) >= Settings.CoinInterval) && WebRequest_BeginGetResponse.jsonString != null)
+                else if (Settings.EarningCoins && ((time - _lastCoinReward) >= Settings.CoinInterval) && Settings.viewers.jsonallviewers != null)
                 {
                     _lastCoinReward = time;
-                    Viewer.AwardViewersCoins();
+                    Settings.viewers.AwardViewersCoins();
                 }
                 if (_lastMinute < 0)
                 {
@@ -139,7 +139,7 @@ namespace TwitchToolkit
                 else if (_lastMinute < time)
                 {
                     _lastMinute = time;
-                    WebRequest_BeginGetResponse.Main();
+                    TwitchToolkitDev.WebRequest_BeginGetResponse.Main("https://tmi.twitch.tv/group/user/" + Settings.Channel.ToLower() + "/chatters", new Func<TwitchToolkitDev.RequestState, bool>(Settings.viewers.SaveUsernamesFromJsonResponse));
                     _mod.WriteSettings();
                 }
                 //Helper.Log($"last minute: {_lastMinute}, chatter exists: {WebRequest_BeginGetResponse.jsonString != null}, last coin reward:  {_lastCoinReward}, minute: {minutes}, Time: {time}");

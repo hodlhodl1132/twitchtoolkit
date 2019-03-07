@@ -118,6 +118,7 @@
     <Compile Include="TwitchToolkit_Overlay.cs" />
     <Compile Include="Incidents\IncidentWorker_Raid.cs" />
     <Compile Include="Viewer.cs" />
+    <Compile Include="Viewers.cs" />
     <Compile Include="VoteEvent.cs" />
     <Compile Include="WebRequest.cs" />
   </ItemGroup>

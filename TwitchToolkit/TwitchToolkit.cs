@@ -306,12 +306,12 @@ namespace TwitchToolkit
             {
                 if (message.StartsWith("!refreshviewers"))
                 {
-                    WebRequest_BeginGetResponse.Main();
+                    TwitchToolkitDev.WebRequest_BeginGetResponse.Main("https://tmi.twitch.tv/group/user/" + Settings.Channel.ToLower() + "/chatters", new Func<TwitchToolkitDev.RequestState, bool>(Settings.viewers.SaveUsernamesFromJsonResponse));
                 }
 
                 if (message.StartsWith("!karmaround"))
                 {
-                    Viewer.AwardViewersCoins();
+                    Settings.viewers.AwardViewersCoins();
                 }
 
                 if (message.StartsWith("!giveallcoins"))
@@ -334,7 +334,7 @@ namespace TwitchToolkit
                             {
                                 viewer.GiveViewerCoins(amount);
                             }
-                            _client.SendMessage($"@{user} " + "TwitchToolkitGivingAll".Translate() + $" {amount} " + "TwitchToolkitVote".Translate());
+                            _client.SendMessage($"@{user} " + "TwitchToolkitGivingAll".Translate() + $" {amount} " + "TwitchToolkitCoins".Translate());
                         }
                     }
                     catch (InvalidCastException e)

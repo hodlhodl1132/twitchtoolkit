@@ -64,6 +64,7 @@ namespace TwitchToolkit
         public static Dictionary<string, bool> ViewerModerators = new Dictionary<string, bool>();
 
         public static List<Viewer> listOfViewers;
+        public static Viewers viewers = new Viewers();
 
         // product storage
         public static Dictionary<string, int> ProductIds = null;
