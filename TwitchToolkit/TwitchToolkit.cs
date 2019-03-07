@@ -496,7 +496,7 @@ namespace TwitchToolkit
 
                     int amount;
                     bool isNumeric = int.TryParse(command[2], out amount);
-                    if (isNumeric)
+                    if (isNumeric && amount > 0)
                     {
                         Viewer giftee = Viewer.GetViewer(target);
                         Viewer gifter = Viewer.GetViewer(user);
