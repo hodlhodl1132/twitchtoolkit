@@ -325,8 +325,7 @@ namespace TwitchToolkit
                             return;
                         }
 
-                        int amount;
-                        bool isNumeric = int.TryParse(command[1], out amount);
+                        bool isNumeric = int.TryParse(command[1], out int amount);
 
                         if (isNumeric)
                         {
@@ -494,8 +493,7 @@ namespace TwitchToolkit
 
                     string target = command[1].Replace("@", "");
 
-                    int amount;
-                    bool isNumeric = int.TryParse(command[2], out amount);
+                    bool isNumeric = int.TryParse(command[2], out int amount);
                     if (isNumeric && amount > 0)
                     {
                         Viewer giftee = Viewer.GetViewer(target);
@@ -519,12 +517,11 @@ namespace TwitchToolkit
             {
                 if (message.StartsWith(Settings.BuyeventCmd))
                 {
-                    if (message.Split(' ')[1] == "carepackage" || message.Split(' ').Count() < 2)
+                    if (message.Split(' ').Count() < 2 || (message.Split(' ')[1] == "carepackage"))
                     {
                         return;
                     }
-
-                    Helper.Log("Attempting event purchase");
+                    
                     ShopCommand command = new ShopCommand(message, Viewer.GetViewer(user));
                     if (command.errormessage != null)
                     {

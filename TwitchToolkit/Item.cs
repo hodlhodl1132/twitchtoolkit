@@ -53,7 +53,7 @@ namespace TwitchToolkit
             return quanity * this.price;
         }
 
-        public void PutItemInCargoPod(string quote, int amount)
+        public void PutItemInCargoPod(string quote, int amount, string username)
         {
             var itemDef = ThingDef.Named("DropPodIncoming");
             var itemThing = new Thing();
@@ -97,7 +97,7 @@ namespace TwitchToolkit
                 vec = Helper.Rain(itemDef, itemThing);
             }
 
-
+            quote = Helper.ReplacePlaceholder(quote, from: username, amount: amount.ToString(), item: this.abr);
 
             Helper.CarePackage(quote, LetterDefOf.PositiveEvent, vec);
         }

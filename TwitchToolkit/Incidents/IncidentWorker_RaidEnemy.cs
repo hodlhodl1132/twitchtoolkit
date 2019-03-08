@@ -63,14 +63,14 @@ namespace TwitchToolkit.Incidents
             {
                 Log.Error(string.Concat(new object[]
                 {
-          "No raid stategy for ",
-          parms.faction,
-          " with points ",
-          parms.points,
-          ", groupKind=",
-          groupKind,
-          "\nparms=",
-          parms
+                  "No raid stategy for ",
+                  parms.faction,
+                  " with points ",
+                  parms.points,
+                  ", groupKind=",
+                  groupKind,
+                  "\nparms=",
+                  parms
                 }), false);
                 if (!Prefs.DevMode)
                 {

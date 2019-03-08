@@ -39,6 +39,7 @@
   <TwitchStoriesDescription74>Everyone has gone berserk.
 
 Everyone will attack anyone they see.</TwitchStoriesDescription74>
-  <TwitchStoriesDescription80>Chat decided to send you a care package! Make sure to thank your viewers :)!</TwitchStoriesDescription80>
+  <TwitchStoriesDescription80>{from} decided to send you a care package with {amount} {item}! Thank you {from}!</TwitchStoriesDescription80>
+  <TwitchStoriesDescription87>Military aid from another faction has appeared.</TwitchStoriesDescription87>
   <TwitchStoriesDescription89>{colonist} has a sudden urge for some human flesh.</TwitchStoriesDescription89>
 </LanguageData>

@@ -47,6 +47,7 @@ namespace TwitchToolkit
         private FiringIncident GenerateIncident(IIncidentTarget target)
         {
             Helper.Log("Trying OnOffCycle Incident");
+            List<IncidentDef> pickedoptions = new List<IncidentDef>();
             IncidentParms parms = this.GenerateParms(this.Props.IncidentCategory, target);
             IncidentDef def2;
             if ((float)GenDate.DaysPassed < this.Props.forceRaidEnemyBeforeDaysPassed)
@@ -75,9 +76,16 @@ namespace TwitchToolkit
                 {
                     if (options.Count() > 1)
                     {
-                        Helper.Log($"Sending OFC events to vote, total of {options.Count()}");
-                        VoteEvent evt = new VoteEvent(options, this, parms);
+                        for (int x = 0; x < Settings.VoteOptions; x++)
+                        {
+                            options.TryRandomElementByWeight(new Func<IncidentDef, float>(base.IncidentChanceFinal), out IncidentDef picked);
+                            options = options.Where(k => k != picked);
+                            pickedoptions.Add(picked);
+                        }
+
+                        VoteEvent evt = new VoteEvent(pickedoptions, this, parms);
                         Ticker.VoteEvents.Enqueue(evt);
+                        Helper.Log("Events created");
                         return null;
                     }
                     else if (options.Count() == 1)

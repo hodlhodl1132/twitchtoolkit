@@ -21,6 +21,7 @@ namespace TwitchToolkit
         {
             float mtbNow = this.Props.mtbDays;
             IEnumerable<IncidentDef> options;
+            List<IncidentDef> pickedoptions = new List<IncidentDef>();
             if (this.Props.mtbDaysFactorByDaysPassedCurve != null)
             {
                 mtbNow *= this.Props.mtbDaysFactorByDaysPassedCurve.Evaluate(GenDate.DaysPassedFloat);
@@ -34,9 +35,16 @@ namespace TwitchToolkit
                 Helper.Log("Trying to create events");
                 if (options.TryRandomElementByWeight(new Func<IncidentDef, float>(base.IncidentChanceFinal), out selectedDef))
                 {
-                    if (options.Count() > 1)
+                    if (options.Count() > Settings.VoteOptions)
                     {
-                        VoteEvent evt = new VoteEvent(options, this, this.GenerateParms(selectedDef.category, target));
+                        for (int x = 0; x < Settings.VoteOptions; x++)
+                        {
+                            options.TryRandomElementByWeight(new Func<IncidentDef, float>(base.IncidentChanceFinal), out IncidentDef picked);
+                            options = options.Where(k => k != picked);
+                            pickedoptions.Add(picked);
+                        }
+
+                        VoteEvent evt = new VoteEvent(pickedoptions, this, this.GenerateParms(selectedDef.category, target));
                         Ticker.VoteEvents.Enqueue(evt);
                         Helper.Log("Events created");
                         yield break;

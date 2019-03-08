@@ -554,17 +554,41 @@ namespace TwitchToolkit
             int count = 0;
             int scroll = 0;
 
+            scrollRect.x += 40f;
             if (ProductScroll < (products.Count - count) - 8)
             {
-                scrollRect.x += 40f;
                 if (Widgets.ButtonText(scrollRect, "down"))
                 {
                     ProductScroll++;
                 }
             }
 
-            scrollRect.x = _padding + (rect.width - (_padding * 2)) / 2 + (rect.width - (_padding * 2)) / 4;
-            scrollRect.width = (rect.width - (_padding * 2)) / 4;
+            scrollRect.x += 40f;
+            if (Widgets.ButtonText(scrollRect, "x0.5"))
+            {
+                Products.MultiplyProductPrices(0.5);
+            }
+
+            scrollRect.x += 40f;
+            if (Widgets.ButtonText(scrollRect, "x2"))
+            {
+                Products.MultiplyProductPrices(2);
+            }
+
+            scrollRect.x += 40f;
+            if (Widgets.ButtonText(scrollRect, "x5"))
+            {
+                Products.MultiplyProductPrices(5);
+            }
+
+            scrollRect.x += 40f;
+            if (Widgets.ButtonText(scrollRect, "x10"))
+            {
+                Products.MultiplyProductPrices(10);
+            }
+
+            scrollRect.x += 40f;
+            scrollRect.width = (150f);
 
             if (ResetProductStage == 0)
             {

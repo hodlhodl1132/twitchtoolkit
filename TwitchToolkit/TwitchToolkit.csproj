@@ -53,6 +53,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Dialog_CustomModSettings.cs" />
+    <Compile Include="Incidents\IncidentWorker_CallForAid.cs" />
     <Compile Include="IRC\ConcurrentCircularBuffer.cs" />
     <Compile Include="Item.cs" />
     <Compile Include="Karma.cs" />

@@ -30,6 +30,7 @@ namespace TwitchToolkit
                 bool targetIsRaidBeacon = target.IncidentTargetTags().Contains(IncidentTargetTagDefOf.Map_RaidBeacon);
                 List<IncidentCategoryDef> triedCategories = new List<IncidentCategoryDef>();
                 IncidentDef incDef;
+                List<IncidentDef> pickedoptions = new List<IncidentDef>();
                 IEnumerable<IncidentDef> options;
                 for (; ; )
                 {
@@ -57,8 +58,17 @@ namespace TwitchToolkit
                 // _twitchstories.StartVote(options, this, parms);
                 if (options.Count() > 1)
                 {
-                    VoteEvent evt = new VoteEvent(options, this, parms);
+                    for (int x = 0; x < Settings.VoteOptions; x++)
+                    {
+                        options.TryRandomElementByWeight(new Func<IncidentDef, float>(base.IncidentChanceFinal), out IncidentDef picked);
+                        options = options.Where(k => k != picked);
+                        pickedoptions.Add(picked);
+                    }
+
+                    VoteEvent evt = new VoteEvent(pickedoptions, this, parms);
                     Ticker.VoteEvents.Enqueue(evt);
+                    Helper.Log("Events created");
+                    yield break;
                 }
                 else if (options.Count() == 1)
                 {

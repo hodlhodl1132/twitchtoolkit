@@ -73,6 +73,26 @@ namespace TwitchToolkit.Incidents
             parms.points = IncidentWorker_Raid.AdjustedRaidPoints(parms.points, parms.raidArrivalMode, parms.raidStrategy, parms.faction, combat);
             PawnGroupMakerParms defaultPawnGroupMakerParms = IncidentParmsUtility.GetDefaultPawnGroupMakerParms(combat, parms, false);
             List<Pawn> list = PawnGroupMakerUtility.GeneratePawns(defaultPawnGroupMakerParms, true).ToList<Pawn>();
+            List<string> viewernames = Settings.viewers.ParseViewersFromJson();
+            if (viewernames != null)
+            {
+                int count = 0;
+                int totalviewers = viewernames.Count();
+                System.Random rnd = new System.Random();
+                foreach(Pawn pawn in list)
+                {
+                    if (count == list.Count() || viewernames.NullOrEmpty())
+                    {
+                        continue;
+                    }     
+                    int thisviewer = rnd.Next(0, viewernames.Count() - count);
+
+                    NameSingle name = new NameSingle(viewernames[thisviewer]);
+                    pawn.Name = name;
+                    viewernames.RemoveAt(thisviewer);
+                    count++;
+                }
+            }
             if (list.Count == 0)
             {
                 Log.Error("Got no pawns spawning raid from parms " + parms, false);
@@ -122,19 +142,6 @@ namespace TwitchToolkit.Incidents
 
             Find.LetterStack.ReceiveLetter(letterLabel, letterText, this.GetLetterDef(), list2, parms.faction, stringBuilder.ToString());
             parms.raidStrategy.Worker.MakeLords(parms, list);
-            LessonAutoActivator.TeachOpportunity(ConceptDefOf.EquippingWeapons, OpportunityType.Critical);
-            if (!PlayerKnowledgeDatabase.IsComplete(ConceptDefOf.ShieldBelts))
-            {
-                for (int j = 0; j < list.Count; j++)
-                {
-                    Pawn pawn = list[j];
-                    if (pawn.apparel.WornApparel.Any((Apparel ap) => ap is ShieldBelt))
-                    {
-                        LessonAutoActivator.TeachOpportunity(ConceptDefOf.ShieldBelts, OpportunityType.Critical);
-                        break;
-                    }
-                }
-            }
             return true;
         }
 
