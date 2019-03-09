@@ -36,7 +36,7 @@ namespace TwitchToolkit
                 {
                     if (options.Count() > Settings.VoteOptions)
                     {
-                        for (int x = 0; x < Settings.VoteOptions; x++)
+                        for (int x = 0; x < (Settings.VoteOptions > options.Count() ? options.Count() : Settings.VoteOptions); x++)
                         {
                             options.TryRandomElementByWeight(new Func<IncidentDef, float>(base.IncidentChanceFinal), out IncidentDef picked);
                             if (picked != null)

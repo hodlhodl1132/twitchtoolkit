@@ -331,7 +331,7 @@ namespace TwitchToolkit
             {
                  this.errormessage = $"@{this.viewer.username} Event not possible";
             }
-            else if (this.product.maxEvents < 1 || !Settings.EventsHaveCooldowns)
+            else if (this.product.maxEvents < 1 && Settings.EventsHaveCooldowns)
             {
                 this.errormessage = $"@{this.viewer.username} Event on cooldown";
             }
