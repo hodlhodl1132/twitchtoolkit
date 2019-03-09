@@ -26,7 +26,6 @@ namespace TwitchToolkit
             {
                 mtbNow *= this.Props.mtbDaysFactorByDaysPassedCurve.Evaluate(GenDate.DaysPassedFloat);
             }
-            Helper.Log("Trying MTB Events");
             if (Rand.MTBEventOccurs(mtbNow, 60000f, 1000f))
             {
 
@@ -40,8 +39,11 @@ namespace TwitchToolkit
                         for (int x = 0; x < Settings.VoteOptions; x++)
                         {
                             options.TryRandomElementByWeight(new Func<IncidentDef, float>(base.IncidentChanceFinal), out IncidentDef picked);
-                            options = options.Where(k => k != picked);
-                            pickedoptions.Add(picked);
+                            if (picked != null)
+                            {
+                                options = options.Where(k => k != picked);
+                                pickedoptions.Add(picked);
+                            }
                         }
 
                         VoteEvent evt = new VoteEvent(pickedoptions, this, this.GenerateParms(selectedDef.category, target));

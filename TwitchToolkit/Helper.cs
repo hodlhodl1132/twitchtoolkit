@@ -12,7 +12,6 @@ namespace TwitchToolkit
     {
         private static bool _infestationPossible = false;
         static System.Random _random = new System.Random();
-        private static string paste;
 
         public static void Reset()
         {

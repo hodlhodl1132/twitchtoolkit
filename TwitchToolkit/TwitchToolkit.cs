@@ -23,7 +23,6 @@ namespace TwitchToolkit
         private VoteEvent _currentVote;
         private IEnumerable<IncidentDef> _eventsPossible;
         readonly Dictionary<string, int> _voteAnswers;
-        int _voteType;
         int resetWarning = 0;
 
         string _ircHost = "irc.twitch.tv";
@@ -54,7 +53,6 @@ namespace TwitchToolkit
             _paused = false;
             _voteAnswers = new Dictionary<string, int>();
             _voteEvents = null;
-            _voteType = 0;
 
             _doomsday = false;
 
@@ -683,6 +681,7 @@ namespace TwitchToolkit
                         return;
                     }
                 }
+
                 Helper.Log("Checking Voting Stage");
 
 
@@ -697,9 +696,8 @@ namespace TwitchToolkit
                     _voteActive = true;
                     _voteAnswers.Clear();
 
-
-                    Helper.Log("Playing event lottery");
                     List<IncidentDef> eventTest = _eventsPossible.ToList();
+                    Helper.Log("Playing event lottery, total events " + eventTest.Count());
 
                     int eventsTotal = eventTest.Count();
                     int eventsNeeded = Settings.VoteOptions;
@@ -725,29 +723,14 @@ namespace TwitchToolkit
                         }
                         eventsTotal--;
                     }
-
+                    Helper.Log("Chose events to vote with " + _eventsPossibleChosen.Count());
 
                     _client.SendMessage("TwitchStoriesChatMessageNewVote".Translate() + ": " + "TwitchToolKitVoteInstructions".Translate());
-                    //_voteType = _rand.Next(0, 2);
-                    _voteType = 2;
                     for (int i = 0; i < _eventsPossibleChosen.Count(); i++)
                     {
+                        Helper.Log("Event " + _eventsPossibleChosen.ToString());
                         string msg = "[" + (i + 1) + "] ";
-                        switch (_voteType)
-                        {
-                            case 0:
-                                msg += ("TwitchStoriesVote" + _voteEvents[i].Type.ToString()).Translate();
-                                break;
-                            case 1:
-                                msg += ("TwitchStoriesVote" + _voteEvents[i].MainCategory.ToString()).Translate();
-                                break;
-                            case 2:
-                                msg += (_eventsPossibleChosen[i].LabelCap);
-                                break;
-                            default:
-                                msg += _voteEvents[i].Description;
-                                break;
-                        }
+                        msg += (_eventsPossibleChosen[i].LabelCap);
                         _client.SendMessage(msg);
                     }
                     _votingStage = 1;
@@ -805,6 +788,7 @@ namespace TwitchToolkit
                     _voteActive = false;
                     _voteEvents = null;
                     _eventsPossibleChosen = null;
+                    _eventsPossible = null;
                     _votingStage = 2;
                 }
             }

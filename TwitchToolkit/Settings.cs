@@ -30,6 +30,7 @@ namespace TwitchToolkit
         public static int CoinAmount;
         public static int MinimumPurchasePrice;
         public static int KarmaCap;
+        public static int EventCooldownInterval;
 
         public static string CustomPricingSheetLink;
 
@@ -40,10 +41,12 @@ namespace TwitchToolkit
         public static bool WhisperCmdsOnly;
         public static bool WhisperCmdsAllowed;
         public static bool PurchaseConfirmations;
+        public static bool EventsHaveCooldowns;
 
         public static string JWTToken;
         public static string AccountID;
 
+        public static bool UnlimitedCoins;
         public static bool MinifiableBuildings = false;
 
         public static string BalanceCmd;
@@ -73,6 +76,7 @@ namespace TwitchToolkit
         public static Dictionary<int, int> ProductKarmaTypes = new Dictionary<int, int>();
         public static Dictionary<int, int> ProductAmounts = new Dictionary<int, int>();
         public static Dictionary<int, int> ProductEventIds = new Dictionary<int, int>();
+        public static Dictionary<int, int> ProductMaxEvents = new Dictionary<int, int>();
 
         public static List<Product> products = null;
 
@@ -86,6 +90,8 @@ namespace TwitchToolkit
 
         private static List<string> _Categories = Enum.GetNames(typeof(EventCategory)).ToList();
         public static List<int> CategoryWeights = Enumerable.Repeat<int>(100, _Categories.Count).ToList();
+
+        public static Scheduled JobManager = new Scheduled();
 
         public static double CategoryWeight(EventCategory category)
         {
@@ -137,6 +143,7 @@ namespace TwitchToolkit
             Scribe_Values.Look(ref CoinAmount, "CoinAmount", 30, true);
             Scribe_Values.Look(ref KarmaCap, "KarmaCap", 500, true);
             Scribe_Values.Look(ref MinimumPurchasePrice, "MinimumPurchasePrice", 50, true);
+            Scribe_Values.Look(ref EventCooldownInterval, "EventCooldownInterval", 15, true);
 
             Scribe_Values.Look(ref CustomPricingSheetLink, "CustomPricingSheetLink", "https://bit.ly/2GT5daR", true);
 
@@ -151,6 +158,8 @@ namespace TwitchToolkit
             Scribe_Values.Look(ref AccountID, "AccountID", "", true);
 
             Scribe_Values.Look(ref MinifiableBuildings, "MinifiableBuildings", false, true);
+            Scribe_Values.Look(ref UnlimitedCoins, "UnlimitedCoins", false, true);
+            Scribe_Values.Look(ref EventsHaveCooldowns, "EventsHaveCooldowns", true, true);
 
             Scribe_Values.Look(ref BalanceCmd, "BalanceCmd", "!bal", true);
             Scribe_Values.Look(ref BuyeventCmd, "BuyeventCmd", "!buyevent", true);
@@ -178,6 +187,7 @@ namespace TwitchToolkit
             Scribe_Collections.Look(ref ProductKarmaTypes, "ProductKarmaTypes", LookMode.Value, LookMode.Value);
             Scribe_Collections.Look(ref ProductAmounts, "ProductAmounts", LookMode.Value, LookMode.Value);
             Scribe_Collections.Look(ref ProductEventIds, "ProductEventIds", LookMode.Value, LookMode.Value);
+            Scribe_Collections.Look(ref ProductMaxEvents, "ProductMaxEvents", LookMode.Value, LookMode.Value);
 
             Scribe_Collections.Look(ref CategoryWeights, "CategoryWeights", LookMode.Value);
 
@@ -215,10 +225,11 @@ namespace TwitchToolkit
 
             if (products == null)
             {
-                if (ProductIds == null)
+                if (ProductIds == null || ProductMaxEvents == null)
                 {
                     Helper.Log("Ressetting Products");
                     ResetProductData();
+                    this.Write();
                 }
                 else
                 {
@@ -234,7 +245,8 @@ namespace TwitchToolkit
                         KarmaType karmatype = (KarmaType)ProductKarmaTypes[id];
                         int amount = ProductAmounts[id];
                         int evtId = ProductEventIds[id];
-                        products.Add(new Product(id, type, name, abr, karmatype, amount, evtId));
+                        int maxEvents = ProductMaxEvents[id];
+                        products.Add(new Product(id, type, name, abr, karmatype, amount, evtId, maxEvents));
                     }
                 }
             }
@@ -245,6 +257,7 @@ namespace TwitchToolkit
                 {
                     Helper.Log("Creating all items");
                     ResetItemData();
+                    this.Write();
                 }
                 else
                 {
@@ -456,7 +469,18 @@ namespace TwitchToolkit
             CoinInterval = listingStandard.Slider((float)CoinInterval, 1, 60);
             listingStandard.Label("Link to custom pricing sheet: (check steamworkshop description for instructions)");
             CustomPricingSheetLink = listingStandard.TextEntry(CustomPricingSheetLink);
-
+            if (listingStandard.ButtonText("Disable Events"))
+            {
+                foreach(Product product in products)
+                {
+                    product.amount = -10;
+                    ProductAmounts[product.id] = -10;
+                }
+            }
+            if (listingStandard.ButtonText("Enable Events"))
+            {
+                ResetProductData();
+            }
             listingStandard.End();
         }
 
@@ -465,6 +489,10 @@ namespace TwitchToolkit
             Listing_TwitchToolkit listingStandard = new Listing_TwitchToolkit();
             listingStandard.Begin(rect);
             listingStandard.CheckboxLabeled("Should buildings unable to be uninstalled be included in the item list? ", ref MinifiableBuildings, "Non-Minifiable Buildings?");
+            listingStandard.CheckboxLabeled("Should viewers have unlimited coins? ", ref UnlimitedCoins, "Unlimited coins?");
+            listingStandard.CheckboxLabeled("Should events have cooldowns? ", ref EventsHaveCooldowns, "Event cooldowns?");
+            listingStandard.Label("How many minutes in a cooldown period: " + EventCooldownInterval);
+            EventCooldownInterval = listingStandard.Slider((float)EventCooldownInterval, 1, 120);
             listingStandard.End();
         }
 
@@ -719,6 +747,20 @@ namespace TwitchToolkit
                     newprice = -10;
                 }
 
+                smallButton.x += 60f;
+                if (Widgets.ButtonText(smallButton, "Max: " + ProductMaxEvents[product.id]))
+                {
+                    SoundDefOf.AmountIncrement.PlayOneShotOnCamera();
+                    if (ProductMaxEvents[product.id] < 10)
+                    {
+                        ProductMaxEvents[product.id]++;
+                    }
+                    else
+                    {
+                        ProductMaxEvents[product.id] = 1;
+                    }
+                }
+
                 ProductAmounts[product.id] = newprice;
                 product.amount = newprice;
 
@@ -895,6 +937,7 @@ namespace TwitchToolkit
             ProductKarmaTypes = new Dictionary<int, int>();
             ProductAmounts = new Dictionary<int, int>();
             ProductEventIds = new Dictionary<int, int>();
+            ProductMaxEvents = new Dictionary<int, int>();
             // if no previous save data create new products
             List<Product> defaultProducts = Products.GenerateDefaultProducts().ToList();
             foreach (Product product in defaultProducts)
@@ -906,6 +949,7 @@ namespace TwitchToolkit
                 ProductKarmaTypes.Add(id, (int)product.karmatype);
                 ProductAmounts.Add(id, product.amount);
                 ProductEventIds.Add(id, product.evtId);
+                ProductMaxEvents.Add(id, product.maxEvents);
                 products.Add(product);
             }
         }

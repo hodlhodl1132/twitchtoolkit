@@ -64,6 +64,8 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
+    <Compile Include="Scheduled.cs" />
+    <Compile Include="ScheduledJob.cs" />
     <Compile Include="SimpleJSON.cs" />
     <Compile Include="SimpleJSONBinary.cs" />
     <Compile Include="SimpleJSONUnity.cs" />

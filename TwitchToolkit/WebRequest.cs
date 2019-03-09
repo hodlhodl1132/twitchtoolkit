@@ -42,7 +42,6 @@ namespace TwitchToolkitDev
         {
             try
             {
-                Helper.Log("If this is the last message in the log check Viewer.WebRequest_BeginGetResposne");
                 ServicePointManager.ServerCertificateValidationCallback = MyRemoteCertificateValidationCallback;
                 WebRequest myWebRequest = WebRequest.Create(requesturl);
                 RequestState myRequestState = new RequestState();
@@ -112,7 +111,6 @@ namespace TwitchToolkitDev
                     {
                         string stringContent;
                         stringContent = myRequestState.requestData.ToString();
-                        Helper.Log(stringContent);
                         myRequestState.jsonString = stringContent;
                         
                         if (myRequestState.Callback != null)

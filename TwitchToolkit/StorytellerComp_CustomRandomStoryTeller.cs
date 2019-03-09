@@ -55,14 +55,16 @@ namespace TwitchToolkit
 
                 Helper.Log($"Events Possible: {options.Count()}");
 
-                // _twitchstories.StartVote(options, this, parms);
                 if (options.Count() > 1)
                 {
-                    for (int x = 0; x < Settings.VoteOptions; x++)
+                    for (int x = 0; x < (Settings.VoteOptions > options.Count() ? options.Count() : Settings.VoteOptions); x++)
                     {
                         options.TryRandomElementByWeight(new Func<IncidentDef, float>(base.IncidentChanceFinal), out IncidentDef picked);
-                        options = options.Where(k => k != picked);
-                        pickedoptions.Add(picked);
+                        if (picked != null)
+                        {
+                            options = options.Where(k => k != picked);
+                            pickedoptions.Add(picked);
+                        }
                     }
 
                     VoteEvent evt = new VoteEvent(pickedoptions, this, parms);

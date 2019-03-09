@@ -115,7 +115,15 @@ namespace TwitchToolkit
                 {
                     Helper.Log("VoteEvent Detected, Queueing");
                     var next = VoteEvents.Dequeue();
-                    _mod.StartVote(next);
+                    if (next.options != null && next.options.Count() > 1)
+                    {
+                        _mod.StartVote(next);
+                    }
+                    else
+                    {
+                        Helper.Log("VoteEvent options were empty....");
+                    }
+
                 }
 
                 if (Events.Count() > 0)
@@ -139,6 +147,7 @@ namespace TwitchToolkit
                 else if (_lastMinute < time)
                 {
                     _lastMinute = time;
+                    Settings.JobManager.CheckAllJobs();
                     TwitchToolkitDev.WebRequest_BeginGetResponse.Main("https://tmi.twitch.tv/group/user/" + Settings.Channel.ToLower() + "/chatters", new Func<TwitchToolkitDev.RequestState, bool>(Settings.viewers.SaveUsernamesFromJsonResponse));
                     _mod.WriteSettings();
                 }

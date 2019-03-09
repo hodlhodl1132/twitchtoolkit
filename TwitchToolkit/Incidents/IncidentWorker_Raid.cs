@@ -81,14 +81,18 @@ namespace TwitchToolkit.Incidents
                 System.Random rnd = new System.Random();
                 foreach(Pawn pawn in list)
                 {
-                    if (count == list.Count() || viewernames.NullOrEmpty())
+                    if (count == list.Count() || viewernames.NullOrEmpty() || !pawn.RaceProps.IsMechanoid)
                     {
                         continue;
                     }     
-                    int thisviewer = rnd.Next(0, viewernames.Count() - count);
+                    int thisviewer = rnd.Next(0, viewernames.Count());
+                    NameTriple name = pawn.Name as NameTriple;
+                    NameTriple newname = new NameTriple(name.First, viewernames[thisviewer], name.Last);
+                    if (!newname.UsedThisGame)
+                    {
+                        pawn.Name = newname;
+                    }
 
-                    NameSingle name = new NameSingle(viewernames[thisviewer]);
-                    pawn.Name = name;
                     viewernames.RemoveAt(thisviewer);
                     count++;
                 }
