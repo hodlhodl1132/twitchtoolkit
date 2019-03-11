@@ -248,7 +248,9 @@ namespace TwitchToolkit
       new Event(85,  EventType.Neutral, EventCategory.Foreigner, 2, "Trader visiting",   () => Helper.TraderPossible(), (quote) => Helper.Trader(quote)),
       new Event(86,  EventType.Neutral, EventCategory.Foreigner, 2, "Trader ship",       () => Helper.TraderShipPossible(), (quote) => Helper.TraderShip(quote)),
       #endregion
-      new Event(87,  EventType.Neutral, EventCategory.Foreigner, 2, "Military aid",       () => true, (quote) => Helper.MilitaryAid(quote))
+      new Event(87,  EventType.Good, EventCategory.Foreigner, 2, "Military aid",       () => true, (quote) => Helper.MilitaryAid(quote)),
+      new Event(88,  EventType.Good,    EventCategory.Drop, 2, "Cargo Pod Frenzy",        () => Helper.CargoPodPossible(), (quote) => Helper.CargoPodFrenzy(quote)),
+      new Event(90,  EventType.Neutral, EventCategory.Environment, 4, "Big meteorite shower",() => true, (quote) => Helper.MeteoriteShower(quote, 25, true)),
     };
 
         public static Event[] GetEvents()

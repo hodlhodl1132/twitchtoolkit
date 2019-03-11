@@ -853,6 +853,16 @@ namespace TwitchToolkit
             });
         }
 
+        public static void CargoPodFrenzy(string quote)
+        {
+            var incident = new TSIncidents.IncidentWorker_ResourcePodFrenzy(quote);
+            incident.def = IncidentDefOf.ShipChunkDrop;
+            incident.TryExecute(new IncidentParms
+            {
+                target = Helper.AnyPlayerMap
+            });
+        }
+
         public static bool TransportPodPossible()
         {
             var incident = new TSIncidents.IncidentWorker_TransportPodCrash(null);

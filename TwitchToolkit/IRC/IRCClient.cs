@@ -203,12 +203,25 @@ namespace TwitchToolkit.IRC
                     Send("PONG\n");
                     break;
                 case "376":
-                    Send(
-                        "CAP REQ :twitch.tv/membership\n" +
-                        "CAP REQ :twitch.tv/tags\n" +
-                        "CAP REQ :twitch.tv/commands\n" +
-                        "JOIN #" + _channel + "\n"
-                        );
+                    if (Settings.ChatroomUUID != "" && Settings.ChannelID != "")
+                    {
+                        Send(
+                            "CAP REQ :twitch.tv/membership\n" +
+                            "CAP REQ :twitch.tv/tags\n" +
+                            "CAP REQ :twitch.tv/commands\n" +
+                            "JOIN #chatrooms:" + Settings.ChannelID + ":" + Settings.ChatroomUUID + "\n"
+                            );
+                    }
+                    else
+                    {
+                        Send(
+                            "CAP REQ :twitch.tv/membership\n" +
+                            "CAP REQ :twitch.tv/tags\n" +
+                            "CAP REQ :twitch.tv/commands\n" +
+                            "JOIN #" + _channel + "\n"
+                            );
+                    }
+
                     _socketReady = true;
                     break;
                 case "PRIVMSG":
@@ -238,7 +251,14 @@ namespace TwitchToolkit.IRC
         {
 
             _messageQueue.Enqueue("PRIVMSG #" + _channel + " :" + message + "\n");
-
+            if (Settings.ChatroomUUID != "" && Settings.ChannelID != "")
+            {
+                _messageQueue.Enqueue("PRIVMSG #chatrooms:" + Settings.ChannelID + ":" + Settings.ChatroomUUID + " :" + message + "\n");
+            }
+            else
+            {
+                _messageQueue.Enqueue("PRIVMSG #" + _channel + " :" + message + "\n");
+            }
             _messageHandle.Set();
         }
 

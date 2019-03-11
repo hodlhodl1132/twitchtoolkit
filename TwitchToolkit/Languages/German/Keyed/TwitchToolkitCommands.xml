@@ -3,16 +3,27 @@
   <TwitchToolkitResetViewersWarningOne>Dies setzt alle Münzen und Karma auf den Anfangsstand Zurück. Bitte Bestätige es mit !resetviewers nocheinmal</TwitchToolkitResetViewersWarningOne>
   <TwitchToolkitResetViewersWarningTwo>Bist du ganz sicher dass du alles zurücksetzen willst? bestätige mit !resetviewers</TwitchToolkitResetViewersWarningTwo>
   <TwitchToolkitResetViewersWarningThree>Setze alle Zuschauerdaten zurück...</TwitchToolkitResetViewersWarningThree>
-  <TwitchToolkitEarningCoinsMessage>earning coins is now toggled</TwitchToolkitEarningCoinsMessage>
-  <TwitchToolkitStorePurchasesMessage>store purchases are now toggled</TwitchToolkitStorePurchasesMessage>
-  <TwitchToolkitWhatIsKarma>Karma beeinflusst die Geschwindigkeit in der du Münzen erhältst. Für Böse Aktionen wird dir Karma abgezogen und für gute Hinzugefügt. Dein Karma beträgt gerade</TwitchToolkitWhatIsKarma>
+  <TwitchToolkitAlreadyMod>{mod} ist bereits ein toolkit Moderator</TwitchToolkitAlreadyMod>
+  <TwitchToolkitAddedMod>{mod} zu den toolkit Moderatoren hinzugefügt</TwitchToolkitAddedMod>
+  <TwitchToolkitRemovedMod>entferne {mod} von den toolkit Moderatoren</TwitchToolkitRemovedMod>
+  <TwitchToolkitGiveAllCoins>Gebe allen Zuschauern {amount} Münzen</TwitchToolkitGiveAllCoins>
+  <TwitchToolkitModCannotGiveCoins>Moderatoren können sich selbst keine Münzen geben</TwitchToolkitModCannotGiveCoins>
+  <TwitchToolkitGivingCoins>Gebe {viewer} {amount} Münzen. Neuer Kontostand: {newbalance}</TwitchToolkitGivingCoins>
+  <TwitchToolkitCheckUser>Zuschauer: @{viewer} - Münzen: {amount} - Karma: {karma}%</TwitchToolkitCheckUser>
+  <TwitchToolkitSetKarma>Setze Karma von {viewer} zu {karma}%</TwitchToolkitSetKarma>
+  <TwitchToolkitOn>an</TwitchToolkitOn>
+  <TwitchToolkitOff>aus</TwitchToolkitOff>
+  <TwitchToolkitEarningCoinsMessage>Das verdienen von Münzen ist jetzt</TwitchToolkitEarningCoinsMessage>
+  <TwitchToolkitStorePurchasesMessage>Der Shop ist jetzt</TwitchToolkitStorePurchasesMessage>
+  <TwitchToolkitBalanceMessage>Münzen: {amount} - Karma: {karma}%</TwitchToolkitBalanceMessage>
   <TwitchToolkitInstructions>Events und Gegenstände Können im Chat gekauft werden. Beispiel: '!buyevent skillincrease' oder '!buyitem bier 5'. Komplette Liste der Kaufbaren Sachen hier: </TwitchToolkitInstructions>
+  <TwitchToolkitWhatIsKarma>Karma beeinflusst die Geschwindigkeit in der du Münzen erhältst. Für Böse Aktionen wird dir Karma abgezogen und für gute Hinzugefügt. Dein Karma beträgt gerade</TwitchToolkitWhatIsKarma>
   <TwitchToolkitPurchaseList>Komplette Liste hier:</TwitchToolkitPurchaseList>
+  <TwitchToolkitGiftCoins>Ein Geschenk! du erhältst {amount} Münzen von @{from}</TwitchToolkitGiftCoins>
   <TwitchToolkitModInfo>TwitchToolkit ist ein Mod von Twitch.tv/hodlhodl der dem Twitch Chat die Entscheidung über Ingame Events gibt, Münzen fürs Zuschauen gibt, und mit diesen Münzen ingame Items und Events gekauft werden können. Gebe !purchaselist für eine Liste kaufbarer Sachen ein. Discord des Mods:</TwitchToolkitModInfo>
-  <TwitchToolkitGivingAll>Gebe allen Zuschauern</TwitchToolkitGivingAll>
+  <TwitchToolkitModSettings>Twitch toolkit gibt Zuschauern {amount} Münzen alle {first} Minute(n), Der Shop ist {second} und die Münzverteilung ist {third}. Das Maximale Karma ist {karma}%.</TwitchToolkitModSettings>
+  <TwitchToolkitUserCommands>Du kannst Folgende Befehle benutzen:</TwitchToolkitUserCommands>
   <TwitchToolKitVoteInstructions>Schreibe die Nummer des Events das du sehen willst</TwitchToolKitVoteInstructions>
-  <TwitchToolkitGiftingCoins>Ein Geschenk! du erhältst</TwitchToolkitGiftingCoins>
-  <TwitchToolkitFrom>von</TwitchToolkitFrom>
   <TwitchToolkitVote>Abstimmung</TwitchToolkitVote>
   <TwitchToolitWon>hat gewonnen</TwitchToolitWon>
   <TwitchToolkitCoins>Münzen</TwitchToolkitCoins>
@@ -23,12 +34,20 @@
   <TwitchToolkitViewer>Zuschauer</TwitchToolkitViewer>
   <TwitchToolkitOn>an</TwitchToolkitOn>
   <TwitchToolkitOff>aus</TwitchToolkitOff>
-  <TwitchToolkitBalCmd>bal</TwitchToolkitBalCmd>
-  <TwitchToolkitBuyEventCmd>kaufevent</TwitchToolkitBuyEventCmd>
-  <TwitchTookitBuyItemCmd>kaufitem</TwitchTookitBuyItemCmd>
-  <TwitchToolkitInstructionsCmd>einführung</TwitchToolkitInstructionsCmd>
-  <TwitchToolkitPurchaseListCmd>liste</TwitchToolkitPurchaseListCmd>
-  <TwitchToolkitModInfoCmd>modinfo</TwitchToolkitModInfoCmd>
-  <TwitchToolkitModSettingsCmd>modsettings</TwitchToolkitModSettingsCmd>
-  <TwitchToolkitKarmaCmd>karmainfo</TwitchToolkitKarmaCmd>
+  <TwitchToolkitBalCmd>!bal</TwitchToolkitBalCmd>
+  <TwitchToolkitBuyEventCmd>!kaufevent</TwitchToolkitBuyEventCmd>
+  <TwitchTookitBuyItemCmd>!kaufitem</TwitchTookitBuyItemCmd>
+  <TwitchToolkitInstructionsCmd>!einführung</TwitchToolkitInstructionsCmd>
+  <TwitchToolkitPurchaseListCmd>!liste</TwitchToolkitPurchaseListCmd>
+  <TwitchToolkitModInfoCmd>!modinfo</TwitchToolkitModInfoCmd>
+  <TwitchToolkitModSettingsCmd>!modsettings</TwitchToolkitModSettingsCmd>
+  <TwitchToolkitKarmaCmd>!karmainfo</TwitchToolkitKarmaCmd>
+  <TwitchToolkitGiftCmd>!schenke</TwitchToolkitGiftCmd>
+  <TwitchToolkitCmdHelpCmd>!toolkitcmds</TwitchToolkitCmdHelpCmd>
+  <TwitchToolkitNotEnoughCoins>@{viewer} du hast nicht genug Münzen. Ihr ausgewählter Artikel besteht aus {amount} Münzen. Du hast {first} Münzen.</TwitchToolkitNotEnoughCoins>
+  <TwitchToolkitMinPurchaseNotMet>@{viewer}, der ausgewählte Kaufpreis beträgt {amount}, aber Sie müssen mindestens {first} Münzen ausgeben</TwitchToolkitMinPurchaseNotMet>
+  <TwitchToolkitEventNotPossible>Event nicht möglich</TwitchToolkitEventNotPossible>
+  <TwitchToolkitEventOnCooldown>Ereignis zur Abklingzeit</TwitchToolkitEventOnCooldown>
+  <TwitchToolkitEventPurchaseConfirm>Event {first} von @{viewer} gekauft</TwitchToolkitEventPurchaseConfirm>
+  <TwitchToolkitItemPurchaseConfirm>{amount} von @{viewer} gekauftes {item}</TwitchToolkitItemPurchaseConfirm>
 </LanguageData>

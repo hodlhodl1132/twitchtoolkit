@@ -2,12 +2,12 @@
 <LanguageData>
   <TwitchToolkitSmallraid>kleinerüberfall</TwitchToolkitSmallraid>
   <TwitchToolkitMediumraid>mittlererüberfall</TwitchToolkitMediumraid>
-  <TwitchToolkitBigraid>bigraid</TwitchToolkitBigraid>
-  <TwitchToolkitMediumraiddrop>großerüberfall</TwitchToolkitMediumraiddrop>
-  <TwitchToolkitBigraiddrop>großerraiddrop</TwitchToolkitBigraiddrop>
+  <TwitchToolkitBigraid>großerüberfall</TwitchToolkitBigraid>
+  <TwitchToolkitMediumraiddrop>mittlererpodüberfall</TwitchToolkitMediumraiddrop>
+  <TwitchToolkitBigraiddrop>großerpodüberfall</TwitchToolkitBigraiddrop>
   <TwitchToolkitBigsiege>großebelagerung</TwitchToolkitBigsiege>
   <TwitchToolkitBigmechanoidraid>großermechanoiderüberfall</TwitchToolkitBigmechanoidraid>
-  <TwitchToolkitInfestation>befall</TwitchToolkitInfestation>
+  <TwitchToolkitInfestation>insektenplage</TwitchToolkitInfestation>
   <TwitchToolkitHeartattack>herzinfarkt</TwitchToolkitHeartattack>
   <TwitchToolkitPlague>pest</TwitchToolkitPlague>
   <TwitchToolkitFlu>grippe</TwitchToolkitFlu>
@@ -15,77 +15,79 @@
   <TwitchToolkitMalaria>malaria</TwitchToolkitMalaria>
   <TwitchToolkitGutworms>darmwürmer</TwitchToolkitGutworms>
   <TwitchToolkitMuscleparasites>muskelparasiten</TwitchToolkitMuscleparasites>
-  <TwitchToolkitPlaguemedium>pest-medium</TwitchToolkitPlaguemedium>
-  <TwitchToolkitFlumedium>grippe-medium</TwitchToolkitFlumedium>
-  <TwitchToolkitInfectionmedium>infektionsmedium</TwitchToolkitInfectionmedium>
-  <TwitchToolkitMalariamedium>malaria-medium</TwitchToolkitMalariamedium>
-  <TwitchToolkitGutwormsmedium>darmwürmermittel</TwitchToolkitGutwormsmedium>
-  <TwitchToolkitMuscleparasitesmedium>muskelparasitenmittel</TwitchToolkitMuscleparasitesmedium>
-  <TwitchToolkitPlaguehard>hartplagen</TwitchToolkitPlaguehard>
-  <TwitchToolkitFluhard>fluhard</TwitchToolkitFluhard>
-  <TwitchToolkitInfectionhard>grippehart</TwitchToolkitInfectionhard>
-  <TwitchToolkitMalariahard>malariahart</TwitchToolkitMalariahard>
-  <TwitchToolkitGutwormshard>darmwürmerhart</TwitchToolkitGutwormshard>
-  <TwitchToolkitMuscleparasiteshard>muskelparasitenhart</TwitchToolkitMuscleparasiteshard>
-  <TwitchToolkitBlindness>blindheit</TwitchToolkitBlindness>
+  <TwitchToolkitPlaguemedium>mittelpest</TwitchToolkitPlaguemedium>
+  <TwitchToolkitFlumedium>mittelgrippe</TwitchToolkitFlumedium>
+  <TwitchToolkitInfectionmedium>mittelinfektion</TwitchToolkitInfectionmedium>
+  <TwitchToolkitMalariamedium>mittelmalaria</TwitchToolkitMalariamedium>
+  <TwitchToolkitGutwormsmedium>mitteldarmwürmer</TwitchToolkitGutwormsmedium>
+  <TwitchToolkitMuscleparasitesmedium>mittelmuskelparasiten</TwitchToolkitMuscleparasitesmedium>
+  <TwitchToolkitPlaguehard>schwerpest</TwitchToolkitPlaguehard>
+  <TwitchToolkitFluhard>schwergrippe</TwitchToolkitFluhard>
+  <TwitchToolkitInfectionhard>harteinfektion</TwitchToolkitInfectionhard>
+  <TwitchToolkitMalariahard>schwermalaria</TwitchToolkitMalariahard>
+  <TwitchToolkitGutwormshard>schwerdarmwürmer</TwitchToolkitGutwormshard>
+  <TwitchToolkitMuscleparasiteshard>schwermuskelparasiten</TwitchToolkitMuscleparasiteshard>
+  <TwitchToolkitBlindness>erblinden</TwitchToolkitBlindness>
   <TwitchToolkitClearweather>klareswetter</TwitchToolkitClearweather>
   <TwitchToolkitRain>regen</TwitchToolkitRain>
   <TwitchToolkitRainythunderstorm>regnerischesgewitter</TwitchToolkitRainythunderstorm>
   <TwitchToolkitDrythunderstorm>trockenesgewitter</TwitchToolkitDrythunderstorm>
-  <TwitchToolkitSnowgentle>schneesanft</TwitchToolkitSnowgentle>
-  <TwitchToolkitSnowhard>schneefest</TwitchToolkitSnowhard>
+  <TwitchToolkitSnowgentle>leichtschnee</TwitchToolkitSnowgentle>
+  <TwitchToolkitSnowhard>schwerschnee</TwitchToolkitSnowhard>
   <TwitchToolkitFog>nebel</TwitchToolkitFog>
-  <TwitchToolkitFoggyrain>nebelregen</TwitchToolkitFoggyrain>
+  <TwitchToolkitFoggyrain>nebelmitregen</TwitchToolkitFoggyrain>
   <TwitchToolkitFlashstorm>blitzsturm</TwitchToolkitFlashstorm>
-  <TwitchToolkitEclipse>finsternis</TwitchToolkitEclipse>
-  <TwitchToolkitAurora>aurora</TwitchToolkitAurora>
-  <TwitchToolkitVomitrain>erbrechenregen</TwitchToolkitVomitrain>
-  <TwitchToolkitAmbrosiasprout>ambrosiasprießen</TwitchToolkitAmbrosiasprout>
+  <TwitchToolkitEclipse>sonnenfinsternis</TwitchToolkitEclipse>
+  <TwitchToolkitAurora>polarlicht</TwitchToolkitAurora>
+  <TwitchToolkitVomitrain>kotzeregen</TwitchToolkitVomitrain>
+  <TwitchToolkitAmbrosiasprout>ambrosiahain</TwitchToolkitAmbrosiasprout>
   <TwitchToolkitMeteorite>meteorit</TwitchToolkitMeteorite>
   <TwitchToolkitMeteoriteshower>meteoritenschauer</TwitchToolkitMeteoriteshower>
-  <TwitchToolkitBlight>vereiteln</TwitchToolkitBlight>
+  <TwitchToolkitBlight>pflanzenseuche</TwitchToolkitBlight>
   <TwitchToolkitSolarflare>sonneneruption</TwitchToolkitSolarflare>
   <TwitchToolkitVolcanicwinter>vulkanischerwinter</TwitchToolkitVolcanicwinter>
-  <TwitchToolkitToxicfallout>giftigerfallout</TwitchToolkitToxicfallout>
+  <TwitchToolkitToxicfallout>toxischerfallout</TwitchToolkitToxicfallout>
   <TwitchToolkitHeatwave>hitzewelle</TwitchToolkitHeatwave>
   <TwitchToolkitColdsnap>kälteeinbruch</TwitchToolkitColdsnap>
   <TwitchToolkitTornado>tornado</TwitchToolkitTornado>
   <TwitchToolkitTornados>tornados</TwitchToolkitTornados>
   <TwitchToolkitWildhuman>wildermensch</TwitchToolkitWildhuman>
-  <TwitchToolkitWandererjoins>wandererschließtsichan</TwitchToolkitWandererjoins>
+  <TwitchToolkitWandererjoins>wandererbleibt</TwitchToolkitWandererjoins>
   <TwitchToolkitGenderswap>geschlechtertausch</TwitchToolkitGenderswap>
   <TwitchToolkitSkillincrease>fähigkeitssteigerung</TwitchToolkitSkillincrease>
-  <TwitchToolkitParty>festival</TwitchToolkitParty>
-  <TwitchToolkitCannibal>kannibale</TwitchToolkitCannibal>
-  <TwitchToolkitLuciferium>luciferium</TwitchToolkitLuciferium>
+  <TwitchToolkitParty>party</TwitchToolkitParty>
+  <TwitchToolkitCannibal>kanniballismus</TwitchToolkitCannibal>
+  <TwitchToolkitLuciferium>luziferium</TwitchToolkitLuciferium>
   <TwitchToolkitMadanimal>verrücktestier</TwitchToolkitMadanimal>
-  <TwitchToolkitHerdmigration>herdenmigration</TwitchToolkitHerdmigration>
-  <TwitchToolkitAnimalswanderin>tierewandernherein</TwitchToolkitAnimalswanderin>
+  <TwitchToolkitHerdmigration>herdeziehtvorbei</TwitchToolkitHerdmigration>
+  <TwitchToolkitAnimalswanderin>tierebleiben</TwitchToolkitAnimalswanderin>
   <TwitchToolkitRarethrumbos>seltenethrumbos</TwitchToolkitRarethrumbos>
   <TwitchToolkitFarmanimals>nutztiere</TwitchToolkitFarmanimals>
-  <TwitchToolkitAnimalself>tierzähmen</TwitchToolkitAnimalself>
+  <TwitchToolkitAnimalself>selbstzähmung</TwitchToolkitAnimalself>
   <TwitchToolkitYorkshireterriers>yorkshireterriers</TwitchToolkitYorkshireterriers>
-  <TwitchToolkitManhunterpack>mannjägerpackung</TwitchToolkitManhunterpack>
-  <TwitchToolkitPredators>raubtiere</TwitchToolkitPredators>
+  <TwitchToolkitManhunterpack>menschenjägerangriff</TwitchToolkitManhunterpack>
+  <TwitchToolkitPredators>raubtierangriff</TwitchToolkitPredators>
   <TwitchToolkitInspiration>inspiration</TwitchToolkitInspiration>
   <TwitchToolkitPsychicwave>psychischewelle</TwitchToolkitPsychicwave>
-  <TwitchToolkitPsychicdrone>psychischessummen</TwitchToolkitPsychicdrone>
+  <TwitchToolkitPsychicdrone>psychischesdröhnen</TwitchToolkitPsychicdrone>
   <TwitchToolkitPsychicsoothe>psychischberuhigen</TwitchToolkitPsychicsoothe>
-  <TwitchToolkitMinormentalbreak>kleineregeistigepause</TwitchToolkitMinormentalbreak>
-  <TwitchToolkitMajormentalbreak>größeregeistigepause</TwitchToolkitMajormentalbreak>
-  <TwitchToolkitExtremementalbreak>extremementalepause</TwitchToolkitExtremementalbreak>
-  <TwitchToolkitBerserkmentalbreak>berserkergeistigepause</TwitchToolkitBerserkmentalbreak>
-  <TwitchToolkitShipchunkdrop>schiffsklumpenfallen</TwitchToolkitShipchunkdrop>
-  <TwitchToolkitCargopoddropped>frachtkapselgesunken</TwitchToolkitCargopoddropped>
-  <TwitchToolkitTransportpoddropped>transportkapselgesunken</TwitchToolkitTransportpoddropped>
-  <TwitchToolkitShippartpoison>schiffsteilgift</TwitchToolkitShippartpoison>
-  <TwitchToolkitShippartpsychic>schiffsteilpsychisch</TwitchToolkitShippartpsychic>
-  <TwitchToolkitCarepackage>pflegepaket</TwitchToolkitCarepackage>
-  <TwitchToolkitManinblack>manninschwarz</TwitchToolkitManinblack>
-  <TwitchToolkitRefugeechased>flüchtlinggejagt</TwitchToolkitRefugeechased>
+  <TwitchToolkitMinormentalbreak>kleinerzusammenbruch</TwitchToolkitMinormentalbreak>
+  <TwitchToolkitMajormentalbreak>großerzusammenbruch</TwitchToolkitMajormentalbreak>
+  <TwitchToolkitExtremementalbreak>extremerzusammenbruch</TwitchToolkitExtremementalbreak>
+  <TwitchToolkitBerserkmentalbreak>berserker</TwitchToolkitBerserkmentalbreak>
+  <TwitchToolkitShipchunkdrop>shuttleabsturz</TwitchToolkitShipchunkdrop>
+  <TwitchToolkitCargopoddropped>frachtkapselabsturz</TwitchToolkitCargopoddropped>
+  <TwitchToolkitTransportpoddropped>transportkapselabsturz</TwitchToolkitTransportpoddropped>
+  <TwitchToolkitShippartpoison>giftschuttleabsturz</TwitchToolkitShippartpoison>
+  <TwitchToolkitShippartpsychic>psyschuttleabsturz</TwitchToolkitShippartpsychic>
+  <TwitchToolkitCarepackage>paket</TwitchToolkitCarepackage>
+  <TwitchToolkitManinblack>mysteriöserfremder</TwitchToolkitManinblack>
+  <TwitchToolkitRefugeechased>gejagterflüchtling</TwitchToolkitRefugeechased>
   <TwitchToolkitTraveler>reisende</TwitchToolkitTraveler>
   <TwitchToolkitVisitor>besucher</TwitchToolkitVisitor>
-  <TwitchToolkitTradervisting>händlerbesuchen</TwitchToolkitTradervisting>
+  <TwitchToolkitTradervisiting>händlerbesuch</TwitchToolkitTradervisiting>
   <TwitchToolkitTradership>handelsschiff</TwitchToolkitTradership>
   <TwitchToolkitMilitaryAid>militärhilfe</TwitchToolkitMilitaryAid>
+  <TwitchToolkitCargoPodFrenzy>kargo-dropwahnsinn</TwitchToolkitCargoPodFrenzy>
+  <TwitchToolkitBigMeteoriteShower>großermeteoritenschauer</TwitchToolkitBigMeteoriteShower>
 </LanguageData>

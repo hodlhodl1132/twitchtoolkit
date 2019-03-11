@@ -55,6 +55,7 @@
     <Compile Include="Commands.cs" />
     <Compile Include="Dialog_CustomModSettings.cs" />
     <Compile Include="Incidents\IncidentWorker_CallForAid.cs" />
+    <Compile Include="Incidents\IncidentWorker_ResourcePodFrenzy.cs" />
     <Compile Include="IRC\ConcurrentCircularBuffer.cs" />
     <Compile Include="Item.cs" />
     <Compile Include="Karma.cs" />
@@ -211,6 +212,12 @@
     <None Include="Languages\German\Keyed\TwitchToolkitEvents.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <SubType>Designer</SubType>
+    </None>
+    <None Include="Languages\English\Keyed\TwitchToolkitCustomIncidents.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Languages\German\Keyed\TwitchToolkitCustomIncidents.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <Content Include="Textures\Things\TwitchToolkitSpartan.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

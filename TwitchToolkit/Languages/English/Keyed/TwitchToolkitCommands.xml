@@ -22,6 +22,8 @@
   <TwitchToolkitGiftCoins>you have been gifted {amount} coins from @{from}</TwitchToolkitGiftCoins>
   <TwitchToolkitModInfo>TwitchToolkit is a mod written by Twitch.tv/hodlhodl that integrates storytelling decisions into chat votes, awards viewers coins for watching, and those coins can be spent on items/events in game. Use !purchaselist to get more info. Join the discord</TwitchToolkitModInfo>
   <TwitchToolkitModSettings>Twitch toolkit is rewarding viewers {amount} coins every {first} minute(s), the store is {second} and coin rewards are {third}. Karma cap is {karma}%.</TwitchToolkitModSettings>
+  <TwitchToolkitUserCommands>You can use the following commands:</TwitchToolkitUserCommands>
+  <TwitchToolKitVoteInstructions>Say the number of the option you want to vote!</TwitchToolKitVoteInstructions>
   <TwitchToolkitVote>vote</TwitchToolkitVote>
   <TwitchToolitWon>won</TwitchToolitWon>
   <TwitchToolkitCoins>coins</TwitchToolkitCoins>
@@ -32,12 +34,20 @@
   <TwitchToolkitViewer>viewer</TwitchToolkitViewer>
   <TwitchToolkitOn>on</TwitchToolkitOn>
   <TwitchToolkitOff>off</TwitchToolkitOff>
-  <TwitchToolkitBalCmd>bal</TwitchToolkitBalCmd>
-  <TwitchToolkitBuyEventCmd>buyevent</TwitchToolkitBuyEventCmd>
-  <TwitchTookitBuyItemCmd>buyitem</TwitchTookitBuyItemCmd>
-  <TwitchToolkitInstructionsCmd>instructions</TwitchToolkitInstructionsCmd>
-  <TwitchToolkitPurchaseListCmd>purchaselist</TwitchToolkitPurchaseListCmd>
-  <TwitchToolkitModInfoCmd>modinfo</TwitchToolkitModInfoCmd>
-  <TwitchToolkitModSettingsCmd>modsettings</TwitchToolkitModSettingsCmd>
-  <TwitchToolkitKarmaCmd>whatiskarma</TwitchToolkitKarmaCmd>
+  <TwitchToolkitBalCmd>!bal</TwitchToolkitBalCmd>
+  <TwitchToolkitBuyEventCmd>!buyevent</TwitchToolkitBuyEventCmd>
+  <TwitchTookitBuyItemCmd>!buyitem</TwitchTookitBuyItemCmd>
+  <TwitchToolkitInstructionsCmd>!instructions</TwitchToolkitInstructionsCmd>
+  <TwitchToolkitPurchaseListCmd>!purchaselist</TwitchToolkitPurchaseListCmd>
+  <TwitchToolkitModInfoCmd>!modinfo</TwitchToolkitModInfoCmd>
+  <TwitchToolkitModSettingsCmd>!modsettings</TwitchToolkitModSettingsCmd>
+  <TwitchToolkitKarmaCmd>!whatiskarma</TwitchToolkitKarmaCmd>
+  <TwitchToolkitGiftCmd>!giftcoins</TwitchToolkitGiftCmd>
+  <TwitchToolkitCmdHelpCmd>!toolkitcmds</TwitchToolkitCmdHelpCmd>
+  <TwitchToolkitNotEnoughCoins>@{viewer} you do not have enough coins. Your selected item(s) is {amount} coins. You have {first} coins.</TwitchToolkitNotEnoughCoins>
+  <TwitchToolkitMinPurchaseNotMet>@{viewer}, your selected purchase price is {amount} but you need to spend a minimum of {first} coins</TwitchToolkitMinPurchaseNotMet>
+  <TwitchToolkitEventNotPossible>Event not possible</TwitchToolkitEventNotPossible>
+  <TwitchToolkitEventOnCooldown>Event on cooldown</TwitchToolkitEventOnCooldown>
+  <TwitchToolkitEventPurchaseConfirm>Event {first} purchased by @{viewer}</TwitchToolkitEventPurchaseConfirm>
+  <TwitchToolkitItemPurchaseConfirm>{amount} {item} purchased by @{viewer}</TwitchToolkitItemPurchaseConfirm>
 </LanguageData>

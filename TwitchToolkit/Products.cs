@@ -111,9 +111,11 @@ namespace TwitchToolkit
                 new Product(82, 0, "Refugee chased", "TwitchToolkitRefugeechased".Translate(), KarmaType.Neutral, 650, 82, 1),
                 new Product(83, 0, "Traveler", "TwitchToolkitTraveler".Translate(), KarmaType.Good, 350, 83, 3),
                 new Product(84, 0, "Visitor", "TwitchToolkitVisitor".Translate(), KarmaType.Good, 200, 84, 3),
-                new Product(85, 0, "Trader visting", "TwitchToolkitTradervisting".Translate(), KarmaType.Good, 275, 85, 3),
+                new Product(85, 0, "Trader visiting", "TwitchToolkitTradervisiting".Translate(), KarmaType.Good, 275, 85, 3),
                 new Product(86, 0, "Trader ship", "TwitchToolkitTradership".Translate(), KarmaType.Good, 350, 86, 2),
                 new Product(87, 0, "Military Aid", "TwitchToolkitMilitaryAid".Translate(), KarmaType.Good, 700, 87, 2),
+                new Product(88, 0, "Cargo Pod Frenzy", "TwitchToolkitCargoPodFrenzy".Translate(), KarmaType.Good, 900, 88, 2),
+                new Product(89, 0, "Big Meteorite Shower", "TwitchToolkitBigMeteoriteShower".Translate(), KarmaType.Neutral, -10, 89, 2),
             };
 
             return defaultProducts;
@@ -211,6 +213,7 @@ namespace TwitchToolkit
             this.message = message;
             this.viewer = viewer;
 
+            Helper.Log($"debug {productabr.ToLower()}");
             this.product = Products.GetProduct(productabr.ToLower());
 
             if (this.product == null)
@@ -320,20 +323,20 @@ namespace TwitchToolkit
             else if (viewer.GetViewerCoins() < this.calculatedprice && !Settings.UnlimitedCoins)
             {
                 // send message not enough coins
-                this.errormessage = $"@{this.viewer.username} you do not have enough coins. Your selected item(s) price is {this.calculatedprice} coins. You have {viewer.GetViewerCoins()} coins.";
+                this.errormessage = Helper.ReplacePlaceholder("TwitchToolkitNotEnoughCoins".Translate(), viewer: viewer.username, amount: this.calculatedprice.ToString(), first: viewer.GetViewerCoins().ToString());
             }
             else if (calculatedprice < Settings.MinimumPurchasePrice)
             {
                 // does not meet minimum purchase price
-                this.errormessage = $"@{this.viewer.username}, your selected purchase price is {this.calculatedprice} coins but you need to spend a minimum of {Settings.MinimumPurchasePrice}";
+                this.errormessage = Helper.ReplacePlaceholder("TwitchToolkitMinPurchaseNotMet".Translate(), viewer: this.viewer.username, amount: this.calculatedprice.ToString(), first: Settings.MinimumPurchasePrice.ToString());
             }
             else if (this.product.type == 0 && !this.product.evt.IsPossible())
             {
-                 this.errormessage = $"@{this.viewer.username} Event not possible";
+                 this.errormessage = $"@{this.viewer.username} " + "TwitchToolkitEventNotPossible".Translate();
             }
             else if (this.product.maxEvents < 1 && Settings.EventsHaveCooldowns)
             {
-                this.errormessage = $"@{this.viewer.username} Event on cooldown";
+                this.errormessage = $"@{this.viewer.username} " + "TwitchToolkitEventOnCooldown".Translate();
             }
             else
             {
@@ -356,7 +359,7 @@ namespace TwitchToolkit
                 { 
                     
                     // normal event
-                    this.successmessage = $"Event {this.product.name} purchased by @{this.viewer.username}";
+                    this.successmessage = Helper.ReplacePlaceholder("TwitchToolkitEventPurchaseConfirm".Translate(), first: this.product.name, viewer: this.viewer.username);
                     this.viewer.SetViewerKarma(Karma.CalculateNewKarma(this.viewer.GetViewerKarma(), this.product.karmatype));
 
                     if (Settings.EventsHaveCooldowns)
@@ -391,7 +394,7 @@ namespace TwitchToolkit
                     return;
                 }
 
-                this.successmessage = $"{this.quantity} {this.itemtobuy.abr} purchased by @{this.viewer.username}";
+                this.successmessage = Helper.ReplacePlaceholder("TwitchToolkitItemPurchaseConfirm".Translate(), amount: this.quantity.ToString(), item: this.itemtobuy.abr, viewer: this.viewer.username);
                 this.product.evt.chatmessage = craftedmessage;
                 this.viewer.SetViewerKarma(Karma.CalculateNewKarma(this.viewer.GetViewerKarma(), this.product.karmatype, this.calculatedprice));
             }

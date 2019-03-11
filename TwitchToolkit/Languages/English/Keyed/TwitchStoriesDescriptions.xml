@@ -41,5 +41,7 @@
 Everyone will attack anyone they see.</TwitchStoriesDescription74>
   <TwitchStoriesDescription80>{from} decided to send you a care package with {amount} {item}! Thank you {from}!</TwitchStoriesDescription80>
   <TwitchStoriesDescription87>Military aid from another faction has appeared.</TwitchStoriesDescription87>
+  <TwitchStoriesDescription88>A trade ship has gone haywire and started sending several resources to your base my mistake.</TwitchStoriesDescription88>
   <TwitchStoriesDescription89>{colonist} has a sudden urge for some human flesh.</TwitchStoriesDescription89>
+  <TwitchStoriesDescription90>A large meteorite shower has entered the area, it would be wise to seek cover.</TwitchStoriesDescription90>
 </LanguageData>

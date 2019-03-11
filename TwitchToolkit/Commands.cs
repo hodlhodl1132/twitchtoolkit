@@ -343,7 +343,7 @@ namespace TwitchToolkit
                     }
 
                     string item = command[1];
-                    command[1] = "carepackage";
+                    command[1] = "TwitchToolkitCarepackage".Translate();
                     command[0] = item.ToLower();
 
                     string newcommand = string.Join(" ", command);
@@ -376,6 +376,22 @@ namespace TwitchToolkit
                     );
 
                 _mod._client.SendMessage(stats_message);
+            }
+
+            if (message.StartsWith(Settings.CommandHelpCmd))
+            {
+                string commands = " " +
+                Settings.BalanceCmd + ", " + 
+                Settings.BuyeventCmd + ", " + 
+                Settings.BuyitemCmd + ", " + 
+                Settings.InstructionsCmd + ", " + 
+                Settings.PurchaselistCmd + ", " + 
+                Settings.ModinfoCmd + ", " + 
+                Settings.ModsettingsCmd + ", " + 
+                Settings.KarmaCmd + ", " + 
+                Settings.GiftCmd;
+
+                _mod._client.SendMessage("TwitchToolkitUserCommands".Translate() + commands);
             }
 
 
