@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<LanguageData>
+  <TwitchToolkitResetViewersWarningOne>Dies setzt alle Münzen und Karma auf den Anfangsstand Zurück. Bitte Bestätige es mit !resetviewers nocheinmal</TwitchToolkitResetViewersWarningOne>
+  <TwitchToolkitResetViewersWarningTwo>Bist du ganz sicher dass du alles zurücksetzen willst? bestätige mit !resetviewers</TwitchToolkitResetViewersWarningTwo>
+  <TwitchToolkitResetViewersWarningThree>Setze alle Zuschauerdaten zurück...</TwitchToolkitResetViewersWarningThree>
+  <TwitchToolkitEarningCoinsMessage>earning coins is now toggled</TwitchToolkitEarningCoinsMessage>
+  <TwitchToolkitStorePurchasesMessage>store purchases are now toggled</TwitchToolkitStorePurchasesMessage>
+  <TwitchToolkitWhatIsKarma>Karma beeinflusst die Geschwindigkeit in der du Münzen erhältst. Für Böse Aktionen wird dir Karma abgezogen und für gute Hinzugefügt. Dein Karma beträgt gerade</TwitchToolkitWhatIsKarma>
+  <TwitchToolkitInstructions>Events und Gegenstände Können im Chat gekauft werden. Beispiel: '!buyevent skillincrease' oder '!buyitem bier 5'. Komplette Liste der Kaufbaren Sachen hier: </TwitchToolkitInstructions>
+  <TwitchToolkitPurchaseList>Komplette Liste hier:</TwitchToolkitPurchaseList>
+  <TwitchToolkitModInfo>TwitchToolkit ist ein Mod von Twitch.tv/hodlhodl der dem Twitch Chat die Entscheidung über Ingame Events gibt, Münzen fürs Zuschauen gibt, und mit diesen Münzen ingame Items und Events gekauft werden können. Gebe !purchaselist für eine Liste kaufbarer Sachen ein. Discord des Mods:</TwitchToolkitModInfo>
+  <TwitchToolkitGivingAll>Gebe allen Zuschauern</TwitchToolkitGivingAll>
+  <TwitchToolKitVoteInstructions>Schreibe die Nummer des Events das du sehen willst</TwitchToolKitVoteInstructions>
+  <TwitchToolkitGiftingCoins>Ein Geschenk! du erhältst</TwitchToolkitGiftingCoins>
+  <TwitchToolkitFrom>von</TwitchToolkitFrom>
+  <TwitchToolkitVote>Abstimmung</TwitchToolkitVote>
+  <TwitchToolitWon>hat gewonnen</TwitchToolitWon>
+  <TwitchToolkitCoins>Münzen</TwitchToolkitCoins>
+  <TwitchToolkitGiving>Gebe</TwitchToolkitGiving>
+  <TwitchToolkitBalance>Kontostand</TwitchToolkitBalance>
+  <TwitchToolkitKarma>karma</TwitchToolkitKarma>
+  <TwitchToolkitUpdating>setze auf</TwitchToolkitUpdating>
+  <TwitchToolkitViewer>Zuschauer</TwitchToolkitViewer>
+  <TwitchToolkitOn>an</TwitchToolkitOn>
+  <TwitchToolkitOff>aus</TwitchToolkitOff>
+  <TwitchToolkitBalCmd>bal</TwitchToolkitBalCmd>
+  <TwitchToolkitBuyEventCmd>kaufevent</TwitchToolkitBuyEventCmd>
+  <TwitchTookitBuyItemCmd>kaufitem</TwitchTookitBuyItemCmd>
+  <TwitchToolkitInstructionsCmd>einführung</TwitchToolkitInstructionsCmd>
+  <TwitchToolkitPurchaseListCmd>liste</TwitchToolkitPurchaseListCmd>
+  <TwitchToolkitModInfoCmd>modinfo</TwitchToolkitModInfoCmd>
+  <TwitchToolkitModSettingsCmd>modsettings</TwitchToolkitModSettingsCmd>
+  <TwitchToolkitKarmaCmd>karmainfo</TwitchToolkitKarmaCmd>
+</LanguageData>

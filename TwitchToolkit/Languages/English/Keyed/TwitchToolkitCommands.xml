@@ -1,18 +1,27 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <LanguageData>
   <TwitchToolkitResetViewersWarningOne>this will delete all coins and karma date. Please do !resetviewers again to confirm</TwitchToolkitResetViewersWarningOne>
-  <TwitchToolkitResetViewersWarningTwo>are you absolutely sure you want to delete your viewers? !resetviewers one more</TwitchToolkitResetViewersWarningTwo>
+  <TwitchToolkitResetViewersWarningTwo>are you absolutely sure you want to delete your viewers? !resetviewers once more</TwitchToolkitResetViewersWarningTwo>
   <TwitchToolkitResetViewersWarningThree>resetting all viewers data</TwitchToolkitResetViewersWarningThree>
+  <TwitchToolkitAlreadyMod>{mod} is already a toolkit mod</TwitchToolkitAlreadyMod>
+  <TwitchToolkitAddedMod>{mod} added as a toolkit mod</TwitchToolkitAddedMod>
+  <TwitchToolkitRemovedMod>removed {mod} as a toolkit mod</TwitchToolkitRemovedMod>
+  <TwitchToolkitGiveAllCoins>giving all viewers {amount} coins</TwitchToolkitGiveAllCoins>
+  <TwitchToolkitModCannotGiveCoins>moderators cannot give themselves coins.</TwitchToolkitModCannotGiveCoins>
+  <TwitchToolkitGivingCoins>giving {viewer} {amount} coins. New balance: {newbalance}</TwitchToolkitGivingCoins>
+  <TwitchToolkitCheckUser>Viewer: @{viewer} - Coins: {amount} - Karma: {karma}%</TwitchToolkitCheckUser>
+  <TwitchToolkitSetKarma>setting viewer {viewer}'s karma to {karma}%</TwitchToolkitSetKarma>
+  <TwitchToolkitOn>on</TwitchToolkitOn>
+  <TwitchToolkitOff>off</TwitchToolkitOff>
   <TwitchToolkitEarningCoinsMessage>earning coins is now toggled</TwitchToolkitEarningCoinsMessage>
   <TwitchToolkitStorePurchasesMessage>store purchases are now toggled</TwitchToolkitStorePurchasesMessage>
+  <TwitchToolkitBalanceMessage>Coins: {amount} - Karma: {karma}%</TwitchToolkitBalanceMessage>
+  <TwitchToolkitInstructions>events/items can be purchased in game. Example: '!buyevent skillincrease' or '!buyitem beer 5'. Purchase list:</TwitchToolkitInstructions>
   <TwitchToolkitWhatIsKarma>karma is the rate at which you earn coins. Buying bad events lowers karma while good events/items raise your karma. You are currently earning karma at a rate of</TwitchToolkitWhatIsKarma>
-  <TwitchToolkitInstructions>events/items can be purchased in game. Example: '!buyitem skillincrease' or '!buyitem beer 5'. Full list here</TwitchToolkitInstructions>
-  <TwitchToolkitPurchaseList>Full list here</TwitchToolkitPurchaseList>
+  <TwitchToolkitPurchaseList>Purchase list:</TwitchToolkitPurchaseList>
+  <TwitchToolkitGiftCoins>you have been gifted {amount} coins from @{from}</TwitchToolkitGiftCoins>
   <TwitchToolkitModInfo>TwitchToolkit is a mod written by Twitch.tv/hodlhodl that integrates storytelling decisions into chat votes, awards viewers coins for watching, and those coins can be spent on items/events in game. Use !purchaselist to get more info. Join the discord</TwitchToolkitModInfo>
-  <TwitchToolkitGivingAll>giving all viewers</TwitchToolkitGivingAll>
-  <TwitchToolKitVoteInstructions>Say the number of the option you want to vote!</TwitchToolKitVoteInstructions>
-  <TwitchToolkitGiftingCoins>you have been gifted</TwitchToolkitGiftingCoins>
-  <TwitchToolkitFrom>from</TwitchToolkitFrom>
+  <TwitchToolkitModSettings>Twitch toolkit is rewarding viewers {amount} coins every {first} minute(s), the store is {second} and coin rewards are {third}. Karma cap is {karma}%.</TwitchToolkitModSettings>
   <TwitchToolkitVote>vote</TwitchToolkitVote>
   <TwitchToolitWon>won</TwitchToolitWon>
   <TwitchToolkitCoins>coins</TwitchToolkitCoins>

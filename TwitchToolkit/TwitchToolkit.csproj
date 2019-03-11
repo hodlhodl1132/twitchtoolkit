@@ -52,6 +52,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Commands.cs" />
     <Compile Include="Dialog_CustomModSettings.cs" />
     <Compile Include="Incidents\IncidentWorker_CallForAid.cs" />
     <Compile Include="IRC\ConcurrentCircularBuffer.cs" />
@@ -131,6 +132,7 @@
   <ItemGroup>
     <None Include="About\About.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </None>
     <None Include="About\Preview.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -156,6 +158,7 @@
     </None>
     <None Include="Languages\English\Keyed\TwitchStoriesDescriptions.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </None>
     <None Include="Languages\English\Keyed\TwitchStoriesLetters.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -199,6 +202,16 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Languages\German\Keyed\TwitchToolkitCommands.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Languages\English\Keyed\TwitchToolkitEvents.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Languages\German\Keyed\TwitchToolkitEvents.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
+    </None>
     <Content Include="Textures\Things\TwitchToolkitSpartan.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

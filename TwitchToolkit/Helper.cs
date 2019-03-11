@@ -5,6 +5,7 @@ using UnityEngine;
 using RimWorld;
 using Verse;
 using TSIncidents = TwitchToolkit.Incidents;
+using System.Text;
 
 namespace TwitchToolkit
 {
@@ -30,7 +31,14 @@ namespace TwitchToolkit
           string animal = null,
           string from = null,
           string to = null,
-          string amount = null)
+          string amount = null,
+          string mod = null,
+          string viewer = null,
+          string newbalance = null,
+          string karma = null,
+          string first = null,
+          string second = null,
+          string third = null)
         {
             quote = quote.Replace("{colonist}", colonist ?? "");
             quote = quote.Replace("{colonists}", colonists ?? "");
@@ -43,6 +51,13 @@ namespace TwitchToolkit
             quote = quote.Replace("{from}", from ?? "");
             quote = quote.Replace("{to}", to ?? "");
             quote = quote.Replace("{amount}", amount ?? "");
+            quote = quote.Replace("{mod}", mod ?? "");
+            quote = quote.Replace("{viewer}", viewer ?? "");
+            quote = quote.Replace("{newbalance}", newbalance ?? "");
+            quote = quote.Replace("{karma}", karma ?? "");
+            quote = quote.Replace("{first}", first ?? "");
+            quote = quote.Replace("{second}", second ?? "");
+            quote = quote.Replace("{third}", third ?? "");
             return quote;
         }
 
@@ -153,7 +168,7 @@ namespace TwitchToolkit
                 message = "";
             }
 
-            Current.Game.letterStack.ReceiveLetter("TwitchStoriesCarePackage".Translate(), message, type, new TargetInfo(vec, Helper.AnyPlayerMap, false));
+            Current.Game.letterStack.ReceiveLetter("TwitchToolkitCarePackage".Translate(), message, type, new TargetInfo(vec, Helper.AnyPlayerMap, false));
         }
         /*
         public static void Mushroom(string gender)
@@ -1743,7 +1758,24 @@ namespace TwitchToolkit
                     currentline++;
                 }
             }
-            System.IO.File.WriteAllLines(@"" + Application.persistentDataPath + "/productlist.csv", lines);
+            System.IO.File.WriteAllLines(@"" + Application.persistentDataPath + "/productlist.csv", lines, LanguageEncoding());
+        }
+
+
+        public static Encoding LanguageEncoding()
+        {
+            string lang = Prefs.LangFolderName.ToLower();
+            Encoding encoding;
+            switch(lang)
+            {
+                case "deutsch":
+                    encoding = System.Text.Encoding.GetEncoding(850);
+                    break;
+                default:
+                    encoding = Encoding.UTF8;
+                    break;
+            }
+            return encoding;
         }
     }
 }

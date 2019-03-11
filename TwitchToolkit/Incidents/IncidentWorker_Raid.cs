@@ -88,7 +88,7 @@ namespace TwitchToolkit.Incidents
                     int thisviewer = rnd.Next(0, viewernames.Count());
                     NameTriple name = pawn.Name as NameTriple;
                     NameTriple newname = new NameTriple(name.First, viewernames[thisviewer], name.Last);
-                    if (!newname.UsedThisGame)
+                    if (!newname.UsedThisGame || Settings.RepeatViewerNames)
                     {
                         pawn.Name = newname;
                     }

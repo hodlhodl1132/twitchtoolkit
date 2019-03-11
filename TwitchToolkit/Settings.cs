@@ -42,6 +42,7 @@ namespace TwitchToolkit
         public static bool WhisperCmdsAllowed;
         public static bool PurchaseConfirmations;
         public static bool EventsHaveCooldowns;
+        public static bool RepeatViewerNames;
 
         public static string JWTToken;
         public static string AccountID;
@@ -160,6 +161,7 @@ namespace TwitchToolkit
             Scribe_Values.Look(ref MinifiableBuildings, "MinifiableBuildings", false, true);
             Scribe_Values.Look(ref UnlimitedCoins, "UnlimitedCoins", false, true);
             Scribe_Values.Look(ref EventsHaveCooldowns, "EventsHaveCooldowns", true, true);
+            Scribe_Values.Look(ref RepeatViewerNames, "RepeatViewerNames", false, true);
 
             Scribe_Values.Look(ref BalanceCmd, "BalanceCmd", "!bal", true);
             Scribe_Values.Look(ref BuyeventCmd, "BuyeventCmd", "!buyevent", true);
@@ -324,7 +326,7 @@ namespace TwitchToolkit
             }
 
             buttonRect.y += _height;
-            if (Widgets.ButtonText(buttonRect, "Experimental"))
+            if (Widgets.ButtonText(buttonRect, "Options"))
             {
                 _menu = 5;
             }
@@ -360,7 +362,7 @@ namespace TwitchToolkit
                     EventMenu(rect);
                     break;
                 case 5:
-                    DevMenu(rect);
+                    OptionsMenu(rect);
                     break;
                 case 6:
                     CommandMenu(rect);
@@ -484,7 +486,7 @@ namespace TwitchToolkit
             listingStandard.End();
         }
 
-        public static void DevMenu(Rect rect)
+        public static void OptionsMenu(Rect rect)
         {
             Listing_TwitchToolkit listingStandard = new Listing_TwitchToolkit();
             listingStandard.Begin(rect);

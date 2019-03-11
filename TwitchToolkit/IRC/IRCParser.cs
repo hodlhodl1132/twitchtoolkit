@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 
 namespace TwitchToolkit.IRC
 {
@@ -29,10 +30,13 @@ namespace TwitchToolkit.IRC
         string _value;
 
         public void Parse(byte[] buffer, int length, OnMessage callback)
-        {
+        {         
+            Decoder decoder = Helper.LanguageEncoding().GetDecoder();
+            char[] chars = new char[decoder.GetCharCount(buffer,0,buffer.Length)];
+            decoder.GetChars(buffer, 0, buffer.Length, chars,0);
             for (int i = 0; i < length; i++)
             {
-                var b = (char)buffer[i];
+                var b = chars[i];
                 switch (_state)
                 {
                     case IRCParserState.Start:

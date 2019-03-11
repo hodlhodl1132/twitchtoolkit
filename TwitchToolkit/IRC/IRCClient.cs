@@ -246,6 +246,7 @@ namespace TwitchToolkit.IRC
         {
             try
             {
+                Encoding encoding = Helper.LanguageEncoding();
                 var _data = Encoding.UTF8.GetBytes(message);
                 _sslStream.BeginWrite(_data, 0, _data.Length, new AsyncCallback(WriteCallback), null);
             }
