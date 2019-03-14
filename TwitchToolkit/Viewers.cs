@@ -26,7 +26,6 @@ namespace TwitchToolkit
                     else
                     {
                         double karmabonus = ((double)viewer.GetViewerKarma() / 100d) * (double)Settings.CoinAmount;
-                        Helper.Log($"Karma bonus for {username} is {karmabonus}");
                         viewer.GiveViewerCoins(Convert.ToInt32(karmabonus));
                     }
                 }

@@ -32,8 +32,6 @@
   <TwitchToolkitKarma>karma</TwitchToolkitKarma>
   <TwitchToolkitUpdating>setting to</TwitchToolkitUpdating>
   <TwitchToolkitViewer>viewer</TwitchToolkitViewer>
-  <TwitchToolkitOn>on</TwitchToolkitOn>
-  <TwitchToolkitOff>off</TwitchToolkitOff>
   <TwitchToolkitBalCmd>!bal</TwitchToolkitBalCmd>
   <TwitchToolkitBuyEventCmd>!buyevent</TwitchToolkitBuyEventCmd>
   <TwitchTookitBuyItemCmd>!buyitem</TwitchTookitBuyItemCmd>

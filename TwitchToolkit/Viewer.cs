@@ -20,11 +20,10 @@ namespace TwitchToolkit
             Viewer viewer = Settings.listOfViewers.Find(x => x.username == user.ToLower());
             if (viewer == null)
             {
-                Helper.Log("Creating new user " + user.ToLower());
                 viewer = new Viewer(user, Settings.ViewerIds.Count());
                 Settings.ViewerIds.Add(viewer.username.ToLower(), viewer.id);
-                Settings.ViewerCoins.Add(viewer.id, 150);
-                Settings.ViewerKarma.Add(viewer.id, 100);
+                Settings.ViewerCoins.Add(viewer.id, Settings.StartingBalance);
+                Settings.ViewerKarma.Add(viewer.id, Settings.StartingKarma);
                 Settings.listOfViewers.Add(viewer);
             }
             Helper.Log(viewer.username);

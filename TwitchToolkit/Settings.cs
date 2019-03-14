@@ -33,6 +33,12 @@ namespace TwitchToolkit
         public static int MinimumPurchasePrice = 60;
         public static int KarmaCap = 140;
         public static int EventCooldownInterval;
+        public static int StartingBalance = 150;
+        public static int StartingKarma = 100;
+
+        public static float VotingWindowx = -1;
+        public static float VotingWindowy;
+        public static bool LargeVotingWindow;
 
         public static string CustomPricingSheetLink = "https://bit.ly/2C7bls0";
 
@@ -149,6 +155,8 @@ namespace TwitchToolkit
             Scribe_Values.Look(ref KarmaCap, "KarmaCap", 140, true);
             Scribe_Values.Look(ref MinimumPurchasePrice, "MinimumPurchasePrice", 60, true);
             Scribe_Values.Look(ref EventCooldownInterval, "EventCooldownInterval", 15, true);
+            Scribe_Values.Look(ref StartingBalance, "StartingBalance", 150, true);
+            Scribe_Values.Look(ref StartingKarma, "StartingKarma", 100, true);
 
             Scribe_Values.Look(ref CustomPricingSheetLink, "CustomPricingSheetLink", "https://bit.ly/2GT5daR", true);
 
@@ -166,6 +174,7 @@ namespace TwitchToolkit
             Scribe_Values.Look(ref UnlimitedCoins, "UnlimitedCoins", false, true);
             Scribe_Values.Look(ref EventsHaveCooldowns, "EventsHaveCooldowns", true, true);
             Scribe_Values.Look(ref RepeatViewerNames, "RepeatViewerNames", false, true);
+            Scribe_Values.Look(ref LargeVotingWindow, "LargeVotingWindow", false, true);
 
             Scribe_Values.Look(ref BalanceCmd, "BalanceCmd", "!bal", true);
             Scribe_Values.Look(ref BuyeventCmd, "BuyeventCmd", "!buyevent", true);
@@ -488,6 +497,10 @@ namespace TwitchToolkit
             MinimumPurchasePrice = listingStandard.Slider((float)MinimumPurchasePrice, 10, 500);
             listingStandard.Label("Minutes between coin reward: " + CoinInterval);
             CoinInterval = listingStandard.Slider((float)CoinInterval, 1, 60);
+            listingStandard.Label("Starting balance: " + StartingBalance);
+            StartingBalance = listingStandard.Slider((float)StartingBalance, 0, 1000);
+            listingStandard.Label("Starting karma: " + StartingKarma);
+            StartingKarma = listingStandard.Slider((float)StartingKarma, 10, Settings.KarmaCap);
             listingStandard.Label("Link to custom pricing sheet: (check steamworkshop description for instructions)");
             CustomPricingSheetLink = listingStandard.TextEntry(CustomPricingSheetLink);
             if (listingStandard.ButtonText("Disable Events"))
@@ -512,6 +525,8 @@ namespace TwitchToolkit
                 MinimumPurchasePrice = 60;
                 CoinInterval = 2;
                 CustomPricingSheetLink = "https://bit.ly/2C7bls0";
+                StartingBalance = 150;
+                StartingKarma = 100;
                 mod.WriteSettings();
             }
             listingStandard.End();
@@ -525,6 +540,8 @@ namespace TwitchToolkit
             listingStandard.CheckboxLabeled("Should buildings unable to be uninstalled be included in the item list? ", ref MinifiableBuildings, "Non-Minifiable Buildings?");
             listingStandard.CheckboxLabeled("Should viewers have unlimited coins? ", ref UnlimitedCoins, "Unlimited coins?");
             listingStandard.CheckboxLabeled("Should events have cooldowns? ", ref EventsHaveCooldowns, "Event cooldowns?");
+            listingStandard.CheckboxLabeled("Should viewer names be repeated in raids/aid? ", ref RepeatViewerNames, "Repeat viewers?");
+            listingStandard.CheckboxLabeled("Large voting window? ", ref LargeVotingWindow, "Large window?");
             listingStandard.Label("How many minutes in a cooldown period: " + EventCooldownInterval);
             EventCooldownInterval = listingStandard.Slider((float)EventCooldownInterval, 1, 120);
             listingStandard.Label("Seperate chatroom UUID:");

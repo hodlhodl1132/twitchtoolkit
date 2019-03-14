@@ -249,8 +249,6 @@ namespace TwitchToolkit.IRC
 
         public void SendMessage(string message, bool botchannel = false)
         {
-
-            _messageQueue.Enqueue("PRIVMSG #" + _channel + " :" + message + "\n");
             if (Settings.ChatroomUUID != "" && Settings.ChannelID != "")
             {
                 _messageQueue.Enqueue("PRIVMSG #chatrooms:" + Settings.ChannelID + ":" + Settings.ChatroomUUID + " :" + message + "\n");

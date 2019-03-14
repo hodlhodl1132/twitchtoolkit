@@ -57,31 +57,32 @@
     <Compile Include="Incidents\IncidentWorker_CallForAid.cs" />
     <Compile Include="Incidents\IncidentWorker_ResourcePodFrenzy.cs" />
     <Compile Include="IRC\ConcurrentCircularBuffer.cs" />
-    <Compile Include="Item.cs" />
-    <Compile Include="Karma.cs" />
-    <Compile Include="Listing_TwitchToolkit.cs" />
-    <Compile Include="Products.cs" />
+    <Compile Include="Store\Item.cs" />
+    <Compile Include="Store\Karma.cs" />
+    <Compile Include="Utilities\Listing_TwitchToolkit.cs" />
+    <Compile Include="Store\Products.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
-    <Compile Include="Scheduled.cs" />
-    <Compile Include="ScheduledJob.cs" />
-    <Compile Include="SimpleJSON.cs" />
-    <Compile Include="SimpleJSONBinary.cs" />
-    <Compile Include="SimpleJSONUnity.cs" />
-    <Compile Include="StorytellerCompProperties_CustomCategoryMTB.cs" />
-    <Compile Include="StorytellerCompProperties_CustomOnOffCycle.cs" />
-    <Compile Include="StorytellerCompProperties_CustomRandomStoryTeller.cs" />
+    <Compile Include="Store\Scheduled.cs" />
+    <Compile Include="Store\ScheduledJob.cs" />
+    <Compile Include="Utilities\SimpleJSON.cs" />
+    <Compile Include="Utilities\SimpleJSONBinary.cs" />
+    <Compile Include="Utilities\SimpleJSONUnity.cs" />
+    <Compile Include="Storytellers\StorytellerCompProperties_CustomCategoryMTB.cs" />
+    <Compile Include="Storytellers\StorytellerCompProperties_CustomOnOffCycle.cs" />
+    <Compile Include="Storytellers\StorytellerCompProperties_CustomRandomStoryTeller.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="StorytellerComp_CustomCategoryMTB.cs" />
-    <Compile Include="StorytellerComp_CustomOnOffCycle.cs" />
-    <Compile Include="StorytellerComp_CustomRandomStoryTeller.cs" />
+    <Compile Include="Storytellers\StorytellerComp_CustomCategoryMTB.cs" />
+    <Compile Include="Storytellers\StorytellerComp_CustomOnOffCycle.cs" />
+    <Compile Include="Storytellers\StorytellerComp_CustomRandomStoryTeller.cs" />
     <Compile Include="StreamElements.cs" />
     <Compile Include="TwitchToolkit.cs" />
-    <Compile Include="TwitchToolkit_MainTabWindow.cs" />
-    <Compile Include="Helper.cs" />
+    <Compile Include="Utilities\TimeHelper.cs" />
+    <Compile Include="Utilities\TwitchToolkit_MainTabWindow.cs" />
+    <Compile Include="Utilities\Helper.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="Events.cs" />
     <Compile Include="Ticker.cs" />
@@ -120,12 +121,13 @@
     <Compile Include="Incidents\IncidentWorker_MakeGameCondition.cs" />
     <Compile Include="Incidents\IncidentWorker_MeteoriteImpact.cs" />
     <Compile Include="Incidents\IncidentWorker_AnimalInsanitySingle.cs" />
-    <Compile Include="TwitchToolkit_Overlay.cs" />
     <Compile Include="Incidents\IncidentWorker_Raid.cs" />
     <Compile Include="Viewer.cs" />
     <Compile Include="Viewers.cs" />
-    <Compile Include="VoteEvent.cs" />
-    <Compile Include="WebRequest.cs" />
+    <Compile Include="Utilities\VoteDuelWindow.cs" />
+    <Compile Include="Utilities\VoteEvent.cs" />
+    <Compile Include="Utilities\VoteWindow.cs" />
+    <Compile Include="Utilities\WebRequest.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Patches\" />
