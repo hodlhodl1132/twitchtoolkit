@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Verse;
+using TwitchToolkit.Store;
 
 namespace TwitchToolkit
 {
@@ -315,6 +316,22 @@ namespace TwitchToolkit
                 }
             }
 
+            int MaxEventsTypeToCheck = Settings.MaxNeutralEventsPerInterval;
+            if (this.product.karmatype == KarmaType.Good)
+            {
+                MaxEventsTypeToCheck = Settings.MaxGoodEventsPerInterval;
+            }
+            else if (this.product.karmatype == KarmaType.Neutral)
+            {
+                MaxEventsTypeToCheck = Settings.MaxNeutralEventsPerInterval;
+            }
+            else if (this.product.karmatype == KarmaType.Doom || this.product.karmatype == KarmaType.Bad)
+            {
+                MaxEventsTypeToCheck = Settings.MaxBadEventsPerInterval;
+            }
+
+            Helper.Log($"count {PurchaseLogger.CountRecentEventsOfType(this.product.karmatype, Settings.MaxEventsPeriod)} > max type {MaxEventsTypeToCheck - 1} ");
+
             if (this.calculatedprice <= 0)
             {
                 // invalid price
@@ -338,6 +355,10 @@ namespace TwitchToolkit
             {
                 this.errormessage = $"@{this.viewer.username} " + "TwitchToolkitEventOnCooldown".Translate();
             }
+            else if (Settings.MaxEvents && (PurchaseLogger.CountRecentEventsOfType(this.product.karmatype, Settings.MaxEventsPeriod) > MaxEventsTypeToCheck - 1))
+            {
+                this.errormessage = $"@{this.viewer.username} " + "TwitchToolkitMaxEvents".Translate();
+            }
             else
             {
                 this.ExecuteCommand();
@@ -360,13 +381,13 @@ namespace TwitchToolkit
                     
                     // normal event
                     this.successmessage = Helper.ReplacePlaceholder("TwitchToolkitEventPurchaseConfirm".Translate(), first: this.product.name, viewer: this.viewer.username);
-                    this.viewer.SetViewerKarma(Karma.CalculateNewKarma(this.viewer.GetViewerKarma(), this.product.karmatype));
+                    this.viewer.SetViewerKarma(Karma.CalculateNewKarma(this.viewer.GetViewerKarma(), this.product.karmatype, this.calculatedprice));
 
                     if (Settings.EventsHaveCooldowns)
                     {       
                         // take of a cooldown for event and schedule for it to be taken off
                         this.product.maxEvents--;
-                        Settings.JobManager.AddNewJob(new ScheduledJob(Settings.EventCooldownInterval, new Func<Product, bool>(IncrementProduct), product));
+                        Settings.JobManager.AddNewJob(new ScheduledJob(Settings.EventCooldownInterval, new Func<object, bool>(IncrementProduct), product));
                     }
                 }
                 else
@@ -397,14 +418,17 @@ namespace TwitchToolkit
                 this.successmessage = Helper.ReplacePlaceholder("TwitchToolkitItemPurchaseConfirm".Translate(), amount: this.quantity.ToString(), item: this.itemtobuy.abr, viewer: this.viewer.username);
                 this.product.evt.chatmessage = craftedmessage;
                 this.viewer.SetViewerKarma(Karma.CalculateNewKarma(this.viewer.GetViewerKarma(), this.product.karmatype, this.calculatedprice));
+
             }
 
+            PurchaseLogger.LogPurchase(new Purchase(this.viewer.username, this.product.name, this.product.karmatype, this.calculatedprice, this.successmessage, DateTime.Now));
             // create purchase event
             Ticker.Events.Enqueue(this.product.evt);
         }
 
-        public bool IncrementProduct(Product product)
+        public bool IncrementProduct(object obj)
         {
+            Product product = obj as Product;
             product.maxEvents++;
             return true;
         }

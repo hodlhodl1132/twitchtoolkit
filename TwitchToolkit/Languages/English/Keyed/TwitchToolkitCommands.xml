@@ -48,4 +48,5 @@
   <TwitchToolkitEventOnCooldown>Event on cooldown</TwitchToolkitEventOnCooldown>
   <TwitchToolkitEventPurchaseConfirm>Event {first} purchased by @{viewer}</TwitchToolkitEventPurchaseConfirm>
   <TwitchToolkitItemPurchaseConfirm>{amount} {item} purchased by @{viewer}</TwitchToolkitItemPurchaseConfirm>
+  <TwitchToolkitMaxEvents>Event type maxed out</TwitchToolkitMaxEvents>
 </LanguageData>

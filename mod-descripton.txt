@@ -2,74 +2,146 @@
 
 Check out that mod here: https://steamcommunity.com/sharedfiles/filedetails/?id=1575408914
 
-This mod is currently in Beta because their are some bugs still that I am finding. Please report bugs in my discord https://discord.gg/qrtg224 , you can also find more information, updates, and the source code there as well.
+[h1]TwitchToolkit - Chat Storytelling Integration - Coins and Voting[/h1]
+This mod is far into beta-testing and is mostly bug free. We hate bugs so if you find any please let us know in the discord so we can fix asap.
 
-[u]If you are streaming this mod hop in the channel-promotion section of the discord and let us know![/u]
+
+If you are streaming this mod you can post in the channel-promotion section of our discord!
+
+[h1]Main Features[/h1]
+TwitchToolkit adds to big features including the storytelling voting and coin store, both work standalone of each other.
 
 [h1]Storyteller Voting[/h1]
-This mod adds 3 new storytellers based on vanilla storytellers. They will take incidents they would normally create in game but give those options to the chat to vote on. This also supports incidents created by other mods. I haven't tested this with all mods but the few I have it worked fine.
+TwitchToolkit adds 3 new vanilla-like storytellers into the game. The Uristbot(cassy), Spartanbot(phoebe), and Hodlbot(randy) all use similar storyteller patterns to the base game. The difference is instead of coming up with only one possible outcome they come up with more depending on how many vote options you have max. This is not based on a real world timer but uses in game time to decide when incidents should occur.
+
+New votes will show up on screen with a timer while the current results update in real time. You can drag the vote box to your preferred position.
 
 [h1]Coin Store[/h1]
-Your viewers earn coins every 2 minutes that can be spent on items/events ingame. For example, the command "!buyevent skillincrease" will give one of your pawns a random skill increase.
+TwitchToolkit adds the coin store which it is notorious for. Your viewers will earn coins per minute based on your settings. These coins can be spent on storytelling events and different tradeable ingame items. Events will happen immediately and items will come from cargo pods dropped near your base.
 
-Broadcaster does not earn coins.
+When purchasing an item/event, any message included after the command is included in the letter notification in game. See screenshots
 
-This entire feature can be disabled in mod settings by disabling coin earning and turning off store purchases.
+Events have cooldowns to prevent absolute insanity (of course this can be turned off) and uses the games brain to decide if certain things can happen.
+
+Items are generated from your custom game, so if you have mods with tradeable items, those items will be available in your purchase list.
+
+[h1]Features[/h1]
+
+[h1]Commands[/h1]
+[b]Admin Commands[/b]
+[u]!addtoolkitmod[/u] - Syntax: !addmod @username - give viewer access to mod commands below
+[u]!removetoolkitmod[/u] - Syntax: !removemod @username - take viewer access to mod commands below
+[u]!resetviewers[/u] - resets all viewers data back to default, must confirm twice
+
+[b]Mod Commands[/b]
+[u]!refreshviewers[/u] - updates viewers watching channel, this is for debugging mostly
+[u]!karmaround[/u] - simulates a coin reward round
+[u]!givecoins[/u] - Syntax: !givecoins @username 1000 - gives user 1000 coins (can also be used with negative numbers to take coins)
+Moderators cannot give coins to themselves
+[u]!giveallcoins[/u] - Syntax: !giveallcoins 1000 - gives all users 1000 coins
+[u]!checkuser[/u] - Syntax: !checkuser @username - do a balance check on the user
+[u]!setkarma[/u] - Syntax: !setkarma @username 100 - set user karma to 100% 
+[u]!togglestore[/u] - toggle ability for users to purchase items/events
+[u]!togglecoins[/u] - toggle ability for users to earn coins while viewing
+
+[b]User Commands[/b]
+
+These are changeable and if you reset these commands in the settings they will translate to your language if supported.
+
+[u]!bal[/u] - check balance and karma rate
+[u]!buyevent[/u] - Syntax: !buyevent skillincrease - purchase an event
+[u]!buyitem[/u] - Syntax: !buyitem beer 2 - purchase an item
+[u]!whatiskarma[/u] - explains what the karma system is
+[u]!purchaselist[/u] - gives users a link to the public purchase list
+[u]!instructions[/u] - gives users info on using the mod
+[u]!modinfo[/u] - gives users info about the mod
+[u]!modsettings[/u] - gives user info on how many coins are being earned and global settings
+[u]!giftcoins[/u] - Syntax: !giftcoins @username 100 - give another viewer your coins
+[u]!toolkitcmds[/u] - shows all available commands to the user, this does not translate by default so it can be universally recognized.
 
 [h1]Karma System[/h1]
-As much as we'd all love to send 50 raids to our favorite twitch streamers, we need to balance things out. To do this a karma system is in use that rewards users for good events & items while punishing users for bad events. Your karma rate will decide how many coins you earn per interval up to 300% the base rate. You can change coins per interval in settings.
+As much as we'd all love to send 50 raids to our favorite twitch streamers, we need to balance things out. To do this a karma system is in use that rewards users for good events & items while punishing users for bad events. Your karma rate will decide how many coins you earn per interval up to your set karma cap. The base recommended Karma cap is 140% and any higher viewers will snowball the coins they earn.
 
-[h1]Admin Commands[/h1]
-[b]!addtoolkitmod[/b] - Syntax: !addmod @username - give viewer access to mod commands below
-[b]!removetoolkitmod[/b] - Syntax: !removemod @username - take viewer access to mod commands below
-[b]!resetviewers[/b] - resets all viewers data back to default, must confirm twice
-
-[h1]Mod Commands[/h1]
-[b]!refreshviewers[/b] - updates viewers watching channel, this is for debugging mostly
-[b]!karmaround[/b] - simulates a coin reward round
-[b]!givecoins[/b] - Syntax: !givecoins @username 1000 - gives user 1000 coins (can also be used with negative numbers to take coins)
-Moderators cannot give coins to themselves
-[b]!giveallcoins[/b] - Syntax: !giveallcoins 1000 - gives all users 1000 coins
-[b]!checkuser[/b] - Syntax: !checkuser @username - do a balance check on the user
-[b]!setkarma[/b] - Syntax: !setuserkarma @username 100 - set user karma to 100% 
-[b]!togglestore[/b] - toggle ability for users to purchase items/events
-[b]!togglecoins[/b] - toggle ability for users to earn coins while viewing
-
-[h1]User Commands[/h1]
-
-These commands can be changed in the command settings.
-
-[b]!bal[/b] - check balance and karma rate
-[b]!buyevent[/b] - Syntax: !buyevent skillincrease - purchase an event
-[b]!buyitem[/b] - Syntax: !buyitem beer 2 - purchase an item
-[b]!whatiskarma[/b] - explains what the karma system is
-[b]!purchaselist[/b] - gives users a link to the public purchase list
-[b]!instructions[/b] - gives users info on using the mod
-[b]!modinfo[/b] - gives users info about the mod
-[b]!modsettings[/b] - gives user info on how many coins are being earned and global settings
-[b]!giftcoins[/b] - Syntax: !giftcoins @username 100 - give another viewer your coins
+The more you spend on items/good events the more coins you will make overall.
 
 [h1]Custom Pricing[/h1]
-Items are available for purchase as well. You can edit the pricing of items/events in the settings. Currently the best way of sharing your custom pricing sheet with your chat is through a public spreadsheet. Ingame on your bottom menu bar click on toolkit. Here you can generate a spreadsheet with your current pricing. The spreadsheet will output to your rimworld data file. For windows users this is
+Items and events included in your game can have their pricing changed. Once you have completed editing your prices you can output them to a custom spreadsheet. A wonderful guide by the Twitch.tv/Kruffles will help you setup your custom pricing for your viewers, that you can view here:
 
-%USERPROFILE%\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios
+https://docs.google.com/document/d/10r1JmgazoVyU_8ydEPzvuoXIaAU6zNec79ZSG11jnZ4/edit
 
-[u]paste the above into your file explorer address bar, including the %USERPROFILE%[/u]
+[h1]Coins Settings[/h1]
+Coins section of the mod settings
 
-Or if you pause and go to options, you will see a button for open save data folder. It should be in there.
+Reward coins: Toggles whether or not your viewers are earning coins
 
-It should be name productlist.csv. You can distribute this file by creating a new Google Sheets file and going to File -> Import -> Upload. I intend to make this easier in the future.
+Store Open: Toggles whether or not your viewers can purchase items/events
 
-[h1]Alternate Languages[/h1]
-Please join my discord to participate in translating this mod into other languages.
-https://discord.gg/qrtg224
+Viewers can gift other viewers coins: Toggles gifting(trading) of coins between viewers. This is off by default since it can easily be abused by alt accounts. I recommend turning this off for streams that can�t be properly moderated.
 
-[h1]Setup Instructions[/h1]
-1. You will need an Oauth token from https://twitchapps.com/tmi/
-2. Open the mod settings and include your channel name, the username of the account you want to use as well as it's oauth token
-3. Press reconnect in the mod settings
-4. There is a glitch we are working on, you need to restart your game after doing your inital settings
-5. Setup items for purchasing. Make sure you have all mods you want to pull items from loaded, then under Mod Settings -> Items, do reset to default. This will pull every item in game and put it into your purchase list.
+Coins per interval: Your viewers will get this many base coins every coin reward round
+
+Max Karma: What is the maximum bonus percentage of coins viewers can earn (For example: 140% means viewers would earn extra 40% of base reward)
+
+Minimum Purchase Price: To prevent spam of low priced items, a minimum purchase price will require viewers to spend a min amount of coins to complete a purchase.
+
+Minutes between coin reward: How often should viewers be reward the base coins + karma bonus
+
+Starting Balance: How many coins should new viewers start with
+
+Starting Karma: What percentage of the base coin reward should new viewers start with
+
+Link to custom pricing sheet: This will change the outputted link to the pricing sheet to your custom sheet
+
+[h1]Events Settings[/h1]
+Events section of mod settings
+
+At the top of this box is a search box that can be used to quickly find events you are looking for. Next to the search box are the up/down scrolling. To the right of that is the price multipliers that will change the pricing of all events at once. Lastly, is the reset to default button which will ensure your events are working right, are up to date, and have default values.
+
+Each of the events listed have the following options:
+
+Price of each event can be changed with the integer buttons.
+
+The type of karma given to the player for the event, so bad events take down karma and good events pull up karma. An example of when you might change this, if you are running a cannibal colony it would make sense for the cannibal trait to be a good thing.
+
+The disable button sets the price to 0 which makes the event unbuyable, to turn an event back on raise the price.
+
+The max button is the maximum amount of times the event can happen within your cooldown period. The cooldown period is set in the options section of the mod settings.
+
+
+[h1]Items Settings[/h1]
+Items sections of mod settings
+
+The items section also has a search bar for quickly finding items. The reset to default will make sure all tradeable items in your current game + mods will be loaded into your purchase list. The price for items are calculated off the basemarketvalue of items. Each items price can be altered or items can be disabled entirely.
+
+[h1]Options Settings[/h1]
+Options section of mod settings
+
+Should buildings unable to be uninstalled be included in the item list? This option was never intended for the full release, however, this bug turned into a feature. It is recommended to keep this off as it makes it so you can�t purchase �buildings�. An example of this would be a grave, which would wall from the sky and immediately construct itself. This can cause unwanted consequences like destroying items, destroying buildings, or never appearing in the first place.
+
+Should viewers have unlimited coins? Self-explanatory, should the game check if viewers have enough coins?
+
+Should events have cooldowns? This prevents events from being spammed past their max value within their cooldown period.
+
+Should viewer names be repeated in raids/aid? This is a cool feature but can be buggy down the road if you don�t use a mod like RuntimeGC for cleaning up old pawns. To my understanding, by generating tons of pawns with the same name you could potentially cause issues.
+
+Large voting window? If you stream at a lower resolution than 1080p or have a lot of mobile viewers, you may want to make the voting window larger.
+
+How many minutes in a cooldown period? This is how often the max of each event can be hit. So for a big raid, if a viewer purchased this the next viewer would have to wait 15 mins before purchase. For events with a higher max of 1 it will work slightly different. If an event has a max of two and a viewer purchases one it will work like this.
+
+Viewer 1 purchases inspiration. Viewer 2 purchases inspiration 5 minutes later. Viewer 3 tries to purchase inspiration but it is on cooldown, it takes another 10 minutes for the first viewers purchase to not be counted in the cooldown.
+
+Separate chatroom uuid and and channel id are beta features and are not supported. Use at your own risk. Will be supported in near feature when bug free.
+
+[h1]Command Settings[/h1]
+Commands section of mod settings
+
+Commands can be whispered? This allows viewers to whisper their commands to the username set.
+
+Commands must be whispered? Forces viewers to whisper their command to the username set
+
+Should purchases be confirmed in chat? Creates a confirmation message upon successful purchase of item/event. This is spammy which is why you might want it off.
+
+The rest of the settings in this section allow you to change the commands incase they conflict with other stream commands. If you click reset commands, it will attempt to translate the commands into your language.
 
 
 

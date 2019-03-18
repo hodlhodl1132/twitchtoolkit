@@ -7,6 +7,7 @@ using RimWorld;
 using Verse;
 using Verse.Sound;
 using TwitchToolkitDev;
+using TwitchToolkit.Store;
 
 namespace TwitchToolkit
 {
@@ -39,6 +40,8 @@ namespace TwitchToolkit
         public static float VotingWindowx = -1;
         public static float VotingWindowy;
         public static bool LargeVotingWindow;
+        public static bool VotingWindow;
+        public static bool VotingChatMsgs;
 
         public static string CustomPricingSheetLink = "https://bit.ly/2C7bls0";
 
@@ -51,6 +54,7 @@ namespace TwitchToolkit
         public static bool PurchaseConfirmations = true;
         public static bool EventsHaveCooldowns = true;
         public static bool RepeatViewerNames = false;
+        public static bool ViewerNamedColonistQueue = false;
 
         public static string JWTToken;
         public static string AccountID;
@@ -69,10 +73,53 @@ namespace TwitchToolkit
         public static string GiftCmd;
         public static string CommandHelpCmd;
 
+        public static float TierOneGoodBonus;
+        public static float TierOneNeutralBonus;
+        public static float TierOneBadBonus;
+
+        public static float TierTwoGoodBonus;
+        public static float TierTwoNeutralBonus;
+        public static float TierTwoBadBonus;
+
+        public static float TierThreeGoodBonus;
+        public static float TierThreeNeutralBonus;
+        public static float TierThreeBadBonus;
+
+        public static float TierFourGoodBonus;
+        public static float TierFourNeutralBonus;
+        public static float TierFourBadBonus;
+
+        public static float DoomBonus;
+
+        public static bool BanViewersWhoPurchaseAlwaysBad;
+        public static bool KarmaReqsForGifting;
+        public static bool ChatReqsForCoins;
+
+        public static int MinimumKarmaToRecieveGifts;
+        public static int MinimumKarmaToSendGifts;
+        public static int TimeBeforeHalfCoins;
+        public static int TimeBeforeNoCoins;
+
+        public static bool KarmaDecay;
+        public static int KarmaDecayPeriod;
+        public static bool MaxEvents;
+        public static int MaxEventsPeriod;
+
+        public static int MaxBadEventsBeforeDecay;
+        public static int MaxGoodEventsBeforeDecay;
+        public static int MaxNeutralEventsBeforeDecay;
+
+        public static int MaxBadEventsPerInterval;
+        public static int MaxGoodEventsPerInterval;
+        public static int MaxNeutralEventsPerInterval;
+        public static int MaxCarePackagesPerInterval;
+
         // viewer storage
         public static Dictionary<string, int> ViewerIds = null;
         public static Dictionary<int, int> ViewerCoins = new Dictionary<int, int>();
         public static Dictionary<int, int> ViewerKarma = new Dictionary<int, int>();
+
+        public static Dictionary<string, string> ViewerColorCodes = new Dictionary<string, string>();
 
         public static Dictionary<string, bool> ViewerModerators = new Dictionary<string, bool>();
 
@@ -166,6 +213,14 @@ namespace TwitchToolkit
             Scribe_Values.Look(ref WhisperCmdsAllowed, "WhisperCmdsAllowed", true, true);
             Scribe_Values.Look(ref WhisperCmdsOnly, "WhisperCmdsOnly", false, true);
             Scribe_Values.Look(ref PurchaseConfirmations, "PurchaseConfirmations", true, true);
+            Scribe_Values.Look(ref VotingChatMsgs, "VotingChatMsgs", false, true);
+            Scribe_Values.Look(ref VotingWindow, "VotingWindow", true, true);
+            Scribe_Values.Look(ref ViewerNamedColonistQueue, "ViewerNamedColonistQueue", true, true);
+
+            Scribe_Values.Look(ref MinimumKarmaToRecieveGifts, "MinimumKarmaToRecieveGifts", 40, true);
+            Scribe_Values.Look(ref MinimumKarmaToSendGifts, "MinimumKarmaToSendGifts", 100, true);
+            Scribe_Values.Look(ref TimeBeforeHalfCoins, "TimeBeforeHalfCoins", 30, true);
+            Scribe_Values.Look(ref TimeBeforeNoCoins, "TimeBeforeNoCoins", 60, true);
 
             Scribe_Values.Look(ref JWTToken, "JWTToken", "", true);
             Scribe_Values.Look(ref AccountID, "AccountID", "", true);
@@ -187,12 +242,49 @@ namespace TwitchToolkit
             Scribe_Values.Look(ref GiftCmd, "GiftCmd", "!giftcoins", true);
             Scribe_Values.Look(ref CommandHelpCmd, "CommandHelpCmd", "!toolkitcmds", true);
 
+            Scribe_Values.Look(ref TierOneGoodBonus, "TierOneGoodBonus", 23, true);
+            Scribe_Values.Look(ref TierOneNeutralBonus, "TierOneNeutralBonus", 2, true);
+            Scribe_Values.Look(ref TierOneBadBonus, "TierOneBadBonus", 33, true);
+
+            Scribe_Values.Look(ref TierTwoGoodBonus, "TierTwoGoodBonus", 33, true);
+            Scribe_Values.Look(ref TierTwoNeutralBonus, "TierTwoNeutralBonus", 2, true);
+            Scribe_Values.Look(ref TierTwoBadBonus, "TierTwoBadBonus", 40, true);
+
+            Scribe_Values.Look(ref TierThreeGoodBonus, "TierThreeGoodBonus", 10, true);
+            Scribe_Values.Look(ref TierThreeNeutralBonus, "TierThreeNeutralBonus", 5, true);
+            Scribe_Values.Look(ref TierThreeBadBonus, "TierThreeBadBonus", 50, true);
+
+            Scribe_Values.Look(ref TierFourGoodBonus, "TierFourGoodBonus", 60, true);
+            Scribe_Values.Look(ref TierFourNeutralBonus, "TierFourNeutralBonus", 15, true);
+            Scribe_Values.Look(ref TierFourBadBonus, "TierFourBadBonus", 0, true);
+
+            Scribe_Values.Look(ref DoomBonus, "DoomBonus", 67, true);
+
+            Scribe_Values.Look(ref ChatReqsForCoins, "ChatReqsForCoins", true, true);
+            Scribe_Values.Look(ref KarmaReqsForGifting, "KarmaReqsForGifting", true, true);
+            Scribe_Values.Look(ref BanViewersWhoPurchaseAlwaysBad, "BanViewersWhoPurchaseAlwaysBad", true, true);
+
+            Scribe_Values.Look(ref KarmaDecay, "KarmaDecay", false, true);
+            Scribe_Values.Look(ref MaxEvents, "MaxEvents", false, true);
+            Scribe_Values.Look(ref KarmaDecayPeriod, "KarmaDecayPeriod", 5, true);
+            Scribe_Values.Look(ref MaxEventsPeriod, "MaxEventsPeriod", 5, true);
+
+            Scribe_Values.Look(ref MaxBadEventsBeforeDecay, "MaxBadEventsBeforeDecay", 3, true);
+            Scribe_Values.Look(ref MaxGoodEventsBeforeDecay, "MaxGoodEventsBeforeDecay", 10, true);
+            Scribe_Values.Look(ref MaxNeutralEventsBeforeDecay, "MaxNeutralEventsBeforeDecay", 10, true);
+            
+            Scribe_Values.Look(ref MaxBadEventsPerInterval, "MaxBadEventsPerInterval", 3, true);
+            Scribe_Values.Look(ref MaxGoodEventsPerInterval, "MaxGoodEventsPerInterval", 10, true);
+            Scribe_Values.Look(ref MaxNeutralEventsPerInterval, "MaxNeutralEventsPerInterval", 10, true);
+            Scribe_Values.Look(ref MaxCarePackagesPerInterval, "MaxCarePackagesPerInterval", 10, true);
+
             Scribe_Values.Look(ref VoteInterval, "VoteInterval", 5, true);
 
             Scribe_Collections.Look(ref ViewerIds, "ViewerIds", LookMode.Value, LookMode.Value);
             Scribe_Collections.Look(ref ViewerCoins, "ViewerCoins", LookMode.Value, LookMode.Value);
             Scribe_Collections.Look(ref ViewerKarma, "ViewerKarma", LookMode.Value, LookMode.Value);
             Scribe_Collections.Look(ref ViewerModerators, "ViewerModerators", LookMode.Value, LookMode.Value);
+            Scribe_Collections.Look(ref ViewerColorCodes, "ViewerColorCodes", LookMode.Value, LookMode.Value);
 
             Scribe_Collections.Look(ref ItemIds, "ItemIds", LookMode.Value, LookMode.Value);
             Scribe_Collections.Look(ref ItemPrices, "ItemPrices", LookMode.Value, LookMode.Value);
@@ -221,6 +313,11 @@ namespace TwitchToolkit
             if (CategoryWeights == null)
             {
                 CategoryWeights = Enumerable.Repeat<int>(100, _Categories.Count).ToList();
+            }
+
+            if (ViewerColorCodes == null)
+            {
+                ViewerColorCodes = new Dictionary<string, string>();
             }
 
             Scribe_Collections.Look(ref EventWeights, "EventWeights", LookMode.Value);
@@ -353,6 +450,24 @@ namespace TwitchToolkit
                 _menu = 6;
             }
 
+            buttonRect.y += _height;
+            if (Widgets.ButtonText(buttonRect, "Balance"))
+            {
+                _menu = 7;
+            }
+
+            buttonRect.y += _height;
+            if (Widgets.ButtonText(buttonRect, "Karma"))
+            {
+                _menu = 8;
+            }
+
+            buttonRect.y += _height;
+            if (Widgets.ButtonText(buttonRect, "Stats"))
+            {
+                _menu = 9;
+            }
+
             rect.width -= buttonWidth + _padding;
             switch (_menu)
             {
@@ -382,6 +497,15 @@ namespace TwitchToolkit
                     break;
                 case 6:
                     CommandMenu(rect);
+                    break;
+                case 7:
+                    BalanceMenu(rect);
+                    break;
+                case 8:
+                    KarmaMenu(rect);
+                    break;
+                case 9:
+                    StatsMenu(rect);
                     break;
             }
         }
@@ -489,18 +613,15 @@ namespace TwitchToolkit
             listingStandard.CheckboxLabeled("Reward Coins: ", ref EarningCoins, "Should viewers earn coins while watching?");
             listingStandard.CheckboxLabeled("Store Open: ", ref StoreOpen, "Enable purchasing of events and items");
             listingStandard.CheckboxLabeled("Viewers can gift other viewers coins: ", ref GiftingCoins, "Enable gifting");
+            listingStandard.CheckboxLabeled("Should viewers have unlimited coins? ", ref UnlimitedCoins, "Unlimited coins?");
             listingStandard.Label("Coins Per Interval: " + CoinAmount);
             CoinAmount = listingStandard.Slider((float)CoinAmount, 1, 250);
-            listingStandard.Label("Max Karma: " + KarmaCap);
-            KarmaCap = listingStandard.Slider((float)KarmaCap, 100, 1000);
             listingStandard.Label("Minimum Purchase Price: " + MinimumPurchasePrice);
             MinimumPurchasePrice = listingStandard.Slider((float)MinimumPurchasePrice, 10, 500);
             listingStandard.Label("Minutes between coin reward: " + CoinInterval);
             CoinInterval = listingStandard.Slider((float)CoinInterval, 1, 60);
             listingStandard.Label("Starting balance: " + StartingBalance);
             StartingBalance = listingStandard.Slider((float)StartingBalance, 0, 1000);
-            listingStandard.Label("Starting karma: " + StartingKarma);
-            StartingKarma = listingStandard.Slider((float)StartingKarma, 10, Settings.KarmaCap);
             listingStandard.Label("Link to custom pricing sheet: (check steamworkshop description for instructions)");
             CustomPricingSheetLink = listingStandard.TextEntry(CustomPricingSheetLink);
             if (listingStandard.ButtonText("Disable Events"))
@@ -520,6 +641,7 @@ namespace TwitchToolkit
                 EarningCoins = true;
                 StoreOpen = false;
                 GiftingCoins = false;
+                UnlimitedCoins = false;
                 CoinAmount = 30;
                 KarmaCap = 140;
                 MinimumPurchasePrice = 60;
@@ -538,10 +660,15 @@ namespace TwitchToolkit
             Listing_TwitchToolkit listingStandard = new Listing_TwitchToolkit();
             listingStandard.Begin(rect);
             listingStandard.CheckboxLabeled("Should buildings unable to be uninstalled be included in the item list? ", ref MinifiableBuildings, "Non-Minifiable Buildings?");
-            listingStandard.CheckboxLabeled("Should viewers have unlimited coins? ", ref UnlimitedCoins, "Unlimited coins?");
             listingStandard.CheckboxLabeled("Should events have cooldowns? ", ref EventsHaveCooldowns, "Event cooldowns?");
             listingStandard.CheckboxLabeled("Should viewer names be repeated in raids/aid? ", ref RepeatViewerNames, "Repeat viewers?");
-            listingStandard.CheckboxLabeled("Large voting window? ", ref LargeVotingWindow, "Large window?");
+            listingStandard.CheckboxLabeled("Enable voting window? ", ref VotingWindow, "Large window?");
+            if (VotingWindow)
+            {
+                listingStandard.CheckboxLabeled("Large voting window? ", ref LargeVotingWindow, "Large window?");
+            }
+            listingStandard.CheckboxLabeled("Send vote options to chat? ", ref VotingChatMsgs, "Vote msgs?");
+            listingStandard.CheckboxLabeled("Enable the viewer named colonist queue? ", ref ViewerNamedColonistQueue, "Queue names?");
             listingStandard.Label("How many minutes in a cooldown period: " + EventCooldownInterval);
             EventCooldownInterval = listingStandard.Slider((float)EventCooldownInterval, 1, 120);
             listingStandard.Label("Seperate chatroom UUID:");
@@ -554,6 +681,10 @@ namespace TwitchToolkit
                 UnlimitedCoins = false;
                 EventsHaveCooldowns = true;
                 EventCooldownInterval = 15;
+                RepeatViewerNames = false;
+                VotingWindow = true;
+                LargeVotingWindow = false;
+                VotingChatMsgs = false;
                 mod.WriteSettings();
             }
             listingStandard.End();
@@ -623,6 +754,235 @@ namespace TwitchToolkit
                 element.ImportPoints();
             }
 
+            listingStandard.End();
+        }
+
+        static int BalanceTab = 0;
+        private static void BalanceMenu(Rect rect)
+        {
+            
+            Listing_TwitchToolkit listingStandard = new Listing_TwitchToolkit();
+            listingStandard.Begin(rect);
+            
+            if ( listingStandard.ButtonText("Next Page") )
+            {
+                if (BalanceTab == 2)
+                {
+                    BalanceTab = 0;
+                }
+                else
+                {
+                    BalanceTab++;
+                }
+            }
+
+            if (BalanceTab == 0)
+            { 
+
+                if (EarningCoins)
+                {
+                    listingStandard.CheckboxLabeled("Should viewers who don't participate stop earning coins?", ref ChatReqsForCoins, "Force chat?");
+                }
+                if (ChatReqsForCoins)
+                {
+                    listingStandard.Label("How many minutes without chatting until viewers earn half coins?: " + TimeBeforeHalfCoins);
+                    TimeBeforeHalfCoins = listingStandard.Slider((float)TimeBeforeHalfCoins, 10, 60);
+                    listingStandard.Label("How many minutes without chatting until viewers earn no coins?: " + TimeBeforeNoCoins);
+                    TimeBeforeNoCoins = listingStandard.Slider((float)TimeBeforeNoCoins, TimeBeforeHalfCoins, TimeBeforeHalfCoins * 2);
+                }
+
+                if (GiftingCoins)
+                {
+                    listingStandard.CheckboxLabeled("Enforce karma requirements for gifting?", ref KarmaReqsForGifting, "Enable reqs?");
+                }
+                if (KarmaReqsForGifting)
+                {
+                    listingStandard.Label("Minimum karma required to recieve gifts?: " + MinimumKarmaToRecieveGifts);
+                    MinimumKarmaToRecieveGifts = listingStandard.Slider((float)MinimumKarmaToRecieveGifts, 0, KarmaCap);
+                    listingStandard.Label("Minimum karma required to send gifts?: " + MinimumKarmaToSendGifts);
+                    MinimumKarmaToSendGifts = listingStandard.Slider((float)MinimumKarmaToSendGifts, MinimumKarmaToRecieveGifts, KarmaCap);
+                }
+                listingStandard.CheckboxLabeled("Should viewers go into negative karma?", ref BanViewersWhoPurchaseAlwaysBad);
+                if (listingStandard.ButtonText("Reset"))
+                {
+                    ChatReqsForCoins = true;
+                    TimeBeforeHalfCoins = 30;
+                    TimeBeforeNoCoins = 45;
+                    KarmaReqsForGifting = false;
+                    MinimumKarmaToRecieveGifts = 33;
+                    MinimumKarmaToSendGifts = 100;
+                }
+            }
+            else if (BalanceTab == 1)
+            {
+                listingStandard.Label("Placehoder for karma decay, disabled in this update");
+                //listingStandard.CheckboxLabeled("Karma Decay", ref KarmaDecay);
+                //listingStandard.Label("Karma Decay Period: " + KarmaDecayPeriod + " minutes");
+                //KarmaDecayPeriod = listingStandard.Slider(KarmaDecayPeriod, 1, 30);
+                //listingStandard.Label("Max Bad Events Before Decay: " + MaxBadEventsBeforeDecay);
+                //MaxBadEventsBeforeDecay = listingStandard.Slider(MaxBadEventsBeforeDecay, 1, 30);
+                //listingStandard.Label("Max Good Events Before Decay: " + MaxGoodEventsBeforeDecay);
+                //MaxGoodEventsBeforeDecay = listingStandard.Slider(MaxGoodEventsBeforeDecay, 1, 30);
+                //listingStandard.Label("Max Neutral Events Before Decay: " + MaxNeutralEventsBeforeDecay);
+                //MaxNeutralEventsBeforeDecay = listingStandard.Slider(MaxNeutralEventsBeforeDecay, 1, 30);
+                //if (listingStandard.ButtonText("Reset"))
+                //{
+                //    KarmaDecay = false;
+                //    KarmaDecayPeriod = 5;
+                //    MaxBadEventsBeforeDecay = 3;
+                //    MaxGoodEventsBeforeDecay = 10;
+                //    MaxNeutralEventsBeforeDecay = 10;
+                //}
+            }
+            else if (BalanceTab == 2)
+            {
+                listingStandard.CheckboxLabeled("Limit max amount of types of events?", ref MaxEvents);
+                listingStandard.Label("Max Events Period: " + MaxEventsPeriod + " minutes");
+                MaxEventsPeriod = listingStandard.Slider(MaxEventsPeriod, 1, 60);
+                listingStandard.Label("Max Bad Events Per Interval: " + MaxBadEventsPerInterval);
+                MaxBadEventsPerInterval = listingStandard.Slider(MaxBadEventsPerInterval, 0, 60);
+                listingStandard.Label("Max Good Events Per Interval: " + MaxGoodEventsPerInterval);
+                MaxGoodEventsPerInterval = listingStandard.Slider(MaxGoodEventsPerInterval, 0, 60);
+                listingStandard.Label("Max Neutral Events Per Interval: " + MaxNeutralEventsPerInterval);
+                MaxNeutralEventsPerInterval = listingStandard.Slider(MaxNeutralEventsPerInterval, 0, 60);
+                listingStandard.Label("Max Care Packages Per Interval: " + MaxCarePackagesPerInterval);
+                MaxCarePackagesPerInterval = listingStandard.Slider(MaxCarePackagesPerInterval, 0, 60);
+                if (listingStandard.ButtonText("Reset"))
+                {
+                    MaxEvents = false;
+                    MaxEventsPeriod = 5;
+                    MaxBadEventsPerInterval = 3;
+                    MaxGoodEventsPerInterval = 10;
+                    MaxNeutralEventsPerInterval = 10;
+                    MaxCarePackagesPerInterval = 10;
+                }
+            }
+
+            listingStandard.End();
+        }
+
+        static int KarmaTab = 1;
+        private static void KarmaMenu(Rect rect)
+        {
+            Listing_TwitchToolkit listingStandard = new Listing_TwitchToolkit();
+            if (KarmaTab == 0)
+            { 
+                var labelRect = new Rect(2, 35f, 150, 30);
+
+                var listingRect = new Rect(152, 35f, 250, 400);
+
+                Widgets.Label(labelRect, "T1 Good:" + TierOneGoodBonus);
+                labelRect.y += 24;
+                Widgets.Label(labelRect, "T1 Neutral:" + TierOneNeutralBonus);
+                labelRect.y += 24;
+                Widgets.Label(labelRect, "T1 Bad:" + TierOneBadBonus);
+                labelRect.y += 24;
+
+                Widgets.Label(labelRect, "T2 Good:" + TierTwoGoodBonus);
+                labelRect.y += 24;
+                Widgets.Label(labelRect, "T2 Neutral:" + TierTwoNeutralBonus);
+                labelRect.y += 24;
+                Widgets.Label(labelRect, "T2 Bad:" + TierTwoBadBonus);
+                labelRect.y += 24;
+
+                Widgets.Label(labelRect, "T3 Good:" + TierThreeGoodBonus);
+                labelRect.y += 24;
+                Widgets.Label(labelRect, "T3 Neutral:" + TierThreeNeutralBonus);
+                labelRect.y += 24;
+                Widgets.Label(labelRect, "T3 Bad:" + TierThreeBadBonus);
+                labelRect.y += 24;
+
+                Widgets.Label(labelRect, "T4 Good:" + TierFourGoodBonus);
+                labelRect.y += 24;
+                Widgets.Label(labelRect, "T4 Neutral:" + TierFourNeutralBonus);
+                labelRect.y += 24;
+                Widgets.Label(labelRect, "T4 Bad:" + TierFourBadBonus);
+                labelRect.y += 24;
+
+                Widgets.Label(labelRect, "Doom: " + DoomBonus);
+                labelRect.y += 24;
+
+                listingStandard.Begin(listingRect);
+
+                TierOneGoodBonus = listingStandard.Slider(TierOneGoodBonus, 0, 100);
+                TierOneNeutralBonus = listingStandard.Slider(TierOneNeutralBonus, 0, 100);
+                TierOneBadBonus = listingStandard.Slider(TierOneBadBonus, 0, 100);
+
+                TierTwoGoodBonus = listingStandard.Slider(TierTwoGoodBonus, 0, 100);
+                TierTwoNeutralBonus = listingStandard.Slider(TierTwoNeutralBonus, 0, 100);
+                TierTwoBadBonus = listingStandard.Slider(TierTwoBadBonus, 0, 100);
+
+                TierThreeGoodBonus = listingStandard.Slider(TierThreeGoodBonus, 0, 100);
+                TierThreeNeutralBonus = listingStandard.Slider(TierThreeNeutralBonus, 0, 100);
+                TierThreeBadBonus = listingStandard.Slider(TierThreeBadBonus, 0, 100);
+
+                TierFourGoodBonus = listingStandard.Slider(TierFourGoodBonus, 0, 100);
+                TierFourNeutralBonus = listingStandard.Slider(TierFourNeutralBonus, 0, 100);
+                TierFourBadBonus = listingStandard.Slider(TierFourBadBonus, 0, 100);
+
+                DoomBonus = listingStandard.Slider(DoomBonus, 0, 100);
+                if (listingStandard.ButtonText("Default Karma"))
+                {
+                    TierOneGoodBonus = 23;
+                    TierOneNeutralBonus = 2;
+                    TierOneBadBonus = 33;
+                    TierTwoGoodBonus = 33;
+                    TierTwoNeutralBonus = 2;
+                    TierTwoBadBonus = 40;
+                    TierThreeGoodBonus = 10;
+                    TierThreeNeutralBonus = 5;
+                    TierThreeBadBonus = 50;
+                    TierFourGoodBonus = 60;
+                    TierFourNeutralBonus = 15;
+                    TierFourBadBonus = 0;
+                    DoomBonus = 67;
+                }
+            }
+            else
+            {
+                listingStandard.Begin(rect);
+                listingStandard.Label("Max Karma: " + KarmaCap);
+                KarmaCap = listingStandard.Slider((float)KarmaCap, 100, 1000);
+                listingStandard.Label("Starting karma: " + StartingKarma);
+                StartingKarma = listingStandard.Slider((float)StartingKarma, 10, Settings.KarmaCap);
+                if (listingStandard.ButtonText("Default Karma"))
+                {
+                    StartingKarma = 100;
+                    KarmaCap = 140;
+                }
+            }
+            if ( listingStandard.ButtonText("Next Page") )
+            {
+                if (KarmaTab == 1)
+                {
+                    KarmaTab = 0;
+                }
+                else
+                {
+                    KarmaTab++;
+                }
+            }
+
+            listingStandard.End();
+
+        }
+
+        static int StatsMinutes = 1;
+        public static void StatsMenu(Rect rect)
+        {
+            Listing_TwitchToolkit listingStandard = new Listing_TwitchToolkit();
+            listingStandard.Begin(rect);
+            listingStandard.Label("In the last " + StatsMinutes + " minutes");
+            StatsMinutes = listingStandard.Slider(StatsMinutes, 1, 120);
+            listingStandard.Label("Recent Events: " + PurchaseLogger.CountRecentEvents(StatsMinutes));
+            listingStandard.Label("Good: " + PurchaseLogger.CountRecentEventsOfType(KarmaType.Good, StatsMinutes));
+            listingStandard.Label("Bad: " + PurchaseLogger.CountRecentEventsOfType(KarmaType.Bad, StatsMinutes));
+            listingStandard.Label("Neutral: " + PurchaseLogger.CountRecentEventsOfType(KarmaType.Neutral, StatsMinutes) + "\n\n");
+
+            listingStandard.Label("Recently spent: " + PurchaseLogger.CountRecentEventsTotalCost(StatsMinutes));
+            listingStandard.Label("Good: " + PurchaseLogger.CountRecentEventsTotalCostOfType(KarmaType.Good, StatsMinutes));
+            listingStandard.Label("Bad: " + PurchaseLogger.CountRecentEventsTotalCostOfType(KarmaType.Bad, StatsMinutes));
+            listingStandard.Label("Neutral: " + PurchaseLogger.CountRecentEventsTotalCostOfType(KarmaType.Neutral, StatsMinutes));
             listingStandard.End();
         }
 

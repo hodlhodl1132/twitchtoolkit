@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using RimWorld;
 using UnityEngine;
 using Verse;
+using TwitchToolkit.Utilities;
 
 namespace TwitchToolkit
 {
@@ -45,13 +46,22 @@ namespace TwitchToolkit
             var rectBtn = new Rect(rectDifficulty.width + rectDifficulty.x + padding, rectDifficulty.y, (inRect.width - rectDifficulty.width - (padding * 3)) / 2, btnHeight);
             if (Widgets.ButtonText(rectBtn, "Settings"))
             {
-                Find.WindowStack.Add(new Dialog_CustomModSettings());
+                Window mobileSettings = new Dialog_CustomModSettings
+                {
+                    draggable = true,
+                    preventCameraMotion = false,
+                    forcePause = false
+                };
+                Find.WindowStack.Add(mobileSettings);
+                
             }
 
             rectBtn.x += rectBtn.width + padding;
-            if (Widgets.ButtonText(rectBtn, ""))
+            if (Widgets.ButtonText(rectBtn, "Chat Window") && !Find.WindowStack.TryRemove(typeof(ChatWindow), true))
             {
-
+                ChatWindow chatwnd = new ChatWindow();
+                _mod.activeChatWindow = chatwnd;
+                Find.WindowStack.Add(chatwnd);
             }
 
 

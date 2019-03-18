@@ -29,31 +29,8 @@ namespace TwitchToolkit
 
         public override void DoWindowContents(Rect inRect)
         {
-            System.Random rnd = new System.Random();
-            int[] votekeys = new int[_eventsPossibleChosen.Count()];
-            foreach (KeyValuePair<string, int> vote in mod._voteAnswers)
-            {
-                if (_eventsPossibleChosen.Length < vote.Value)
-                {
-                    continue;
-                }
-                votekeys[vote.Value - 1] += 1;
-            }
-            int evt = 0;
-            int voteCount = 0;
-            for (int i = 0; i < votekeys.Count(); i++)
-            {
-                if (votekeys[i] > votekeys[evt])
-                {
-                    evt = i;
-                }
-                else if (votekeys[i] == votekeys[evt] && rnd.Next(0, 2) == 1)
-                {
-                    evt = i;
-                }
-                voteCount += votekeys[i];
-            }
-
+            int[] votekeys = mod.CountVotes(_eventsPossibleChosen);
+            
             GameFont old = Text.Font;
             Text.Font = Settings.LargeVotingWindow ? GameFont.Medium : GameFont.Small;
             float lineheight = Settings.LargeVotingWindow ? 50 : 30;

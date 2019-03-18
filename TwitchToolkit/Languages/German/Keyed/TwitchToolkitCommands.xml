@@ -16,7 +16,7 @@
   <TwitchToolkitEarningCoinsMessage>Das verdienen von Münzen ist jetzt</TwitchToolkitEarningCoinsMessage>
   <TwitchToolkitStorePurchasesMessage>Der Shop ist jetzt</TwitchToolkitStorePurchasesMessage>
   <TwitchToolkitBalanceMessage>Münzen: {amount} - Karma: {karma}%</TwitchToolkitBalanceMessage>
-  <TwitchToolkitInstructions>Events und Gegenstände Können im Chat gekauft werden. Beispiel: '!buyevent skillincrease' oder '!buyitem bier 5'. Komplette Liste der Kaufbaren Sachen hier: </TwitchToolkitInstructions>
+  <TwitchToolkitInstructions>Events und Gegenstände Können im Chat gekauft werden. Beispiel: '{first} party' oder '{second} bier 5'. Komplette Liste der Kaufbaren Sachen hier: {third}</TwitchToolkitInstructions>
   <TwitchToolkitWhatIsKarma>Karma beeinflusst die Geschwindigkeit in der du Münzen erhältst. Für Böse Aktionen wird dir Karma abgezogen und für gute Hinzugefügt. Dein Karma beträgt gerade</TwitchToolkitWhatIsKarma>
   <TwitchToolkitPurchaseList>Komplette Liste hier:</TwitchToolkitPurchaseList>
   <TwitchToolkitGiftCoins>Ein Geschenk! du erhältst {amount} Münzen von @{from}</TwitchToolkitGiftCoins>
@@ -50,4 +50,5 @@
   <TwitchToolkitEventOnCooldown>Ereignis zur Abklingzeit</TwitchToolkitEventOnCooldown>
   <TwitchToolkitEventPurchaseConfirm>Event {first} von @{viewer} gekauft</TwitchToolkitEventPurchaseConfirm>
   <TwitchToolkitItemPurchaseConfirm>{amount} von @{viewer} gekauftes {item}</TwitchToolkitItemPurchaseConfirm>
+  <TwitchToolkitMaxEvents>Event type maxed out</TwitchToolkitMaxEvents>
 </LanguageData>

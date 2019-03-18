@@ -59,6 +59,8 @@
     <Compile Include="IRC\ConcurrentCircularBuffer.cs" />
     <Compile Include="Store\Item.cs" />
     <Compile Include="Store\Karma.cs" />
+    <Compile Include="Store\PurchaseLogger.cs" />
+    <Compile Include="Utilities\ChatWindow.cs" />
     <Compile Include="Utilities\Listing_TwitchToolkit.cs" />
     <Compile Include="Store\Products.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
@@ -210,6 +212,7 @@
     </None>
     <None Include="Languages\English\Keyed\TwitchToolkitEvents.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </None>
     <None Include="Languages\German\Keyed\TwitchToolkitEvents.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

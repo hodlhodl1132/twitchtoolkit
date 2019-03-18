@@ -18,103 +18,118 @@ namespace TwitchToolkit
 
         public static int CalculateNewKarma(int karma, KarmaType karmatype, int calculatedprice = 0)
         {
-            Helper.Log($"Calculating new karma with {karma}, and karma type {karmatype}");
+            float tier = ((float)karma / ((float)Settings.StartingBalance + (Settings.KarmaCap/3)));
+            Helper.Log($"Calculating new karma with {karma}, and karma type {karmatype} for {calculatedprice} with curve {CalculateForCurve()} tier {tier}");
             double newkarma = 0;
-            int maxkarma;
+            int maxkarma = 0;
 
-            if (calculatedprice > 0)
+            
+
+            if (karmatype == KarmaType.Doom)
             {
-                newkarma = (double)karma + (calculatedprice / 25);
-                maxkarma = Convert.ToInt32(Math.Round(newkarma)) > Settings.KarmaCap ? Settings.KarmaCap : Convert.ToInt32(Math.Round(newkarma));
-                return maxkarma;
+                
+                newkarma = (double)karma - (Convert.ToDouble((double)calculatedprice / (double)Settings.DoomBonus) * (Settings.KarmaCap / 100) );
+                //possibly ban?
+                if (tier < 0.061)
+                {
+                    //ban viewer
+                    maxkarma = 0;
+                }
             }
-
-
-            switch (karmatype)
+            else
             {
-                //bad event
-                case KarmaType.Bad:
-
-                    if (karma >= 100)
+                if (tier > 0.71)
+                {
+                    switch(karmatype)
                     {
-                        newkarma = (double)karma * 0.5d;
-                    }
-                    else if (karma >= 80 && karma < 100)
-                    {
-                        newkarma = (double)karma * 0.3d;
-                    }
-                    else if (karma >= 60 && karma < 80)
-                    {
-                        newkarma = (double)karma * 0.35d;
-                    }
-                    else if (karma >= 40 && karma < 60)
-                    {
-                        newkarma = (double)karma * 0.4d;
-                    }
-                    else if (karma >= 20 && karma < 40)
-                    {
-                        newkarma = (double)karma * 0.45d;
-                    }
-                    else
-                    {
-                        newkarma = (double)karma * 0.5d;
+                        //small bonus for good
+                        case KarmaType.Good:
+                            newkarma = (double)karma + (Convert.ToDouble((double)calculatedprice / (double)Settings.TierOneGoodBonus) * CalculateForCurve());
+                            break;
+                        //minute bonus for neutral
+                        case KarmaType.Neutral:
+                            newkarma = (double)karma + (Convert.ToDouble((double)calculatedprice / (double)Settings.TierOneNeutralBonus) * CalculateForCurve());
+                            break;
+                        //small punishment for bad
+                        case KarmaType.Bad:
+                            newkarma = (double)karma - (Convert.ToDouble((double)calculatedprice / (double)Settings.TierOneBadBonus) * CalculateForCurve());
+                            break;
                     }
 
-                    break;
-                //good event
-                case KarmaType.Good:
-
-                    if (karma >= 100)
+                }
+                else if (tier > 0.41)
+                {
+                    switch(karmatype)
                     {
-                        newkarma = (double)karma * 1.05d;
+                        //medium bonus for good
+                        case KarmaType.Good:
+                            newkarma = (double)karma + (Convert.ToDouble((double)calculatedprice / (double)Settings.TierTwoGoodBonus) * CalculateForCurve());
+                            break;
+
+                        //minute bonus for neutral
+                        case KarmaType.Neutral:
+                            newkarma = (double)karma + (Convert.ToDouble((double)calculatedprice / (double)Settings.TierTwoNeutralBonus) * CalculateForCurve());
+                            break;
+
+                        //medium punishment for bad
+                        case KarmaType.Bad:
+                            newkarma = (double)karma - (Convert.ToDouble((double)calculatedprice / (double)Settings.TierTwoBadBonus) * CalculateForCurve());
+                            break;
                     }
-                    else if (karma >= 82 && karma < 100)
+                }
+                else if (tier > 0.06)
+                {
+                    switch(karmatype)
                     {
-                        // hard stop at 100 karma.
-                        newkarma = karma * 1.18;
-                        if (karma > 100)
-                        {
-                            newkarma = 100;
-                        }
+                        //small bonus for good
+                        case KarmaType.Good:
+                            newkarma = (double)karma + (Convert.ToDouble((double)calculatedprice / (double)Settings.TierThreeGoodBonus) * CalculateForCurve());
+                            break;
+                        //small bonus for neutral
+                        case KarmaType.Neutral:
+                            newkarma = (double)karma + (Convert.ToDouble((double)calculatedprice / (double)Settings.TierThreeNeutralBonus) * CalculateForCurve());
+                            break;
+                        //big punishment for bad
+                        case KarmaType.Bad:
+                            newkarma = (double)karma - (Convert.ToDouble((double)calculatedprice / (double)Settings.TierThreeBadBonus) * CalculateForCurve());
+                            break;
                     }
-                    else if (karma >= 67 && karma < 82)
+                }
+                else
+                {
+                    switch(karmatype)
                     {
-                        newkarma = (double)karma * 1.22d;
+                        //medium bonus for good
+                        case KarmaType.Good:
+                            newkarma = (double)karma + (Convert.ToDouble((double)calculatedprice / (double)Settings.TierFourGoodBonus) * CalculateForCurve());
+                            break;
+                        //small bonus for neutral
+                        case KarmaType.Neutral:
+                            newkarma = (double)karma + (Convert.ToDouble((double)calculatedprice / (double)Settings.TierFourNeutralBonus) * CalculateForCurve());
+                            break;
+                        //banned for bad
+                        case KarmaType.Bad:
+                            newkarma = (double)karma - (Convert.ToDouble((double)calculatedprice / ((double)Settings.TierFourBadBonus > 0 ? Settings.TierFourBadBonus : 66)) * CalculateForCurve());
+                            break;
                     }
-                    else if (karma >= 50 && karma < 67)
-                    {
-                        newkarma = (double)karma * 1.34d;
-                    }
-                    else if (karma >= 6 && karma < 50)
-                    {
-                        newkarma = (double)karma * 1.38d;
-                    }
-                    else
-                    {
-                        newkarma = (double)karma * 1.45d;
-                    }
-
-                    break;
-                //neutral event
-                case KarmaType.Neutral:
-
-                    newkarma = karma * 1.02;
-
-                    break;
-                //doom event
-                case KarmaType.Doom:
-
-                    newkarma = karma - 80;
-
-                    break;
-                default:
-
-                    break;
+                }
             }
-            Helper.Log($"New Karma is {Convert.ToInt32(Math.Round(newkarma))}");
+            if (newkarma < 1 && !Settings.BanViewersWhoPurchaseAlwaysBad)
+            {
+                newkarma = 1;
+            }
 
             maxkarma = Convert.ToInt32(Math.Round(newkarma)) > Settings.KarmaCap ? Settings.KarmaCap : Convert.ToInt32(Math.Round(newkarma));
+
+
+            // if banning veiwers who always purchase bad is off, protect them from 0 karma
+
             return maxkarma;
+        }
+
+        private static float CalculateForCurve()
+        {
+            return ((1f/860f) * (float)Settings.KarmaCap) + (36f/43f);
         }
     }
 }

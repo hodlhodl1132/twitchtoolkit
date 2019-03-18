@@ -81,7 +81,7 @@ namespace TwitchToolkit.Incidents
                 System.Random rnd = new System.Random();
                 foreach(Pawn pawn in list)
                 {
-                    if (count == list.Count() || viewernames.NullOrEmpty() || !pawn.RaceProps.IsMechanoid)
+                    if (count == list.Count() || viewernames.NullOrEmpty() || pawn.RaceProps.IsMechanoid)
                     {
                         continue;
                     }     

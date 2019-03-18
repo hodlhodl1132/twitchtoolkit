@@ -27,6 +27,9 @@ namespace TwitchToolkit
                 Helper.Log(message);
         
             }
+
+            Viewer viewer = Viewer.GetViewer(user);
+            viewer.last_seen = DateTime.Now;
             
             //admin commands
             if (user.ToLower() == Settings.Channel.ToLower())
@@ -129,9 +132,9 @@ namespace TwitchToolkit
 
                         if (isNumeric)
                         {
-                            foreach(Viewer viewer in Settings.listOfViewers)
+                            foreach(Viewer vwr in Settings.listOfViewers)
                             {
-                                viewer.GiveViewerCoins(amount);
+                                vwr.GiveViewerCoins(amount);
                             }
                             _mod._client.SendMessage($"@{user} " + Helper.ReplacePlaceholder("TwitchToolkitGiveAllCoins".Translate(), amount: amount.ToString()));
                         }
@@ -153,9 +156,9 @@ namespace TwitchToolkit
                             return;
                         }
                         
-                        string giftee = command[1].Replace("@", "");
+                        string receiver = command[1].Replace("@", "");
 
-                        if (user.ToLower() != Settings.Channel.ToLower() && giftee.ToLower() == user.ToLower())
+                        if (user.ToLower() != Settings.Channel.ToLower() && receiver.ToLower() == user.ToLower())
                         {
                             _mod._client.SendMessage($"@{user} " + "TwitchToolkitModCannotGiveCoins".Translate());
                             return;
@@ -165,10 +168,11 @@ namespace TwitchToolkit
                         bool isNumeric = int.TryParse(command[2], out amount);
                         if (isNumeric)
                         {
-                            Viewer viewer = Viewer.GetViewer(giftee);
-                            Helper.Log($"Giving viewer {viewer.username} {amount} coins");
-                            viewer.GiveViewerCoins(amount);
-                            _mod._client.SendMessage($"@{user} " + Helper.ReplacePlaceholder("TwitchToolkitGivingCoins".Translate(), viewer: viewer.username, amount: amount.ToString(), newbalance: viewer.GetViewerCoins().ToString()));
+                            Viewer giftee = Viewer.GetViewer(receiver);
+
+                            Helper.Log($"Giving viewer {giftee.username} {amount} coins");
+                            giftee.GiveViewerCoins(amount);
+                            _mod._client.SendMessage($"@{user} " + Helper.ReplacePlaceholder("TwitchToolkitGivingCoins".Translate(), viewer: giftee.username, amount: amount.ToString(), newbalance: giftee.GetViewerCoins().ToString()));
                         }
                     }
                     catch (InvalidCastException e)
@@ -190,8 +194,8 @@ namespace TwitchToolkit
 
                         string target = command[1].Replace("@", "");
 
-                        Viewer viewer = Viewer.GetViewer(target);
-                        _mod._client.SendMessage($"@{user} " + Helper.ReplacePlaceholder("TwitchToolkitCheckUser".Translate(), viewer: viewer.username, amount: viewer.GetViewerCoins().ToString(), karma: viewer.GetViewerKarma().ToString()));
+                        Viewer targeted = Viewer.GetViewer(target);
+                        _mod._client.SendMessage($"@{user} " + Helper.ReplacePlaceholder("TwitchToolkitCheckUser".Translate(), viewer: targeted.username, amount: targeted.GetViewerCoins().ToString(), karma: targeted.GetViewerKarma().ToString()));
 
                     }
                     catch (InvalidCastException e)
@@ -216,9 +220,9 @@ namespace TwitchToolkit
                         bool isNumeric = int.TryParse(command[2], out amount);
                         if (isNumeric)
                         {
-                            Viewer viewer = Viewer.GetViewer(target);
-                            viewer.SetViewerKarma(amount);
-                            _mod._client.SendMessage($"@{user}" + Helper.ReplacePlaceholder("TwitchToolkitSetKarma".Translate(), viewer: viewer.username, karma: amount.ToString()));
+                            Viewer targeted = Viewer.GetViewer(target);
+                            targeted.SetViewerKarma(amount);
+                            _mod._client.SendMessage($"@{user}" + Helper.ReplacePlaceholder("TwitchToolkitSetKarma".Translate(), viewer: targeted.username, karma: amount.ToString()));
                         }
                     }
                     catch (InvalidCastException e)
@@ -262,19 +266,17 @@ namespace TwitchToolkit
                 if (message.StartsWith(Settings.BalanceCmd))
                 {
                     Helper.Log("Trying to find User");
-                    Viewer viewer = Viewer.GetViewer(user);
                     _mod._client.SendMessage($"@{viewer.username} " + Helper.ReplacePlaceholder("TwitchToolkitBalanceMessage".Translate(), amount: viewer.GetViewerCoins().ToString(), karma: viewer.GetViewerKarma().ToString()));
                 }
 
                 if (message.StartsWith(Settings.KarmaCmd) && !message.Contains("!karmaround"))
                 {
-                    Viewer viewer = Viewer.GetViewer(user);
                     _mod._client.SendMessage($"@{viewer.username} " + "TwitchToolkitWhatIsKarma".Translate() +  $" { viewer.GetViewerKarma()}%");
                 }
 
                 if (message.StartsWith(Settings.InstructionsCmd))
                 {
-                    _mod._client.SendMessage($"@{user} " + "TwitchToolkitInstructions".Translate() + $" { Settings.CustomPricingSheetLink}");
+                    _mod._client.SendMessage($"@{user} " + Helper.ReplacePlaceholder("TwitchToolkitInstructions".Translate(), first: Settings.BuyeventCmd, second: Settings.BuyitemCmd, third: Settings.CustomPricingSheetLink));
                 }
 
                 if (message.StartsWith(Settings.PurchaselistCmd))
@@ -297,12 +299,21 @@ namespace TwitchToolkit
                     if (isNumeric && amount > 0)
                     {
                         Viewer giftee = Viewer.GetViewer(target);
-                        Viewer gifter = Viewer.GetViewer(user);
-                        if (gifter.GetViewerCoins() >= amount)
+
+                        if (Settings.KarmaReqsForGifting)
                         {
-                            gifter.TakeViewerCoins(amount);
+                            if (giftee.GetViewerKarma() < Settings.MinimumKarmaToRecieveGifts || viewer.GetViewerKarma() < Settings.MinimumKarmaToSendGifts)
+                            {
+                                return;
+                            }
+                        }
+
+
+                        if (viewer.GetViewerCoins() >= amount)
+                        {
+                            viewer.TakeViewerCoins(amount);
                             giftee.GiveViewerCoins(amount);
-                            _mod._client.SendMessage($"@{giftee.username} " + Helper.ReplacePlaceholder("TwitchToolkitGiftCoins".Translate(), amount: amount.ToString(), from: gifter.username));
+                            _mod._client.SendMessage($"@{giftee.username} " + Helper.ReplacePlaceholder("TwitchToolkitGiftCoins".Translate(), amount: amount.ToString(), from: viewer.username));
                         }
                     }
                 }

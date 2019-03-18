@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Verse;
+using TwitchToolkit.Utilities;
 
 namespace TwitchToolkit
 {
@@ -25,8 +26,19 @@ namespace TwitchToolkit
                     }
                     else
                     {
-                        double karmabonus = ((double)viewer.GetViewerKarma() / 100d) * (double)Settings.CoinAmount;
-                        viewer.GiveViewerCoins(Convert.ToInt32(karmabonus));
+                        // to earn full coins you either need to half talked within timebeforehalfcoins limit or chatreqs is turned off
+                        if( TimeHelper.MinutesElapsed(viewer.last_seen) < Settings.TimeBeforeHalfCoins || !Settings.ChatReqsForCoins )
+                        { 
+                            double karmabonus = ((double)viewer.GetViewerKarma() / 100d) * (double)Settings.CoinAmount;
+                            viewer.GiveViewerCoins(Convert.ToInt32(karmabonus));
+                        }
+                        // otherwise you earn half if you have talked withing timebefore no coins
+                        else if (TimeHelper.MinutesElapsed(viewer.last_seen) < Settings.TimeBeforeNoCoins )
+                        {
+                            double karmabonus = (((double)viewer.GetViewerKarma() / 100d) * (double)Settings.CoinAmount) / 2;
+                            viewer.GiveViewerCoins(Convert.ToInt32(karmabonus));
+                        }
+                        // else you get nothing for lurking
                     }
                 }
             }

@@ -8,6 +8,7 @@ namespace TwitchToolkit
     {
         public string username;
         public int id;
+        public DateTime last_seen;
 
         public Viewer(string username, int id)
         {
@@ -26,7 +27,6 @@ namespace TwitchToolkit
                 Settings.ViewerKarma.Add(viewer.id, Settings.StartingKarma);
                 Settings.listOfViewers.Add(viewer);
             }
-            Helper.Log(viewer.username);
             return viewer;
         }
 
@@ -110,6 +110,25 @@ namespace TwitchToolkit
         {
             Settings.ViewerCoins[this.id] = this.GetViewerCoins() - coins;
             return this.GetViewerCoins();
+        }
+
+        public static string GetViewerColorCode(string username)
+        {
+            if (Settings.ViewerColorCodes == null)
+            {
+                return "FF0000";
+            }
+
+            if (!Settings.ViewerColorCodes.ContainsKey(username))
+            {
+                SetViewerColorCode(Helper.GetRandomColorCode(), username);
+            }
+            return Settings.ViewerColorCodes[username];
+        }
+
+        public static void SetViewerColorCode(string colorcode, string username)
+        {
+            Settings.ViewerColorCodes[username] = colorcode;
         }
     }
 }

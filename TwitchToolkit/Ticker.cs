@@ -151,7 +151,6 @@ namespace TwitchToolkit
                     TwitchToolkitDev.WebRequest_BeginGetResponse.Main("https://tmi.twitch.tv/group/user/" + Settings.Channel.ToLower() + "/chatters", new Func<TwitchToolkitDev.RequestState, bool>(Settings.viewers.SaveUsernamesFromJsonResponse));
                     _mod.WriteSettings();
                 }
-                //Helper.Log($"last minute: {_lastMinute}, chatter exists: {WebRequest_BeginGetResponse.jsonString != null}, last coin reward:  {_lastCoinReward}, minute: {minutes}, Time: {time}");
             }
             catch (Exception ex)
             {

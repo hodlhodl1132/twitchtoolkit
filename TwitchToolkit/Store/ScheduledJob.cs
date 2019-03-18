@@ -5,10 +5,10 @@ namespace TwitchToolkit
     public class ScheduledJob
     {
         public int MinutesTillExpire;
-        public Func<Product, bool> Job;
-        public Product Product;
+        public Func<object, bool> Job;
+        public object Product;
 
-        public ScheduledJob(int length, Func<Product, bool> job, Product product)
+        public ScheduledJob(int length, Func<object, bool> job, object product)
         {
             MinutesTillExpire = length;
             Job = job;

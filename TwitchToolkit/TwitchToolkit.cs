@@ -8,6 +8,7 @@ using UnityEngine;
 using Verse;
 using System.Reflection;
 using System.Text.RegularExpressions;
+using TwitchToolkit.Utilities;
 
 namespace TwitchToolkit
 {
@@ -23,9 +24,9 @@ namespace TwitchToolkit
         private VoteEvent _currentVote;
         private IEnumerable<IncidentDef> _eventsPossible;
         public readonly Dictionary<string, int> _voteAnswers;
-        int resetWarning = 0;
         public Commands commands;
         public DateTime StartTime;
+        public ChatWindow activeChatWindow = null;
 
         string _ircHost = "irc.twitch.tv";
         short _ircPort = 443;
@@ -197,6 +198,16 @@ namespace TwitchToolkit
         public DateTime _aliveCommand = DateTime.MinValue;
         void _client_OnPrivMsg(string channel, string user, string message)
         {
+            if (activeChatWindow != null && !message.StartsWith("!") && user != Settings.Username)
+            {
+                if ((_voteActive && !int.TryParse(message, out int result)) || !_voteActive)
+                {
+                    string colorcode = Viewer.GetViewerColorCode(user);
+                    activeChatWindow.AddMessage(message, user, colorcode);
+                }
+
+            }
+
             commands.CheckCommand(message, user);
 
             if (_eventsPossibleChosen == null)
@@ -340,23 +351,30 @@ namespace TwitchToolkit
                     }
                     Helper.Log("Chose events to vote with " + _eventsPossibleChosen.Count());
 
-                    if (!Find.WindowStack.TryRemove(typeof(VoteDuelWindow), true) && _eventsPossibleChosen.Count() == 200)
-			        {
-				        Find.WindowStack.Add(new VoteDuelWindow(_eventsPossibleChosen, this));
-			        }
-                    else if (!Find.WindowStack.TryRemove(typeof(VoteWindow), true))
+                    if (Settings.VotingWindow)
                     {
-                        Find.WindowStack.Add(new VoteWindow(_eventsPossibleChosen, this));
+                        if (!Find.WindowStack.TryRemove(typeof(VoteDuelWindow), true) && _eventsPossibleChosen.Count() == 200)
+			            {
+				            Find.WindowStack.Add(new VoteDuelWindow(_eventsPossibleChosen, this));
+			            }
+                        else if (!Find.WindowStack.TryRemove(typeof(VoteWindow), true))
+                        {
+                            Find.WindowStack.Add(new VoteWindow(_eventsPossibleChosen, this));
+                        }
                     }
 
-                    //_client.SendMessage("TwitchStoriesChatMessageNewVote".Translate() + ": " + "TwitchToolKitVoteInstructions".Translate());
-                    //for (int i = 0; i < _eventsPossibleChosen.Count(); i++)
-                    //{
-                    //    Helper.Log("Event " + _eventsPossibleChosen.ToString());
-                    //    string msg = "[" + (i + 1) + "] ";
-                    //    msg += (_eventsPossibleChosen[i].LabelCap);
-                    //    _client.SendMessage(msg);
-                    //}
+                    if (Settings.VotingChatMsgs)
+                    {
+                        _client.SendMessage("TwitchStoriesChatMessageNewVote".Translate() + ": " + "TwitchToolKitVoteInstructions".Translate());
+                        for (int i = 0; i < _eventsPossibleChosen.Count(); i++)
+                        {
+                            Helper.Log("Event " + _eventsPossibleChosen.ToString());
+                            string msg = "[" + (i + 1) + "] ";
+                            msg += (_eventsPossibleChosen[i].LabelCap);
+                            _client.SendMessage(msg);
+                        }
+                    }
+
 
                     _votingStage = 1;
                 }
@@ -368,29 +386,19 @@ namespace TwitchToolkit
                         return;
                     }
                     Helper.Log("Counting Votes");
-                    int[] votekeys = new int[_eventsPossibleChosen.Count()];
-                    foreach (KeyValuePair<string, int> vote in _voteAnswers)
-                    {
-                        if (_eventsPossibleChosen.Length < vote.Value)
-                        {
-                            continue;
-                        }
-                        Helper.Log($"Trying to register vote for {votekeys[vote.Value - 1]}");
-                        votekeys[vote.Value - 1] += 1;
-                        Helper.Log($"New Count {votekeys[vote.Value - 1]}");
-                    }
+                    int[] votekeys = CountVotes(_eventsPossibleChosen);
+
+                    System.Random rnd = new System.Random();
                     int evt = 0;
                     int voteCount = 0;
                     for (int i = 0; i < votekeys.Count(); i++)
                     {
-                        Helper.Log($"{votekeys[i]}:{_eventsPossibleChosen[i]} vs {votekeys[evt]}:{_eventsPossibleChosen[evt]}");
                         if (votekeys[i] > votekeys[evt])
                         {
                             evt = i;
                         }
-                        else if (votekeys[i] == votekeys[evt] && _rand.Next(0, 2) == 1)
+                        else if (votekeys[i] == votekeys[evt] && rnd.Next(0, 2) == 1)
                         {
-                            Helper.Log("Tied, picking random winner");
                             evt = i;
                         }
                         voteCount += votekeys[i];
@@ -428,6 +436,20 @@ namespace TwitchToolkit
                 Helper.Log("Starting Timer Back up");
                 StartTimer();
             }
+        }
+
+        public int[] CountVotes(IncidentDef[] _eventsPossibleChosen)
+        {
+            int[] votekeys = new int[_eventsPossibleChosen.Count()];
+            foreach (KeyValuePair<string, int> vote in _voteAnswers)
+            {
+                if (_eventsPossibleChosen.Length < vote.Value)
+                {
+                    continue;
+                }
+                votekeys[vote.Value - 1] += 1;
+            }
+            return votekeys;
         }
     }
 }

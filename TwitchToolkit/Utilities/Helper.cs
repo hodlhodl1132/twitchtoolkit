@@ -16,7 +16,7 @@ namespace TwitchToolkit
 
         public static void Reset()
         {
-            _infestationPossible = false;
+        _infestationPossible = false;
         }
 
         public static string ReplacePlaceholder(
@@ -40,45 +40,45 @@ namespace TwitchToolkit
           string second = null,
           string third = null)
         {
-            quote = quote.Replace("{colonist}", colonist ?? "");
-            quote = quote.Replace("{colonists}", colonists ?? "");
-            quote = quote.Replace("{gender}", gender ?? "");
-            quote = quote.Replace("{stat}", stat ?? "");
-            quote = quote.Replace("{skill}", skill ?? "");
-            quote = quote.Replace("{material}", material ?? "");
-            quote = quote.Replace("{item}", item ?? "");
-            quote = quote.Replace("{animal}", animal ?? "");
-            quote = quote.Replace("{from}", from ?? "");
-            quote = quote.Replace("{to}", to ?? "");
-            quote = quote.Replace("{amount}", amount ?? "");
-            quote = quote.Replace("{mod}", mod ?? "");
-            quote = quote.Replace("{viewer}", viewer ?? "");
-            quote = quote.Replace("{newbalance}", newbalance ?? "");
-            quote = quote.Replace("{karma}", karma ?? "");
-            quote = quote.Replace("{first}", first ?? "");
-            quote = quote.Replace("{second}", second ?? "");
-            quote = quote.Replace("{third}", third ?? "");
-            return quote;
+        quote = quote.Replace("{colonist}", colonist ?? "");
+        quote = quote.Replace("{colonists}", colonists ?? "");
+        quote = quote.Replace("{gender}", gender ?? "");
+        quote = quote.Replace("{stat}", stat ?? "");
+        quote = quote.Replace("{skill}", skill ?? "");
+        quote = quote.Replace("{material}", material ?? "");
+        quote = quote.Replace("{item}", item ?? "");
+        quote = quote.Replace("{animal}", animal ?? "");
+        quote = quote.Replace("{from}", from ?? "");
+        quote = quote.Replace("{to}", to ?? "");
+        quote = quote.Replace("{amount}", amount ?? "");
+        quote = quote.Replace("{mod}", mod ?? "");
+        quote = quote.Replace("{viewer}", viewer ?? "");
+        quote = quote.Replace("{newbalance}", newbalance ?? "");
+        quote = quote.Replace("{karma}", karma ?? "");
+        quote = quote.Replace("{first}", first ?? "");
+        quote = quote.Replace("{second}", second ?? "");
+        quote = quote.Replace("{third}", third ?? "");
+        return quote;
         }
 
         public static Map AnyPlayerMap
         {
             get
             {
-                if (Current.Game == null || Current.Game.Maps == null)
-                {
-                    return null;
-                }
+            if (Current.Game == null || Current.Game.Maps == null)
+            {
+            return null;
+            }
 
-                foreach (Map map in Current.Game.Maps)
-                {
-                    if (map != null && map.IsPlayerHome)
-                    {
-                        return map;
-                    }
-                }
+            foreach (Map map in Find.Maps)
+            {
+            if (map != null && map.IsPlayerHome)
+            {
+            return map;
+            }
+            }
 
-                return null;
+            return null;
             }
         }
 
@@ -86,19 +86,26 @@ namespace TwitchToolkit
         {
             get
             {
-                return
-                  Settings.VoteEnabled == true &&
-                  Helper.AnyPlayerMap != null &&
-                  Current.Game.storyteller != null &&
-                  Current.Game.storyteller.def != null &&
-                  Current.Game.storyteller.def.defName != null &&
-                  (Settings.OtherStorytellersEnabled == true || Current.Game.storyteller.def.defName == "TwitchStoriesStoryteller");
+            return
+              Settings.VoteEnabled == true &&
+              Helper.AnyPlayerMap != null &&
+              Current.Game.storyteller != null &&
+              Current.Game.storyteller.def != null &&
+              Current.Game.storyteller.def.defName != null &&
+              (Settings.OtherStorytellersEnabled == true || Current.Game.storyteller.def.defName == "TwitchStoriesStoryteller");
             }
         }
 
         internal static void Log(object p)
         {
-            throw new NotImplementedException();
+        throw new NotImplementedException();
+        }
+
+        private static string[] defaultColors = { "FF0000", "0000FF", "008000", "008000", "FF7F50", "9ACD32", "FF4500", "2E8B57", "DAA520", "D2691E", "5F9EA0", "1E90FF", "FF69B4", "8A2BE2", "8A2BE2"};
+        public static string GetRandomColorCode()
+        {
+            System.Random random = new System.Random();
+            return defaultColors[random.Next(defaultColors.Length)];
         }
 
         public static void Log(string message)
