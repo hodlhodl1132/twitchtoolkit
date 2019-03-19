@@ -139,11 +139,6 @@ namespace TwitchToolkit
         public static List<Product> products = null;
 
         // item storage
-        public static Dictionary<string, int> ItemIds = new Dictionary<string, int>();
-        public static Dictionary<int, int> ItemPrices = new Dictionary<int, int>();
-        public static Dictionary<int, string> ItemDefnames = new Dictionary<int, string>();
-        public static Dictionary<int, string> ItemStuffnames = new Dictionary<int, string>();
-
         public static List<Item> items = null;
 
         private static List<string> _Categories = Enum.GetNames(typeof(EventCategory)).ToList();
@@ -287,11 +282,6 @@ namespace TwitchToolkit
             Scribe_Collections.Look(ref ViewerModerators, "ViewerModerators", LookMode.Value, LookMode.Value);
             Scribe_Collections.Look(ref ViewerColorCodes, "ViewerColorCodes", LookMode.Value, LookMode.Value);
 
-            Scribe_Collections.Look(ref ItemIds, "ItemIds", LookMode.Value, LookMode.Value);
-            Scribe_Collections.Look(ref ItemPrices, "ItemPrices", LookMode.Value, LookMode.Value);
-            Scribe_Collections.Look(ref ItemDefnames, "ItemDefnames", LookMode.Value, LookMode.Value);
-            Scribe_Collections.Look(ref ItemStuffnames, "ItemStuffnames", LookMode.Value, LookMode.Value);
-
             Scribe_Collections.Look(ref ProductIds, "ProductIds", LookMode.Value, LookMode.Value);
             Scribe_Collections.Look(ref ProductTypes, "ProductTypes", LookMode.Value, LookMode.Value);
             Scribe_Collections.Look(ref ProductNames, "ProductNames", LookMode.Value, LookMode.Value);
@@ -371,27 +361,7 @@ namespace TwitchToolkit
 
             if (items == null)
             {
-                if (ItemIds == null)
-                {
-                    Helper.Log("Creating all items");
-                    ResetItemData();
-                    this.Write();
-                }
-                else
-                {
-                    Helper.Log("Loading items from settings");
-                    items = new List<Item>();
-                    
-                    foreach(KeyValuePair<string, int> item in ItemIds)
-                    {
-                        int id = item.Value;
-                        string abr = item.Key;
-                        int price = ItemPrices[id];
-                        string defname = ItemDefnames[id];
-                        string stuffname = ItemStuffnames[id];
-                        items.Add(new Item(price, abr, defname, id, stuffname));
-                    }
-                }
+                SaveHelper.LoadListOfItems();
             }
         }
 
@@ -479,6 +449,7 @@ namespace TwitchToolkit
                     MainMenu(rect);
                     break;
                 case 1:
+                    LoadItemsIfNotLoaded();
                     ItemMenu(rect);
                     break;
                 case 2:
@@ -1372,7 +1343,6 @@ namespace TwitchToolkit
                     newprice = -10;
                 }
 
-                ItemPrices[item.id] = newprice;
                 item.price = newprice;
 
                 count++;
@@ -1408,12 +1378,16 @@ namespace TwitchToolkit
         public static void ResetItemData()
         {
             items = new List<Item>();
-            ItemIds = new Dictionary<string, int>();
-            ItemPrices = new Dictionary<int, int>();
-            ItemDefnames = new Dictionary<int, string>();
-            ItemStuffnames = new Dictionary<int, string>();
-
             Item.TryMakeAllItems();
+            SaveHelper.SaveListOfItemsAsJson();
+        }
+
+        public static void LoadItemsIfNotLoaded()
+        {
+            if (items == null)
+            {
+                ResetItemData();
+            }
         }
 
     }

@@ -243,6 +243,9 @@ namespace TwitchToolkit
             }
             else if (product.type == 1)
             { //item
+
+                Settings.LoadItemsIfNotLoaded();
+
                 try
                 {
                     Helper.Log("Trying ItemEvent Checks");

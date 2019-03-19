@@ -13,9 +13,8 @@ namespace TwitchToolkit
         public int price;
         public string abr;
         public string defname;
-        public string stuffname;
 
-        public Item(int price, string abr, string defname, int id = -1, string stuffname = "null")
+        public Item(int price, string abr, string defname, int id = -1)
         {
             if (id < 0)
             {
@@ -29,7 +28,6 @@ namespace TwitchToolkit
             this.price = price;
             this.abr = abr;
             this.defname = defname;
-            this.stuffname = stuffname;
         }
 
         public static Item GetItemFromAbr(string abr)
@@ -45,7 +43,6 @@ namespace TwitchToolkit
         public void SetItemPrice(int price)
         {
             this.price = price;
-            Settings.ItemPrices[this.id] = price;
         }
 
         public int CalculatePrice(int quanity)
@@ -129,12 +126,7 @@ namespace TwitchToolkit
                         {
                             Helper.Log("Adding item " + item.label);
                             int id = Settings.items.Count();
-                            Settings.items.Add(new Item(Convert.ToInt32(item.BaseMarketValue * 10 / 6), label, item.defName));
-                    
-                            Settings.ItemIds.Add(label, id);
-                            Settings.ItemPrices.Add(id, Convert.ToInt32(item.BaseMarketValue * 10 / 6));
-                            Settings.ItemDefnames.Add(id, item.defName);
-                            Settings.ItemStuffnames.Add(id, "null");
+                            Settings.items.Add(new Item(Convert.ToInt32(item.BaseMarketValue * 10 / 6), label, item.defName));             
                         }
                     }
                     catch (InvalidCastException e)
