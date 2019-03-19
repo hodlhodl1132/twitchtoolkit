@@ -150,6 +150,7 @@ namespace TwitchToolkit
                     Settings.JobManager.CheckAllJobs();
                     TwitchToolkitDev.WebRequest_BeginGetResponse.Main("https://tmi.twitch.tv/group/user/" + Settings.Channel.ToLower() + "/chatters", new Func<TwitchToolkitDev.RequestState, bool>(Settings.viewers.SaveUsernamesFromJsonResponse));
                     _mod.WriteSettings();
+                    Utilities.SaveHelper.SaveListOfViewersAsJson();
                 }
             }
             catch (Exception ex)

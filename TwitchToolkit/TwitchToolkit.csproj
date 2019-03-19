@@ -70,6 +70,7 @@
     </Compile>
     <Compile Include="Store\Scheduled.cs" />
     <Compile Include="Store\ScheduledJob.cs" />
+    <Compile Include="Utilities\SaveHelper.cs" />
     <Compile Include="Utilities\SimpleJSON.cs" />
     <Compile Include="Utilities\SimpleJSONBinary.cs" />
     <Compile Include="Utilities\SimpleJSONUnity.cs" />

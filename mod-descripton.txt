@@ -5,6 +5,8 @@ Check out that mod here: https://steamcommunity.com/sharedfiles/filedetails/?id=
 [h1]TwitchToolkit - Chat Storytelling Integration - Coins and Voting[/h1]
 This mod is far into beta-testing and is mostly bug free. We hate bugs so if you find any please let us know in the discord so we can fix asap.
 
+[h1]Languages[/h1]
+Currently available in English and Deutsch. We are inviting translators to our team, please join via discord and let us know in the help section. https://discord.gg/qrtg224
 
 If you are streaming this mod you can post in the channel-promotion section of our discord!
 
@@ -76,7 +78,7 @@ Reward coins: Toggles whether or not your viewers are earning coins
 
 Store Open: Toggles whether or not your viewers can purchase items/events
 
-Viewers can gift other viewers coins: Toggles gifting(trading) of coins between viewers. This is off by default since it can easily be abused by alt accounts. I recommend turning this off for streams that canï¿½t be properly moderated.
+Viewers can gift other viewers coins: Toggles gifting(trading) of coins between viewers. This is off by default since it can easily be abused by alt accounts. I recommend turning this off for streams that can’t be properly moderated.
 
 Coins per interval: Your viewers will get this many base coins every coin reward round
 
@@ -116,13 +118,13 @@ The items section also has a search bar for quickly finding items. The reset to 
 [h1]Options Settings[/h1]
 Options section of mod settings
 
-Should buildings unable to be uninstalled be included in the item list? This option was never intended for the full release, however, this bug turned into a feature. It is recommended to keep this off as it makes it so you canï¿½t purchase ï¿½buildingsï¿½. An example of this would be a grave, which would wall from the sky and immediately construct itself. This can cause unwanted consequences like destroying items, destroying buildings, or never appearing in the first place.
+Should buildings unable to be uninstalled be included in the item list? This option was never intended for the full release, however, this bug turned into a feature. It is recommended to keep this off as it makes it so you can’t purchase ‘buildings’. An example of this would be a grave, which would wall from the sky and immediately construct itself. This can cause unwanted consequences like destroying items, destroying buildings, or never appearing in the first place.
 
 Should viewers have unlimited coins? Self-explanatory, should the game check if viewers have enough coins?
 
 Should events have cooldowns? This prevents events from being spammed past their max value within their cooldown period.
 
-Should viewer names be repeated in raids/aid? This is a cool feature but can be buggy down the road if you donï¿½t use a mod like RuntimeGC for cleaning up old pawns. To my understanding, by generating tons of pawns with the same name you could potentially cause issues.
+Should viewer names be repeated in raids/aid? This is a cool feature but can be buggy down the road if you don’t use a mod like RuntimeGC for cleaning up old pawns. To my understanding, by generating tons of pawns with the same name you could potentially cause issues.
 
 Large voting window? If you stream at a lower resolution than 1080p or have a lot of mobile viewers, you may want to make the voting window larger.
 

@@ -18,7 +18,7 @@ namespace TwitchToolkit
 
         public static int CalculateNewKarma(int karma, KarmaType karmatype, int calculatedprice = 0)
         {
-            float tier = ((float)karma / ((float)Settings.StartingBalance + (Settings.KarmaCap/3)));
+            float tier = ( (float)karma / ( (float)Settings.KarmaCap ) );
             Helper.Log($"Calculating new karma with {karma}, and karma type {karmatype} for {calculatedprice} with curve {CalculateForCurve()} tier {tier}");
             double newkarma = 0;
             int maxkarma = 0;
@@ -38,7 +38,7 @@ namespace TwitchToolkit
             }
             else
             {
-                if (tier > 0.71)
+                if (tier > 0.55)
                 {
                     switch(karmatype)
                     {
@@ -57,7 +57,7 @@ namespace TwitchToolkit
                     }
 
                 }
-                else if (tier > 0.41)
+                else if (tier > 0.36)
                 {
                     switch(karmatype)
                     {
@@ -68,6 +68,7 @@ namespace TwitchToolkit
 
                         //minute bonus for neutral
                         case KarmaType.Neutral:
+                            Helper.Log($"{(double)karma} + ( ({(double)calculatedprice} / {(double)Settings.TierTwoNeutralBonus}) * ({CalculateForCurve()}))");
                             newkarma = (double)karma + (Convert.ToDouble((double)calculatedprice / (double)Settings.TierTwoNeutralBonus) * CalculateForCurve());
                             break;
 

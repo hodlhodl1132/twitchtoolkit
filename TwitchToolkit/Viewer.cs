@@ -8,6 +8,7 @@ namespace TwitchToolkit
     {
         public string username;
         public int id;
+
         public DateTime last_seen;
 
         public Viewer(string username, int id)

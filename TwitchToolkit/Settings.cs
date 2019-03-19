@@ -8,6 +8,7 @@ using Verse;
 using Verse.Sound;
 using TwitchToolkitDev;
 using TwitchToolkit.Store;
+using TwitchToolkit.Utilities;
 
 namespace TwitchToolkit
 {
@@ -242,21 +243,21 @@ namespace TwitchToolkit
             Scribe_Values.Look(ref GiftCmd, "GiftCmd", "!giftcoins", true);
             Scribe_Values.Look(ref CommandHelpCmd, "CommandHelpCmd", "!toolkitcmds", true);
 
-            Scribe_Values.Look(ref TierOneGoodBonus, "TierOneGoodBonus", 23, true);
-            Scribe_Values.Look(ref TierOneNeutralBonus, "TierOneNeutralBonus", 2, true);
-            Scribe_Values.Look(ref TierOneBadBonus, "TierOneBadBonus", 33, true);
+            Scribe_Values.Look(ref TierOneGoodBonus, "TierOneGoodBonus", 16, true);
+            Scribe_Values.Look(ref TierOneNeutralBonus, "TierOneNeutralBonus", 36, true);
+            Scribe_Values.Look(ref TierOneBadBonus, "TierOneBadBonus", 24, true);
 
-            Scribe_Values.Look(ref TierTwoGoodBonus, "TierTwoGoodBonus", 33, true);
-            Scribe_Values.Look(ref TierTwoNeutralBonus, "TierTwoNeutralBonus", 2, true);
-            Scribe_Values.Look(ref TierTwoBadBonus, "TierTwoBadBonus", 40, true);
+            Scribe_Values.Look(ref TierTwoGoodBonus, "TierTwoGoodBonus", 10, true);
+            Scribe_Values.Look(ref TierTwoNeutralBonus, "TierTwoNeutralBonus", 30, true);
+            Scribe_Values.Look(ref TierTwoBadBonus, "TierTwoBadBonus", 20, true);
 
             Scribe_Values.Look(ref TierThreeGoodBonus, "TierThreeGoodBonus", 10, true);
-            Scribe_Values.Look(ref TierThreeNeutralBonus, "TierThreeNeutralBonus", 5, true);
-            Scribe_Values.Look(ref TierThreeBadBonus, "TierThreeBadBonus", 50, true);
+            Scribe_Values.Look(ref TierThreeNeutralBonus, "TierThreeNeutralBonus", 24, true);
+            Scribe_Values.Look(ref TierThreeBadBonus, "TierThreeBadBonus", 18, true);
 
-            Scribe_Values.Look(ref TierFourGoodBonus, "TierFourGoodBonus", 60, true);
-            Scribe_Values.Look(ref TierFourNeutralBonus, "TierFourNeutralBonus", 15, true);
-            Scribe_Values.Look(ref TierFourBadBonus, "TierFourBadBonus", 0, true);
+            Scribe_Values.Look(ref TierFourGoodBonus, "TierFourGoodBonus", 6, true);
+            Scribe_Values.Look(ref TierFourNeutralBonus, "TierFourNeutralBonus", 18, true);
+            Scribe_Values.Look(ref TierFourBadBonus, "TierFourBadBonus", 12, true);
 
             Scribe_Values.Look(ref DoomBonus, "DoomBonus", 67, true);
 
@@ -336,6 +337,8 @@ namespace TwitchToolkit
                     Viewer newviewer = new Viewer(viewer.Key, viewer.Value);
                     listOfViewers.Add(newviewer);
                 }
+                SaveHelper.SaveListOfViewersAsJson();
+                SaveHelper.LoadListOfViewers();
             }
 
             if (products == null)
@@ -923,18 +926,18 @@ namespace TwitchToolkit
                 DoomBonus = listingStandard.Slider(DoomBonus, 0, 100);
                 if (listingStandard.ButtonText("Default Karma"))
                 {
-                    TierOneGoodBonus = 23;
-                    TierOneNeutralBonus = 2;
-                    TierOneBadBonus = 33;
-                    TierTwoGoodBonus = 33;
-                    TierTwoNeutralBonus = 2;
-                    TierTwoBadBonus = 40;
+                    TierOneGoodBonus = 16;
+                    TierOneNeutralBonus = 36;
+                    TierOneBadBonus = 24;
+                    TierTwoGoodBonus = 10;
+                    TierTwoNeutralBonus = 30;
+                    TierTwoBadBonus = 20;
                     TierThreeGoodBonus = 10;
-                    TierThreeNeutralBonus = 5;
-                    TierThreeBadBonus = 50;
-                    TierFourGoodBonus = 60;
-                    TierFourNeutralBonus = 15;
-                    TierFourBadBonus = 0;
+                    TierThreeNeutralBonus = 24;
+                    TierThreeBadBonus = 18;
+                    TierFourGoodBonus = 6;
+                    TierFourNeutralBonus = 18;
+                    TierFourBadBonus = 12;
                     DoomBonus = 67;
                 }
             }
@@ -1410,26 +1413,7 @@ namespace TwitchToolkit
             ItemDefnames = new Dictionary<int, string>();
             ItemStuffnames = new Dictionary<int, string>();
 
-            List<Item> defaultitems = Item.GetDefaultItems().ToList();
-
             Item.TryMakeAllItems();
-
-            //foreach(Item item in defaultitems)
-            //{
-            //    int id = item.id;
-            //    ItemIds.Add(item.abr, id);
-            //    ItemPrices.Add(id, item.price);
-            //    ItemDefnames.Add(id, item.defname);
-            //    if (item.stuffname != "null")
-            //    {
-            //        ItemStuffnames[id] = item.stuffname;
-            //    }
-            //    else
-            //    {
-            //        ItemStuffnames[id] = "null";
-            //    }
-            //    items.Add(item);
-            //}
         }
 
     }

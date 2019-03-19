@@ -164,7 +164,6 @@ namespace TwitchToolkit.Utilities
 			GUI.color = new Color(23, 23, 23, 0.1f);
 			GUI.DrawTexture(rect, SolidColorMaterials.NewSolidColorTexture(Color.white));
 			GUI.color = Color.white;
-			//Widgets.DrawBox(rect, 1);
 			GUI.color = Color.white;
 		}
 
