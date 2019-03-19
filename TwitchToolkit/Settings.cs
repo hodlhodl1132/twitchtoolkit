@@ -136,7 +136,7 @@ namespace TwitchToolkit
         public static Dictionary<int, int> ProductEventIds = new Dictionary<int, int>();
         public static Dictionary<int, int> ProductMaxEvents = new Dictionary<int, int>();
 
-        public static List<Product> products = null;
+        public static List<IncItem> products = null;
 
         // item storage
         public static List<Item> items = null;
@@ -342,7 +342,7 @@ namespace TwitchToolkit
                 else
                 {
                     Helper.Log("Loading Product Settings");
-                    products = new List<Product>();
+                    products = new List<IncItem>();
                     // load products from settings, then load them into settings class
                     foreach (KeyValuePair<string, int> product in ProductIds)
                     {
@@ -354,7 +354,7 @@ namespace TwitchToolkit
                         int amount = ProductAmounts[id];
                         int evtId = ProductEventIds[id];
                         int maxEvents = ProductMaxEvents[id];
-                        products.Add(new Product(id, type, name, abr, karmatype, amount, evtId, maxEvents));
+                        products.Add(new IncItem(id, type, name, abr, karmatype, amount, evtId, maxEvents));
                     }
                 }
             }
@@ -600,7 +600,7 @@ namespace TwitchToolkit
             CustomPricingSheetLink = listingStandard.TextEntry(CustomPricingSheetLink);
             if (listingStandard.ButtonText("Disable Events"))
             {
-                foreach(Product product in products)
+                foreach(IncItem product in products)
                 {
                     product.amount = -10;
                     ProductAmounts[product.id] = -10;
@@ -1065,8 +1065,8 @@ namespace TwitchToolkit
             
             Rect productline = new Rect(_padding, _padding + _height, 600f, 30f);
             
-            List<Product> query = products.Where(a => (a.abr.Contains(searchquery))).ToList();
-            foreach (Product product in query)
+            List<IncItem> query = products.Where(a => (a.abr.Contains(searchquery))).ToList();
+            foreach (IncItem product in query)
             {
                 if (++scroll <= ProductScroll)
                 {
@@ -1351,7 +1351,7 @@ namespace TwitchToolkit
 
         public static void ResetProductData()
         {
-            products = new List<Product>();
+            products = new List<IncItem>();
             ProductIds = new Dictionary<string, int>();
             ProductTypes = new Dictionary<int, int>();
             ProductNames = new Dictionary<int, string>();
@@ -1360,8 +1360,8 @@ namespace TwitchToolkit
             ProductEventIds = new Dictionary<int, int>();
             ProductMaxEvents = new Dictionary<int, int>();
             // if no previous save data create new products
-            List<Product> defaultProducts = Products.GenerateDefaultProducts().ToList();
-            foreach (Product product in defaultProducts)
+            List<IncItem> defaultProducts = Products.GenerateDefaultProducts().ToList();
+            foreach (IncItem product in defaultProducts)
             {
                 int id = product.id;
                 ProductIds.Add(product.abr, id);

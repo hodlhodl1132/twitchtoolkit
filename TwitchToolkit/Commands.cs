@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using Verse;
 
-namespace TwitchToolkit
+namespace TwitchToolkit.Store
 {
     public class Commands
     {

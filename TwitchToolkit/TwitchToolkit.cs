@@ -9,6 +9,7 @@ using Verse;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using TwitchToolkit.Utilities;
+using TwitchToolkit.Store;
 
 namespace TwitchToolkit
 {

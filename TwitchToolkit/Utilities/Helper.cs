@@ -6,6 +6,7 @@ using RimWorld;
 using Verse;
 using TSIncidents = TwitchToolkit.Incidents;
 using System.Text;
+using TwitchToolkit.Store;
 
 namespace TwitchToolkit
 {
@@ -1748,7 +1749,7 @@ namespace TwitchToolkit
             string[] lines = new string[linecount];
             lines[0] = "\"Events\", \"Price\", \"Type\", \"Code\"";
             int currentline = 1;
-            foreach(Product product in Settings.products)
+            foreach(IncItem product in Settings.products)
             {
                 string type = "malformed type";
                 if (Enum.IsDefined(typeof(KarmaType), product.karmatype))
