@@ -152,6 +152,7 @@ namespace TwitchToolkit
                     _mod.WriteSettings();
                     Utilities.SaveHelper.SaveListOfViewersAsJson();
                     Utilities.SaveHelper.SaveListOfItemsAsJson();
+                    Utilities.SaveHelper.SaveListOfIncItemsAsJson();
                 }
             }
             catch (Exception ex)

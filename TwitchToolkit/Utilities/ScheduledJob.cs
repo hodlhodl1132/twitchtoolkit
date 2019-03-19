@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TwitchToolkit
+namespace TwitchToolkit.Utilities
 {
     public class ScheduledJob
     {

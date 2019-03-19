@@ -1745,11 +1745,11 @@ namespace TwitchToolkit
 
         public static void PastePricesToOutputLog()
         {
-            int linecount = 3 + Settings.products.Count() + Settings.items.Count();
+            int linecount = 3 + Settings.incItems.Count() + Settings.items.Count();
             string[] lines = new string[linecount];
             lines[0] = "\"Events\", \"Price\", \"Type\", \"Code\"";
             int currentline = 1;
-            foreach(IncItem product in Settings.products)
+            foreach(IncItem product in Settings.incItems)
             {
                 string type = "malformed type";
                 if (Enum.IsDefined(typeof(KarmaType), product.karmatype))
@@ -1757,9 +1757,9 @@ namespace TwitchToolkit
                     type = product.karmatype.ToString();
                 }
                 
-                if (product.amount > 0)
+                if (product.price > 0)
                 {
-                    lines[currentline] = $"\"{product.name}\", \"{product.amount}\", \"{type}\", \"{product.abr}\"";
+                    lines[currentline] = $"\"{product.name}\", \"{product.price}\", \"{type}\", \"{product.abr}\"";
                     currentline++;
                 }
             }

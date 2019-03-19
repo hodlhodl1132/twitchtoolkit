@@ -12,7 +12,7 @@ namespace TwitchToolkit.Store
         public string name; //Small raid
         public string abr; //smallraid
         public KarmaType karmatype; //0 bad - 1 good - 2 neutral - 3 doom
-        public int amount;
+        public int price;
         public int evtId;
         public Event evt;
         public int maxEvents;
@@ -25,26 +25,25 @@ namespace TwitchToolkit.Store
             this.name = name;
             this.abr = abr;
             this.karmatype = karmatype;
-            this.amount = amount;
+            this.price = amount;
             this.evtId = evtId;
-            this.evt = Products.defaultEvents[this.evtId];
+            this.evt = IncidentItems.defaultEvents[this.evtId];
             this.maxEvents = maxEvents;
         }
 
         public static int GetProductIdFromAbr(string abr)
         {
-            return Settings.products.Find(x => x.abr == abr).id;
+            return Settings.incItems.Find(x => x.abr == abr).id;
         }
 
         public static IncItem GetProductFromId(int id)
         {
-            return Settings.products.Find(x => x.id == id);
+            return Settings.incItems.Find(x => x.id == id);
         }
 
         public void SetProductAmount(int id, int amount)
         {
-            Settings.ProductAmounts[id] = amount;
-            this.amount = amount;
+            this.price = amount;
         }
     }
 }

@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using SimpleJSON;
+using TwitchToolkit.Store;
 using UnityEngine;
 
 namespace TwitchToolkit.Utilities
@@ -14,6 +15,20 @@ namespace TwitchToolkit.Utilities
         static string dataPath = Application.persistentDataPath + $"/{modFolder}/";
         public static string viewerDataPath = Path.Combine(dataPath, "ViewerData.json");
         public static string itemDataPath = Path.Combine(dataPath, "ItemData.json");
+        public static string incItemsDataPath = Path.Combine(dataPath, "IncItemsData.json");
+
+        private static void SaveJsonToDataPath(string json, string savePath)
+        {
+            bool dataPathExists = Directory.Exists(dataPath);
+            
+            if(!dataPathExists)
+                Directory.CreateDirectory(dataPath);
+
+            using (StreamWriter streamWriter = File.CreateText (savePath))
+            {
+                streamWriter.Write (json.ToString());
+            }
+        }
 
         public static void SaveListOfViewersAsJson()
         {
@@ -41,15 +56,7 @@ namespace TwitchToolkit.Utilities
             }
             viewerslisttemplate["total"] = newViewers.Count;
 
-            bool dataPathExists = Directory.Exists(dataPath);
-            
-            if(!dataPathExists)
-                Directory.CreateDirectory(dataPath);
-
-            using (StreamWriter streamWriter = File.CreateText (viewerDataPath))
-            {
-                streamWriter.Write (viewerslisttemplate.ToString());
-            }
+            SaveJsonToDataPath(viewerslisttemplate.ToString(), viewerDataPath);
         }
 
         public static void LoadListOfViewers()
@@ -99,15 +106,7 @@ namespace TwitchToolkit.Utilities
             }
             itemslisttemplate["total"] = allItems.Count;
 
-            bool dataPathExists = Directory.Exists(dataPath);
-            
-            if(!dataPathExists)
-                Directory.CreateDirectory(dataPath);
-
-            using (StreamWriter streamWriter = File.CreateText (itemDataPath))
-            {
-                streamWriter.Write (itemslisttemplate.ToString());
-            }
+            SaveJsonToDataPath(itemslisttemplate.ToString(), itemDataPath);
         }
 
         public static void LoadListOfItems()
@@ -130,6 +129,67 @@ namespace TwitchToolkit.Utilities
                     }
 
                     Settings.items = listOfItems;
+                }
+            }
+            catch (InvalidDataException e)
+            {
+                Helper.Log("Invalid " + e.Message);
+            }
+        }
+
+        public static void SaveListOfIncItemsAsJson()
+        {
+            List<IncItem> allIncItems = Settings.incItems;
+            var incItemslisttemplate = JSON.Parse("{\"incitems\":[],\"total\":0}");
+            string itemtemplate = "{\"id\":0,\"type\":\"string\",\"name\":\"string\",\"abr\":\"string\",\"karmatype\":\"string\",\"price\":0,\"evtid\":0,\"maxevents\":0}";
+            foreach (IncItem incItem in allIncItems)
+            {
+                var v = JSON.Parse(itemtemplate);
+                v["id"] = incItem.id;
+                v["type"] = incItem.type;
+                v["name"] = incItem.name;
+                v["abr"] = incItem.abr;
+                v["karmatype"] = incItem.karmatype.ToString();
+                v["price"] = incItem.price;
+                v["evtid"] = incItem.evtId;
+                v["maxevents"] = incItem.maxEvents;
+                incItemslisttemplate["incitems"].Add(incItem.id.ToString(), v);
+            }
+            incItemslisttemplate["total"] = allIncItems.Count;
+
+            SaveJsonToDataPath(incItemslisttemplate.ToString(), incItemsDataPath);
+        }
+
+        public static void LoadListOfIncItems()
+        {
+            try
+            {
+                if (!File.Exists(incItemsDataPath))
+                    return;
+
+                using (StreamReader streamReader = File.OpenText (incItemsDataPath))
+                {
+                    string jsonString = streamReader.ReadToEnd ();
+                    var node = JSON.Parse(jsonString);
+                    Helper.Log(node.ToString());
+                    List<IncItem> listOfIncItems = new List<IncItem>();
+                    for (int i = 0; i < node["total"]; i++)
+                    {
+                        KarmaType karmaValue = (KarmaType) Enum.Parse(typeof(KarmaType), node["incitems"][i]["karmatype"].ToString().Replace("\"", ""), true);
+                        
+                        IncItem incItem = new IncItem(
+                            node["incitems"][i]["id"].AsInt,
+                            node["incitems"][i]["type"],
+                            node["incitems"][i]["name"],
+                            node["incitems"][i]["abr"],
+                            karmaValue,
+                            node["incitems"][i]["price"].AsInt,
+                            node["incitems"][i]["evtid"].AsInt,
+                            node["incitems"][i]["maxevents"].AsInt);
+                        listOfIncItems.Add(incItem);
+                    }
+
+                    Settings.incItems = listOfIncItems;
                 }
             }
             catch (InvalidDataException e)

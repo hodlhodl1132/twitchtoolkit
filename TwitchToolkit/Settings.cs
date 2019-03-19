@@ -128,47 +128,12 @@ namespace TwitchToolkit
         public static Viewers viewers = new Viewers();
 
         // product storage
-        public static Dictionary<string, int> ProductIds = null;
-        public static Dictionary<int, int> ProductTypes = new Dictionary<int, int>();
-        public static Dictionary<int, string> ProductNames = new Dictionary<int, string>();
-        public static Dictionary<int, int> ProductKarmaTypes = new Dictionary<int, int>();
-        public static Dictionary<int, int> ProductAmounts = new Dictionary<int, int>();
-        public static Dictionary<int, int> ProductEventIds = new Dictionary<int, int>();
-        public static Dictionary<int, int> ProductMaxEvents = new Dictionary<int, int>();
-
-        public static List<IncItem> products = null;
+        public static List<IncItem> incItems = null;
 
         // item storage
         public static List<Item> items = null;
 
-        private static List<string> _Categories = Enum.GetNames(typeof(EventCategory)).ToList();
-        public static List<int> CategoryWeights = Enumerable.Repeat<int>(100, _Categories.Count).ToList();
-
         public static Scheduled JobManager = new Scheduled();
-
-        public static double CategoryWeight(EventCategory category)
-        {
-            var index = _Categories.IndexOf(Enum.GetName(typeof(EventCategory), category));
-            if (index < 0 || index >= CategoryWeights.Count)
-            {
-                return 1;
-            }
-
-            return CategoryWeights[index] / 100.0;
-        }
-
-        private static Dictionary<int, string> _Events = Events.GetEvents().ToDictionary(e => e.Id, e => e.Description);
-        public static Dictionary<int, int> EventWeights = Events.GetEvents().ToDictionary(e => e.Id, e => 100);
-
-        public static double EventWeight(int id)
-        {
-            if (!EventWeights.ContainsKey(id))
-            {
-                return 1;
-            }
-
-            return EventWeights[id] / 100.0;
-        }
 
         public void Save()
         {
@@ -282,15 +247,6 @@ namespace TwitchToolkit
             Scribe_Collections.Look(ref ViewerModerators, "ViewerModerators", LookMode.Value, LookMode.Value);
             Scribe_Collections.Look(ref ViewerColorCodes, "ViewerColorCodes", LookMode.Value, LookMode.Value);
 
-            Scribe_Collections.Look(ref ProductIds, "ProductIds", LookMode.Value, LookMode.Value);
-            Scribe_Collections.Look(ref ProductTypes, "ProductTypes", LookMode.Value, LookMode.Value);
-            Scribe_Collections.Look(ref ProductNames, "ProductNames", LookMode.Value, LookMode.Value);
-            Scribe_Collections.Look(ref ProductKarmaTypes, "ProductKarmaTypes", LookMode.Value, LookMode.Value);
-            Scribe_Collections.Look(ref ProductAmounts, "ProductAmounts", LookMode.Value, LookMode.Value);
-            Scribe_Collections.Look(ref ProductEventIds, "ProductEventIds", LookMode.Value, LookMode.Value);
-            Scribe_Collections.Look(ref ProductMaxEvents, "ProductMaxEvents", LookMode.Value, LookMode.Value);
-
-            Scribe_Collections.Look(ref CategoryWeights, "CategoryWeights", LookMode.Value);
 
 
             if (ViewerIds == null)
@@ -300,21 +256,9 @@ namespace TwitchToolkit
                 ViewerKarma = new Dictionary<int, int>();
             }
 
-
-            if (CategoryWeights == null)
-            {
-                CategoryWeights = Enumerable.Repeat<int>(100, _Categories.Count).ToList();
-            }
-
             if (ViewerColorCodes == null)
             {
                 ViewerColorCodes = new Dictionary<string, string>();
-            }
-
-            Scribe_Collections.Look(ref EventWeights, "EventWeights", LookMode.Value);
-            if (EventWeights == null)
-            {
-                EventWeights = Events.GetEvents().ToDictionary(e => e.Id, e => 100);
             }
 
             if (listOfViewers == null)
@@ -331,32 +275,9 @@ namespace TwitchToolkit
                 SaveHelper.LoadListOfViewers();
             }
 
-            if (products == null)
+            if (incItems == null)
             {
-                if (ProductIds == null || ProductMaxEvents == null)
-                {
-                    Helper.Log("Ressetting Products");
-                    ResetProductData();
-                    this.Write();
-                }
-                else
-                {
-                    Helper.Log("Loading Product Settings");
-                    products = new List<IncItem>();
-                    // load products from settings, then load them into settings class
-                    foreach (KeyValuePair<string, int> product in ProductIds)
-                    {
-                        int id = product.Value;
-                        string abr = product.Key;
-                        int type = ProductTypes[id];
-                        string name = ProductNames[id];
-                        KarmaType karmatype = (KarmaType)ProductKarmaTypes[id];
-                        int amount = ProductAmounts[id];
-                        int evtId = ProductEventIds[id];
-                        int maxEvents = ProductMaxEvents[id];
-                        products.Add(new IncItem(id, type, name, abr, karmatype, amount, evtId, maxEvents));
-                    }
-                }
+                SaveHelper.LoadListOfIncItems();
             }
 
             if (items == null)
@@ -459,11 +380,7 @@ namespace TwitchToolkit
                     CoinMenu(rect);
                     break;
                 case 4:
-                    if (products == null)
-                    {
-                        Helper.Log("Ressetting Products");
-                        ResetProductData();
-                    }
+                    LoadIncItemsIfNotLoaded();
                     EventMenu(rect);
                     break;
                 case 5:
@@ -600,15 +517,14 @@ namespace TwitchToolkit
             CustomPricingSheetLink = listingStandard.TextEntry(CustomPricingSheetLink);
             if (listingStandard.ButtonText("Disable Events"))
             {
-                foreach(IncItem product in products)
+                foreach(IncItem product in incItems)
                 {
-                    product.amount = -10;
-                    ProductAmounts[product.id] = -10;
+                    product.price = -10;
                 }
             }
             if (listingStandard.ButtonText("Enable Events"))
             {
-                ResetProductData();
+                ResetIncItemData();
             }
             if (listingStandard.ButtonText("Reset Coin Settings"))
             {
@@ -1002,7 +918,7 @@ namespace TwitchToolkit
             int scroll = 0;
 
             scrollRect.x += 40f;
-            if (ProductScroll < (products.Count - count) - 8)
+            if (ProductScroll < (incItems.Count - count) - 8)
             {
                 if (Widgets.ButtonText(scrollRect, "down"))
                 {
@@ -1013,25 +929,25 @@ namespace TwitchToolkit
             scrollRect.x += 40f;
             if (Widgets.ButtonText(scrollRect, "x0.5"))
             {
-                Products.MultiplyProductPrices(0.5);
+                IncidentItems.MultiplyIncItemPrices(0.5);
             }
 
             scrollRect.x += 40f;
             if (Widgets.ButtonText(scrollRect, "x2"))
             {
-                Products.MultiplyProductPrices(2);
+                IncidentItems.MultiplyIncItemPrices(2);
             }
 
             scrollRect.x += 40f;
             if (Widgets.ButtonText(scrollRect, "x5"))
             {
-                Products.MultiplyProductPrices(5);
+                IncidentItems.MultiplyIncItemPrices(5);
             }
 
             scrollRect.x += 40f;
             if (Widgets.ButtonText(scrollRect, "x10"))
             {
-                Products.MultiplyProductPrices(10);
+                IncidentItems.MultiplyIncItemPrices(10);
             }
 
             scrollRect.x += 40f;
@@ -1052,7 +968,7 @@ namespace TwitchToolkit
             else if (ResetProductStage == 3)
             {
                 ResetProductStage = 0;
-                ResetProductData();
+                ResetIncItemData();
                 EventMenu(rect);
             }
 
@@ -1065,7 +981,7 @@ namespace TwitchToolkit
             
             Rect productline = new Rect(_padding, _padding + _height, 600f, 30f);
             
-            List<IncItem> query = products.Where(a => (a.abr.Contains(searchquery))).ToList();
+            List<IncItem> query = incItems.Where(a => (a.abr.Contains(searchquery))).ToList();
             foreach (IncItem product in query)
             {
                 if (++scroll <= ProductScroll)
@@ -1082,10 +998,10 @@ namespace TwitchToolkit
 
                 Rect smallButton = new Rect(300f, productline.y, 40f, 30f);
 
-                string pricelabel = (product.amount) < 0 ? "Disabled" : product.amount.ToString();
+                string pricelabel = (product.price) < 0 ? "Disabled" : product.price.ToString();
                 Widgets.Label(productline, $"{ProductScroll + count + 1} - {product.name}: {pricelabel}");
                 
-                int newprice = product.amount;
+                int newprice = product.price;
 
                 if (Widgets.ButtonText(smallButton, "-" + 500))
                 {
@@ -1150,12 +1066,10 @@ namespace TwitchToolkit
                     if (product.karmatype == KarmaType.Doom)
                     {
                         product.karmatype = 0;
-                        ProductKarmaTypes[product.id] = 0;
                     }
                     else
                     {
                         product.karmatype = product.karmatype + 1;
-                        ProductKarmaTypes[product.id] = ProductKarmaTypes[product.id] + 1;
                     }
                 }
 
@@ -1167,21 +1081,20 @@ namespace TwitchToolkit
                 }
 
                 smallButton.x += 60f;
-                if (Widgets.ButtonText(smallButton, "Max: " + ProductMaxEvents[product.id]))
+                if (Widgets.ButtonText(smallButton, "Max: " + product.maxEvents))
                 {
                     SoundDefOf.AmountIncrement.PlayOneShotOnCamera();
-                    if (ProductMaxEvents[product.id] < 10)
+                    if (product.maxEvents < 10)
                     {
-                        ProductMaxEvents[product.id]++;
+                        product.maxEvents++;
                     }
                     else
                     {
-                        ProductMaxEvents[product.id] = 1;
+                        product.maxEvents = 1;
                     }
                 }
 
-                ProductAmounts[product.id] = newprice;
-                product.amount = newprice;
+                product.price = newprice;
 
                 count++;
             }
@@ -1349,30 +1262,11 @@ namespace TwitchToolkit
             }
         }
 
-        public static void ResetProductData()
+        public static void ResetIncItemData()
         {
-            products = new List<IncItem>();
-            ProductIds = new Dictionary<string, int>();
-            ProductTypes = new Dictionary<int, int>();
-            ProductNames = new Dictionary<int, string>();
-            ProductKarmaTypes = new Dictionary<int, int>();
-            ProductAmounts = new Dictionary<int, int>();
-            ProductEventIds = new Dictionary<int, int>();
-            ProductMaxEvents = new Dictionary<int, int>();
             // if no previous save data create new products
-            List<IncItem> defaultProducts = Products.GenerateDefaultProducts().ToList();
-            foreach (IncItem product in defaultProducts)
-            {
-                int id = product.id;
-                ProductIds.Add(product.abr, id);
-                ProductTypes.Add(id, product.type);
-                ProductNames.Add(id, product.name);
-                ProductKarmaTypes.Add(id, (int)product.karmatype);
-                ProductAmounts.Add(id, product.amount);
-                ProductEventIds.Add(id, product.evtId);
-                ProductMaxEvents.Add(id, product.maxEvents);
-                products.Add(product);
-            }
+            incItems = IncidentItems.GenerateDefaultProducts().ToList();
+            SaveHelper.SaveListOfIncItemsAsJson();
         }
 
         public static void ResetItemData()
@@ -1387,6 +1281,14 @@ namespace TwitchToolkit
             if (items == null)
             {
                 ResetItemData();
+            }
+        }
+
+        public static void LoadIncItemsIfNotLoaded()
+        {
+            if (incItems == null)
+            {
+                ResetIncItemData();
             }
         }
 

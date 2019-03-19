@@ -8,7 +8,7 @@ using TwitchToolkit.Store;
 
 namespace TwitchToolkit
 {
-    public class Products
+    public class IncidentItems
     {
         public static Event[] defaultEvents = Events.GetEvents();
 
@@ -122,11 +122,11 @@ namespace TwitchToolkit
             return defaultProducts;
         }
 
-        public static IncItem GetProduct(string abr)
+        public static IncItem GetIncItem(string abr)
         {
             try
             {
-                IncItem product = Settings.products.Find(x => x.abr == abr);
+                IncItem product = Settings.incItems.Find(x => x.abr == abr);
                 return product;
             }
             catch (InvalidCastException e)
@@ -137,16 +137,15 @@ namespace TwitchToolkit
             }
         }
 
-        public static void MultiplyProductPrices(double multiplier)
+        public static void MultiplyIncItemPrices(double multiplier)
         {
-            foreach(IncItem product in Settings.products)
+            foreach(IncItem product in Settings.incItems)
             {
-                product.amount = Convert.ToInt32((double)product.amount * multiplier);
-                if (product.amount < 1)
+                product.price = Convert.ToInt32((double)product.price * multiplier);
+                if (product.price < 1)
                 {
-                    product.amount = 1;
+                    product.price = 1;
                 }
-                Settings.ProductAmounts[product.id] = product.amount;
             }
         }
     }
