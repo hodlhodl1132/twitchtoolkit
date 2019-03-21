@@ -70,7 +70,6 @@ namespace TwitchToolkit
                     string usernameconvert = username.ToString();
                     usernameconvert = usernameconvert.Remove(0, 1);
                     usernameconvert = usernameconvert.Remove(usernameconvert.Length - 1, 1);
-                    Helper.Log(usernameconvert);
                     usernames.Add(usernameconvert);
                 }
             }
@@ -81,6 +80,12 @@ namespace TwitchToolkit
         {
             this.jsonallviewers = request.jsonString;
             return true;
+        }
+
+        public static void ResetViewers()
+        {
+            Settings.ViewerIds = new Dictionary<string, int>();
+            Settings.listOfViewers = new List<Viewer>();
         }
     }
 }

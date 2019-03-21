@@ -209,7 +209,8 @@ namespace TwitchToolkit
 
             }
 
-            commands.CheckCommand(message, user);
+            if (Helper.ModActive)
+                commands.CheckCommand(message, user);
 
             if (_eventsPossibleChosen == null)
             {
@@ -364,6 +365,8 @@ namespace TwitchToolkit
                         }
                     }
 
+                    Settings.VotingNow = true;
+
                     if (Settings.VotingChatMsgs)
                     {
                         _client.SendMessage("TwitchStoriesChatMessageNewVote".Translate() + ": " + "TwitchToolKitVoteInstructions".Translate());
@@ -426,6 +429,7 @@ namespace TwitchToolkit
                     _eventsPossibleChosen = null;
                     _eventsPossible = null;
                     _votingStage = 2;
+                    Settings.VotingNow = false;
                 }
             }
             catch (Exception exception)

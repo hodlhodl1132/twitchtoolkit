@@ -14,6 +14,7 @@ namespace TwitchToolkit
 {
     public class Settings : ModSettings
     {
+        public static int SetupWizardStep;
         public static string Channel = "";
         public static string Username = "";
         public static string OAuth = "";
@@ -59,6 +60,9 @@ namespace TwitchToolkit
 
         public static string JWTToken;
         public static string AccountID;
+        public static bool SyncStreamElements;
+
+        public static bool SyncStreamLabs;
 
         public static bool UnlimitedCoins = false;
         public static bool MinifiableBuildings = false;
@@ -115,16 +119,16 @@ namespace TwitchToolkit
         public static int MaxNeutralEventsPerInterval;
         public static int MaxCarePackagesPerInterval;
 
+        public static bool VotingNow = false;
+
         // viewer storage
         public static Dictionary<string, int> ViewerIds = null;
-        public static Dictionary<int, int> ViewerCoins = new Dictionary<int, int>();
-        public static Dictionary<int, int> ViewerKarma = new Dictionary<int, int>();
 
         public static Dictionary<string, string> ViewerColorCodes = new Dictionary<string, string>();
 
         public static Dictionary<string, bool> ViewerModerators = new Dictionary<string, bool>();
 
-        public static List<Viewer> listOfViewers;
+        public static List<Viewer> listOfViewers = new List<Viewer>();
         public static Viewers viewers = new Viewers();
 
         // product storage
@@ -143,6 +147,7 @@ namespace TwitchToolkit
         public override void ExposeData()
         {
             base.ExposeData();
+            Scribe_Values.Look(ref SetupWizardStep, "SetupWizardStep", 0, true);
             Scribe_Values.Look(ref Channel, "Channel", "", true);
             Scribe_Values.Look(ref Username, "Username", "", true);
             Scribe_Values.Look(ref OAuth, "OAuth", "", true);
@@ -185,6 +190,9 @@ namespace TwitchToolkit
 
             Scribe_Values.Look(ref JWTToken, "JWTToken", "", true);
             Scribe_Values.Look(ref AccountID, "AccountID", "", true);
+            Scribe_Values.Look(ref SyncStreamElements, "SyncStreamElements", false, true);
+
+            Scribe_Values.Look(ref SyncStreamLabs, "SyncStreamLabs", false, true);
 
             Scribe_Values.Look(ref MinifiableBuildings, "MinifiableBuildings", false, true);
             Scribe_Values.Look(ref UnlimitedCoins, "UnlimitedCoins", false, true);
@@ -242,8 +250,6 @@ namespace TwitchToolkit
             Scribe_Values.Look(ref VoteInterval, "VoteInterval", 5, true);
 
             Scribe_Collections.Look(ref ViewerIds, "ViewerIds", LookMode.Value, LookMode.Value);
-            Scribe_Collections.Look(ref ViewerCoins, "ViewerCoins", LookMode.Value, LookMode.Value);
-            Scribe_Collections.Look(ref ViewerKarma, "ViewerKarma", LookMode.Value, LookMode.Value);
             Scribe_Collections.Look(ref ViewerModerators, "ViewerModerators", LookMode.Value, LookMode.Value);
             Scribe_Collections.Look(ref ViewerColorCodes, "ViewerColorCodes", LookMode.Value, LookMode.Value);
 
@@ -252,8 +258,6 @@ namespace TwitchToolkit
             if (ViewerIds == null)
             {
                 ViewerIds = new Dictionary<string, int>();
-                ViewerCoins = new Dictionary<int, int>();
-                ViewerKarma = new Dictionary<int, int>();
             }
 
             if (ViewerColorCodes == null)
@@ -261,17 +265,8 @@ namespace TwitchToolkit
                 ViewerColorCodes = new Dictionary<string, string>();
             }
 
-            if (listOfViewers == null)
+            if (listOfViewers.NullOrEmpty())
             {
-                listOfViewers = new List<Viewer>();
-                foreach (KeyValuePair<string, int> viewer in ViewerIds)
-                {
-                    int viewerkarma = ViewerKarma[viewer.Value];
-                    int viewercoins = ViewerCoins[viewer.Value];
-                    Viewer newviewer = new Viewer(viewer.Key, viewer.Value);
-                    listOfViewers.Add(newviewer);
-                }
-                SaveHelper.SaveListOfViewersAsJson();
                 SaveHelper.LoadListOfViewers();
             }
 
@@ -306,6 +301,12 @@ namespace TwitchToolkit
             }
 
             buttonRect.y += _height;
+            if (Widgets.ButtonText(buttonRect, "SetupWizard"))
+            {
+                _menu = 11;
+            }
+
+            buttonRect.y += _height;
             if (Widgets.ButtonText(buttonRect, "Coins"))
             {
                 _menu = 3;
@@ -329,6 +330,12 @@ namespace TwitchToolkit
                 if (Widgets.ButtonText(buttonRect, "StreamElements"))
                 {
                     _menu = 2;
+                }
+
+                buttonRect.y += _height;
+                if (Widgets.ButtonText(buttonRect, "StreamLabs"))
+                {
+                    _menu = 10;
                 }
             }
 
@@ -370,7 +377,6 @@ namespace TwitchToolkit
                     MainMenu(rect);
                     break;
                 case 1:
-                    LoadItemsIfNotLoaded();
                     ItemMenu(rect);
                     break;
                 case 2:
@@ -380,7 +386,6 @@ namespace TwitchToolkit
                     CoinMenu(rect);
                     break;
                 case 4:
-                    LoadIncItemsIfNotLoaded();
                     EventMenu(rect);
                     break;
                 case 5:
@@ -398,107 +403,171 @@ namespace TwitchToolkit
                 case 9:
                     StatsMenu(rect);
                     break;
+                case 10:
+                    StreamLabsMenu(rect);
+                    break;
+                case 11:
+                    SetupWizardMenu(rect);
+                    break;
             }
+        }
+
+        public static bool hideOauth = true;
+        private static void SetupWizardMenu(Rect rect)
+        {
+            var mod = LoadedModManager.GetMod<TwitchToolkit>();
+            Rect wizardWrapper = new Rect(0, 35, 500, 500);
+            Listing_TwitchToolkit listingStandard = new Listing_TwitchToolkit();
+            listingStandard.Begin(wizardWrapper);
+            if (Settings.SetupWizardStep == 0 || Settings.SetupWizardStep == 2)
+            {
+                listingStandard.Label("What is your twitch channel username?");
+                Channel = listingStandard.TextEntry(Settings.Channel);
+                listingStandard.Label("If you will be using a separate account for sending messages to your twitch chat, please make a new account now or input the username below");
+                Username = listingStandard.TextEntry(Settings.Username);
+                
+                if (Settings.Username == "" && listingStandard.ButtonText("Open twitch"))
+                    Application.OpenURL("https://www.twitch.tv");
+
+                listingStandard.Label("Get an oauth code from twitchapps.com/tmi/");
+
+                if (listingStandard.ButtonText("Open twitchapps"))
+                    Application.OpenURL("http://twitchapps.com/tmi/");
+
+                if (hideOauth)
+                    listingStandard.Label("Make sure you are not showing this part on stream");
+
+                if (hideOauth && listingStandard.ButtonText("I am not streaming"))
+                    hideOauth = false;
+
+                if (!hideOauth)
+                {
+                    listingStandard.Label("Paste your oauth token below");
+                    OAuth = listingStandard.TextEntry(Settings.OAuth);
+                }
+
+                if (!hideOauth && listingStandard.ButtonText("Finish step 1"))
+                {
+                    WarningWindow wnd = new WarningWindow();
+                    wnd.warning = "Save and restart your game to connect to Twitch";
+                    SetupWizardStep = 1;
+                    Settings settings = mod.GetSettings<Settings>();
+                    Find.WindowStack.TryRemove(typeof(Dialog_ModSettings));
+                    Find.WindowStack.TryRemove(typeof(Dialog_CustomModSettings));
+                    Find.WindowStack.Add(wnd);
+                }
+            }
+            else
+            {
+                if (listingStandard.ButtonText("Redo Wizard"))
+                    SetupWizardStep = 0;
+            }
+            listingStandard.End();
         }
 
         private static void MainMenu(Rect rect)
         {
-            var labelRect = new Rect(_padding, _padding + _height, rect.width - (_padding * 2), rect.height - (_padding * 2));
-            var inputRect = new Rect(_padding + 140f, _padding + _height, rect.width - (_padding * 2) - 140f, 20f);
-            Text.Anchor = TextAnchor.UpperLeft;
-
-            Widgets.Label(labelRect, "TwitchStoriesSettingsTwitchChannel".Translate() + ": ");
-            Channel = Widgets.TextField(inputRect, Channel, 999, new Regex("^[a-z0-9_]*$", RegexOptions.IgnoreCase));
-
-            labelRect.y += _height;
-            inputRect.y += _height;
-            Widgets.Label(labelRect, "TwitchStoriesSettingsTwitchUsername".Translate() + ": ");
-            Username = Widgets.TextField(inputRect, Username, 999, new Regex("^[a-z0-9_]*$", RegexOptions.IgnoreCase));
-
-            labelRect.y += _height;
-            inputRect.y += _height;
-            Widgets.Label(labelRect, "TwitchStoriesSettingsOAuth".Translate() + ": ");
-            if (_showOAuth > 2)
+            if (SetupWizardStep == 0)
             {
-                OAuth = Widgets.TextField(inputRect, OAuth, 999, new Regex("^[a-z0-9:]*$", RegexOptions.IgnoreCase));
+                SetupWizardMenu(rect);
             }
             else
             {
-                if (Widgets.ButtonText(inputRect, ("TwitchStoriesSettingsOAuthWarning" + _showOAuth).Translate()))
+                var labelRect = new Rect(_padding, _padding + _height, rect.width - (_padding * 2), rect.height - (_padding * 2));
+                var inputRect = new Rect(_padding + 140f, _padding + _height, rect.width - (_padding * 2) - 140f, 20f);
+                Text.Anchor = TextAnchor.UpperLeft;
+
+                Widgets.Label(labelRect, "TwitchStoriesSettingsTwitchChannel".Translate() + ": ");
+                Channel = Widgets.TextField(inputRect, Channel, 999, new Regex("^[a-z0-9_]*$", RegexOptions.IgnoreCase));
+
+                labelRect.y += _height;
+                inputRect.y += _height;
+                Widgets.Label(labelRect, "TwitchStoriesSettingsTwitchUsername".Translate() + ": ");
+                Username = Widgets.TextField(inputRect, Username, 999, new Regex("^[a-z0-9_]*$", RegexOptions.IgnoreCase));
+
+                labelRect.y += _height;
+                inputRect.y += _height;
+                Widgets.Label(labelRect, "TwitchStoriesSettingsOAuth".Translate() + ": ");
+                if (_showOAuth > 2)
                 {
-                    _showOAuth++;
+                    OAuth = Widgets.TextField(inputRect, OAuth, 999, new Regex("^[a-z0-9:]*$", RegexOptions.IgnoreCase));
                 }
-            }
+                else
+                {
+                    if (Widgets.ButtonText(inputRect, ("TwitchStoriesSettingsOAuthWarning" + _showOAuth).Translate()))
+                    {
+                        _showOAuth++;
+                    }
+                }
 
-            labelRect.y += _height;
-            inputRect.y += _height;
-            Widgets.Label(labelRect, "TwitchStoriesSettingsTwitchAutoConnect".Translate() + ": ");
-            if (Widgets.ButtonText(inputRect, (AutoConnect ? "TwitchStoriesEnabled".Translate() : "TwitchStoriesDisabled".Translate())))
-            {
-                AutoConnect = !AutoConnect;
-            }
+                labelRect.y += _height;
+                inputRect.y += _height;
+                Widgets.Label(labelRect, "TwitchStoriesSettingsTwitchAutoConnect".Translate() + ": ");
+                if (Widgets.ButtonText(inputRect, (AutoConnect ? "TwitchStoriesEnabled".Translate() : "TwitchStoriesDisabled".Translate())))
+                {
+                    AutoConnect = !AutoConnect;
+                }
 
-            labelRect.y += _height;
-            inputRect.y += _height;
-            Widgets.Label(labelRect, "TwitchStoriesSettingsVoteTime".Translate() + ": ");
-            VoteTime = (int)Widgets.HorizontalSlider(inputRect, VoteTime, 1, 15, false, VoteTime.ToString() + " " + "TwitchStoriesMinutes".Translate(), null, null, 1);
+                labelRect.y += _height;
+                inputRect.y += _height;
+                Widgets.Label(labelRect, "TwitchStoriesSettingsVoteTime".Translate() + ": ");
+                VoteTime = (int)Widgets.HorizontalSlider(inputRect, VoteTime, 1, 15, false, VoteTime.ToString() + " " + "TwitchStoriesMinutes".Translate(), null, null, 1);
 
-            labelRect.y += _height;
-            inputRect.y += _height;
-            Widgets.Label(labelRect, "TwitchStoriesSettingsVoteOptions".Translate() + ": ");
-            VoteOptions = (int)Widgets.HorizontalSlider(inputRect, VoteOptions, 1, 5, false, VoteOptions.ToString() + " " + "TwitchStoriesOptions".Translate(), null, null, 1);
+                labelRect.y += _height;
+                inputRect.y += _height;
+                Widgets.Label(labelRect, "TwitchStoriesSettingsVoteOptions".Translate() + ": ");
+                VoteOptions = (int)Widgets.HorizontalSlider(inputRect, VoteOptions, 1, 5, false, VoteOptions.ToString() + " " + "TwitchStoriesOptions".Translate(), null, null, 1);
 
-            labelRect.y += _height;
-            inputRect.y += _height;
-            inputRect.width = ((inputRect.width - _padding) / 2);
-            Widgets.Label(labelRect, "TwitchStoriesSettingsOtherCommands".Translate() + ": ");
-            if (Widgets.ButtonText(inputRect, "!installedmods " + (CommandsModsEnabled ? "TwitchStoriesEnabled".Translate() : "TwitchStoriesDisabled".Translate())))
-            {
-                CommandsModsEnabled = !CommandsModsEnabled;
-            }
+                labelRect.y += _height;
+                inputRect.y += _height;
+                inputRect.width = ((inputRect.width - _padding) / 2);
+                Widgets.Label(labelRect, "TwitchStoriesSettingsOtherCommands".Translate() + ": ");
+                if (Widgets.ButtonText(inputRect, "!installedmods " + (CommandsModsEnabled ? "TwitchStoriesEnabled".Translate() : "TwitchStoriesDisabled".Translate())))
+                {
+                    CommandsModsEnabled = !CommandsModsEnabled;
+                }
 
-            inputRect.x += inputRect.width + _padding;
-            if (Widgets.ButtonText(inputRect, "!alive " + (CommandsAliveEnabled ? "TwitchStoriesEnabled".Translate() : "TwitchStoriesDisabled".Translate())))
-            {
-                CommandsAliveEnabled = !CommandsAliveEnabled;
-            }
+                inputRect.x += inputRect.width + _padding;
+                if (Widgets.ButtonText(inputRect, "!alive " + (CommandsAliveEnabled ? "TwitchStoriesEnabled".Translate() : "TwitchStoriesDisabled".Translate())))
+                {
+                    CommandsAliveEnabled = !CommandsAliveEnabled;
+                }
 
-            var mod = LoadedModManager.GetMod<TwitchToolkit>();
-            labelRect.y += _height;
-            labelRect.height = 30f;
-            labelRect.width = 100f;
-            if (Widgets.ButtonText(labelRect, "TwitchStoriesReconnect".Translate()))
-            {
-                mod.Reconnect();
-            }
+                var mod = LoadedModManager.GetMod<TwitchToolkit>();
+                labelRect.y += _height;
+                labelRect.height = 30f;
+                labelRect.width = 100f;
+                if (Widgets.ButtonText(labelRect, "TwitchStoriesReconnect".Translate()))
+                {
+                    mod.Reconnect();
+                }
 
-            labelRect.x += 100f + _padding;
-            if (Widgets.ButtonText(labelRect, "TwitchStoriesDisconnect".Translate()))
-            {
-                mod.Disconnect();
-            }
+                labelRect.x += 100f + _padding;
+                if (Widgets.ButtonText(labelRect, "TwitchStoriesDisconnect".Translate()))
+                {
+                    mod.Disconnect();
+                }
 
-            labelRect.x = _padding;
-            labelRect.y += _height;
-            labelRect.height = rect.height - labelRect.y;
-            labelRect.width = rect.width - (_padding * 2);
-            Widgets.TextArea(labelRect, string.Join("\r\n", mod.MessageLog), true);
+                labelRect.x = _padding;
+                labelRect.y += _height;
+                labelRect.height = rect.height - labelRect.y;
+                labelRect.width = rect.width - (_padding * 2);
+                Widgets.TextArea(labelRect, string.Join("\r\n", mod.MessageLog), true);
 
-            inputRect.y += inputRect.height;
-            if (Widgets.ButtonText(inputRect, "Reset Main Settings"))
-            {
-                VoteTime = 1;
-                VoteOptions = 3;
-                CommandsModsEnabled = true;
-                CommandsAliveEnabled = true;
-                AutoConnect = true;
-                mod.WriteSettings();
+                inputRect.y += inputRect.height;
+                if (Widgets.ButtonText(inputRect, "Reset Main Settings"))
+                {
+                    VoteTime = 1;
+                    VoteOptions = 3;
+                    CommandsModsEnabled = true;
+                    CommandsAliveEnabled = true;
+                    AutoConnect = true;
+                }
             }
         }
 
         private static void CoinMenu(Rect rect)
         {
-            var mod = LoadedModManager.GetMod<TwitchToolkit>();
             Listing_TwitchToolkit listingStandard = new Listing_TwitchToolkit();
             listingStandard.Begin(rect);
             listingStandard.CheckboxLabeled("Reward Coins: ", ref EarningCoins, "Should viewers earn coins while watching?");
@@ -539,7 +608,6 @@ namespace TwitchToolkit
                 CustomPricingSheetLink = "https://bit.ly/2C7bls0";
                 StartingBalance = 150;
                 StartingKarma = 100;
-                mod.WriteSettings();
             }
             listingStandard.End();
         }
@@ -575,7 +643,6 @@ namespace TwitchToolkit
                 VotingWindow = true;
                 LargeVotingWindow = false;
                 VotingChatMsgs = false;
-                mod.WriteSettings();
             }
             listingStandard.End();
         }
@@ -624,7 +691,6 @@ namespace TwitchToolkit
                 KarmaCmd = "TwitchToolkitKarmaCmd".Translate();
                 GiftCmd = "TwitchToolkitGiftCmd".Translate();
                 CommandHelpCmd = "TwitchToolkitCmdHelpCmd".Translate();
-                mod.WriteSettings();
             }
             listingStandard.End();
         }
@@ -633,17 +699,32 @@ namespace TwitchToolkit
         {
             Listing_TwitchToolkit listingStandard = new Listing_TwitchToolkit();
             listingStandard.Begin(rect);
-            JWTToken = listingStandard.TextEntry(JWTToken, 3);
+            listingStandard.CheckboxLabeled("Sync with stream elements currency?", ref SyncStreamElements);
+            listingStandard.Label("Account ID");
             AccountID = listingStandard.TextEntry(AccountID);
+            listingStandard.Label("JWT Token");
+            JWTToken = listingStandard.TextEntry(JWTToken, 3);
 
-            var inputRect = new Rect(_padding + 140f, _padding + _height * 3, rect.width - (_padding * 2) - 140f, 20f);
-
-            if (Widgets.ButtonText(inputRect, "Import Points"))
+            if (listingStandard.ButtonText("Import Points"))
             {
-                StreamElements element = new StreamElements(AccountID, JWTToken);
-                element.ImportPoints();
+                StreamElements.ImportPoints();
             }
 
+            listingStandard.Label("Save your game before importing/exporting, on rare occasion this can crash your game");
+
+            if (listingStandard.ButtonText("Export Points"))
+            {
+                StreamElements.SyncViewerStatsToWeb();
+            }
+
+            listingStandard.End();
+        }
+
+        private static void StreamLabsMenu(Rect rect)
+        {
+            Listing_TwitchToolkit listingStandard = new Listing_TwitchToolkit();
+            listingStandard.Begin(rect);
+            listingStandard.CheckboxLabeled("Sync with streamlabs chatbot script?", ref SyncStreamLabs);
             listingStandard.End();
         }
 

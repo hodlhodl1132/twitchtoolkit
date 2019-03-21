@@ -21,6 +21,8 @@ namespace TwitchToolkit
 
         public override IEnumerable<FiringIncident> MakeIntervalIncidents(IIncidentTarget target)
         {
+            if (Settings.VotingNow)
+                yield break;
             float difficultyFactor = (!this.Props.applyRaidBeaconThreatMtbFactor) ? 1f : Find.Storyteller.difficulty.raidBeaconThreatCountFactor;
             float acceptFraction = 1f;
             if (this.Props.acceptFractionByDaysPassedCurve != null)

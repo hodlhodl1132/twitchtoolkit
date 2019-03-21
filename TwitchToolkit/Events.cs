@@ -182,7 +182,7 @@ namespace TwitchToolkit
       new Event(38,  EventType.Neutral, EventCategory.Environment, 2, "Eclipse",         () => true, (quote) => Helper.WeatherEclipse(quote, 60000)),
       new Event(39,  EventType.Good,    EventCategory.Environment, 2, "Aurora",          () => Helper.WeatherAuroraPossible(), (quote) => Helper.WeatherAurora(quote)),
       new Event(40,  EventType.Neutral, EventCategory.Environment, 3, "Vomit rain",      () => true, (quote) => Helper.VomitRain(quote, 500)),
-      new Event(41,  EventType.Good,    EventCategory.Environment, 1, "Ambrosia sprout", () => true, (quote) => Helper.AmbrosiaSprout(quote)),
+      new Event(41,  EventType.Good,    EventCategory.Environment, 1, "Ambrosia sprout", () => Helper.AmbrosiaSproutPossible(), (quote) => Helper.AmbrosiaSprout(quote)),
       new Event(42,  EventType.Neutral, EventCategory.Environment, 2, "Meteorite",       () => true, (quote) => Helper.Meteorite(quote)),
       new Event(43,  EventType.Neutral, EventCategory.Environment, 4, "Meteorite shower",() => true, (quote) => Helper.MeteoriteShower(quote, 5, true)),
       #endregion
@@ -214,7 +214,7 @@ namespace TwitchToolkit
       new Event(60,  EventType.Neutral, EventCategory.Animal, 2, "Animal wander in",    () => Helper.AnimalsWanderInPossible(), (quote) => Helper.AnimalsWanderIn(quote)),
       new Event(61,  EventType.Neutral, EventCategory.Animal, 1, "Rare thrumbos",       () => Helper.ThrumbosPossible(), (quote) => Helper.Thrumbos(quote)),
       new Event(62,  EventType.Good,    EventCategory.Animal, 3, "Farm animals",        () => Helper.FarmAnimalsPossible(), (quote) => Helper.FarmAnimals(quote)),
-      new Event(63,  EventType.Good,    EventCategory.Animal, 1, "Animal self-tamed",   () => Helper.AnimalTamePossible(), (quote) => Helper.AnimalTame(quote)),
+      new Event(63,  EventType.Good,    EventCategory.Animal, 1, "Animal self-tamed",   () => true, (quote) => Helper.AnimalTame(quote)),
       new Event(64,  EventType.Neutral, EventCategory.Animal, 2, "Yorkshire terriers",  () => Helper.YorkshireTerrierPossible(), (quote) => Helper.YorkshireTerrier(quote)),
       new Event(65,  EventType.Bad,     EventCategory.Animal, 3, "Manhunter pack",      () => Helper.ManhunterPackPossible(), (quote) => Helper.ManhunterPack(quote)),
       new Event(66,  EventType.Bad,     EventCategory.Animal, 5, "Predators",           () => Helper.PredatorsPossible(), (quote) => Helper.Predators(quote)),

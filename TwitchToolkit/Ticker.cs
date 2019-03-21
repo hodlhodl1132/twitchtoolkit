@@ -138,7 +138,7 @@ namespace TwitchToolkit
                 else if (Settings.EarningCoins && ((time - _lastCoinReward) >= Settings.CoinInterval) && Settings.viewers.jsonallviewers != null)
                 {
                     _lastCoinReward = time;
-                    Settings.viewers.AwardViewersCoins();
+                    Settings.viewers.AwardViewersCoins(Settings.CoinAmount);
                 }
                 if (_lastMinute < 0)
                 {
@@ -149,10 +149,6 @@ namespace TwitchToolkit
                     _lastMinute = time;
                     Settings.JobManager.CheckAllJobs();
                     TwitchToolkitDev.WebRequest_BeginGetResponse.Main("https://tmi.twitch.tv/group/user/" + Settings.Channel.ToLower() + "/chatters", new Func<TwitchToolkitDev.RequestState, bool>(Settings.viewers.SaveUsernamesFromJsonResponse));
-                    _mod.WriteSettings();
-                    Utilities.SaveHelper.SaveListOfViewersAsJson();
-                    Utilities.SaveHelper.SaveListOfItemsAsJson();
-                    Utilities.SaveHelper.SaveListOfIncItemsAsJson();
                 }
             }
             catch (Exception ex)

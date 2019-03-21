@@ -30,19 +30,30 @@ namespace TwitchToolkit.Utilities
             }
         }
 
+        public static void SaveAllModData()
+        {
+            SaveListOfViewersAsJson();
+            SaveListOfItemsAsJson();
+            SaveListOfIncItemsAsJson();
+        }
+
         public static void SaveListOfViewersAsJson()
         {
             List<Utilities.ViewerSaveable> newViewers = new List<ViewerSaveable>();
+            if (Settings.listOfViewers == null)
+                return;
             foreach (Viewer vwr in Settings.listOfViewers)
             {
                 Utilities.ViewerSaveable nwvwr = new Utilities.ViewerSaveable();
                 nwvwr.id = vwr.id;
                 nwvwr.username = vwr.username;
-                nwvwr.coins = vwr.GetViewerCoins();
+                nwvwr.coins = vwr.coins;
                 nwvwr.karma = vwr.GetViewerKarma();
                 newViewers.Add(nwvwr);
             }
 
+            if (newViewers.Count <= 0)
+                return;
             var viewerslisttemplate = JSON.Parse("{\"viewers\":[],\"total\":0}");
             string viewertemplate = "{\"id\":0,\"username\":\"string\",\"karma\":0,\"coins\":0}";
             foreach (ViewerSaveable vwr in newViewers)

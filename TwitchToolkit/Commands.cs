@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using TwitchToolkit.Utilities;
 using Verse;
 
 namespace TwitchToolkit.Store
@@ -36,7 +37,15 @@ namespace TwitchToolkit.Store
             {
                 if (message.StartsWith("!resetviewers"))
                 {
-                    if (resetWarning == 0)
+                    if (Settings.SyncStreamLabs)
+                    {
+                        WarningWindow window = new WarningWindow
+                        {
+                            warning = "You must reset viewers in Streamlabs chatbot and then restart the game."
+                        };
+                        Find.WindowStack.Add(window);
+                    }
+                    else if (resetWarning == 0)
                     {
                         _mod._client.SendMessage($"@{user} " + "TwitchToolkitResetViewersWarningOne".Translate());
                         resetWarning = 1;
@@ -49,11 +58,7 @@ namespace TwitchToolkit.Store
                     else if (resetWarning == 2)
                     {
                         _mod._client.SendMessage($"@{user} " + "TwitchToolkitResetViewersWarningThree".Translate());
-                        Settings.ViewerIds = null;
-                        Settings.ViewerCoins = null;
-                        Settings.ViewerKarma = null;
-                        Settings.listOfViewers = new List<Viewer>();
-                        _mod.WriteSettings();
+                        Viewers.ResetViewers();
                         resetWarning = 0;
                     }
                 }
@@ -172,7 +177,7 @@ namespace TwitchToolkit.Store
 
                             Helper.Log($"Giving viewer {giftee.username} {amount} coins");
                             giftee.GiveViewerCoins(amount);
-                            _mod._client.SendMessage($"@{user} " + Helper.ReplacePlaceholder("TwitchToolkitGivingCoins".Translate(), viewer: giftee.username, amount: amount.ToString(), newbalance: giftee.GetViewerCoins().ToString()));
+                            _mod._client.SendMessage($"@{user} " + Helper.ReplacePlaceholder("TwitchToolkitGivingCoins".Translate(), viewer: giftee.username, amount: amount.ToString(), newbalance: giftee.coins.ToString()));
                         }
                     }
                     catch (InvalidCastException e)
@@ -195,7 +200,7 @@ namespace TwitchToolkit.Store
                         string target = command[1].Replace("@", "");
 
                         Viewer targeted = Viewer.GetViewer(target);
-                        _mod._client.SendMessage($"@{user} " + Helper.ReplacePlaceholder("TwitchToolkitCheckUser".Translate(), viewer: targeted.username, amount: targeted.GetViewerCoins().ToString(), karma: targeted.GetViewerKarma().ToString()));
+                        _mod._client.SendMessage($"@{user} " + Helper.ReplacePlaceholder("TwitchToolkitCheckUser".Translate(), viewer: targeted.username, amount: targeted.coins.ToString(), karma: targeted.GetViewerKarma().ToString()));
 
                     }
                     catch (InvalidCastException e)
@@ -266,7 +271,7 @@ namespace TwitchToolkit.Store
                 if (message.StartsWith(Settings.BalanceCmd))
                 {
                     Helper.Log("Trying to find User");
-                    _mod._client.SendMessage($"@{viewer.username} " + Helper.ReplacePlaceholder("TwitchToolkitBalanceMessage".Translate(), amount: viewer.GetViewerCoins().ToString(), karma: viewer.GetViewerKarma().ToString()));
+                    _mod._client.SendMessage($"@{viewer.username} " + Helper.ReplacePlaceholder("TwitchToolkitBalanceMessage".Translate(), amount: viewer.coins.ToString(), karma: viewer.GetViewerKarma().ToString()));
                 }
 
                 if (message.StartsWith(Settings.KarmaCmd) && !message.Contains("!karmaround"))
@@ -309,7 +314,7 @@ namespace TwitchToolkit.Store
                         }
 
 
-                        if (viewer.GetViewerCoins() >= amount)
+                        if (viewer.coins >= amount)
                         {
                             viewer.TakeViewerCoins(amount);
                             giftee.GiveViewerCoins(amount);

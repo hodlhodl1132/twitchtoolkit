@@ -37,6 +37,9 @@
     <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="0Harmony">
+      <HintPath>..\..\..\Downloads\Release\Release\net35\0Harmony.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Net" />
     <Reference Include="System.Runtime.Serialization" />
@@ -54,14 +57,20 @@
   <ItemGroup>
     <Compile Include="Commands.cs" />
     <Compile Include="Dialog_CustomModSettings.cs" />
+    <Compile Include="Harmony.cs" />
     <Compile Include="Incidents\IncidentWorker_CallForAid.cs" />
     <Compile Include="Incidents\IncidentWorker_ResourcePodFrenzy.cs" />
     <Compile Include="IRC\ConcurrentCircularBuffer.cs" />
+    <Compile Include="PawnQueue\CompPawnNamed.cs" />
+    <Compile Include="PawnQueue\CompProperties_PawnNamed.cs" />
+    <Compile Include="PawnQueue\GameComponentPawns.cs" />
+    <Compile Include="PawnQueue\QueueWindow.cs" />
     <Compile Include="Store\Item.cs" />
     <Compile Include="Store\Karma.cs" />
     <Compile Include="Store\IncItem.cs" />
     <Compile Include="Store\PurchaseLogger.cs" />
     <Compile Include="Store\ShopCommand.cs" />
+    <Compile Include="StreamLabs.cs" />
     <Compile Include="Utilities\ChatWindow.cs" />
     <Compile Include="Utilities\Listing_TwitchToolkit.cs" />
     <Compile Include="Store\IncidentItems.cs" />
@@ -70,6 +79,8 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
+    <Compile Include="Utilities\LoadingWindow.cs" />
+    <Compile Include="Utilities\WarningWindow.cs" />
     <Compile Include="Utilities\Scheduled.cs" />
     <Compile Include="Utilities\ScheduledJob.cs" />
     <Compile Include="Utilities\SaveHelper.cs" />
@@ -127,6 +138,7 @@
     <Compile Include="Incidents\IncidentWorker_MeteoriteImpact.cs" />
     <Compile Include="Incidents\IncidentWorker_AnimalInsanitySingle.cs" />
     <Compile Include="Incidents\IncidentWorker_Raid.cs" />
+    <Compile Include="Utilities\WebClient.cs" />
     <Compile Include="Viewer.cs" />
     <Compile Include="Viewers.cs" />
     <Compile Include="Utilities\VoteDuelWindow.cs" />
@@ -134,9 +146,7 @@
     <Compile Include="Utilities\VoteWindow.cs" />
     <Compile Include="Utilities\WebRequest.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Patches\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <None Include="About\About.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -227,6 +237,7 @@
     <None Include="Languages\German\Keyed\TwitchToolkitCustomIncidents.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <Content Include="Patches\HumansNamed.xml" />
     <Content Include="Textures\Things\TwitchToolkitSpartan.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

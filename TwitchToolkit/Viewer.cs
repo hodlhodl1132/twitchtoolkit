@@ -8,6 +8,8 @@ namespace TwitchToolkit
     {
         public string username;
         public int id;
+        public int coins { get; set; }
+        public int karma { get; set; }
 
         public DateTime last_seen;
 
@@ -24,8 +26,8 @@ namespace TwitchToolkit
             {
                 viewer = new Viewer(user, Settings.ViewerIds.Count());
                 Settings.ViewerIds.Add(viewer.username.ToLower(), viewer.id);
-                Settings.ViewerCoins.Add(viewer.id, Settings.StartingBalance);
-                Settings.ViewerKarma.Add(viewer.id, Settings.StartingKarma);
+                viewer.SetViewerCoins(Settings.StartingBalance);
+                viewer.karma = Settings.StartingKarma;
                 Settings.listOfViewers.Add(viewer);
             }
             return viewer;
@@ -63,54 +65,56 @@ namespace TwitchToolkit
 
         public int GetViewerCoins()
         {
-            return Settings.ViewerCoins[this.id];
+            if (Settings.SyncStreamLabs)
+                return StreamLabs.GetViewerPoints(this);
+            return coins;
         }
 
         public int GetViewerKarma()
         {
-            return Settings.ViewerKarma[this.id];
+            return karma;
         }
 
         public void SetViewerKarma(int karma)
         {
-            Settings.ViewerKarma[this.id] = karma;
+            this.karma = karma;
         }
 
         public int GiveViewerKarma(int karma)
         {
-            Settings.ViewerKarma[this.id] = this.GetViewerKarma() + karma;
+            this.karma = this.GetViewerKarma() + karma;
             return this.GetViewerKarma();
         }
 
         public int TakeViewerKarma(int karma)
         {
-            Settings.ViewerKarma[this.id] = this.GetViewerKarma() - karma;
+            this.karma = this.GetViewerKarma() - karma;
             return this.GetViewerKarma();
         }
         public void SetViewerCoins(int coins)
         {
-            Settings.ViewerCoins[this.id] = coins;
+            this.coins = coins;
+            if (Settings.SyncStreamLabs)
+                StreamLabs.SetViewerPoints(this);
         }
 
-        public int GiveViewerCoins(int coins)
+        public void GiveViewerCoins(int coins)
         {
             // do not let user go below 0 coins
-            if (this.GetViewerCoins() + coins < 0)
+            if (this.coins + coins < 0)
             {
-                Settings.ViewerCoins[this.id] = 0;
+                this.coins = 0;
+                SetViewerCoins(0);
             }
             else
             {
-                Settings.ViewerCoins[this.id] = this.GetViewerCoins() + coins;
+                SetViewerCoins(this.coins + coins);
             }
-
-            return this.GetViewerCoins();
         }
 
-        public int TakeViewerCoins(int coins)
+        public void TakeViewerCoins(int coins)
         {
-            Settings.ViewerCoins[this.id] = this.GetViewerCoins() - coins;
-            return this.GetViewerCoins();
+            SetViewerCoins(this.coins - coins);
         }
 
         public static string GetViewerColorCode(string username)

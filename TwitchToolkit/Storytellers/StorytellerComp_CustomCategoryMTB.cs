@@ -19,6 +19,8 @@ namespace TwitchToolkit
 
         public override IEnumerable<FiringIncident> MakeIntervalIncidents(IIncidentTarget target)
         {
+            if (Settings.VotingNow)
+                yield break;
             float mtbNow = this.Props.mtbDays;
             IEnumerable<IncidentDef> options;
             List<IncidentDef> pickedoptions = new List<IncidentDef>();

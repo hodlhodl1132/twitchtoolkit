@@ -27,7 +27,6 @@ namespace TwitchToolkit.Store
             this.message = message;
             this.viewer = viewer;
 
-            Settings.LoadIncItemsIfNotLoaded();
             this.incItem = IncidentItems.GetIncItem(productabr.ToLower());
             if (this.incItem == null)
             {
@@ -55,8 +54,6 @@ namespace TwitchToolkit.Store
             }
             else if (incItem.type == 1)
             { //item
-
-                Settings.LoadItemsIfNotLoaded();
 
                 try
                 {
@@ -91,9 +88,9 @@ namespace TwitchToolkit.Store
                     else if (command[2] == "*")
                     {
                         Helper.Log("Getting max");
-                        this.quantity = this.viewer.GetViewerCoins() / itemtobuy.price;
+                        this.quantity = this.viewer.coins / itemtobuy.price;
                         messageStartsAt = 3;
-                        Helper.Log(this.quantity);
+                        Helper.Log(this.quantity.ToString());
                     }
                     else
                     {
@@ -152,7 +149,7 @@ namespace TwitchToolkit.Store
                 // invalid price
                 Helper.Log("Invalid price detected?");
             }
-            else if (viewer.GetViewerCoins() < this.calculatedprice && !Settings.UnlimitedCoins)
+            else if (viewer.coins < this.calculatedprice && !Settings.UnlimitedCoins)
             {
                 // send message not enough coins
                 this.errormessage = Helper.ReplacePlaceholder("TwitchToolkitNotEnoughCoins".Translate(), viewer: viewer.username, amount: this.calculatedprice.ToString(), first: viewer.GetViewerCoins().ToString());

@@ -10,5 +10,5 @@ for %%l in (%languages%) do (
 
 
 mkdir "C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods"
-%systemroot%\System32\xcopy /E /Y * "C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\TwitchStories\"
-del "C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\TwitchStories\deploy.bat"
+%systemroot%\System32\xcopy /E /Y * "C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\TwitchToolkit\"
+del "C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\TwitchToolkit\deploy.bat"

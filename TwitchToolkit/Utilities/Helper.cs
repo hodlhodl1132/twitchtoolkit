@@ -66,20 +66,10 @@ namespace TwitchToolkit
         {
             get
             {
-            if (Current.Game == null || Current.Game.Maps == null)
-            {
-            return null;
-            }
-
-            foreach (Map map in Find.Maps)
-            {
-            if (map != null && map.IsPlayerHome)
-            {
-            return map;
-            }
-            }
-
-            return null;
+                if (Current.Game == null || Current.Game.Maps == null)
+                    return null;
+                else
+                    return Find.CurrentMap;    
             }
         }
 
@@ -95,11 +85,6 @@ namespace TwitchToolkit
               Current.Game.storyteller.def.defName != null &&
               (Settings.OtherStorytellersEnabled == true || Current.Game.storyteller.def.defName == "TwitchStoriesStoryteller");
             }
-        }
-
-        internal static void Log(object p)
-        {
-        throw new NotImplementedException();
         }
 
         private static string[] defaultColors = { "FF0000", "0000FF", "008000", "008000", "FF7F50", "9ACD32", "FF4500", "2E8B57", "DAA520", "D2691E", "5F9EA0", "1E90FF", "FF69B4", "8A2BE2", "8A2BE2"};
@@ -743,15 +728,15 @@ namespace TwitchToolkit
 
         public static bool AnimalTamePossible()
         {
-            var incident = new TSIncidents.IncidentWorker_SelfTame(null);
-            incident.def = new IncidentDef();
+            TSIncidents.IncidentWorker_SelfTame incident = new TSIncidents.IncidentWorker_SelfTame(null);
             incident.def.tale = null;
             incident.def.category = new IncidentCategoryDef();
             incident.def.category.tale = null;
+            Log("Checking self tame");
             return incident.CanFireNow(new IncidentParms
             {
                 target = Helper.AnyPlayerMap
-            });
+            }, true);
         }
 
         public static void AnimalTame(string quote)
@@ -1195,6 +1180,16 @@ namespace TwitchToolkit
             var incident = new TSIncidents.IncidentWorker_PsychicDrone(quote);
             incident.def = IncidentDef.Named("PsychicDrone");
             incident.TryExecute(new IncidentParms
+            {
+                target = Helper.AnyPlayerMap
+            });
+        }
+
+        public static bool AmbrosiaSproutPossible()
+        {
+            var incident = new TSIncidents.IncidentWorker_AmbrosiaSprout(null);
+            incident.def = IncidentDef.Named("AmbrosiaSprout");
+            return incident.CanFireNow(new IncidentParms
             {
                 target = Helper.AnyPlayerMap
             });

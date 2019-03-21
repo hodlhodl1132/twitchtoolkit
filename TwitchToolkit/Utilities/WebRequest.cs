@@ -23,6 +23,7 @@ namespace TwitchToolkitDev
         public Stream responseStream;
         public Func<RequestState, bool> Callback;
         public string jsonString;
+        public string urlCalled;
 
         public RequestState()
         {
@@ -45,6 +46,68 @@ namespace TwitchToolkitDev
                 ServicePointManager.ServerCertificateValidationCallback = MyRemoteCertificateValidationCallback;
                 WebRequest myWebRequest = WebRequest.Create(requesturl);
                 RequestState myRequestState = new RequestState();
+                myRequestState.urlCalled = requesturl;
+                myRequestState.Callback = func;
+                myRequestState.request = myWebRequest;
+                IAsyncResult asyncResult = (IAsyncResult)myWebRequest.BeginGetResponse(new AsyncCallback(RespCallback), myRequestState);
+                allDone.WaitOne();
+                Console.Read();
+
+            }
+            catch (WebException e)
+            {
+                Helper.Log("WebException raised!");
+                Helper.Log($"\n{e.Message}");
+                Helper.Log($"\n{e.Status}");
+            }
+            catch (Exception e)
+            {
+                Helper.Log("Exception raised! - get");
+                Helper.Log("Source : " + e.Source);
+                Helper.Log("Message : " + e.Message + " " + e.StackTrace);
+            }
+        }
+
+        public static void Delete(string requesturl, Func<RequestState, bool> func = null, WebHeaderCollection headers = null)
+        {
+            try
+            {
+                ServicePointManager.ServerCertificateValidationCallback = MyRemoteCertificateValidationCallback;
+                WebRequest myWebRequest = WebRequest.Create(requesturl);
+                myWebRequest.Method = "DELETE";
+                myWebRequest.Headers = headers;
+                RequestState myRequestState = new RequestState();
+                myRequestState.urlCalled = requesturl;
+                myRequestState.Callback = func;
+                myRequestState.request = myWebRequest;
+                IAsyncResult asyncResult = (IAsyncResult)myWebRequest.BeginGetResponse(new AsyncCallback(RespCallback), myRequestState);
+                allDone.WaitOne();
+                Console.Read();
+
+            }
+            catch (WebException e)
+            {
+                Helper.Log("WebException raised!");
+                Helper.Log($"\n{e.Message}");
+                Helper.Log($"\n{e.Status}");
+            }
+            catch (Exception e)
+            {
+                Helper.Log("Exception raised! - get");
+                Helper.Log("Source : " + e.Source);
+                Helper.Log("Message : " + e.Message + " " + e.StackTrace);
+            }
+        }
+        public static void Put(string requesturl, Func<RequestState, bool> func = null, WebHeaderCollection headers = null)
+        {
+            try
+            {
+                ServicePointManager.ServerCertificateValidationCallback = MyRemoteCertificateValidationCallback;
+                WebRequest myWebRequest = WebRequest.Create(requesturl);
+                myWebRequest.Method = "PUT";
+                myWebRequest.Headers = headers;
+                RequestState myRequestState = new RequestState();
+                myRequestState.urlCalled = requesturl;
                 myRequestState.Callback = func;
                 myRequestState.request = myWebRequest;
                 IAsyncResult asyncResult = (IAsyncResult)myWebRequest.BeginGetResponse(new AsyncCallback(RespCallback), myRequestState);
@@ -112,6 +175,7 @@ namespace TwitchToolkitDev
                         string stringContent;
                         stringContent = myRequestState.requestData.ToString();
                         myRequestState.jsonString = stringContent;
+                        Helper.Log(stringContent);
                         
                         if (myRequestState.Callback != null)
                         {

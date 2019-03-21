@@ -4,6 +4,7 @@ using RimWorld;
 using UnityEngine;
 using Verse;
 using TwitchToolkit.Utilities;
+using TwitchToolkit.PawnQueue;
 
 namespace TwitchToolkit
 {
@@ -43,7 +44,7 @@ namespace TwitchToolkit
             var rectDifficulty = new Rect(padding, padding, btnWidth, 20);
 
 
-            var rectBtn = new Rect(rectDifficulty.width + rectDifficulty.x + padding, rectDifficulty.y, (inRect.width - rectDifficulty.width - (padding * 3)) / 2, btnHeight);
+            var rectBtn = new Rect(padding, rectDifficulty.y, (inRect.width - rectDifficulty.width - (padding * 3)) / 2, btnHeight);
             if (Widgets.ButtonText(rectBtn, "Settings"))
             {
                 Window mobileSettings = new Dialog_CustomModSettings
@@ -62,6 +63,13 @@ namespace TwitchToolkit
                 ChatWindow chatwnd = new ChatWindow();
                 _mod.activeChatWindow = chatwnd;
                 Find.WindowStack.Add(chatwnd);
+            }
+
+            rectBtn.x += rectBtn.width + padding;
+            if (Widgets.ButtonText(rectBtn, "Queue Window") && !Find.WindowStack.TryRemove(typeof(QueueWindow), true))
+            {
+                QueueWindow quewnd = new QueueWindow();
+                Find.WindowStack.Add(quewnd);
             }
 
 
@@ -119,7 +127,15 @@ namespace TwitchToolkit
             rectBtn.y += btnHeight + padding;
             if (Widgets.ButtonText(rectBtn, ResetAdminWarning))
             {
-                if (Settings.ResetViewerStage == 0)
+                if (Settings.SyncStreamLabs)
+                {
+                    WarningWindow window = new WarningWindow
+                    {
+                        warning = "You must reset viewers in Streamlabs chatbot and then restart the game."
+                    };
+                    Find.WindowStack.Add(window);
+                }
+                else if (Settings.ResetViewerStage == 0)
                 {
                     ResetAdminWarning = "Are you sure?";
                     Settings.ResetViewerStage = 1;
@@ -133,12 +149,7 @@ namespace TwitchToolkit
                 {
                     ResetAdminWarning = "Reset Viewers";
                     Settings.ResetViewerStage = 0;
-                    
-                    Settings.ViewerIds = null;
-                    Settings.ViewerCoins = null;
-                    Settings.ViewerKarma = null;
-                    Settings.listOfViewers = new List<Viewer>();
-                    _mod.WriteSettings();
+                    Viewers.ResetViewers();
                 }
             }
         }

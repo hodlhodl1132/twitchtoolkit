@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using Verse;
 using RimWorld;
+using UnityEngine;
+using Verse.AI;
 
 namespace TwitchToolkit.Incidents
 {
@@ -22,11 +24,14 @@ namespace TwitchToolkit.Incidents
                    select x;
         }
 
-        protected override bool CanFireNowSub(IncidentParms parms)
-        {
-            Map map = (Map)parms.target;
-            return this.Candidates(map).Any<Pawn>();
-        }
+
+		protected override bool CanFireNowSub(IncidentParms parms)
+		{
+			Map map = (Map)parms.target;
+            var cand = this.Candidates(map);
+            Helper.Log("Candidates " + cand.Count());
+            return cand.Any<Pawn>();
+		}
 
         protected override bool TryExecuteWorker(IncidentParms parms)
         {
@@ -68,6 +73,30 @@ namespace TwitchToolkit.Incidents
 
             Find.LetterStack.ReceiveLetter("LetterLabelAnimalSelfTame".Translate(pawn.KindLabel, pawn).CapitalizeFirst(), text, LetterDefOf.PositiveEvent, pawn, null, null);
             return true;
+        }
+
+        private bool TryFindStartAndEndCells(Map map, out IntVec3 start, out IntVec3 end)
+        {
+            if (!RCellFinder.TryFindRandomPawnEntryCell(out start, map, CellFinder.EdgeRoadChance_Animal, false, null))
+            {
+                end = IntVec3.Invalid;
+                return false;
+            }
+            end = IntVec3.Invalid;
+            for (int i = 0; i < 8; i++)
+            {
+                IntVec3 startLocal = start;
+                IntVec3 intVec;
+                if (!CellFinder.TryFindRandomEdgeCellWith((IntVec3 x) => map.reachability.CanReach(startLocal, x, PathEndMode.OnCell, TraverseMode.NoPassClosedDoors, Danger.Deadly), map, CellFinder.EdgeRoadChance_Ignore, out intVec))
+                {
+                    break;
+                }
+                if (!end.IsValid || intVec.DistanceToSquared(start) > end.DistanceToSquared(start))
+                {
+                    end = intVec;
+                }
+            }
+            return end.IsValid;
         }
     }
 }

@@ -25,6 +25,8 @@ namespace TwitchToolkit
 
         public override IEnumerable<FiringIncident> MakeIntervalIncidents(IIncidentTarget target)
         {
+            if (Settings.VotingNow)
+                yield break;
             if (Rand.MTBEventOccurs(this.Props.mtbDays, 60000f, 1000f))
             {
                 bool targetIsRaidBeacon = target.IncidentTargetTags().Contains(IncidentTargetTagDefOf.Map_RaidBeacon);
