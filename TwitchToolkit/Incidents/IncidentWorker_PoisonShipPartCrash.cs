@@ -13,7 +13,7 @@ namespace TwitchToolkit.Incidents
         {
             get
             {
-                return Rand.RangeInclusive(1, 1);
+            return Rand.RangeInclusive(1, 1);
             }
         }
     }

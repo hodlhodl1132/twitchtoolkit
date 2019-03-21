@@ -7,12 +7,14 @@ using Verse;
 using TSIncidents = TwitchToolkit.Incidents;
 using System.Text;
 using TwitchToolkit.Store;
+using TwitchToolkit.Incidents;
 
 namespace TwitchToolkit
 {
     public static class Helper
     {
         private static bool _infestationPossible = false;
+        public static string _state = null;
         static System.Random _random = new System.Random();
 
         public static void Reset()
@@ -328,7 +330,7 @@ namespace TwitchToolkit
                 return false;
             }
 
-            var incident = new TSIncidents.IncidentWorker_MakeGameCondition(null, ticks);
+            var incident = new RimWorld.IncidentWorker_MakeGameCondition();
             incident.def = IncidentDef.Named("HeatWave");
             return incident.CanFireNow(new IncidentParms()
             {
@@ -338,8 +340,9 @@ namespace TwitchToolkit
 
         public static void WeatherHeatWave(string quote, int ticks = 5 * 60 * 60)
         {
-            var incident = new TSIncidents.IncidentWorker_MakeGameCondition(quote, ticks);
+            var incident = new RimWorld.IncidentWorker_MakeGameCondition();
             incident.def = IncidentDef.Named("HeatWave");
+
             incident.TryExecute(new IncidentParms()
             {
                 target = Helper.AnyPlayerMap
@@ -353,7 +356,7 @@ namespace TwitchToolkit
                 return false;
             }
 
-            var incident = new TSIncidents.IncidentWorker_MakeGameCondition(null, ticks);
+            var incident = new RimWorld.IncidentWorker_MakeGameCondition();
             incident.def = IncidentDef.Named("ColdSnap");
             return incident.CanFireNow(new IncidentParms()
             {
@@ -363,8 +366,13 @@ namespace TwitchToolkit
 
         public static void WeatherColdSnap(string quote, int ticks = 5 * 60 * 60)
         {
-            var incident = new TSIncidents.IncidentWorker_MakeGameCondition(quote, ticks);
+            var incident = new RimWorld.IncidentWorker_MakeGameCondition();
             incident.def = IncidentDef.Named("ColdSnap");
+            if (quote != null)
+            {
+                _state = quote;
+                Helper.Log("state set to " + _state);
+            }
             incident.TryExecute(new IncidentParms()
             {
                 target = Helper.AnyPlayerMap
@@ -373,7 +381,7 @@ namespace TwitchToolkit
 
         public static bool WeatherSolarFlarePossible(int ticks = 5 * 60 * 60)
         {
-            var incident = new TSIncidents.IncidentWorker_MakeGameCondition(null, ticks);
+            var incident = new RimWorld.IncidentWorker_MakeGameCondition();
             incident.def = IncidentDefOf.SolarFlare;
             return incident.CanFireNow(new IncidentParms()
             {
@@ -383,8 +391,13 @@ namespace TwitchToolkit
 
         public static void WeatherSolarFlare(string quote, int ticks = 5 * 60 * 60)
         {
-            var incident = new TSIncidents.IncidentWorker_MakeGameCondition(quote, ticks);
+            var incident = new RimWorld.IncidentWorker_MakeGameCondition();
             incident.def = IncidentDefOf.SolarFlare;
+            if (quote != null)
+            {
+                _state = quote;
+                Helper.Log("state set to " + _state);
+            }
             incident.TryExecute(new IncidentParms()
             {
                 target = Helper.AnyPlayerMap
@@ -393,7 +406,7 @@ namespace TwitchToolkit
 
         public static bool WeatherToxicFalloutPossible(int ticks = 5 * 60 * 60)
         {
-            var incident = new TSIncidents.IncidentWorker_MakeGameCondition(null, ticks);
+            var incident = new RimWorld.IncidentWorker_MakeGameCondition();
             incident.def = IncidentDefOf.ToxicFallout;
             return incident.CanFireNow(new IncidentParms()
             {
@@ -403,8 +416,13 @@ namespace TwitchToolkit
 
         public static void WeatherToxicFallout(string quote, int ticks = 5 * 60 * 60)
         {
-            var incident = new TSIncidents.IncidentWorker_MakeGameCondition(quote, ticks);
+            var incident = new RimWorld.IncidentWorker_MakeGameCondition();
             incident.def = IncidentDefOf.ToxicFallout;
+            if (quote != null)
+            {
+                _state = quote;
+                Helper.Log("state set to " + _state);
+            }
             incident.TryExecute(new IncidentParms()
             {
                 target = Helper.AnyPlayerMap
@@ -413,7 +431,7 @@ namespace TwitchToolkit
 
         public static bool WeatherVolcanicWinterPossible(int ticks = 5 * 60 * 60)
         {
-            var incident = new TSIncidents.IncidentWorker_MakeGameCondition(null, ticks);
+            var incident = new RimWorld.IncidentWorker_MakeGameCondition();
             incident.def = IncidentDef.Named("VolcanicWinter");
             return incident.CanFireNow(new IncidentParms()
             {
@@ -423,8 +441,13 @@ namespace TwitchToolkit
 
         public static void WeatherVolcanicWinter(string quote, int ticks = 5 * 60 * 60)
         {
-            var incident = new TSIncidents.IncidentWorker_MakeGameCondition(quote, ticks);
+            var incident = new RimWorld.IncidentWorker_MakeGameCondition();
             incident.def = IncidentDef.Named("VolcanicWinter");
+            if (quote != null)
+            {
+                _state = quote;
+                Helper.Log("state set to " + _state);
+            }
             incident.TryExecute(new IncidentParms()
             {
                 target = Helper.AnyPlayerMap
@@ -433,17 +456,22 @@ namespace TwitchToolkit
 
         public static void WeatherEclipse(string quote, int ticks = 5 * 60 * 60)
         {
-            var incident = new TSIncidents.IncidentWorker_MakeGameCondition(quote, ticks);
+            var incident = new RimWorld.IncidentWorker_MakeGameCondition();
             incident.def = IncidentDefOf.Eclipse;
+            if (quote != null)
+            {
+                _state = quote;
+                Helper.Log("state set to " + _state);
+            }
             incident.TryExecute(new IncidentParms()
             {
-                target = Helper.AnyPlayerMap
+                target = Helper.AnyPlayerMap,
             });
         }
 
         public static bool WeatherAuroraPossible()
         {
-            var incident = new TSIncidents.IncidentWorker_Aurora(null, 0);
+            var incident = new RimWorld.IncidentWorker_Aurora();
             incident.def = IncidentDef.Named("Aurora");
             return incident.CanFireNow(new IncidentParms()
             {
@@ -453,8 +481,13 @@ namespace TwitchToolkit
 
         public static void WeatherAurora(string quote, int ticks = 5 * 60 * 60)
         {
-            var incident = new TSIncidents.IncidentWorker_Aurora(quote, ticks);
+            var incident = new RimWorld.IncidentWorker_Aurora();
             incident.def = IncidentDef.Named("Aurora");
+            if (quote != null)
+            {
+                _state = quote;
+                Helper.Log("state set to " + _state);
+            }
             incident.TryExecute(new IncidentParms()
             {
                 target = Helper.AnyPlayerMap
@@ -483,6 +516,11 @@ namespace TwitchToolkit
         {
             var raidEnemy = new TSIncidents.IncidentWorker_RaidEnemy(quote);
             raidEnemy.def = IncidentDefOf.RaidEnemy;
+            if (quote != null)
+            {
+                _state = quote;
+                Helper.Log("state set to " + _state);
+            }
             raidEnemy.TryExecute(new IncidentParms
             {
                 target = Helper.AnyPlayerMap,
@@ -527,7 +565,7 @@ namespace TwitchToolkit
                 forced = true
             };
 
-            _infestationPossible = new TSIncidents.IncidentWorker_Infestation(null).CanFireNow(incidentParms, true);
+            _infestationPossible = new RimWorld.IncidentWorker_Infestation().CanFireNow(incidentParms, true);
         }
 
         public static bool InfestationPossible()
@@ -544,13 +582,18 @@ namespace TwitchToolkit
                 forced = true
             };
 
-            var incident = new TSIncidents.IncidentWorker_Infestation(quote);
+            var incident = new RimWorld.IncidentWorker_Infestation();
             if (!incident.CanFireNow(incidentParms, true))
             {
                 return;
             }
 
             incident.def = IncidentDef.Named("Infestation");
+            if (quote != null)
+            {
+                _state = quote;
+                Helper.Log("state set to " + _state);
+            }
             incident.TryExecute(incidentParms);
         }
 
@@ -682,7 +725,7 @@ namespace TwitchToolkit
 
         public static bool BlightPossible()
         {
-            var incident = new TSIncidents.IncidentWorker_CropBlight(null, 2.5f);
+            var incident = new RimWorld.IncidentWorker_CropBlight();
             incident.def = new IncidentDef();
             incident.def.tale = null;
             incident.def.category = new IncidentCategoryDef();
@@ -693,10 +736,15 @@ namespace TwitchToolkit
             });
         }
 
-        public static void Blight(string quote)
+        public static void Blight(string quote = null)
         {
-            var incident = new TSIncidents.IncidentWorker_CropBlight(quote, 2.5f);
+            var incident = new RimWorld.IncidentWorker_CropBlight();
             incident.def = new IncidentDef();
+            if (quote != null)
+            {
+                _state = quote;
+                Helper.Log("state set to " + _state);
+            }
             incident.def.tale = null;
             incident.def.category = new IncidentCategoryDef();
             incident.def.category.tale = null;
@@ -708,7 +756,7 @@ namespace TwitchToolkit
 
         public static bool RefugeeChasedPossible()
         {
-            var incident = new TSIncidents.IncidentWorker_RefugeeChased(null);
+            var incident = new RimWorld.IncidentWorker_RefugeeChased();
             incident.def = IncidentDef.Named("RefugeeChased");
             return incident.CanFireNow(new IncidentParms
             {
@@ -718,8 +766,13 @@ namespace TwitchToolkit
 
         public static void RefugeeChased(string quote)
         {
-            var incident = new TSIncidents.IncidentWorker_RefugeeChased(quote);
+            var incident = new RimWorld.IncidentWorker_RefugeeChased();
             incident.def = IncidentDef.Named("RefugeeChased");
+            if (quote != null)
+            {
+                _state = quote;
+                Helper.Log("state set to " + _state);
+            }
             incident.TryExecute(new IncidentParms
             {
                 target = Helper.AnyPlayerMap
@@ -727,8 +780,8 @@ namespace TwitchToolkit
         }
 
         public static bool AnimalTamePossible()
-        {
-            TSIncidents.IncidentWorker_SelfTame incident = new TSIncidents.IncidentWorker_SelfTame(null);
+        {           
+            var incident = new RimWorld.IncidentWorker_SelfTame();
             incident.def.tale = null;
             incident.def.category = new IncidentCategoryDef();
             incident.def.category.tale = null;
@@ -739,10 +792,15 @@ namespace TwitchToolkit
             }, true);
         }
 
-        public static void AnimalTame(string quote)
+        public static void AnimalTame(string quote = null)
         {
-            var incident = new TSIncidents.IncidentWorker_SelfTame(quote);
+            var incident = new RimWorld.IncidentWorker_SelfTame();
             incident.def = new IncidentDef();
+            if (quote != null)
+            {
+                _state = quote;
+                Helper.Log("state set to " + _state);
+            }
             incident.def.tale = null;
             incident.def.category = new IncidentCategoryDef();
             incident.def.category.tale = null;
@@ -782,7 +840,7 @@ namespace TwitchToolkit
 
         public static bool WandererPossible()
         {
-            var incident = new TSIncidents.IncidentWorker_WandererJoin(null);
+            var incident = new RimWorld.IncidentWorker_WandererJoin();
             incident.def = IncidentDefOf.WandererJoin;
             return incident.CanFireNow(new IncidentParms
             {
@@ -792,8 +850,13 @@ namespace TwitchToolkit
 
         public static void Wanderer(string quote)
         {
-            var incident = new TSIncidents.IncidentWorker_WandererJoin(quote);
+            var incident = new RimWorld.IncidentWorker_WandererJoin();
             incident.def = IncidentDefOf.WandererJoin;
+            if (quote != null)
+            {
+                _state = quote;
+                Helper.Log("state set to " + _state);
+            }
             incident.TryExecute(new IncidentParms
             {
                 target = Helper.AnyPlayerMap
@@ -828,7 +891,7 @@ namespace TwitchToolkit
 
         public static bool CargoPodPossible()
         {
-            var incident = new TSIncidents.IncidentWorker_ResourcePodCrash(null);
+            var incident = new RimWorld.IncidentWorker_ResourcePodCrash();
             incident.def = IncidentDefOf.ShipChunkDrop;
             return incident.CanFireNow(new IncidentParms
             {
@@ -838,8 +901,13 @@ namespace TwitchToolkit
 
         public static void CargoPod(string quote)
         {
-            var incident = new TSIncidents.IncidentWorker_ResourcePodCrash(quote);
+            var incident = new RimWorld.IncidentWorker_ResourcePodCrash();
             incident.def = IncidentDefOf.ShipChunkDrop;
+            if (quote != null)
+            {
+                _state = quote;
+                Helper.Log("state set to " + _state);
+            }
             incident.TryExecute(new IncidentParms
             {
                 target = Helper.AnyPlayerMap
@@ -858,7 +926,7 @@ namespace TwitchToolkit
 
         public static bool TransportPodPossible()
         {
-            var incident = new TSIncidents.IncidentWorker_TransportPodCrash(null);
+            var incident = new RimWorld.IncidentWorker_TransportPodCrash();
             incident.def = IncidentDefOf.ShipChunkDrop;
             return incident.CanFireNow(new IncidentParms
             {
@@ -868,8 +936,13 @@ namespace TwitchToolkit
 
         public static void TransportPod(string quote)
         {
-            var incident = new TSIncidents.IncidentWorker_TransportPodCrash(quote);
+            var incident = new RimWorld.IncidentWorker_TransportPodCrash();
             incident.def = IncidentDefOf.ShipChunkDrop;
+            if (quote != null)
+            {
+                _state = quote;
+                Helper.Log("state set to " + _state);
+            }
             incident.TryExecute(new IncidentParms
             {
                 target = Helper.AnyPlayerMap
@@ -878,7 +951,7 @@ namespace TwitchToolkit
 
         public static bool TraderPossible()
         {
-            var incident = new TSIncidents.IncidentWorker_TraderCaravanArrival(null);
+            var incident = new RimWorld.IncidentWorker_TraderCaravanArrival();
             incident.def = IncidentDefOf.TraderCaravanArrival;
             return incident.CanFireNow(new IncidentParms
             {
@@ -888,8 +961,13 @@ namespace TwitchToolkit
 
         public static void Trader(string quote)
         {
-            var incident = new TSIncidents.IncidentWorker_TraderCaravanArrival(quote);
+            var incident = new RimWorld.IncidentWorker_TraderCaravanArrival();
             incident.def = IncidentDefOf.TraderCaravanArrival;
+            if (quote != null)
+            {
+                _state = quote;
+                Helper.Log("state set to " + _state);
+            }
             incident.TryExecute(new IncidentParms
             {
                 target = Helper.AnyPlayerMap
@@ -898,7 +976,7 @@ namespace TwitchToolkit
 
         public static bool TraderShipPossible()
         {
-            var incident = new TSIncidents.IncidentWorker_OrbitalTraderArrival(null);
+            var incident = new RimWorld.IncidentWorker_OrbitalTraderArrival();
             incident.def = IncidentDefOf.OrbitalTraderArrival;
             return incident.CanFireNow(new IncidentParms
             {
@@ -908,7 +986,12 @@ namespace TwitchToolkit
 
         public static void TraderShip(string quote)
         {
-            var incident = new TSIncidents.IncidentWorker_OrbitalTraderArrival(quote);
+            var incident = new RimWorld.IncidentWorker_OrbitalTraderArrival();
+            if (quote != null)
+            {
+                _state = quote;
+                Helper.Log("state set to " + _state);
+            }
             incident.def = IncidentDefOf.OrbitalTraderArrival;
             incident.TryExecute(new IncidentParms
             {
@@ -958,8 +1041,13 @@ namespace TwitchToolkit
 
         public static void Meteorite(string quote)
         {
-            var incident = new TSIncidents.IncidentWorker_MeteoriteImpact(quote);
+            var incident = new RimWorld.IncidentWorker_MeteoriteImpact();
             incident.def = IncidentDef.Named("MeteoriteImpact");
+            if (quote != null)
+            {
+                _state = quote;
+                Helper.Log("state set to " + _state);
+            }
             incident.TryExecute(new IncidentParms()
             {
                 target = Helper.AnyPlayerMap
@@ -1039,7 +1127,7 @@ namespace TwitchToolkit
 
         public static bool ManhunterPackPossible(float points = 0)
         {
-            var incident = new TSIncidents.IncidentWorker_ManhunterPack(null);
+            var incident = new RimWorld.IncidentWorker_ManhunterPack();
             incident.def = IncidentDef.Named("ManhunterPack");
             return incident.CanFireNow(new IncidentParms
             {
@@ -1050,8 +1138,13 @@ namespace TwitchToolkit
 
         public static void ManhunterPack(string quote, float points = 0)
         {
-            var incident = new TSIncidents.IncidentWorker_ManhunterPack(quote);
+            var incident = new RimWorld.IncidentWorker_ManhunterPack();
             incident.def = IncidentDef.Named("ManhunterPack");
+            if (quote != null)
+            {
+                _state = quote;
+                Helper.Log("state set to " + _state);
+            }
             incident.TryExecute(new IncidentParms
             {
                 points = points <= 0 ? StorytellerUtility.DefaultSiteThreatPointsNow() : points,
@@ -1061,7 +1154,7 @@ namespace TwitchToolkit
 
         public static bool PsychicWavePossible(float points = 0)
         {
-            var incident = new TSIncidents.IncidentWorker_AnimalInsanityMass(null, 2);
+            var incident = new RimWorld.IncidentWorker_AnimalInsanityMass();
             incident.def = IncidentDef.Named("AnimalInsanityMass");
             return incident.CanFireNow(new IncidentParms
             {
@@ -1072,8 +1165,13 @@ namespace TwitchToolkit
 
         public static void PsychicWave(string quote, float points = 0)
         {
-            var incident = new TSIncidents.IncidentWorker_AnimalInsanityMass(quote, 2);
+            var incident = new RimWorld.IncidentWorker_AnimalInsanityMass();
             incident.def = IncidentDef.Named("AnimalInsanityMass");
+            if (quote != null)
+            {
+                _state = quote;
+                Helper.Log("state set to " + _state);
+            }
             incident.TryExecute(new IncidentParms
             {
                 points = points <= 0 ? StorytellerUtility.DefaultSiteThreatPointsNow() : points,
@@ -1083,7 +1181,7 @@ namespace TwitchToolkit
 
         public static bool ManInBlackPossible()
         {
-            var incident = new TSIncidents.IncidentWorker_WandererJoin(null);
+            var incident = new RimWorld.IncidentWorker_WandererJoin();
             incident.def = IncidentDef.Named("StrangerInBlackJoin");
             return incident.CanFireNow(new IncidentParms
             {
@@ -1093,8 +1191,13 @@ namespace TwitchToolkit
 
         public static void ManInBlack(string quote)
         {
-            var incident = new TSIncidents.IncidentWorker_WandererJoin(quote);
+            var incident = new RimWorld.IncidentWorker_WandererJoin();
             incident.def = IncidentDef.Named("StrangerInBlackJoin");
+            if (quote != null)
+            {
+                _state = quote;
+                Helper.Log("state set to " + _state);
+            }
             incident.TryExecute(new IncidentParms
             {
                 target = Helper.AnyPlayerMap
@@ -1103,7 +1206,7 @@ namespace TwitchToolkit
 
         public static bool MadAnimalPossible()
         {
-            var incident = new TSIncidents.IncidentWorker_AnimalInsanitySingle(null);
+            var incident = new RimWorld.IncidentWorker_AnimalInsanitySingle();
             incident.def = IncidentDef.Named("AnimalInsanitySingle");
             return incident.CanFireNow(new IncidentParms()
             {
@@ -1113,8 +1216,13 @@ namespace TwitchToolkit
 
         public static void MadAnimal(string quote)
         {
-            var incident = new TSIncidents.IncidentWorker_AnimalInsanitySingle(quote);
+            var incident = new RimWorld.IncidentWorker_AnimalInsanitySingle();
             incident.def = IncidentDef.Named("AnimalInsanitySingle");
+            if (quote != null)
+            {
+                _state = quote;
+                Helper.Log("state set to " + _state);
+            }
             incident.TryExecute(new IncidentParms()
             {
                 target = Helper.AnyPlayerMap
@@ -1123,7 +1231,7 @@ namespace TwitchToolkit
 
         public static bool ShipPartPsychicPossible()
         {
-            var incident = new TSIncidents.IncidentWorker_PsychicEmanatorShipPartCrash(null);
+            var incident = new IncidentWorker_PsychicEmanatorShipPartCrash(null);
             incident.def = IncidentDef.Named("PsychicEmanatorShipPartCrash");
             return incident.CanFireNow(new IncidentParms
             {
@@ -1134,7 +1242,7 @@ namespace TwitchToolkit
 
         public static void ShipPartPsychic(string quote)
         {
-            var incident = new TSIncidents.IncidentWorker_PsychicEmanatorShipPartCrash(quote);
+            var incident = new IncidentWorker_PsychicEmanatorShipPartCrash(quote);
             incident.def = IncidentDef.Named("PsychicEmanatorShipPartCrash");
             incident.TryExecute(new IncidentParms
             {
@@ -1167,7 +1275,7 @@ namespace TwitchToolkit
 
         public static bool PsychicDronePossible()
         {
-            var incident = new TSIncidents.IncidentWorker_PsychicDrone(null);
+            var incident = new RimWorld.IncidentWorker_PsychicDrone();
             incident.def = IncidentDef.Named("PsychicDrone");
             return incident.CanFireNow(new IncidentParms
             {
@@ -1177,8 +1285,13 @@ namespace TwitchToolkit
 
         public static void PsychicDrone(string quote)
         {
-            var incident = new TSIncidents.IncidentWorker_PsychicDrone(quote);
+            var incident = new RimWorld.IncidentWorker_PsychicDrone();
             incident.def = IncidentDef.Named("PsychicDrone");
+            if (quote != null)
+            {
+                _state = quote;
+                Helper.Log("state set to " + _state);
+            }
             incident.TryExecute(new IncidentParms
             {
                 target = Helper.AnyPlayerMap
@@ -1187,7 +1300,7 @@ namespace TwitchToolkit
 
         public static bool AmbrosiaSproutPossible()
         {
-            var incident = new TSIncidents.IncidentWorker_AmbrosiaSprout(null);
+            var incident = new RimWorld.IncidentWorker_AmbrosiaSprout();
             incident.def = IncidentDef.Named("AmbrosiaSprout");
             return incident.CanFireNow(new IncidentParms
             {
@@ -1197,8 +1310,13 @@ namespace TwitchToolkit
 
         public static void AmbrosiaSprout(string quote)
         {
-            var incident = new TSIncidents.IncidentWorker_AmbrosiaSprout(quote);
+            var incident = new RimWorld.IncidentWorker_AmbrosiaSprout();
             incident.def = IncidentDef.Named("AmbrosiaSprout");
+            if (quote != null)
+            {
+                _state = quote;
+                Helper.Log("state set to " + _state);
+            }
             incident.TryExecute(new IncidentParms
             {
                 target = Helper.AnyPlayerMap
@@ -1207,7 +1325,7 @@ namespace TwitchToolkit
 
         public static bool HerdMigrationPossible()
         {
-            var incident = new TSIncidents.IncidentWorker_HerdMigration(null, 20);
+            var incident = new RimWorld.IncidentWorker_HerdMigration();
             incident.def = IncidentDef.Named("HerdMigration");
             return incident.CanFireNow(new IncidentParms
             {
@@ -1217,8 +1335,13 @@ namespace TwitchToolkit
 
         public static void HerdMigration(string quote)
         {
-            var incident = new TSIncidents.IncidentWorker_HerdMigration(quote, 20);
+            var incident = new RimWorld.IncidentWorker_HerdMigration();
             incident.def = IncidentDef.Named("HerdMigration");
+            if (quote != null)
+            {
+                _state = quote;
+                Helper.Log("state set to " + _state);
+            }
             incident.TryExecute(new IncidentParms
             {
                 target = Helper.AnyPlayerMap
@@ -1247,7 +1370,7 @@ namespace TwitchToolkit
 
         public static bool PsychicSoothePossible()
         {
-            var incident = new TSIncidents.IncidentWorker_PsychicSoothe(null);
+            var incident = new RimWorld.IncidentWorker_PsychicSoothe();
             incident.def = IncidentDef.Named("PsychicSoothe");
             return incident.CanFireNow(new IncidentParms
             {
@@ -1257,8 +1380,13 @@ namespace TwitchToolkit
 
         public static void PsychicSoothe(string quote)
         {
-            var incident = new TSIncidents.IncidentWorker_PsychicSoothe(quote);
+            var incident = new RimWorld.IncidentWorker_PsychicSoothe();
             incident.def = IncidentDef.Named("PsychicSoothe");
+            if (quote != null)
+            {
+                _state = quote;
+                Helper.Log("state set to " + _state);
+            }
             incident.TryExecute(new IncidentParms
             {
                 target = Helper.AnyPlayerMap
@@ -1309,7 +1437,7 @@ namespace TwitchToolkit
 
         public static bool WildHumanPossible()
         {
-            var incident = new TSIncidents.IncidentWorker_WildManWandersIn(null);
+            var incident = new RimWorld.IncidentWorker_WildManWandersIn();
             incident.def = IncidentDef.Named("WildManWandersIn");
             return incident.CanFireNow(new IncidentParms
             {
@@ -1319,8 +1447,13 @@ namespace TwitchToolkit
 
         public static void WildHuman(string quote)
         {
-            var incident = new TSIncidents.IncidentWorker_WildManWandersIn(quote);
+            var incident = new RimWorld.IncidentWorker_WildManWandersIn();
             incident.def = IncidentDef.Named("WildManWandersIn");
+            if (quote != null)
+            {
+                _state = quote;
+                Helper.Log("state set to " + _state);
+            }
             incident.TryExecute(new IncidentParms
             {
                 target = Helper.AnyPlayerMap
@@ -1331,7 +1464,7 @@ namespace TwitchToolkit
 
         public static bool ThrumbosPossible()
         {
-            var incident = new TSIncidents.IncidentWorker_ThrumboPasses(null);
+            var incident = new RimWorld.IncidentWorker_ThrumboPasses();
             incident.def = IncidentDef.Named("ThrumboPasses");
             return incident.CanFireNow(new IncidentParms
             {
@@ -1341,8 +1474,13 @@ namespace TwitchToolkit
 
         public static void Thrumbos(string quote)
         {
-            var incident = new TSIncidents.IncidentWorker_ThrumboPasses(quote);
+            var incident = new RimWorld.IncidentWorker_ThrumboPasses();
             incident.def = IncidentDef.Named("ThrumboPasses");
+            if (quote != null)
+            {
+                _state = quote;
+                Helper.Log("state set to " + _state);
+            }
             incident.TryExecute(new IncidentParms
             {
                 target = Helper.AnyPlayerMap
@@ -1351,7 +1489,7 @@ namespace TwitchToolkit
 
         public static bool ShipChunkDropPossible()
         {
-            var incident = new TSIncidents.IncidentWorker_ShipChunkDrop(null);
+            var incident = new RimWorld.IncidentWorker_ShipChunkDrop();
             incident.def = IncidentDef.Named("ShipChunkDrop");
             return incident.CanFireNow(new IncidentParms
             {
@@ -1361,8 +1499,13 @@ namespace TwitchToolkit
 
         public static void ShipChunkDrop(string quote)
         {
-            var incident = new TSIncidents.IncidentWorker_ShipChunkDrop(quote);
+            var incident = new RimWorld.IncidentWorker_ShipChunkDrop();
             incident.def = IncidentDef.Named("ShipChunkDrop");
+            if (quote != null)
+            {
+                _state = quote;
+                Helper.Log("state set to " + _state);
+            }
             incident.TryExecute(new IncidentParms
             {
                 target = Helper.AnyPlayerMap
@@ -1371,7 +1514,7 @@ namespace TwitchToolkit
 
         public static bool TravelerPossible()
         {
-            var incident = new TSIncidents.IncidentWorker_TravelerGroup(null);
+            var incident = new RimWorld.IncidentWorker_TravelerGroup();
             incident.def = IncidentDef.Named("TravelerGroup");
             return incident.CanFireNow(new IncidentParms
             {
@@ -1381,8 +1524,13 @@ namespace TwitchToolkit
 
         public static void Traveler(string quote)
         {
-            var incident = new TSIncidents.IncidentWorker_TravelerGroup(quote);
+            var incident = new RimWorld.IncidentWorker_TravelerGroup();
             incident.def = IncidentDef.Named("TravelerGroup");
+            if (quote != null)
+            {
+                _state = quote;
+                Helper.Log("state set to " + _state);
+            }
             incident.TryExecute(new IncidentParms
             {
                 target = Helper.AnyPlayerMap
@@ -1391,7 +1539,7 @@ namespace TwitchToolkit
 
         public static bool VisitorPossible()
         {
-            var incident = new TSIncidents.IncidentWorker_VisitorGroup(null);
+            var incident = new RimWorld.IncidentWorker_VisitorGroup();
             incident.def = IncidentDef.Named("VisitorGroup");
             return incident.CanFireNow(new IncidentParms
             {
@@ -1401,8 +1549,13 @@ namespace TwitchToolkit
 
         public static void Visitor(string quote)
         {
-            var incident = new TSIncidents.IncidentWorker_VisitorGroup(quote);
+            var incident = new RimWorld.IncidentWorker_VisitorGroup();
             incident.def = IncidentDef.Named("VisitorGroup");
+            if (quote != null)
+            {
+                _state = quote;
+                Helper.Log("state set to " + _state);
+            }
             incident.TryExecute(new IncidentParms
             {
                 target = Helper.AnyPlayerMap

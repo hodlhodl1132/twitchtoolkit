@@ -7,6 +7,7 @@ namespace TwitchToolkit.Incidents
 {
     public class IncidentWorker_PsychicEmanatorShipPartCrash : IncidentWorker_ShipPartCrash
     {
+
         public IncidentWorker_PsychicEmanatorShipPartCrash(string quote) : base(quote) { }
 
         protected override bool CanFireNowSub(IncidentParms parms)
