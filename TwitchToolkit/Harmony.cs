@@ -6,6 +6,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using TwitchToolkit.Incidents;
+using TwitchToolkit.Store;
 using TwitchToolkit.Utilities;
 using TwitchToolkitDev;
 using Verse;
@@ -15,15 +16,19 @@ namespace TwitchToolkit
     [StaticConstructorOnStartup]
     static class HarmonyPatches
     {
+        public static TwitchToolkit _mod = LoadedModManager.GetMod<TwitchToolkit>();
         private static readonly Type patchType = typeof(HarmonyPatches);
 
         static HarmonyPatches()
         {
-            if (Settings.SyncStreamElements)
+            if (ToolkitSettings.SyncStreamElements)
                 StreamElements.ImportPoints();
 
-            Settings.LoadItemsIfNotLoaded();
-            Settings.LoadIncItemsIfNotLoaded();
+            SaveHelper.LoadListOfIncItems();
+            SaveHelper.LoadListOfItems();
+            SaveHelper.LoadListOfViewers();
+            StoreInventory.LoadItemsIfNotLoaded();
+            StoreInventory.LoadIncItemsIfNotLoaded();
 
             HarmonyInstance harmony = HarmonyInstance.Create("com.github.harmony.rimworld.mod.twitchtoolkit");
 
@@ -39,7 +44,6 @@ namespace TwitchToolkit
         public static void SaveGame_Postfix()
         {
             var mod = LoadedModManager.GetMod<TwitchToolkit>();
-            mod.WriteSettings();
             SaveHelper.SaveAllModData();
         }
 

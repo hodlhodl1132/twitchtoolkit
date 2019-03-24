@@ -206,7 +206,7 @@ namespace TwitchToolkit.Utilities
 
         public string FilterForMentions(string message)
         {
-            return message.Replace("@" + Settings.Channel, "<color=#000000>@" + Settings.Channel + "</color>" ?? "");
+            return message.Replace("@" + ToolkitSettings.Channel, "<color=#000000>@" + ToolkitSettings.Channel + "</color>" ?? "");
         }
     }
 }

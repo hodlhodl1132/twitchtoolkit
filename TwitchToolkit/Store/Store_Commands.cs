@@ -7,7 +7,7 @@ using Verse;
 
 namespace TwitchToolkit.Store
 {
-    public class ShopCommand
+    public class StoreCommands
     {
         public string message;
         public Viewer viewer;
@@ -20,7 +20,7 @@ namespace TwitchToolkit.Store
         private string craftedmessage;
         public Item itemtobuy = null;
 
-        public ShopCommand(string message, Viewer viewer)
+        public StoreCommands(string message, Viewer viewer)
         {
             string[] command = message.Split(' ');
             string productabr = command[1];
@@ -128,46 +128,46 @@ namespace TwitchToolkit.Store
                 }
             }
 
-            int MaxEventsTypeToCheck = Settings.MaxNeutralEventsPerInterval;
+            int MaxEventsTypeToCheck = ToolkitSettings.MaxNeutralEventsPerInterval;
             if (this.incItem.karmatype == KarmaType.Good)
             {
-                MaxEventsTypeToCheck = Settings.MaxGoodEventsPerInterval;
+                MaxEventsTypeToCheck = ToolkitSettings.MaxGoodEventsPerInterval;
             }
             else if (this.incItem.karmatype == KarmaType.Neutral)
             {
-                MaxEventsTypeToCheck = Settings.MaxNeutralEventsPerInterval;
+                MaxEventsTypeToCheck = ToolkitSettings.MaxNeutralEventsPerInterval;
             }
             else if (this.incItem.karmatype == KarmaType.Doom || this.incItem.karmatype == KarmaType.Bad)
             {
-                MaxEventsTypeToCheck = Settings.MaxBadEventsPerInterval;
+                MaxEventsTypeToCheck = ToolkitSettings.MaxBadEventsPerInterval;
             }
 
-            Helper.Log($"count {PurchaseLogger.CountRecentEventsOfType(this.incItem.karmatype, Settings.MaxEventsPeriod)} > max type {MaxEventsTypeToCheck - 1} ");
+        Helper.Log($"count {StorePurchaseLogger.CountRecentEventsOfType(this.incItem.karmatype, (int)ToolkitSettings.MaxEventsPeriod)} > max type {MaxEventsTypeToCheck - 1} ");
 
             if (this.calculatedprice <= 0)
             {
                 // invalid price
                 Helper.Log("Invalid price detected?");
             }
-            else if (viewer.coins < this.calculatedprice && !Settings.UnlimitedCoins)
+            else if (viewer.coins < this.calculatedprice && !ToolkitSettings.UnlimitedCoins)
             {
                 // send message not enough coins
                 this.errormessage = Helper.ReplacePlaceholder("TwitchToolkitNotEnoughCoins".Translate(), viewer: viewer.username, amount: this.calculatedprice.ToString(), first: viewer.GetViewerCoins().ToString());
             }
-            else if (calculatedprice < Settings.MinimumPurchasePrice)
+            else if (calculatedprice < ToolkitSettings.MinimumPurchasePrice)
             {
                 // does not meet minimum purchase price
-                this.errormessage = Helper.ReplacePlaceholder("TwitchToolkitMinPurchaseNotMet".Translate(), viewer: this.viewer.username, amount: this.calculatedprice.ToString(), first: Settings.MinimumPurchasePrice.ToString());
+                this.errormessage = Helper.ReplacePlaceholder("TwitchToolkitMinPurchaseNotMet".Translate(), viewer: this.viewer.username, amount: this.calculatedprice.ToString(), first: ToolkitSettings.MinimumPurchasePrice.ToString());
             }
             else if (this.incItem.type == 0 && !this.incItem.evt.IsPossible())
             {
                  this.errormessage = $"@{this.viewer.username} " + "TwitchToolkitEventNotPossible".Translate();
             }
-            else if (this.incItem.maxEvents < 1 && Settings.EventsHaveCooldowns)
+            else if (this.incItem.maxEvents < 1 && ToolkitSettings.EventsHaveCooldowns)
             {
                 this.errormessage = $"@{this.viewer.username} " + "TwitchToolkitEventOnCooldown".Translate();
             }
-            else if (Settings.MaxEvents && (PurchaseLogger.CountRecentEventsOfType(this.incItem.karmatype, Settings.MaxEventsPeriod) > MaxEventsTypeToCheck - 1))
+            else if (ToolkitSettings.MaxEvents && (StorePurchaseLogger.CountRecentEventsOfType(this.incItem.karmatype, (int)ToolkitSettings.MaxEventsPeriod) > MaxEventsTypeToCheck - 1))
             {
                 this.errormessage = $"@{this.viewer.username} " + "TwitchToolkitMaxEvents".Translate();
             }
@@ -180,7 +180,7 @@ namespace TwitchToolkit.Store
         private void ExecuteCommand()
         {
             // take user coins
-            if (!Settings.UnlimitedCoins)
+            if (!ToolkitSettings.UnlimitedCoins)
             {
                 this.viewer.TakeViewerCoins(this.calculatedprice);
             }
@@ -195,11 +195,11 @@ namespace TwitchToolkit.Store
                     this.successmessage = Helper.ReplacePlaceholder("TwitchToolkitEventPurchaseConfirm".Translate(), first: this.incItem.name, viewer: this.viewer.username);
                     this.viewer.SetViewerKarma(Karma.CalculateNewKarma(this.viewer.GetViewerKarma(), this.incItem.karmatype, this.calculatedprice));
 
-                    if (Settings.EventsHaveCooldowns)
+                    if (ToolkitSettings.EventsHaveCooldowns)
                     {       
                         // take of a cooldown for event and schedule for it to be taken off
                         this.incItem.maxEvents--;
-                        Settings.JobManager.AddNewJob(new ScheduledJob(Settings.EventCooldownInterval, new Func<object, bool>(IncrementProduct), incItem));
+                        Toolkit.JobManager.AddNewJob(new ScheduledJob(ToolkitSettings.EventCooldownInterval, new Func<object, bool>(IncrementProduct), incItem));
                     }
                 }
                 else
@@ -233,7 +233,7 @@ namespace TwitchToolkit.Store
 
             }
 
-            PurchaseLogger.LogPurchase(new Purchase(this.viewer.username, this.incItem.name, this.incItem.karmatype, this.calculatedprice, this.successmessage, DateTime.Now));
+            StorePurchaseLogger.LogPurchase(new Purchase(this.viewer.username, this.incItem.name, this.incItem.karmatype, this.calculatedprice, this.successmessage, DateTime.Now));
             // create purchase event
             Ticker.Events.Enqueue(this.incItem.evt);
         }

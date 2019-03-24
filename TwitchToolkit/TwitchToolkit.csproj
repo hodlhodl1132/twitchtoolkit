@@ -56,7 +56,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Commands.cs" />
-    <Compile Include="Dialog_CustomModSettings.cs" />
     <Compile Include="Harmony.cs" />
     <Compile Include="Incidents\IncidentWorker_CallForAid.cs" />
     <Compile Include="Incidents\IncidentWorker_PoisonShipPartCrash.cs" />
@@ -65,19 +64,35 @@
     <Compile Include="Incidents\IncidentWorker_ResourcePodFrenzy.cs" />
     <Compile Include="Incidents\IncidentWorker_ShipPartCrash.cs" />
     <Compile Include="IRC\ConcurrentCircularBuffer.cs" />
+    <Compile Include="IRC\ToolkitIRC.cs" />
     <Compile Include="PawnQueue\CompPawnNamed.cs" />
     <Compile Include="PawnQueue\CompProperties_PawnNamed.cs" />
     <Compile Include="PawnQueue\GameComponentPawns.cs" />
     <Compile Include="PawnQueue\QueueWindow.cs" />
-    <Compile Include="Store\Item.cs" />
-    <Compile Include="Store\Karma.cs" />
-    <Compile Include="Store\IncItem.cs" />
-    <Compile Include="Store\PurchaseLogger.cs" />
-    <Compile Include="Store\ShopCommand.cs" />
+    <Compile Include="Settings\ColorPresets.cs" />
+    <Compile Include="Settings\ColourPicker\ColourWrapper.cs" />
+    <Compile Include="Settings\ColourPicker\Dialog_ColourPicker.cs" />
+    <Compile Include="Settings\ColourPicker\HSV.cs" />
+    <Compile Include="Settings\SettingsHelper.cs" />
+    <Compile Include="Settings\Settings_Chat.cs" />
+    <Compile Include="Settings\Settings_Coins.cs" />
+    <Compile Include="Settings\Settings_Commands.cs" />
+    <Compile Include="Settings\Settings_Cooldowns.cs" />
+    <Compile Include="Settings\Settings_Events.cs" />
+    <Compile Include="Settings\Settings_Items.cs" />
+    <Compile Include="Settings\Settings_Karma.cs" />
+    <Compile Include="Settings\Settings_Options.cs" />
+    <Compile Include="Settings\Settings_Store.cs" />
+    <Compile Include="Store\Store_Item.cs" />
+    <Compile Include="Store\Store_Karma.cs" />
+    <Compile Include="Store\Store_IncItem.cs" />
+    <Compile Include="Store\Store_PurchaseLogger.cs" />
+    <Compile Include="Store\Store_Commands.cs" />
+    <Compile Include="Store\Store_Inventory.cs" />
     <Compile Include="StreamLabs.cs" />
     <Compile Include="Utilities\ChatWindow.cs" />
     <Compile Include="Utilities\Listing_TwitchToolkit.cs" />
-    <Compile Include="Store\IncidentItems.cs" />
+    <Compile Include="Store\Store_IncidentItems.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
@@ -103,7 +118,7 @@
     <Compile Include="Utilities\TimeHelper.cs" />
     <Compile Include="Utilities\TwitchToolkit_MainTabWindow.cs" />
     <Compile Include="Utilities\Helper.cs" />
-    <Compile Include="Settings.cs" />
+    <Compile Include="Settings\ToolkitSettings.cs" />
     <Compile Include="Events.cs" />
     <Compile Include="Ticker.cs" />
     <Compile Include="Extensions.cs" />
@@ -116,10 +131,13 @@
     <Compile Include="Utilities\WebClient.cs" />
     <Compile Include="Viewer.cs" />
     <Compile Include="Viewers.cs" />
-    <Compile Include="Utilities\VoteDuelWindow.cs" />
-    <Compile Include="Utilities\VoteEvent.cs" />
-    <Compile Include="Utilities\VoteWindow.cs" />
+    <Compile Include="Votes\Vote.cs" />
+    <Compile Include="Votes\Vote_Event.cs" />
+    <Compile Include="Votes\Vote_Handler.cs" />
+    <Compile Include="Votes\Vote_Window.cs" />
     <Compile Include="Utilities\WebRequest.cs" />
+    <Compile Include="Votes\Vote_IncidentDef.cs" />
+    <Compile Include="Votes\Vote_Helper.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
@@ -158,6 +176,15 @@
     </None>
     <None Include="Languages\English\Keyed\TwitchToolkitCommands.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Languages\English\Keyed\TwitchToolkitSettings.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Languages\German\Keyed\TwitchToolkitSettings.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </None>
     <None Include="Defs\SoundDefs\Tornado.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

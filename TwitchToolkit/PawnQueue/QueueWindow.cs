@@ -43,7 +43,7 @@ namespace TwitchToolkit.PawnQueue
             List<Pawn> colonistsUnnamed = GetUnamedColonists();
             if (colonistsUnnamed.NullOrEmpty())
                     return;
-            List<string> usernames = Settings.viewers.ParseViewersFromJson();
+            List<string> usernames = Viewers.ParseViewersFromJson();
             if (usernames != null)
             {
                 //decide which usersnames have not been used

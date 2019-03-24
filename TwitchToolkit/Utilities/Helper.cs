@@ -80,12 +80,10 @@ namespace TwitchToolkit
             get
             {
             return
-              Settings.VoteEnabled == true &&
               Helper.AnyPlayerMap != null &&
               Current.Game.storyteller != null &&
               Current.Game.storyteller.def != null &&
-              Current.Game.storyteller.def.defName != null &&
-              (Settings.OtherStorytellersEnabled == true || Current.Game.storyteller.def.defName == "TwitchStoriesStoryteller");
+              Current.Game.storyteller.def.defName != null;
             }
         }
 
@@ -1893,11 +1891,11 @@ namespace TwitchToolkit
 
         public static void PastePricesToOutputLog()
         {
-            int linecount = 3 + Settings.incItems.Count() + Settings.items.Count();
+            int linecount = 3 + StoreInventory.incItems.Count() + StoreInventory.items.Count();
             string[] lines = new string[linecount];
             lines[0] = "\"Events\", \"Price\", \"Type\", \"Code\"";
             int currentline = 1;
-            foreach(IncItem product in Settings.incItems)
+            foreach(IncItem product in StoreInventory.incItems)
             {
                 string type = "malformed type";
                 if (Enum.IsDefined(typeof(KarmaType), product.karmatype))
@@ -1916,7 +1914,7 @@ namespace TwitchToolkit
             lines[currentline] = "\n\"Items\", \"Price\"";
             currentline++;
 
-            foreach(Item item in Settings.items)
+            foreach(Item item in StoreInventory.items)
             {
                 if (item.price > 0)
                 {

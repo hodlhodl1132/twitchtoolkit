@@ -19,39 +19,25 @@ namespace TwitchToolkit
             this.id = id;
         }
 
-        public static Viewer GetViewer(string user)
-        {
-            Viewer viewer = Settings.listOfViewers.Find(x => x.username == user.ToLower());
-            if (viewer == null)
-            {
-                viewer = new Viewer(user, Settings.ViewerIds.Count());
-                Settings.ViewerIds.Add(viewer.username.ToLower(), viewer.id);
-                viewer.SetViewerCoins(Settings.StartingBalance);
-                viewer.karma = Settings.StartingKarma;
-                Settings.listOfViewers.Add(viewer);
-            }
-            return viewer;
-        }
-
         public static bool IsModerator(string user)
         {
-            if (Settings.ViewerModerators == null)
+            if (ToolkitSettings.ViewerModerators == null)
             {
                 return false;
             }
-            return Settings.ViewerModerators.ContainsKey(user);
+            return ToolkitSettings.ViewerModerators.ContainsKey(user);
         }
 
         public void SetAsModerator()
         {
-            if (Settings.ViewerModerators == null)
+            if (ToolkitSettings.ViewerModerators == null)
             {
-                Settings.ViewerModerators = new Dictionary<string, bool>();
+                ToolkitSettings.ViewerModerators = new Dictionary<string, bool>();
             }
 
             if (!IsModerator(this.username))
             {
-                Settings.ViewerModerators.Add(this.username, true);
+                ToolkitSettings.ViewerModerators.Add(this.username, true);
             }
         }
 
@@ -59,13 +45,13 @@ namespace TwitchToolkit
         {
             if (IsModerator(this.username))
             {
-                Settings.ViewerModerators.Remove(this.username);
+                ToolkitSettings.ViewerModerators.Remove(this.username);
             }
         }
 
         public int GetViewerCoins()
         {
-            if (Settings.SyncStreamLabs)
+            if (ToolkitSettings.SyncStreamLabs)
                 return StreamLabs.GetViewerPoints(this);
             return coins;
         }
@@ -94,7 +80,7 @@ namespace TwitchToolkit
         public void SetViewerCoins(int coins)
         {
             this.coins = coins;
-            if (Settings.SyncStreamLabs)
+            if (ToolkitSettings.SyncStreamLabs)
                 StreamLabs.SetViewerPoints(this);
         }
 
@@ -119,21 +105,21 @@ namespace TwitchToolkit
 
         public static string GetViewerColorCode(string username)
         {
-            if (Settings.ViewerColorCodes == null)
+            if (ToolkitSettings.ViewerColorCodes == null)
             {
                 return "FF0000";
             }
 
-            if (!Settings.ViewerColorCodes.ContainsKey(username))
+            if (!ToolkitSettings.ViewerColorCodes.ContainsKey(username))
             {
                 SetViewerColorCode(Helper.GetRandomColorCode(), username);
             }
-            return Settings.ViewerColorCodes[username];
+            return ToolkitSettings.ViewerColorCodes[username];
         }
 
         public static void SetViewerColorCode(string colorcode, string username)
         {
-            Settings.ViewerColorCodes[username] = colorcode;
+            ToolkitSettings.ViewerColorCodes[username] = colorcode;
         }
     }
 }

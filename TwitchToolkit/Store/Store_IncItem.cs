@@ -33,12 +33,12 @@ namespace TwitchToolkit.Store
 
         public static int GetProductIdFromAbr(string abr)
         {
-            return Settings.incItems.Find(x => x.abr == abr).id;
+            return StoreInventory.incItems.Find(x => x.abr == abr).id;
         }
 
         public static IncItem GetProductFromId(int id)
         {
-            return Settings.incItems.Find(x => x.id == id);
+            return StoreInventory.incItems.Find(x => x.id == id);
         }
 
         public void SetProductAmount(int id, int amount)

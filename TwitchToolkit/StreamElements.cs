@@ -16,7 +16,7 @@ namespace TwitchToolkitDev
     {
         public static void ImportPoints()
         {
-            WebRequest_BeginGetResponse.Main($"https://api.streamelements.com/kappa/v2/points/{Settings.AccountID}/alltime?offset=0&page=1", new Func<RequestState, bool>(ParseJsonResponse));
+            WebRequest_BeginGetResponse.Main($"https://api.streamelements.com/kappa/v2/points/{ToolkitSettings.AccountID}/alltime?offset=0&page=1", new Func<RequestState, bool>(ParseJsonResponse));
         }
 
         public void SavePoints()
@@ -36,13 +36,13 @@ namespace TwitchToolkitDev
                 if (i > v["_total"].AsInt - offset - 1)
                     continue;
 
-                Viewer viewer = Viewer.GetViewer(v["users"][i]["username"]);
+                Viewer viewer = Viewers.GetViewer(v["users"][i]["username"]);
                 viewer.SetViewerCoins(v["users"][i]["points"].AsInt);
             }
             if (offset + 25 < v["_total"].AsInt)
             {
                 offset += 25;
-                WebRequest_BeginGetResponse.Main($"https://api.streamelements.com/kappa/v2/points/{Settings.AccountID}/alltime?offset={offset}&page=1", new Func<RequestState, bool>(ParseJsonResponse));
+                WebRequest_BeginGetResponse.Main($"https://api.streamelements.com/kappa/v2/points/{ToolkitSettings.AccountID}/alltime?offset={offset}&page=1", new Func<RequestState, bool>(ParseJsonResponse));
             }
             return true;
         }
@@ -54,7 +54,6 @@ namespace TwitchToolkitDev
 
         public static void SyncViewerStatsToWeb()
         {
-            Find.WindowStack.TryRemove(typeof(Dialog_CustomModSettings));
             Find.WindowStack.TryRemove(typeof(Dialog_ModSettings));
             Find.WindowStack.TryRemove(typeof(StreamLabsLoadingWindow));
             StreamLabsLoadingWindow window = new StreamLabsLoadingWindow();

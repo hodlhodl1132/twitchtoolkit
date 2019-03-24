@@ -26,10 +26,8 @@
   <TwitchToolKitVoteInstructions>Say the number of the option you want to vote!</TwitchToolKitVoteInstructions>
   <TwitchToolkitVote>vote</TwitchToolkitVote>
   <TwitchToolitWon>won</TwitchToolitWon>
-  <TwitchToolkitCoins>coins</TwitchToolkitCoins>
   <TwitchToolkitGiving>giving</TwitchToolkitGiving>
   <TwitchToolkitBalance>balance</TwitchToolkitBalance>
-  <TwitchToolkitKarma>karma</TwitchToolkitKarma>
   <TwitchToolkitUpdating>setting to</TwitchToolkitUpdating>
   <TwitchToolkitViewer>viewer</TwitchToolkitViewer>
   <TwitchToolkitBalCmd>!bal</TwitchToolkitBalCmd>

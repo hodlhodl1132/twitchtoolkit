@@ -126,7 +126,7 @@ namespace TwitchToolkit
         {
             try
             {
-                IncItem product = Settings.incItems.Find(x => x.abr == abr);
+                IncItem product = StoreInventory.incItems.Find(x => x.abr == abr);
                 return product;
             }
             catch (InvalidCastException e)
@@ -139,7 +139,7 @@ namespace TwitchToolkit
 
         public static void MultiplyIncItemPrices(double multiplier)
         {
-            foreach(IncItem product in Settings.incItems)
+            foreach(IncItem product in StoreInventory.incItems)
             {
                 product.price = Convert.ToInt32((double)product.price * multiplier);
                 if (product.price < 1)

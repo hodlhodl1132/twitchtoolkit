@@ -40,9 +40,9 @@ namespace TwitchToolkit.Utilities
         public static void SaveListOfViewersAsJson()
         {
             List<Utilities.ViewerSaveable> newViewers = new List<ViewerSaveable>();
-            if (Settings.listOfViewers == null)
+            if (Viewers.All == null)
                 return;
-            foreach (Viewer vwr in Settings.listOfViewers)
+            foreach (Viewer vwr in Viewers.All)
             {
                 Utilities.ViewerSaveable nwvwr = new Utilities.ViewerSaveable();
                 nwvwr.id = vwr.id;
@@ -91,7 +91,7 @@ namespace TwitchToolkit.Utilities
                         listOfViewers.Add(viewer);
                     }
 
-                    Settings.listOfViewers = listOfViewers;
+                    Viewers.All = listOfViewers;
                 }
             }
             catch (InvalidDataException e)
@@ -103,7 +103,7 @@ namespace TwitchToolkit.Utilities
 
         public static void SaveListOfItemsAsJson()
         {
-            List<Item> allItems = Settings.items;
+            List<Item> allItems = StoreInventory.items;
             var itemslisttemplate = JSON.Parse("{\"items\":[],\"total\":0}");
             string itemtemplate = "{\"id\":0,\"abr\":\"string\",\"defname\":\"string\",\"price\":0}";
             foreach (Item item in allItems)
@@ -139,7 +139,7 @@ namespace TwitchToolkit.Utilities
                         listOfItems.Add(item);
                     }
 
-                    Settings.items = listOfItems;
+                    StoreInventory.items = listOfItems;
                 }
             }
             catch (InvalidDataException e)
@@ -150,7 +150,7 @@ namespace TwitchToolkit.Utilities
 
         public static void SaveListOfIncItemsAsJson()
         {
-            List<IncItem> allIncItems = Settings.incItems;
+            List<IncItem> allIncItems = StoreInventory.incItems;
             var incItemslisttemplate = JSON.Parse("{\"incitems\":[],\"total\":0}");
             string itemtemplate = "{\"id\":0,\"type\":\"string\",\"name\":\"string\",\"abr\":\"string\",\"karmatype\":\"string\",\"price\":0,\"evtid\":0,\"maxevents\":0}";
             foreach (IncItem incItem in allIncItems)
@@ -200,7 +200,7 @@ namespace TwitchToolkit.Utilities
                         listOfIncItems.Add(incItem);
                     }
 
-                    Settings.incItems = listOfIncItems;
+                    StoreInventory.incItems = listOfIncItems;
                 }
             }
             catch (InvalidDataException e)

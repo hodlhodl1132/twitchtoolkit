@@ -14,7 +14,7 @@ namespace TwitchToolkit.Utilities
         public StreamLabsLoadingWindow()
         {
             this.doCloseButton = true;
-            viewerCache = Settings.listOfViewers;
+            viewerCache = Viewers.All;
             numOfViewers = viewerCache.Count;
         }
 
@@ -51,20 +51,21 @@ namespace TwitchToolkit.Utilities
             Text.Font = old;
         }
 
+        static string Token = "Bearer " + ToolkitSettings.JWTToken;
         public static void DeleteViewerData()
         {
             WebHeaderCollection deleteHeaders = new WebHeaderCollection();
-            deleteHeaders.Add(HttpRequestHeader.Authorization, "Bearer " + Settings.JWTToken);
-            deleteHeaders.Set(HttpRequestHeader.Authorization, "Bearer " + Settings.JWTToken);
-            WebRequest_BeginGetResponse.Delete($"https://api.streamelements.com/kappa/v2/points/{Settings.AccountID}/reset/current", null, deleteHeaders);
+            deleteHeaders.Add(HttpRequestHeader.Authorization, Token);
+            deleteHeaders.Set(HttpRequestHeader.Authorization, Token);
+            WebRequest_BeginGetResponse.Delete($"https://api.streamelements.com/kappa/v2/points/{ToolkitSettings.AccountID}/reset/current", null, deleteHeaders);
         }
 
         public void SyncViewers(Viewer viewer)
         {
             WebHeaderCollection syncHeaders = new WebHeaderCollection();
-            syncHeaders.Add(HttpRequestHeader.Authorization, "Bearer " + Settings.JWTToken);
-            syncHeaders.Set(HttpRequestHeader.Authorization, "Bearer " + Settings.JWTToken); 
-            WebRequest_BeginGetResponse.Put($"https://api.streamelements.com/kappa/v2/points/{Settings.AccountID}/{viewer.username}/{viewer.coins}", null, syncHeaders);
+            syncHeaders.Add(HttpRequestHeader.Authorization, Token);
+            syncHeaders.Set(HttpRequestHeader.Authorization, Token); 
+            WebRequest_BeginGetResponse.Put($"https://api.streamelements.com/kappa/v2/points/{ToolkitSettings.AccountID}/{viewer.username}/{viewer.coins}", null, syncHeaders);
         }
 
         public override Vector2 InitialSize

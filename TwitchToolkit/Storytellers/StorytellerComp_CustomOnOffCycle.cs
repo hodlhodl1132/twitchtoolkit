@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using RimWorld;
+using TwitchToolkit.Votes;
 using Verse;
 
 namespace TwitchToolkit
@@ -21,7 +22,7 @@ namespace TwitchToolkit
 
         public override IEnumerable<FiringIncident> MakeIntervalIncidents(IIncidentTarget target)
         {
-            if (Settings.VotingNow)
+            if (VoteHandler.voteActive)
                 yield break;
             float difficultyFactor = (!this.Props.applyRaidBeaconThreatMtbFactor) ? 1f : Find.Storyteller.difficulty.raidBeaconThreatCountFactor;
             float acceptFraction = 1f;
@@ -80,7 +81,7 @@ namespace TwitchToolkit
                     {
                         options = options.Where(k => k != def2);
                         pickedoptions.Add(def2);
-                        for (int x = 0; x < (Settings.VoteOptions > options.Count() ? options.Count() - 1 : Settings.VoteOptions - 1); x++)
+                        for (int x = 0; x < ToolkitSettings.VoteOptions - 1 && x < options.Count(); x++)
                         {
                             options.TryRandomElementByWeight(new Func<IncidentDef, float>(base.IncidentChanceFinal), out IncidentDef picked);
                             if (picked != null)
@@ -90,8 +91,12 @@ namespace TwitchToolkit
                             }
                         }
 
-                        VoteEvent evt = new VoteEvent(pickedoptions, this, parms);
-                        Ticker.VoteEvents.Enqueue(evt);
+                        Dictionary<int, IncidentDef> incidents = new Dictionary<int, IncidentDef>();
+                        for (int i = 0; i < pickedoptions.Count(); i++)
+                        {
+                            incidents.Add(i, pickedoptions.ToList()[i]);
+                        }
+                        VoteHandler.QueueVote(new VoteIncidentDef(incidents, this, parms));
                         Helper.Log("Events created");
                         return null;
                     }

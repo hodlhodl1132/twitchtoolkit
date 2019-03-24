@@ -1,0 +1,81 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<LanguageData>
+  <TwitchToolkitSettingsTitle>TwitchToolkit</TwitchToolkitSettingsTitle>
+  <TwitchToolkitChat>Chat</TwitchToolkitChat>
+  <TwitchToolkitCoins>Coins</TwitchToolkitCoins>
+  <TwitchToolkitEvents>Events</TwitchToolkitEvents>
+  <TwitchToolkitItems>Items</TwitchToolkitItems>
+  <TwitchToolkitStore>Store</TwitchToolkitStore>
+  <TwitchToolkitKarma>Karma</TwitchToolkitKarma>
+  <TwitchToolkitCommands>Commands</TwitchToolkitCommands>
+  <TwitchToolkitCooldowns>Cooldowns</TwitchToolkitCooldowns>
+  <TwitchToolkitOptions>Options</TwitchToolkitOptions>
+  <TwitchToolkitChannel>Twitch Channel</TwitchToolkitChannel>
+  <TwitchToolkitUsername>Twitch Username</TwitchToolkitUsername>
+  <TwitchToolkitOauthKey>Twitch Oauth</TwitchToolkitOauthKey>
+  <TwitchToolkitAutoConnect>Auto Connect</TwitchToolkitAutoConnect>
+  <TwitchToolkitOauthWarning>Warning: Do not show this code to your stream</TwitchToolkitOauthWarning>
+  <TwitchToolkitOauthUnderstand>I understand</TwitchToolkitOauthUnderstand>
+  <TwitchToolkitStartingBalance>How many coins will viewers start with?</TwitchToolkitStartingBalance>
+  <TwitchToolkitCoinInterval>How many minutes between each coin reward?</TwitchToolkitCoinInterval>
+  <TwitchToolkitCoinAmount>How many coins given to viewers per interval?</TwitchToolkitCoinAmount>
+  <TwitchToolkitMinimumPurchasePrice>Minimum amount of coins to spend when purchasing items?</TwitchToolkitMinimumPurchasePrice>
+  <TwitchToolkitUnlimitedCoins>Should viewers have unlimited coins?</TwitchToolkitUnlimitedCoins>
+  <TwitchToolkitGiftingCoins>Are viewers able to gift each other coins? (exploitable)</TwitchToolkitGiftingCoins>
+  <TwitchToolkitSearch>Search</TwitchToolkitSearch>
+  <TwitchToolkitResetToDefault>Reset to Default</TwitchToolkitResetToDefault>
+  <TwitchToolkitAreYouSure>Are you sure?</TwitchToolkitAreYouSure>
+  <TwitchToolkitWhisperAllowed>Allow viewers to whisper commands to {first}?</TwitchToolkitWhisperAllowed>
+  <TwitchToolkitWhisperOnly>Require viewers whisper all commands to {first}?</TwitchToolkitWhisperOnly>
+  <TwitchToolkitPurchaseConfirmations>Enable feedback messages to confirm purchases?</TwitchToolkitPurchaseConfirmations>
+  <TwitchToolkitRepeatViewerNames>Re-use viewer names during purchased raids/aid? (Recommended to have RuntimeGC)</TwitchToolkitRepeatViewerNames>
+  <TwitchToolkitViewerColonistQueue>Enable notification for unnamed colonist?</TwitchToolkitViewerColonistQueue>
+  <TwitchToolkitMinifiableBuildings>Include items that shouldn't be included in the item list?</TwitchToolkitMinifiableBuildings>
+  <TwitchToolkitStoreOpen>Allow viewers to purchase items/events?</TwitchToolkitStoreOpen>
+  <TwitchToolkitEarningCoins>Reward viewers set coin amount per interval?</TwitchToolkitEarningCoins>
+  <TwitchToolkitCustomPricingLink>Link to Custom Pricing Sheet:</TwitchToolkitCustomPricingLink>
+  <TwitchToolkitStartingKarma>What karma amount should new viewers start with?</TwitchToolkitStartingKarma>
+  <TwitchToolkitKarmaCap>What is the maximum amount of karma viewers can have?</TwitchToolkitKarmaCap>
+  <TwitchToolkitBanViewersWhoAreBad>Should viewers be stopped from having negative karma?</TwitchToolkitBanViewersWhoAreBad>
+  <TwitchToolkitKarmaReqsForGifting>Enforce Requirements to receive and send coin gifts?</TwitchToolkitKarmaReqsForGifting>
+  <TwitchToolkitMinKarmaForGifts>Minimum amount of karma a viewer needs to receive coin gifts</TwitchToolkitMinKarmaForGifts>
+  <TwitchToolkitMinKarmaSendGifts>Minimum amount of karma a viewer needs to send coin gifts</TwitchToolkitMinKarmaSendGifts>
+  <TwitchToolkitGoodViewers>Good Viewers</TwitchToolkitGoodViewers>
+  <TwitchToolkitNeutralViewers>Neutral Viewers</TwitchToolkitNeutralViewers>
+  <TwitchToolkitBadViewers>Bad Viewers</TwitchToolkitBadViewers>
+  <TwitchToolkitDoomViewers>Very Bad Viewers</TwitchToolkitDoomViewers>
+  <TwitchToolkitGoodKarma>Good Karma Events/Items - Lower is more</TwitchToolkitGoodKarma>
+  <TwitchToolkitNeutralKarma>Neutral Karma Events - Lower is more</TwitchToolkitNeutralKarma>
+  <TwitchToolkitBadKarma>Bad Karma Events - Lower is more taken</TwitchToolkitBadKarma>
+  <TwitchToolkitDoomKarma>Doom Karma Events</TwitchToolkitDoomKarma>
+  <TwitchToolkitVoteTime>How long should viewers have to vote for events?</TwitchToolkitVoteTime>
+  <TwitchToolkitVoteOptions>Maximum amount of vote options generated</TwitchToolkitVoteOptions>
+  <TwitchToolkitVotingChatMsgs>Send vote options to chat</TwitchToolkitVotingChatMsgs>
+  <TwitchToolkitVotingWindow>Show voting window for new votes</TwitchToolkitVotingWindow>
+  <TwitchToolkitLargeVotingWindow>Enlarge the voting window</TwitchToolkitLargeVotingWindow>
+  <TwitchToolkitCommandsModsEnabled>Allow users to use mod list command? !installedmods</TwitchToolkitCommandsModsEnabled>
+  <TwitchToolkitChannelID>Channel ID</TwitchToolkitChannelID>
+  <TwitchToolkitChatroomID>Room ID</TwitchToolkitChatroomID>
+  <TwitchToolkitChatReqsForCoins>Only reward viewers who participate in chat?</TwitchToolkitChatReqsForCoins>
+  <TwitchToolkitTimeBeforeHalfCoins>How many minutes before lurkers earn half the coin rate?</TwitchToolkitTimeBeforeHalfCoins>
+  <TwitchToolkitTimeBeforeNoCoins>How long before they earn no coins?</TwitchToolkitTimeBeforeNoCoins>
+  <TwitchToolkitMaxEventsLimit>Limit the amount of events by type?</TwitchToolkitMaxEventsLimit>
+  <TwitchToolkitMaxEventsPeriod>How long do you want cooldown periods to last?</TwitchToolkitMaxEventsPeriod>
+  <TwitchToolkitMaxBadEvents>Bad events</TwitchToolkitMaxBadEvents>
+  <TwitchToolkitMaxGoodEvents>Good events</TwitchToolkitMaxGoodEvents>
+  <TwitchToolkitMaxNeutralEvents>Neutral events</TwitchToolkitMaxNeutralEvents>
+  <TwitchToolkitMaxItemEvents>Care packages</TwitchToolkitMaxItemEvents>
+  <TwitchToolkitEventsHaveCooldowns>Limit the the times individual events can be used?</TwitchToolkitEventsHaveCooldowns>
+  <TwitchToolkitEventCooldownInterval>How long do you want individual event cooldowns to last?</TwitchToolkitEventCooldownInterval>
+  <TwitchToolkitCommandsMenuExpl>Viewer commands</TwitchToolkitCommandsMenuExpl>
+  <TwitchToolkitBalancecmd>Check balance</TwitchToolkitBalancecmd>
+  <TwitchToolkitBuyeventcmd>Buy event</TwitchToolkitBuyeventcmd>
+  <TwitchToolkitBuyitemcmd>Buy item</TwitchToolkitBuyitemcmd>
+  <TwitchToolkitInstructionscmd>Mod instructions</TwitchToolkitInstructionscmd>
+  <TwitchToolkitPurchaselistcmd>Purchase list</TwitchToolkitPurchaselistcmd>
+  <TwitchToolkitModinfocmd>Mod info</TwitchToolkitModinfocmd>
+  <TwitchToolkitModsettingscmd>Mod settings</TwitchToolkitModsettingscmd>
+  <TwitchToolkitKarmacmd>What is karma?</TwitchToolkitKarmacmd>
+  <TwitchToolkitGiftcmd>Gift coins to viewer</TwitchToolkitGiftcmd>
+  <TwitchToolkitCommandhelpcmd>All available commands</TwitchToolkitCommandhelpcmd>
+</LanguageData>

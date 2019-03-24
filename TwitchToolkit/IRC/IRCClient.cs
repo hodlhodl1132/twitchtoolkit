@@ -8,6 +8,7 @@ using System.Threading;
 namespace TwitchToolkit.IRC
 {
     public delegate void OnPrivMsg(string channel, string user, string message);
+    
 
     public class IRCClient
     {
@@ -203,13 +204,13 @@ namespace TwitchToolkit.IRC
                     Send("PONG\n");
                     break;
                 case "376":
-                    if (Settings.ChatroomUUID != "" && Settings.ChannelID != "")
+                    if (ToolkitSettings.ChatroomUUID != "" && ToolkitSettings.ChannelID != "")
                     {
                         Send(
                             "CAP REQ :twitch.tv/membership\n" +
                             "CAP REQ :twitch.tv/tags\n" +
                             "CAP REQ :twitch.tv/commands\n" +
-                            "JOIN #chatrooms:" + Settings.ChannelID + ":" + Settings.ChatroomUUID + "\n"
+                            "JOIN #chatrooms:" + ToolkitSettings.ChannelID + ":" + ToolkitSettings.ChatroomUUID + "\n"
                             );
                     }
                     else
@@ -225,13 +226,13 @@ namespace TwitchToolkit.IRC
                     _socketReady = true;
                     break;
                 case "PRIVMSG":
-                    if (OnPrivMsg != null && !Settings.WhisperCmdsOnly)
+                    if (OnPrivMsg != null && !ToolkitSettings.WhisperCmdsOnly)
                     {
                         OnPrivMsg.Invoke(message.Channel, message.User, message.Message);
                     }
                     break;
                 case "WHISPER":
-                    if (OnPrivMsg != null && Settings.WhisperCmdsAllowed)
+                    if (OnPrivMsg != null && ToolkitSettings.WhisperCmdsAllowed)
                     {
                         OnPrivMsg.Invoke(message.Channel, message.User, message.Message);
                     }
@@ -249,9 +250,9 @@ namespace TwitchToolkit.IRC
 
         public void SendMessage(string message, bool botchannel = false)
         {
-            if (Settings.ChatroomUUID != "" && Settings.ChannelID != "")
+            if (ToolkitSettings.ChatroomUUID != "" && ToolkitSettings.ChannelID != "")
             {
-                _messageQueue.Enqueue("PRIVMSG #chatrooms:" + Settings.ChannelID + ":" + Settings.ChatroomUUID + " :" + message + "\n");
+                _messageQueue.Enqueue("PRIVMSG #chatrooms:" + ToolkitSettings.ChannelID + ":" + ToolkitSettings.ChatroomUUID + " :" + message + "\n");
             }
             else
             {

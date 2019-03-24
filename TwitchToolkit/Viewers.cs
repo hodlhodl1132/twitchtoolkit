@@ -8,18 +8,19 @@ using TwitchToolkit.Utilities;
 
 namespace TwitchToolkit
 {
-    public class Viewers
+    public static class Viewers
     {
-        public string jsonallviewers;
+        public static string jsonallviewers;
+        public static List<Viewer> All = new List<Viewer>();
 
-        public void AwardViewersCoins(int setamount = 0)
+        public static void AwardViewersCoins(int setamount = 0)
         {
             List<string> usernames = ParseViewersFromJson();
             if (usernames != null)
             {
                 foreach (string username in usernames)
                 {
-                    Viewer viewer = Viewer.GetViewer(username);
+                    Viewer viewer = GetViewer(username);
                     if (setamount > 0)
                     {
                         viewer.GiveViewerCoins(setamount);
@@ -27,15 +28,15 @@ namespace TwitchToolkit
                     else
                     {
                         // to earn full coins you either need to half talked within timebeforehalfcoins limit or chatreqs is turned off
-                        if( TimeHelper.MinutesElapsed(viewer.last_seen) < Settings.TimeBeforeHalfCoins || !Settings.ChatReqsForCoins )
+                        if( TimeHelper.MinutesElapsed(viewer.last_seen) < ToolkitSettings.TimeBeforeHalfCoins || !ToolkitSettings.ChatReqsForCoins || true)
                         { 
-                            double karmabonus = ((double)viewer.GetViewerKarma() / 100d) * (double)Settings.CoinAmount;
+                            double karmabonus = ((double)viewer.GetViewerKarma() / 100d) * (double)ToolkitSettings.CoinAmount;
                             viewer.GiveViewerCoins(Convert.ToInt32(karmabonus));
                         }
                         // otherwise you earn half if you have talked withing timebefore no coins
-                        else if (TimeHelper.MinutesElapsed(viewer.last_seen) < Settings.TimeBeforeNoCoins )
+                        else if (TimeHelper.MinutesElapsed(viewer.last_seen) < ToolkitSettings.TimeBeforeNoCoins || !ToolkitSettings.ChatReqsForCoins)
                         {
-                            double karmabonus = (((double)viewer.GetViewerKarma() / 100d) * (double)Settings.CoinAmount) / 2;
+                            double karmabonus = (((double)viewer.GetViewerKarma() / 100d) * (double)ToolkitSettings.CoinAmount) / 2;
                             viewer.GiveViewerCoins(Convert.ToInt32(karmabonus));
                         }
                         // else you get nothing for lurking
@@ -44,11 +45,11 @@ namespace TwitchToolkit
             }
         }
 
-        public List<string> ParseViewersFromJson()
+        public static List<string> ParseViewersFromJson()
         {
             List<string> usernames = new List<string>();
 
-            string json = this.jsonallviewers;
+            string json = jsonallviewers;
 
             if (json.NullOrEmpty())
             {
@@ -76,16 +77,30 @@ namespace TwitchToolkit
             return usernames;
         }
 
-        public bool SaveUsernamesFromJsonResponse(TwitchToolkitDev.RequestState request)
+        public static bool SaveUsernamesFromJsonResponse(TwitchToolkitDev.RequestState request)
         {
-            this.jsonallviewers = request.jsonString;
+            jsonallviewers = request.jsonString;
             return true;
         }
 
         public static void ResetViewers()
         {
-            Settings.ViewerIds = new Dictionary<string, int>();
-            Settings.listOfViewers = new List<Viewer>();
+            ToolkitSettings.viewerIDs = new Dictionary<string, int>();
+            All = new List<Viewer>();
+        }
+
+        public static Viewer GetViewer(string user)
+        {
+            Viewer viewer = All.Find(x => x.username == user.ToLower());
+            if (viewer == null)
+            {
+                viewer = new Viewer(user, ToolkitSettings.viewerIDs.Count());
+                ToolkitSettings.viewerIDs.Add(viewer.username.ToLower(), viewer.id);
+                viewer.SetViewerCoins((int)ToolkitSettings.StartingBalance);
+                viewer.karma = ToolkitSettings.StartingKarma;
+                All.Add(viewer);
+            }
+            return viewer;
         }
     }
 }

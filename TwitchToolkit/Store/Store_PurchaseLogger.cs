@@ -6,7 +6,7 @@ using TwitchToolkit.Utilities;
 
 namespace TwitchToolkit.Store
 {
-    public class PurchaseLogger
+    public class StorePurchaseLogger
     {
         public static List<Purchase> purchases = new List<Purchase>();
 
@@ -14,7 +14,7 @@ namespace TwitchToolkit.Store
         {
             try
             {
-                Settings.JobManager.AddNewJob(new ScheduledJob(120, new Func<object, bool>(RemovePurchaseFromLog), purchase));
+                Toolkit.JobManager.AddNewJob(new ScheduledJob(120, new Func<object, bool>(RemovePurchaseFromLog), purchase));
                 purchases.Add(purchase);
             }
             catch (InvalidCastException e)

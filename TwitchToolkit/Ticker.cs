@@ -6,12 +6,14 @@ using System;
 using RimWorld;
 using System.Linq;
 using UnityEngine;
+using TwitchToolkit.Votes;
 
 namespace TwitchToolkit
 {
     public class Ticker : Thing
     {
-        TwitchToolkit _mod;
+        public Timer timer = null;
+
         public static Queue<Event> Events = new Queue<Event>();
         public static Queue<FiringIncident> FiringIncidents = new Queue<FiringIncident>();
         public static Queue<VoteEvent> VoteEvents = new Queue<VoteEvent>();
@@ -21,6 +23,7 @@ namespace TwitchToolkit
         static Thread _registerThread;
         static Game _game;
         static Map _map;
+        static TwitchToolkit _mod = Toolkit.Mod;
 
         static Ticker _instance;
         public static Ticker Instance
@@ -35,16 +38,11 @@ namespace TwitchToolkit
             }
         }
 
-        Ticker()
+        public Ticker()
         {
             def = new ThingDef { tickerType = TickerType.Normal, isSaveable = false };
             _registerThread = new Thread(Register);
             _registerThread.Start();
-        }
-
-        public static void Initialize(TwitchToolkit mod)
-        {
-            Instance._mod = mod;
         }
 
         void Register()
@@ -61,19 +59,21 @@ namespace TwitchToolkit
                             _game = null;
                         }
 
+                        Helper.Log("registering game");
                         _game = Current.Game;
                         if (_game != null)
                         {
                             _game = Current.Game;
                             _game.tickManager.RegisterAllTickabilityFor(this);
-                        }
+                            Toolkit.Mod.RegisterTicker();
+                        }   
                     }
 
-                    if (_map != Helper.AnyPlayerMap)
-                    {
-                        _map = Helper.AnyPlayerMap;
-                        _mod.Reset();
-                    }
+                    //if (_map != Helper.AnyPlayerMap)
+                    //{
+                    //    _map = Helper.AnyPlayerMap;
+                    //    _mod.Reset();
+                    //}
                 }
                 catch (Exception ex)
                 {
@@ -94,13 +94,12 @@ namespace TwitchToolkit
         {
             try
             {
-                if (_game == null)
+                if (_game == null || _mod == null)
                 {
                     return;
                 }
 
                 _mod.Tick();
-
                 var minutes = (int)(_game.Info.RealPlayTimeInteracting / 60f);
                 double getTime = (double)Time.time / 60f;
                 int time = Convert.ToInt32(Math.Truncate(getTime));
@@ -111,20 +110,7 @@ namespace TwitchToolkit
                     incident.def.Worker.TryExecute(incident.parms);
                 }
 
-                if (_mod._voteActive == false && VoteEvents.Count > 0)
-                {
-                    Helper.Log("VoteEvent Detected, Queueing");
-                    var next = VoteEvents.Dequeue();
-                    if (next.options != null && next.options.Count() > 1)
-                    {
-                        _mod.StartVote(next);
-                    }
-                    else
-                    {
-                        Helper.Log("VoteEvent options were empty....");
-                    }
-
-                }
+                VoteHandler.CheckForQueuedVotes();
 
                 if (Events.Count() > 0)
                 {
@@ -135,10 +121,10 @@ namespace TwitchToolkit
                 {
                     _lastCoinReward = time;
                 }
-                else if (Settings.EarningCoins && ((time - _lastCoinReward) >= Settings.CoinInterval) && Settings.viewers.jsonallviewers != null)
+                else if (ToolkitSettings.EarningCoins && ((time - _lastCoinReward) >= ToolkitSettings.CoinInterval) && Viewers.jsonallviewers != null)
                 {
                     _lastCoinReward = time;
-                    Settings.viewers.AwardViewersCoins(Settings.CoinAmount);
+                    Viewers.AwardViewersCoins();
                 }
                 if (_lastMinute < 0)
                 {
@@ -147,8 +133,8 @@ namespace TwitchToolkit
                 else if (_lastMinute < time)
                 {
                     _lastMinute = time;
-                    Settings.JobManager.CheckAllJobs();
-                    TwitchToolkitDev.WebRequest_BeginGetResponse.Main("https://tmi.twitch.tv/group/user/" + Settings.Channel.ToLower() + "/chatters", new Func<TwitchToolkitDev.RequestState, bool>(Settings.viewers.SaveUsernamesFromJsonResponse));
+                    Toolkit.JobManager.CheckAllJobs();
+                    TwitchToolkitDev.WebRequest_BeginGetResponse.Main("https://tmi.twitch.tv/group/user/" + ToolkitSettings.Channel.ToLower() + "/chatters", new Func<TwitchToolkitDev.RequestState, bool>(Viewers.SaveUsernamesFromJsonResponse));
                 }
             }
             catch (Exception ex)

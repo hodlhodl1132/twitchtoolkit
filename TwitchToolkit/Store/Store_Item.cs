@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using TwitchToolkit.Store;
 using Verse;
 
 namespace TwitchToolkit
@@ -18,7 +19,7 @@ namespace TwitchToolkit
         {
             if (id < 0)
             {
-                this.id = Settings.items.Count();
+                this.id = StoreInventory.items.Count();
             }
             else
             {
@@ -32,12 +33,12 @@ namespace TwitchToolkit
 
         public static Item GetItemFromAbr(string abr)
         {
-            return Settings.items.Find(x => x.abr == abr);
+            return StoreInventory.items.Find(x => x.abr == abr);
         }
 
         public static Item GetItemFromDefName(string defname)
         {
-            return Settings.items.Find(x => x.defname == defname);
+            return StoreInventory.items.Find(x => x.defname == defname);
         }
 
         public void SetItemPrice(int price)
@@ -108,7 +109,7 @@ namespace TwitchToolkit
         public static void TryMakeAllItems()
         {
             IEnumerable<ThingDef> tradeableitems = from t in DefDatabase<ThingDef>.AllDefs
-                             where (t.tradeability.TraderCanSell() || ThingSetMakerUtility.CanGenerate(t) ) && (t.building == null || t.Minifiable || Settings.MinifiableBuildings)
+                             where (t.tradeability.TraderCanSell() || ThingSetMakerUtility.CanGenerate(t) ) && (t.building == null || t.Minifiable || ToolkitSettings.MinifiableBuildings)
                              select t;
 
             Helper.Log("Found " + tradeableitems.Count() + " items");
@@ -125,8 +126,8 @@ namespace TwitchToolkit
                         if (item.BaseMarketValue > 0f && item.race == null)
                         {
                             Helper.Log("Adding item " + item.label);
-                            int id = Settings.items.Count();
-                            Settings.items.Add(new Item(Convert.ToInt32(item.BaseMarketValue * 10 / 6), label, item.defName));             
+                            int id = StoreInventory.items.Count();
+                            StoreInventory.items.Add(new Item(Convert.ToInt32(item.BaseMarketValue * 10 / 6), label, item.defName));             
                         }
                     }
                     catch (InvalidCastException e)

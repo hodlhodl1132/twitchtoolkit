@@ -10,6 +10,7 @@ namespace TwitchToolkit.Incidents
 {
     public abstract class IncidentWorker_Raid : IncidentWorker_PawnsArrive
     {
+        public static TwitchToolkit _mod = LoadedModManager.GetMod<TwitchToolkit>();
         readonly string Quote;
 
         public IncidentWorker_Raid(string quote)
@@ -73,7 +74,7 @@ namespace TwitchToolkit.Incidents
             parms.points = IncidentWorker_Raid.AdjustedRaidPoints(parms.points, parms.raidArrivalMode, parms.raidStrategy, parms.faction, combat);
             PawnGroupMakerParms defaultPawnGroupMakerParms = IncidentParmsUtility.GetDefaultPawnGroupMakerParms(combat, parms, false);
             List<Pawn> list = PawnGroupMakerUtility.GeneratePawns(defaultPawnGroupMakerParms, true).ToList<Pawn>();
-            List<string> viewernames = Settings.viewers.ParseViewersFromJson();
+            List<string> viewernames = Viewers.ParseViewersFromJson();
             if (viewernames != null)
             {
                 int count = 0;
@@ -88,7 +89,7 @@ namespace TwitchToolkit.Incidents
                     int thisviewer = rnd.Next(0, viewernames.Count());
                     NameTriple name = pawn.Name as NameTriple;
                     NameTriple newname = new NameTriple(name.First, viewernames[thisviewer], name.Last);
-                    if (!newname.UsedThisGame || Settings.RepeatViewerNames)
+                    if (!newname.UsedThisGame || ToolkitSettings.RepeatViewerNames)
                     {
                         pawn.Name = newname;
                     }

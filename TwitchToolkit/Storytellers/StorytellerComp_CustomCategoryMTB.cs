@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using RimWorld;
+using TwitchToolkit.Votes;
 using Verse;
 
 namespace TwitchToolkit
 {
     public class StorytellerComp_CustomCategoryMTB : StorytellerComp
     {
+
         protected StorytellerCompProperties_CustomCategoryMTB Props
         {
             get
@@ -19,7 +21,7 @@ namespace TwitchToolkit
 
         public override IEnumerable<FiringIncident> MakeIntervalIncidents(IIncidentTarget target)
         {
-            if (Settings.VotingNow)
+            if (VoteHandler.voteActive)
                 yield break;
             float mtbNow = this.Props.mtbDays;
             IEnumerable<IncidentDef> options;
@@ -36,11 +38,11 @@ namespace TwitchToolkit
                 Helper.Log("Trying to create events");
                 if (options.TryRandomElementByWeight(new Func<IncidentDef, float>(base.IncidentChanceFinal), out selectedDef))
                 {
-                    if (options.Count() > Settings.VoteOptions)
+                    if (options.Count() > ToolkitSettings.VoteOptions)
                     {
                         options = options.Where(k => k != selectedDef);
                         pickedoptions.Add(selectedDef);
-                        for (int x = 0; x < (Settings.VoteOptions > options.Count() ? options.Count() - 1 : Settings.VoteOptions - 1); x++)
+                        for (int x = 0; x < ToolkitSettings.VoteOptions - 1 && x < options.Count(); x++)
                         {
                             options.TryRandomElementByWeight(new Func<IncidentDef, float>(base.IncidentChanceFinal), out IncidentDef picked);
                             if (picked != null)
@@ -50,8 +52,12 @@ namespace TwitchToolkit
                             }
                         }
 
-                        VoteEvent evt = new VoteEvent(pickedoptions, this, this.GenerateParms(selectedDef.category, target));
-                        Ticker.VoteEvents.Enqueue(evt);
+                        Dictionary<int, IncidentDef> incidents = new Dictionary<int, IncidentDef>();
+                        for (int i = 0; i < pickedoptions.Count(); i++)
+                        {
+                            incidents.Add(i, pickedoptions.ToList()[i]);
+                        }
+                        VoteHandler.QueueVote(new VoteIncidentDef(incidents, this, this.GenerateParms(selectedDef.category, target)));
                         Helper.Log("Events created");
                         yield break;
                     }
