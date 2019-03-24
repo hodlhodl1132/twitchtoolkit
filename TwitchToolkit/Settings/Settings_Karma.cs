@@ -16,11 +16,10 @@ namespace TwitchToolkit.Settings
             optionsListing.CheckboxLabeled("TwitchToolkitBanViewersWhoAreBad".Translate(), ref ToolkitSettings.BanViewersWhoPurchaseAlwaysBad);
             optionsListing.CheckboxLabeled("TwitchToolkitKarmaReqsForGifting".Translate(), ref ToolkitSettings.KarmaReqsForGifting);
             
-            if (karmaReqs)
-            {
-                optionsListing.SliderLabeled("TwitchToolkitMinKarmaForGifts".Translate(), ref ToolkitSettings.MinimumKarmaToRecieveGifts, Math.Round((double)ToolkitSettings.MinimumKarmaToRecieveGifts).ToString(), 10, 100);
-                optionsListing.SliderLabeled("TwitchToolkitMinKarmaSendGifts".Translate(), ref ToolkitSettings.MinimumKarmaToSendGifts, Math.Round((double)ToolkitSettings.MinimumKarmaToSendGifts).ToString(), 20, 150);
-            }
+            optionsListing.Gap();
+
+            optionsListing.SliderLabeled("TwitchToolkitMinKarmaForGifts".Translate(), ref ToolkitSettings.MinimumKarmaToRecieveGifts, Math.Round((double)ToolkitSettings.MinimumKarmaToRecieveGifts).ToString(), 10, 100);
+            optionsListing.SliderLabeled("TwitchToolkitMinKarmaSendGifts".Translate(), ref ToolkitSettings.MinimumKarmaToSendGifts, Math.Round((double)ToolkitSettings.MinimumKarmaToSendGifts).ToString(), 20, 150);
 
             optionsListing.Gap();
             optionsListing.GapLine();
@@ -55,7 +54,5 @@ namespace TwitchToolkit.Settings
             optionsListing.SliderLabeled("TwitchToolkitBadKarma".Translate(), ref ToolkitSettings.TierFourBadBonus, Math.Round((double)ToolkitSettings.TierFourBadBonus).ToString(), 1, 100);
 
            }
-
-        static bool karmaReqs = ToolkitSettings.KarmaReqsForGifting;
     }
 }

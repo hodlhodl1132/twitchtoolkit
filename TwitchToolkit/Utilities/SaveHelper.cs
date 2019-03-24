@@ -16,6 +16,7 @@ namespace TwitchToolkit.Utilities
         public static string viewerDataPath = Path.Combine(dataPath, "ViewerData.json");
         public static string itemDataPath = Path.Combine(dataPath, "ItemData.json");
         public static string incItemsDataPath = Path.Combine(dataPath, "IncItemsData.json");
+        public static string storePricesDataPath = Path.Combine(dataPath, "StorePrices.csv");
 
         private static void SaveJsonToDataPath(string json, string savePath)
         {
@@ -85,7 +86,7 @@ namespace TwitchToolkit.Utilities
                     List<Viewer> listOfViewers = new List<Viewer>();
                     for (int i = 0; i < node["total"]; i++)
                     {
-                        Viewer viewer = new Viewer(node["viewers"][i]["username"], node["viewers"][i]["id"].AsInt);
+                        Viewer viewer = new Viewer(node["viewers"][i]["username"]);
                         viewer.SetViewerCoins(node["viewers"][i]["coins"].AsInt);
                         viewer.SetViewerKarma(node["viewers"][i]["karma"].AsInt);
                         listOfViewers.Add(viewer);
@@ -207,6 +208,42 @@ namespace TwitchToolkit.Utilities
             {
                 Helper.Log("Invalid " + e.Message);
             }
+        }
+
+        public static void CreateStorePricesCSV()
+        {
+            int linecount = 3 + StoreInventory.incItems.Count() + StoreInventory.items.Count();
+            string[] lines = new string[linecount];
+            lines[0] = "\"Events\", \"Price\", \"Type\", \"Code\"";
+            int currentline = 1;
+            foreach(IncItem product in StoreInventory.incItems)
+            {
+                string type = "malformed type";
+                if (Enum.IsDefined(typeof(KarmaType), product.karmatype))
+                {
+                    type = product.karmatype.ToString();
+                }
+                
+                if (product.price > 0)
+                {
+                    lines[currentline] = $"\"{product.name}\", \"{product.price}\", \"{type}\", \"{product.abr}\"";
+                    currentline++;
+                }
+            }
+            lines[currentline] = "";
+            currentline++;
+            lines[currentline] = "\n\"Items\", \"Price\"";
+            currentline++;
+
+            foreach(Item item in StoreInventory.items)
+            {
+                if (item.price > 0)
+                {
+                    lines[currentline] = $"\"{item.abr}\", \"{item.price}\"";
+                    currentline++;
+                }
+            }
+            System.IO.File.WriteAllLines(@"" + storePricesDataPath, lines, Helper.LanguageEncoding());
         }
     }
 

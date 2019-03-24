@@ -15,6 +15,10 @@ namespace TwitchToolkit.Settings
 
             optionsListing.Gap();
 
+            optionsListing.CheckboxLabeled("TwitchToolkitCommandsModsEnabled".Translate(), ref ToolkitSettings.CommandsModsEnabled);
+
+            optionsListing.Gap();
+
             optionsListing.AddLabeledTextField("TwitchToolkitBalancecmd".Translate(), ref ToolkitSettings.BalanceCmd);
             optionsListing.AddLabeledTextField("TwitchToolkitBuyeventcmd".Translate(), ref ToolkitSettings.BuyeventCmd);
             optionsListing.AddLabeledTextField("TwitchToolkitBuyitemcmd".Translate(), ref ToolkitSettings.BuyitemCmd);
@@ -25,6 +29,25 @@ namespace TwitchToolkit.Settings
             optionsListing.AddLabeledTextField("TwitchToolkitKarmacmd".Translate(), ref ToolkitSettings.KarmaCmd);
             optionsListing.AddLabeledTextField("TwitchToolkitGiftcmd".Translate(), ref ToolkitSettings.GiftCmd);
             optionsListing.AddLabeledTextField("TwitchToolkitCommandhelpcmd".Translate(), ref ToolkitSettings.CommandHelpCmd);
+
+            optionsListing.Gap();
+
+            optionsListing.ColumnWidth = rect.width / 3;
+            optionsListing.NewColumn();
+            if (optionsListing.ButtonText("TwitchToolkitCommandsLanguage".Translate()))
+            {
+                ToolkitSettings.BalanceCmd = "TwitchToolkitBalCmd".Translate();
+                ToolkitSettings.BuyeventCmd = "TwitchToolkitBuyEventCmd".Translate();
+                ToolkitSettings.BuyitemCmd = "TwitchTookitBuyItemCmd".Translate();
+                ToolkitSettings.InstructionsCmd = "TwitchToolkitInstructionsCmd".Translate();
+                ToolkitSettings.PurchaselistCmd = "TwitchToolkitPurchaseListCmd".Translate();
+                ToolkitSettings.ModinfoCmd = "TwitchToolkitModInfoCmd".Translate();
+                ToolkitSettings.ModsettingsCmd = "TwitchToolkitModSettingsCmd".Translate();
+                ToolkitSettings.KarmaCmd = "TwitchToolkitKarmaCmd".Translate();
+                ToolkitSettings.GiftCmd = "TwitchToolkitGiftCmd".Translate();
+                ToolkitSettings.CommandHelpCmd = "TwitchToolkitCmdHelpCmd".Translate();
+            }
+            optionsListing.NewColumn();
         }
     }
 }

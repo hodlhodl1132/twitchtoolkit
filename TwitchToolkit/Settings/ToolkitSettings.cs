@@ -38,10 +38,10 @@ namespace TwitchToolkit
         #endregion
 
         #region CoinSettings
-        public static float StartingBalance = 150;
-        public static float CoinInterval = 2;
-        public static float CoinAmount = 30;
-        public static float MinimumPurchasePrice = 60;
+        public static int StartingBalance = 150;
+        public static int CoinInterval = 2;
+        public static int CoinAmount = 30;
+        public static int MinimumPurchasePrice = 60;
         public static bool UnlimitedCoins = false;
         public static bool GiftingCoins = false;
         #endregion
@@ -87,30 +87,30 @@ namespace TwitchToolkit
         #region KarmaSettings
         public static int StartingKarma = 100;
         public static int KarmaCap = 140;
-        public static bool BanViewersWhoPurchaseAlwaysBad = false;
+        public static bool BanViewersWhoPurchaseAlwaysBad = true;
         public static bool KarmaReqsForGifting = false;
         public static int MinimumKarmaToRecieveGifts = 33;
         public static int MinimumKarmaToSendGifts = 100;
         #endregion
 
         #region KarmaBonusValues
-        public static float TierOneGoodBonus = 16;
-        public static float TierOneNeutralBonus = 36;
-        public static float TierOneBadBonus = 24;
+        public static int TierOneGoodBonus = 16;
+        public static int TierOneNeutralBonus = 36;
+        public static int TierOneBadBonus = 24;
 
-        public static float TierTwoGoodBonus = 10;
-        public static float TierTwoNeutralBonus = 30;
-        public static float TierTwoBadBonus = 20;
+        public static int TierTwoGoodBonus = 10;
+        public static int TierTwoNeutralBonus = 30;
+        public static int TierTwoBadBonus = 20;
 
-        public static float TierThreeGoodBonus = 10;
-        public static float TierThreeNeutralBonus = 24;
-        public static float TierThreeBadBonus = 18;
+        public static int TierThreeGoodBonus = 10;
+        public static int TierThreeNeutralBonus = 24;
+        public static int TierThreeBadBonus = 18;
 
-        public static float TierFourGoodBonus = 6;
-        public static float TierFourNeutralBonus = 18;
-        public static float TierFourBadBonus = 12;
+        public static int TierFourGoodBonus = 6;
+        public static int TierFourNeutralBonus = 18;
+        public static int TierFourBadBonus = 12;
 
-        public static float DoomBonus = 67;
+        public static int DoomBonus = 67;
         #endregion
 
         #region LurkerSettings
@@ -140,7 +140,6 @@ namespace TwitchToolkit
         #endregion
 
         #region ViewerData
-        public static Dictionary<string, int> viewerIDs = null;
         public static Dictionary<string, string> ViewerColorCodes = new Dictionary<string, string>();
         public static Dictionary<string, bool> ViewerModerators = new Dictionary<string, bool>();
         #endregion
@@ -201,6 +200,9 @@ namespace TwitchToolkit
             if (options.ButtonText("TwitchToolkitOptions".Translate()))
                 currentTab = SettingsTab.Options;
 
+            if (options.ButtonText("TwitchToolkitViewers".Translate()))
+                currentTab = SettingsTab.Viewers;
+
             options.End();
 
             Listing_Standard gapline = new Listing_Standard();
@@ -250,6 +252,9 @@ namespace TwitchToolkit
                     break;
                 case SettingsTab.Options:
                     Settings_Options.DoWindowContents(viewRect, optionsListing);
+                    break;
+                case SettingsTab.Viewers:
+                    Settings_Viewers.DoWindowContents(viewRect, optionsListing);
                     break;
                 default:
                     Settings_Chat.DoWindowContents(viewRect, optionsListing);
@@ -313,6 +318,13 @@ namespace TwitchToolkit
             Scribe_Values.Look(ref GiftCmd, "GiftCmd", "!giftcoins", true);
             Scribe_Values.Look(ref CommandHelpCmd, "CommandHelpCmd", "!toolkitcmds", true);
 
+            Scribe_Values.Look(ref StartingKarma, "StartingKarma", 100);
+            Scribe_Values.Look(ref KarmaCap, "KarmaCap", 140);
+            Scribe_Values.Look(ref BanViewersWhoPurchaseAlwaysBad, "BanViewersWhoPurchaseAlwaysBad", true);
+            Scribe_Values.Look(ref KarmaReqsForGifting, "KarmaReqsForGifting", false);
+            Scribe_Values.Look(ref MinimumKarmaToRecieveGifts, "MinimumKarmaToRecieveGifts", 33);
+            Scribe_Values.Look(ref MinimumKarmaToSendGifts, "MinimumKarmaToSendGifts", 100);
+
             Scribe_Values.Look(ref TierOneGoodBonus, "TierOneGoodBonus", 16, true);
             Scribe_Values.Look(ref TierOneNeutralBonus, "TierOneNeutralBonus", 36, true);
             Scribe_Values.Look(ref TierOneBadBonus, "TierOneBadBonus", 24, true);
@@ -351,7 +363,6 @@ namespace TwitchToolkit
             Scribe_Values.Look(ref EventsHaveCooldowns, "EventsHaveCooldowns", true);
             Scribe_Values.Look(ref EventCooldownInterval, "EventCooldownInterval", 15);
 
-            Scribe_Collections.Look(ref viewerIDs, "viewerIDs", LookMode.Value, LookMode.Value);
             Scribe_Collections.Look(ref ViewerColorCodes, "ViewerColorCodes", LookMode.Value, LookMode.Value);
             Scribe_Collections.Look(ref ViewerModerators, "ViewerModerators", LookMode.Value, LookMode.Value);
 
@@ -370,7 +381,8 @@ namespace TwitchToolkit
             Karma,
             Commands,
             Cooldowns,
-            Options
+            Options,
+            Viewers
         }
     }
 }

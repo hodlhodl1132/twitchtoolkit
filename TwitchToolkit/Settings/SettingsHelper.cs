@@ -34,7 +34,10 @@ namespace TwitchToolkit
             float result = Widgets.HorizontalSlider(rect3, val, min, max, true);
             val = result;
             Text.Anchor = TextAnchor.MiddleRight;
-            Widgets.Label(rect4, String.Format(format, val));
+            //Widgets.Label(rect4, String.Format(format, val));
+            string buffer = val.ToString();
+            Widgets.TextFieldNumeric<float>(rect4, ref val, ref buffer, min, max);
+
             if (!tooltip.NullOrEmpty())
             {
                 TooltipHandler.TipRegion(rect, tooltip);

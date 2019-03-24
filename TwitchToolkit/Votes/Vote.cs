@@ -26,7 +26,9 @@ namespace TwitchToolkit.Votes
         }
 
         public void RecordVote(int userId, int voteKey)
-        {   if (!VoteKeyExists(voteKey)) return;
+        {
+            Helper.Log("id " + userId + " votekey" + voteKey);
+            if (!VoteKeyExists(voteKey)) return;
             if (viewerVotes.ContainsKey(userId)) viewerVotes[userId] = voteKey;
             else viewerVotes.Add(userId, voteKey);
             CountVotes();

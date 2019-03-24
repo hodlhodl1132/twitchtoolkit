@@ -78,4 +78,14 @@
   <TwitchToolkitKarmacmd>What is karma?</TwitchToolkitKarmacmd>
   <TwitchToolkitGiftcmd>Gift coins to viewer</TwitchToolkitGiftcmd>
   <TwitchToolkitCommandhelpcmd>All available commands</TwitchToolkitCommandhelpcmd>
+  <TwitchToolkitViewers>Viewers</TwitchToolkitViewers>
+  <TwitchToolkitResetViewersCoinsOne>Reset all viewers coins</TwitchToolkitResetViewersCoinsOne>
+  <TwitchToolkitResetViewersCoinsTwo>This will reset viewers coins</TwitchToolkitResetViewersCoinsTwo>
+  <TwitchToolkitResetViewersKarmaOne>Reset all viewers karam</TwitchToolkitResetViewersKarmaOne>
+  <TwitchToolkitResetViewersKarmaTwo>This will reset viewers karma</TwitchToolkitResetViewersKarmaTwo>
+  <TwitchToolkitKarmaRound>Reward Coins by Karma</TwitchToolkitKarmaRound>
+  <TwitchToolkitRefreshViewers>Refresh Viewers</TwitchToolkitRefreshViewers>
+  <TwitchToolkitCommandsLanguage>Translate commands to English</TwitchToolkitCommandsLanguage>
+  <TwitchToolkitChatVotedFor>Chat voted for:</TwitchToolkitChatVotedFor>
+  <TwitchToolkitUpdateSpreadsheet>Update Price Spreadsheet</TwitchToolkitUpdateSpreadsheet>
 </LanguageData>

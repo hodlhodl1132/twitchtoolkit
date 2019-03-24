@@ -30,11 +30,6 @@ namespace TwitchToolkit.Settings
             optionsListing.GapLine();
             optionsListing.Gap();
 
-            optionsListing.CheckboxLabeled("TwitchToolkitCommandsModsEnabled".Translate(), ref ToolkitSettings.CommandsModsEnabled);
-
-            optionsListing.GapLine();
-            optionsListing.Gap();
-
             optionsListing.CheckboxLabeled("TwitchToolkitChatReqsForCoins".Translate(), ref ToolkitSettings.ChatReqsForCoins);
             optionsListing.SliderLabeled("TwitchToolkitTimeBeforeHalfCoins".Translate(), ref ToolkitSettings.TimeBeforeHalfCoins, Math.Round((double)ToolkitSettings.TimeBeforeHalfCoins).ToString(), 15f, 120f);
             optionsListing.SliderLabeled("TwitchToolkitTimeBeforeNoCoins".Translate(), ref ToolkitSettings.TimeBeforeNoCoins, Math.Round((double)ToolkitSettings.TimeBeforeNoCoins).ToString(), 30f, 240f);

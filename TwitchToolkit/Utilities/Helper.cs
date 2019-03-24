@@ -1889,42 +1889,6 @@ namespace TwitchToolkit
 
         #endregion
 
-        public static void PastePricesToOutputLog()
-        {
-            int linecount = 3 + StoreInventory.incItems.Count() + StoreInventory.items.Count();
-            string[] lines = new string[linecount];
-            lines[0] = "\"Events\", \"Price\", \"Type\", \"Code\"";
-            int currentline = 1;
-            foreach(IncItem product in StoreInventory.incItems)
-            {
-                string type = "malformed type";
-                if (Enum.IsDefined(typeof(KarmaType), product.karmatype))
-                {
-                    type = product.karmatype.ToString();
-                }
-                
-                if (product.price > 0)
-                {
-                    lines[currentline] = $"\"{product.name}\", \"{product.price}\", \"{type}\", \"{product.abr}\"";
-                    currentline++;
-                }
-            }
-            lines[currentline] = "";
-            currentline++;
-            lines[currentline] = "\n\"Items\", \"Price\"";
-            currentline++;
-
-            foreach(Item item in StoreInventory.items)
-            {
-                if (item.price > 0)
-                {
-                    lines[currentline] = $"\"{item.abr}\", \"{item.price}\"";
-                    currentline++;
-                }
-            }
-            System.IO.File.WriteAllLines(@"" + Application.persistentDataPath + "/productlist.csv", lines, LanguageEncoding());
-        }
-
 
         public static Encoding LanguageEncoding()
         {

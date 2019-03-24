@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using TwitchToolkit.Windows;
 using Verse;
 
 namespace TwitchToolkit.Votes
@@ -34,6 +35,7 @@ namespace TwitchToolkit.Votes
         {
             Ticker.FiringIncidents.Enqueue(new FiringIncident(incidents[DecideWinner()], source, parms));
             Find.WindowStack.TryRemove(typeof(VoteWindow));
+            Messages.Message(new Message("Chat voted for: " + incidents[DecideWinner()].LabelCap, MessageTypeDefOf.NeutralEvent), true);
         }
 
         public override string VoteKeyLabel(int id)

@@ -85,7 +85,6 @@ namespace TwitchToolkit
 
         public static void ResetViewers()
         {
-            ToolkitSettings.viewerIDs = new Dictionary<string, int>();
             All = new List<Viewer>();
         }
 
@@ -94,13 +93,31 @@ namespace TwitchToolkit
             Viewer viewer = All.Find(x => x.username == user.ToLower());
             if (viewer == null)
             {
-                viewer = new Viewer(user, ToolkitSettings.viewerIDs.Count());
-                ToolkitSettings.viewerIDs.Add(viewer.username.ToLower(), viewer.id);
+                viewer = new Viewer(user);
                 viewer.SetViewerCoins((int)ToolkitSettings.StartingBalance);
                 viewer.karma = ToolkitSettings.StartingKarma;
                 All.Add(viewer);
             }
             return viewer;
+        }
+
+        public static void RefreshViewers()
+        {
+            TwitchToolkitDev.WebRequest_BeginGetResponse.Main(
+                "https://tmi.twitch.tv/group/user/" +
+                ToolkitSettings.Channel.ToLower() +
+                "/chatters", new Func<TwitchToolkitDev.RequestState, bool>(Viewers.SaveUsernamesFromJsonResponse)
+                );
+        }
+
+        public static void ResetViewersCoins()
+        {
+            foreach(Viewer viewer in All) viewer.coins = (int)ToolkitSettings.StartingBalance;
+        }
+
+        public static void ResetViewersKarma()
+        {
+            foreach (Viewer viewer in All) viewer.karma = (int)ToolkitSettings.StartingKarma;
         }
     }
 }

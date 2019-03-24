@@ -47,8 +47,8 @@
   <TwitchToolkitNotEnoughCoins>@{viewer} du hast nicht genug Münzen. Ihr ausgewählter Artikel besteht aus {amount} Münzen. Du hast {first} Münzen.</TwitchToolkitNotEnoughCoins>
   <TwitchToolkitMinPurchaseNotMet>@{viewer}, der ausgewählte Kaufpreis beträgt {amount}, aber Sie müssen mindestens {first} Münzen ausgeben</TwitchToolkitMinPurchaseNotMet>
   <TwitchToolkitEventNotPossible>Event nicht möglich</TwitchToolkitEventNotPossible>
-  <TwitchToolkitEventOnCooldown>Ereignis zur Abklingzeit</TwitchToolkitEventOnCooldown>
+  <TwitchToolkitEventOnCooldown>Event auf Abklingzeit</TwitchToolkitEventOnCooldown>
   <TwitchToolkitEventPurchaseConfirm>Event {first} von @{viewer} gekauft</TwitchToolkitEventPurchaseConfirm>
-  <TwitchToolkitItemPurchaseConfirm>{amount} von @{viewer} gekauftes {item}</TwitchToolkitItemPurchaseConfirm>
-  <TwitchToolkitMaxEvents>Event type maxed out</TwitchToolkitMaxEvents>
+  <TwitchToolkitItemPurchaseConfirm>{amount} {item} wurden von @{viewer} gekauft </TwitchToolkitItemPurchaseConfirm>
+  <TwitchToolkitMaxEvents>Maximale Anzahl dieses Events erreicht</TwitchToolkitMaxEvents>
 </LanguageData>

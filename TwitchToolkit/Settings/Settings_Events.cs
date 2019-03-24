@@ -12,6 +12,9 @@ namespace TwitchToolkit.Settings
     {
         public static void DoWindowContents(Rect rect, Listing_Standard optionsListing)
         {
+            // unlock price spreadsheet button
+            Settings_Store.pricesMayHaveChanged = true;
+
             // top bar
             Widgets.Label(rect, "TwitchToolkitSearch".Translate() + ":");
             Rect searchBar = new Rect(60f, 0, 250f, 24f);

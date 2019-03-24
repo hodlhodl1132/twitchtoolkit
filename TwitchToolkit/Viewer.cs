@@ -13,10 +13,11 @@ namespace TwitchToolkit
 
         public DateTime last_seen;
 
-        public Viewer(string username, int id)
+        public Viewer(string username)
         {
             this.username = username;
-            this.id = id;
+            this.id = Viewers.All.Count;
+            Viewers.All.Add(this);
         }
 
         public static bool IsModerator(string user)

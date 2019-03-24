@@ -134,7 +134,7 @@ namespace TwitchToolkit
                 {
                     _lastMinute = time;
                     Toolkit.JobManager.CheckAllJobs();
-                    TwitchToolkitDev.WebRequest_BeginGetResponse.Main("https://tmi.twitch.tv/group/user/" + ToolkitSettings.Channel.ToLower() + "/chatters", new Func<TwitchToolkitDev.RequestState, bool>(Viewers.SaveUsernamesFromJsonResponse));
+                    Viewers.RefreshViewers();
                 }
             }
             catch (Exception ex)
