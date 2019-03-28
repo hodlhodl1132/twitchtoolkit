@@ -14,7 +14,7 @@ namespace TwitchToolkit.Settings
         {
             float old = rect.width;
             rect.width = 200f;
-            if (pricesMayHaveChanged && optionsListing.ButtonText("TwitchToolkitUpdateSpreadsheet".Translate()))
+            if (pricesMayHaveChanged && optionsListing.CenteredButton("TwitchToolkitUpdateSpreadsheet".Translate()))
             {
                 SaveHelper.CreateStorePricesCSV();
                 pricesMayHaveChanged = false;

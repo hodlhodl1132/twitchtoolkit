@@ -19,6 +19,7 @@ namespace TwitchToolkit
         #endregion
 
         #region TwitchChatRooms
+        public static bool UseSeparateChatRoom = false;
         public static string ChannelID = "";
         public static string ChatroomUUID = "";
         #endregion
@@ -26,6 +27,8 @@ namespace TwitchToolkit
         #region VoteOptions
         public static int VoteTime = 2;
         public static int VoteOptions = 3;
+        public static bool TimedStorytelling = false;
+        public static int TimeBetweenStorytellingEvents = 10;
         public static bool VotingChatMsgs = false;
         public static bool VotingWindow = true;
         public static float VotingWindowx = -1;
@@ -202,6 +205,9 @@ namespace TwitchToolkit
 
             if (options.ButtonText("TwitchToolkitViewers".Translate()))
                 currentTab = SettingsTab.Viewers;
+            
+            if (options.ButtonText("TwitchToolkitIntegrations".Translate()))
+                currentTab = SettingsTab.Integrations;
 
             options.End();
 
@@ -220,7 +226,7 @@ namespace TwitchToolkit
             Rect viewRect = new Rect(0,0, rect.width - 100f, 650f);
             viewRect.width -= 25f;
 
-            if (currentTab == SettingsTab.Events) viewRect.height = StoreInventory.incItems.Count() * 60f + 60f;
+            if (currentTab == SettingsTab.Events) viewRect.height = StoreInventory.incItems.Count() * 62f + 60f;
             if (currentTab == SettingsTab.Items) viewRect.height = StoreInventory.items.Count() * 34f + 34;
             if (currentTab == SettingsTab.Karma || currentTab == SettingsTab.Options) viewRect.height += 170f;
             
@@ -256,6 +262,9 @@ namespace TwitchToolkit
                 case SettingsTab.Viewers:
                     Settings_Viewers.DoWindowContents(viewRect, optionsListing);
                     break;
+                case SettingsTab.Integrations:
+                    Settings_Integrations.DoWindowContents(viewRect, optionsListing);
+                    break;
                 default:
                     Settings_Chat.DoWindowContents(viewRect, optionsListing);
                     break;
@@ -272,11 +281,14 @@ namespace TwitchToolkit
             Scribe_Values.Look(ref OAuth, "OAuth", "");
             Scribe_Values.Look(ref AutoConnect, "AutoConnect", true);
 
+            Scribe_Values.Look(ref UseSeparateChatRoom, "UseSeparateChatRoom", false);
             Scribe_Values.Look(ref ChannelID, "ChannelID", "");
             Scribe_Values.Look(ref ChatroomUUID, "ChatroomUUID", "");
 
             Scribe_Values.Look(ref VoteTime, "VoteTime", 2);
             Scribe_Values.Look(ref VoteOptions, "VoteOptions", 3);
+            Scribe_Values.Look(ref TimedStorytelling, "TimedStorytelling", false);
+            Scribe_Values.Look(ref TimeBetweenStorytellingEvents, "TimeBetweenStorytellingEvents", 10);
             Scribe_Values.Look(ref VotingChatMsgs, "VotingChatMsgs", false);
             Scribe_Values.Look(ref VotingWindow, "VotingWindow", true);
             Scribe_Values.Look(ref VotingWindowx, "VotingWindowx", -1);
@@ -382,7 +394,8 @@ namespace TwitchToolkit
             Commands,
             Cooldowns,
             Options,
-            Viewers
+            Viewers,
+            Integrations
         }
     }
 }

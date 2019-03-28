@@ -512,6 +512,7 @@ namespace TwitchToolkit
 
         public static void Raid(string quote, float points, PawnsArrivalModeDef arrival, RaidStrategyDef strategy = null, Faction faction = null)
         {
+            if (points < 0) return;
             var raidEnemy = new TSIncidents.IncidentWorker_RaidEnemy(quote);
             raidEnemy.def = IncidentDefOf.RaidEnemy;
             if (quote != null)

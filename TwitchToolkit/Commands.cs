@@ -14,9 +14,11 @@ namespace TwitchToolkit.Store
         static TwitchToolkit _mod = LoadedModManager.GetMod<TwitchToolkit>();
         static readonly ToolkitIRC _client = Toolkit.client;
 
-        public static void CheckCommand(string message, string user)
+        public static void CheckCommand(IRCMessage msg)
         {
 
+            string message = msg.Message;
+            string user = msg.User;
             if (message.Split(' ')[0] == "/w")
             {
                 List<string> messagewhisper = message.Split(' ').ToList();
@@ -44,17 +46,17 @@ namespace TwitchToolkit.Store
                     }
                     else if (resetWarning == 0)
                     {
-                        _client.SendMessage($"@{user} " + "TwitchToolkitResetViewersWarningOne".Translate());
+                        _client.SendMessage($"@{user} " + "TwitchToolkitResetViewersWarningOne".Translate(), SendToChatroom(msg.Channel));
                         resetWarning = 1;
                     }
                     else if (resetWarning == 1)
                     {
-                        _client.SendMessage($"@{user} " + "TwitchToolkitResetViewersWarningTwo".Translate());
+                        _client.SendMessage($"@{user} " + "TwitchToolkitResetViewersWarningTwo".Translate(), SendToChatroom(msg.Channel));
                         resetWarning = 2;
                     }
                     else if (resetWarning == 2)
                     {
-                        _client.SendMessage($"@{user} " + "TwitchToolkitResetViewersWarningThree".Translate());
+                        _client.SendMessage($"@{user} " + "TwitchToolkitResetViewersWarningThree".Translate(), SendToChatroom(msg.Channel));
                         Viewers.ResetViewers();
                         resetWarning = 0;
                     }
@@ -73,14 +75,14 @@ namespace TwitchToolkit.Store
 
                         if (Viewer.IsModerator(mod))
                         {
-                            _client.SendMessage($"@{user} " + Helper.ReplacePlaceholder("TwitchToolkitAlreadyMod".Translate(), mod: mod));
+                            _client.SendMessage($"@{user} " + Helper.ReplacePlaceholder("TwitchToolkitAlreadyMod".Translate(), mod: mod), SendToChatroom(msg.Channel));
                             return;
                         }
 
                         Viewer modviewer = Viewers.GetViewer(mod);
 
                         modviewer.SetAsModerator();
-                        _client.SendMessage($"@{user} " + Helper.ReplacePlaceholder("TwitchToolkitAddedMod".Translate(), mod: mod));
+                        _client.SendMessage($"@{user} " + Helper.ReplacePlaceholder("TwitchToolkitAddedMod".Translate(), mod: mod), SendToChatroom(msg.Channel));
                 }
 
                 if (message.StartsWith("!removetoolkitmod"))
@@ -102,7 +104,7 @@ namespace TwitchToolkit.Store
                         Viewer modviewer = Viewers.GetViewer(mod);
 
                         modviewer.RemoveAsModerator();
-                        _client.SendMessage($"@{user} " + Helper.ReplacePlaceholder("TwitchToolkitRemovedMod".Translate(), mod: mod));
+                        _client.SendMessage($"@{user} " + Helper.ReplacePlaceholder("TwitchToolkitRemovedMod".Translate(), mod: mod), SendToChatroom(msg.Channel));
                 }
             }
 
@@ -138,7 +140,7 @@ namespace TwitchToolkit.Store
                             {
                                 vwr.GiveViewerCoins(amount);
                             }
-                            _client.SendMessage($"@{user} " + Helper.ReplacePlaceholder("TwitchToolkitGiveAllCoins".Translate(), amount: amount.ToString()));
+                            _client.SendMessage($"@{user} " + Helper.ReplacePlaceholder("TwitchToolkitGiveAllCoins".Translate(), amount: amount.ToString()), SendToChatroom(msg.Channel));
                         }
                     }
                     catch (InvalidCastException e)
@@ -174,7 +176,7 @@ namespace TwitchToolkit.Store
 
                             Helper.Log($"Giving viewer {giftee.username} {amount} coins");
                             giftee.GiveViewerCoins(amount);
-                            _client.SendMessage($"@{user} " + Helper.ReplacePlaceholder("TwitchToolkitGivingCoins".Translate(), viewer: giftee.username, amount: amount.ToString(), newbalance: giftee.coins.ToString()));
+                            _client.SendMessage($"@{user} " + Helper.ReplacePlaceholder("TwitchToolkitGivingCoins".Translate(), viewer: giftee.username, amount: amount.ToString(), newbalance: giftee.coins.ToString()), SendToChatroom(msg.Channel));
                         }
                     }
                     catch (InvalidCastException e)
@@ -197,7 +199,7 @@ namespace TwitchToolkit.Store
                         string target = command[1].Replace("@", "");
 
                         Viewer targeted = Viewers.GetViewer(target);
-                        _client.SendMessage($"@{user} " + Helper.ReplacePlaceholder("TwitchToolkitCheckUser".Translate(), viewer: targeted.username, amount: targeted.coins.ToString(), karma: targeted.GetViewerKarma().ToString()));
+                        _client.SendMessage($"@{user} " + Helper.ReplacePlaceholder("TwitchToolkitCheckUser".Translate(), viewer: targeted.username, amount: targeted.coins.ToString(), karma: targeted.GetViewerKarma().ToString()), SendToChatroom(msg.Channel));
 
                     }
                     catch (InvalidCastException e)
@@ -224,7 +226,7 @@ namespace TwitchToolkit.Store
                         {
                             Viewer targeted = Viewers.GetViewer(target);
                             targeted.SetViewerKarma(amount);
-                            _client.SendMessage($"@{user}" + Helper.ReplacePlaceholder("TwitchToolkitSetKarma".Translate(), viewer: targeted.username, karma: amount.ToString()));
+                            _client.SendMessage($"@{user}" + Helper.ReplacePlaceholder("TwitchToolkitSetKarma".Translate(), viewer: targeted.username, karma: amount.ToString()), SendToChatroom(msg.Channel));
                         }
                     }
                     catch (InvalidCastException e)
@@ -238,12 +240,12 @@ namespace TwitchToolkit.Store
                     if (ToolkitSettings.EarningCoins)
                     {
                         ToolkitSettings.EarningCoins = false;
-                        _client.SendMessage($"@{user} " + "TwitchToolkitEarningCoinsMessage".Translate() + " " + "TwitchToolkitOff".Translate());
+                        _client.SendMessage($"@{user} " + "TwitchToolkitEarningCoinsMessage".Translate() + " " + "TwitchToolkitOff".Translate(), SendToChatroom(msg.Channel));
                     }
                     else
                     {
                         ToolkitSettings.EarningCoins = true;
-                        _client.SendMessage($"@{user} " + "TwitchToolkitEarningCoinsMessage".Translate() + " " + "TwitchToolkitOn".Translate());
+                        _client.SendMessage($"@{user} " + "TwitchToolkitEarningCoinsMessage".Translate() + " " + "TwitchToolkitOn".Translate(), SendToChatroom(msg.Channel));
                     }
                 }
 
@@ -252,12 +254,12 @@ namespace TwitchToolkit.Store
                     if (ToolkitSettings.StoreOpen)
                     {
                         ToolkitSettings.StoreOpen = false;
-                        _client.SendMessage($"@{user} " + "TwitchToolkitStorePurchasesMessage".Translate() + " " + "TwitchToolkitOn".Translate());
+                        _client.SendMessage($"@{user} " + "TwitchToolkitStorePurchasesMessage".Translate() + " " + "TwitchToolkitOn".Translate(), SendToChatroom(msg.Channel));
                     }
                     else
                     {
                         ToolkitSettings.StoreOpen = true;
-                        _client.SendMessage($"@{user} " + "TwitchToolkitStorePurchasesMessage".Translate() + " " + "TwitchToolkitOn".Translate());
+                        _client.SendMessage($"@{user} " + "TwitchToolkitStorePurchasesMessage".Translate() + " " + "TwitchToolkitOn".Translate(), SendToChatroom(msg.Channel));
                     }
                 }
             }
@@ -265,28 +267,27 @@ namespace TwitchToolkit.Store
             // commands are suppressed when not earning coins
             if (ToolkitSettings.EarningCoins)
             {    
-                if (message.StartsWith(ToolkitSettings.BalanceCmd))
+                if (message.StartsWith(ToolkitSettings.BalanceCmd) && AllowCommand(msg.Channel))
                 {
-                    Helper.Log("Trying to find User");
-                    _client.SendMessage($"@{viewer.username} " + Helper.ReplacePlaceholder("TwitchToolkitBalanceMessage".Translate(), amount: viewer.coins.ToString(), karma: viewer.GetViewerKarma().ToString()));
+                    _client.SendMessage($"@{viewer.username} " + Helper.ReplacePlaceholder("TwitchToolkitBalanceMessage".Translate(), amount: viewer.GetViewerCoins().ToString(), karma: viewer.GetViewerKarma().ToString()), true);
                 }
 
                 if (message.StartsWith(ToolkitSettings.KarmaCmd) && !message.Contains("!karmaround"))
                 {
-                    _client.SendMessage($"@{viewer.username} " + "TwitchToolkitWhatIsKarma".Translate() +  $" { viewer.GetViewerKarma()}%");
+                    _client.SendMessage($"@{viewer.username} " + "TwitchToolkitWhatIsKarma".Translate() +  $" { viewer.GetViewerKarma()}%", SendToChatroom(msg.Channel));
                 }
 
                 if (message.StartsWith(ToolkitSettings.InstructionsCmd))
                 {
-                    _client.SendMessage($"@{user} " + Helper.ReplacePlaceholder("TwitchToolkitInstructions".Translate(), first: ToolkitSettings.BuyeventCmd, second: ToolkitSettings.BuyitemCmd, third: ToolkitSettings.CustomPricingSheetLink));
+                    _client.SendMessage($"@{user} " + Helper.ReplacePlaceholder("TwitchToolkitInstructions".Translate(), first: ToolkitSettings.BuyeventCmd, second: ToolkitSettings.BuyitemCmd, third: ToolkitSettings.CustomPricingSheetLink), SendToChatroom(msg.Channel));
                 }
 
                 if (message.StartsWith(ToolkitSettings.PurchaselistCmd))
                 {
-                    _client.SendMessage($"@{user} " + "TwitchToolkitPurchaseList".Translate() + $" {ToolkitSettings.CustomPricingSheetLink}");
+                    _client.SendMessage($"@{user} " + "TwitchToolkitPurchaseList".Translate() + $" {ToolkitSettings.CustomPricingSheetLink}", SendToChatroom(msg.Channel));
                 }
 
-                if (message.StartsWith(ToolkitSettings.GiftCmd) && ToolkitSettings.GiftingCoins)
+                if (message.StartsWith(ToolkitSettings.GiftCmd) && ToolkitSettings.GiftingCoins && AllowCommand(msg.Channel))
                 {
                     string[] command = message.Split(' ');
 
@@ -311,11 +312,11 @@ namespace TwitchToolkit.Store
                         }
 
 
-                        if (viewer.coins >= amount)
+                        if (viewer.GetViewerCoins() >= amount)
                         {
                             viewer.TakeViewerCoins(amount);
                             giftee.GiveViewerCoins(amount);
-                            _client.SendMessage($"@{giftee.username} " + Helper.ReplacePlaceholder("TwitchToolkitGiftCoins".Translate(), amount: amount.ToString(), from: viewer.username));
+                            _client.SendMessage($"@{giftee.username} " + Helper.ReplacePlaceholder("TwitchToolkitGiftCoins".Translate(), amount: amount.ToString(), from: viewer.username), true);
                         }
                     }
                 }
@@ -323,12 +324,12 @@ namespace TwitchToolkit.Store
 
             if (message.StartsWith(ToolkitSettings.ModinfoCmd))
             {
-                _client.SendMessage($"@{user} " + "TwitchToolkitModInfo".Translate() + " https://discord.gg/qrtg224 !");
+                _client.SendMessage($"@{user} " + "TwitchToolkitModInfo".Translate() + " https://discord.gg/qrtg224 !", SendToChatroom(msg.Channel));
             }
 
             if (ToolkitSettings.StoreOpen)
             {
-                if (message.StartsWith(ToolkitSettings.BuyeventCmd))
+                if (message.StartsWith(ToolkitSettings.BuyeventCmd) && AllowCommand(msg.Channel))
                 {
                     if (message.Split(' ').Count() < 2 || (message.Split(' ')[1] == "carepackage"))
                     {
@@ -338,15 +339,15 @@ namespace TwitchToolkit.Store
                     StoreCommands command = new StoreCommands(message, Viewers.GetViewer(user));
                     if (command.errormessage != null)
                     {
-                        _client.SendMessage(command.errormessage);
+                        _client.SendMessage(command.errormessage, true);
                     }
                     else if (command.successmessage != null && ToolkitSettings.PurchaseConfirmations)
                     {
-                        _client.SendMessage(command.successmessage);
+                        _client.SendMessage(command.successmessage, true);
                     }
                 }
 
-                if (message.StartsWith(ToolkitSettings.BuyitemCmd))
+                if (message.StartsWith(ToolkitSettings.BuyitemCmd) && AllowCommand(msg.Channel))
                 {
                     string[] command = message.Split(' ');
 
@@ -364,11 +365,11 @@ namespace TwitchToolkit.Store
                     StoreCommands command2 = new StoreCommands(newcommand, Viewers.GetViewer(user));
                     if (command2.errormessage != null)
                     {
-                        _client.SendMessage(command2.errormessage);
+                        _client.SendMessage(command2.errormessage, true);
                     }
                     else if (command2.successmessage != null && ToolkitSettings.PurchaseConfirmations)
                     {
-                        _client.SendMessage(command2.successmessage);
+                        _client.SendMessage(command2.successmessage, true);
                     }
                 }
 
@@ -388,7 +389,7 @@ namespace TwitchToolkit.Store
                     karma: ToolkitSettings.KarmaCap.ToString()
                     );
 
-                _client.SendMessage(stats_message);
+                _client.SendMessage(stats_message, SendToChatroom(msg.Channel));
             }
 
             if (message.StartsWith(ToolkitSettings.CommandHelpCmd))
@@ -401,32 +402,47 @@ namespace TwitchToolkit.Store
                 ToolkitSettings.PurchaselistCmd + ", " +
                 ToolkitSettings.ModinfoCmd + ", " +
                 ToolkitSettings.ModsettingsCmd + ", " +
-                ToolkitSettings.KarmaCmd + ", " +
-                ToolkitSettings.GiftCmd;
+                ToolkitSettings.KarmaCmd;
 
-                _client.SendMessage("TwitchToolkitUserCommands".Translate() + commands);
+                if (ToolkitSettings.GiftingCoins)
+                    commands += ", " + ToolkitSettings.GiftCmd;
+
+                _client.SendMessage("TwitchToolkitUserCommands".Translate() + commands, SendToChatroom(msg.Channel));
             }
 
 
             if (ToolkitSettings.CommandsModsEnabled && message.Contains("!installedmods") && (DateTime.Now - modsCommandCooldown).TotalSeconds >= 10)
             {
                 modsCommandCooldown = DateTime.Now;
-                string msg = "Version: " + _mod.Version + ", Mods: ";
+                string modmsg = "Version: " + _mod.Version + ", Mods: ";
                 string[] mods = LoadedModManager.RunningMods.Select((m) => m.Name).ToArray();
 
                 for (int i = 0; i < mods.Length; i++)
                 {
-                    msg += mods[i] + ", ";
+                    modmsg += mods[i] + ", ";
 
-                    if (i == (mods.Length - 1) || msg.Length > 256)
+                    if (i == (mods.Length - 1) || modmsg.Length > 256)
                     {
-                        msg = msg.Substring(0, msg.Length - 2);
-                        Toolkit.client.SendMessage(msg);
-                        msg = "";
+                        modmsg = modmsg.Substring(0, modmsg.Length - 2);
+                        Toolkit.client.SendMessage(modmsg, SendToChatroom(msg.Channel));
+                        modmsg = "";
                     }
                 }
                 return;
             }
+        }
+
+        static bool AllowCommand(string channel)
+        {
+            if (!ToolkitSettings.UseSeparateChatRoom) return true;
+            if (channel == "#chatrooms:" + ToolkitSettings.ChannelID + ":" + ToolkitSettings.ChatroomUUID) return true;
+            return false;
+        }
+
+        static bool SendToChatroom(string channel)
+        {
+            if (channel == "#chatrooms:" + ToolkitSettings.ChannelID + ":" + ToolkitSettings.ChatroomUUID) return true;
+            return false;
         }
 
         static DateTime modsCommandCooldown = DateTime.MinValue;

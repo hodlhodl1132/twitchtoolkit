@@ -10,10 +10,7 @@ namespace TwitchToolkit
     public class StorytellerCompProperties_CustomOnOffCycle : StorytellerCompProperties
     {
         // Token: 0x06000FA2 RID: 4002 RVA: 0x00074894 File Offset: 0x00072C94
-        public StorytellerCompProperties_CustomOnOffCycle()
-        {
-            this.compClass = typeof(StorytellerComp_CustomOnOffCycle);
-        }
+        public StorytellerCompProperties_CustomOnOffCycle() => compClass = typeof(StorytellerComp_CustomOnOffCycle);
 
         // Token: 0x17000239 RID: 569
         // (get) Token: 0x06000FA3 RID: 4003 RVA: 0x000748B7 File Offset: 0x00072CB7

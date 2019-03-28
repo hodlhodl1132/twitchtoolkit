@@ -8,7 +8,7 @@ using Verse;
 
 namespace TwitchToolkit.Settings
 {
-    class Settings_Events
+    partial class Settings_Events
     {
         public static void DoWindowContents(Rect rect, Listing_Standard optionsListing)
         {
@@ -47,16 +47,23 @@ namespace TwitchToolkit.Settings
 
             Rect maxEventsRect = new Rect(180f, 66f, 200f, 24f);
             Rect maxEventsLabel = new Rect(390f, 62f, 60f, 24f);
+
+            //SortEvents(ref StoreInventory.incItems);
+
             foreach (IncItem incItem in StoreInventory.incItems)
             {
-                if (searchQuery != "" && !incItem.name.Contains(searchQuery)) continue;
+                if (searchQuery != "" && !incItem.name.ToLower().Contains(searchQuery.ToLower())) continue;
                 string price = incItem.price.ToString();
 
                 // price adjuster
                 Widgets.Label(eventLabel, incItem.name + ": " + ((incItem.price > 0) ? price : "Disabled"));
                 if (incItem.price > 0) Widgets.IntEntry(priceRect, ref incItem.price, ref price, 50);
                 if (incItem.price > 0 && Widgets.ButtonText(disableRect, "Disable")) incItem.price = -10;
-                if (incItem.price < 0 && Widgets.ButtonText(disableRect, "Reset")) incItem.price = IncidentItems.GenerateDefaultProducts().ToList()[incItem.id].price;
+                if (incItem.price < 0 && Widgets.ButtonText(disableRect, "Reset"))
+                {
+                    incItem.price = IncidentItems.GenerateDefaultProducts().ToList()[incItem.id].price;
+                    if (incItem.price < 0) incItem.price = 50;
+                }
 
                 eventLabel.y += eventRowHeight;
                 priceRect.y += eventRowHeight;

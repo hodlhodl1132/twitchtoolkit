@@ -59,13 +59,6 @@ namespace TwitchToolkit
                 Find.WindowStack.Add(chatwnd);
             }
 
-            rectBtn.x += rectBtn.width + padding;
-            if (Widgets.ButtonText(rectBtn, "Queue Window") && !Find.WindowStack.TryRemove(typeof(QueueWindow), true))
-            {
-                QueueWindow quewnd = new QueueWindow();
-                Find.WindowStack.Add(quewnd);
-            }
-
             var rectMessages = new Rect(padding, rectBtn.height + padding, inRect.width - (padding * 2), 180f);
             if (Toolkit.client != null) Widgets.TextArea(rectMessages, string.Join("\r\n", Toolkit.client.MessageLog), true);
 

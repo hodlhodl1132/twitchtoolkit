@@ -22,7 +22,6 @@ namespace TwitchToolkit
 
         static Thread _registerThread;
         static Game _game;
-        static Map _map;
         static TwitchToolkit _mod = Toolkit.Mod;
 
         static Ticker _instance;
@@ -43,6 +42,7 @@ namespace TwitchToolkit
             def = new ThingDef { tickerType = TickerType.Normal, isSaveable = false };
             _registerThread = new Thread(Register);
             _registerThread.Start();
+            lastEvent = DateTime.Now;
         }
 
         void Register()
@@ -135,12 +135,14 @@ namespace TwitchToolkit
                     _lastMinute = time;
                     Toolkit.JobManager.CheckAllJobs();
                     Viewers.RefreshViewers();
-                }
+                }   
             }
             catch (Exception ex)
             {
                 Helper.Log("Exception: " + ex.Message + ex.StackTrace);
             }
         }
+
+        public static DateTime lastEvent;
     }
 }

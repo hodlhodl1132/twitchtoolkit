@@ -21,7 +21,7 @@
   <TwitchToolkitCoinAmount>How many coins given to viewers per interval?</TwitchToolkitCoinAmount>
   <TwitchToolkitMinimumPurchasePrice>Minimum amount of coins to spend when purchasing items?</TwitchToolkitMinimumPurchasePrice>
   <TwitchToolkitUnlimitedCoins>Should viewers have unlimited coins?</TwitchToolkitUnlimitedCoins>
-  <TwitchToolkitGiftingCoins>Are viewers able to gift each other coins? (exploitable)</TwitchToolkitGiftingCoins>
+  <TwitchToolkitGiftingCoins>Are viewers able to gift each other coins? (exploitable through alt accounts)</TwitchToolkitGiftingCoins>
   <TwitchToolkitSearch>Search</TwitchToolkitSearch>
   <TwitchToolkitResetToDefault>Reset to Default</TwitchToolkitResetToDefault>
   <TwitchToolkitAreYouSure>Are you sure?</TwitchToolkitAreYouSure>
@@ -37,7 +37,7 @@
   <TwitchToolkitStartingKarma>What karma amount should new viewers start with?</TwitchToolkitStartingKarma>
   <TwitchToolkitKarmaCap>What is the maximum amount of karma viewers can have?</TwitchToolkitKarmaCap>
   <TwitchToolkitBanViewersWhoAreBad>Should viewers be stopped from having negative karma?</TwitchToolkitBanViewersWhoAreBad>
-  <TwitchToolkitKarmaReqsForGifting>Enforce Requirements to receive and send coin gifts?</TwitchToolkitKarmaReqsForGifting>
+  <TwitchToolkitKarmaReqsForGifting>Enforce Requirements to receive and send coin gifts? (Reqs below)</TwitchToolkitKarmaReqsForGifting>
   <TwitchToolkitMinKarmaForGifts>Minimum amount of karma a viewer needs to receive coin gifts</TwitchToolkitMinKarmaForGifts>
   <TwitchToolkitMinKarmaSendGifts>Minimum amount of karma a viewer needs to send coin gifts</TwitchToolkitMinKarmaSendGifts>
   <TwitchToolkitGoodViewers>Good Viewers</TwitchToolkitGoodViewers>
@@ -56,7 +56,7 @@
   <TwitchToolkitCommandsModsEnabled>Allow users to use mod list command? !installedmods</TwitchToolkitCommandsModsEnabled>
   <TwitchToolkitChannelID>Channel ID</TwitchToolkitChannelID>
   <TwitchToolkitChatroomID>Room ID</TwitchToolkitChatroomID>
-  <TwitchToolkitChatReqsForCoins>Only reward viewers who participate in chat?</TwitchToolkitChatReqsForCoins>
+  <TwitchToolkitChatReqsForCoins>Only reward viewers who participate in chat? (Main or separate supported)</TwitchToolkitChatReqsForCoins>
   <TwitchToolkitTimeBeforeHalfCoins>How many minutes before lurkers earn half the coin rate?</TwitchToolkitTimeBeforeHalfCoins>
   <TwitchToolkitTimeBeforeNoCoins>How long before they earn no coins?</TwitchToolkitTimeBeforeNoCoins>
   <TwitchToolkitMaxEventsLimit>Limit the amount of events by type?</TwitchToolkitMaxEventsLimit>
@@ -81,11 +81,29 @@
   <TwitchToolkitViewers>Viewers</TwitchToolkitViewers>
   <TwitchToolkitResetViewersCoinsOne>Reset all viewers coins</TwitchToolkitResetViewersCoinsOne>
   <TwitchToolkitResetViewersCoinsTwo>This will reset viewers coins</TwitchToolkitResetViewersCoinsTwo>
-  <TwitchToolkitResetViewersKarmaOne>Reset all viewers karam</TwitchToolkitResetViewersKarmaOne>
+  <TwitchToolkitResetViewersKarmaOne>Reset all viewers karma</TwitchToolkitResetViewersKarmaOne>
   <TwitchToolkitResetViewersKarmaTwo>This will reset viewers karma</TwitchToolkitResetViewersKarmaTwo>
   <TwitchToolkitKarmaRound>Reward Coins by Karma</TwitchToolkitKarmaRound>
   <TwitchToolkitRefreshViewers>Refresh Viewers</TwitchToolkitRefreshViewers>
   <TwitchToolkitCommandsLanguage>Translate commands to English</TwitchToolkitCommandsLanguage>
   <TwitchToolkitChatVotedFor>Chat voted for:</TwitchToolkitChatVotedFor>
   <TwitchToolkitUpdateSpreadsheet>Update Price Spreadsheet</TwitchToolkitUpdateSpreadsheet>
+  <TwitchToolkitTimedStorytelling>Make event votes to happen on timed schedule (Requires HodlBot Storyteller)</TwitchToolkitTimedStorytelling>
+  <TwitchToolkitTimeBetweenStorytellingEvents>Minutes between forced event votes</TwitchToolkitTimeBetweenStorytellingEvents>
+  <TwitchToolkitHideOauth>Hide oauth key from stream</TwitchToolkitHideOauth>
+  <TwitchToolkitHideOauthButton>Hide oauth</TwitchToolkitHideOauthButton>
+  <TwitchToolkitConnected>Connected</TwitchToolkitConnected>
+  <TwitchToolkitDisconnect>Disconnect</TwitchToolkitDisconnect>
+  <TwitchToolkitConnect>Connect</TwitchToolkitConnect>
+  <TwitchToolkitReconnect>Reconnect</TwitchToolkitReconnect>
+  <TwitchToolkitNewConnection>New Connection</TwitchToolkitNewConnection>
+  <TwitchToolkitGetNewOauthKey>Get Oauth Key</TwitchToolkitGetNewOauthKey>
+  <TwitchToolkitWhatIsSeparateChannel>Using separate chatroom allows you to create a seperate room for the most used commands.</TwitchToolkitWhatIsSeparateChannel>
+  <TwitchToolkitLearnMore>Learn More</TwitchToolkitLearnMore>
+  <TwitchToolkitUseSeparateChannel>Use separate chatroom</TwitchToolkitUseSeparateChannel>
+  <TwitchToolkitStreamlabsSync>Sync viewer currency to streamlabs?</TwitchToolkitStreamlabsSync>
+  <TwitchToolkitIntegrations>Integrations</TwitchToolkitIntegrations>
+  <TwitchToolkitStreamelementsSync>Keep Stream Elements 100% in sync? (not recommended)</TwitchToolkitStreamelementsSync>
+  <TwitchToolkitImportStreamElements>Import Currency</TwitchToolkitImportStreamElements>
+  <TwitchToolkitExportStreamElements>Export Currency</TwitchToolkitExportStreamElements>
 </LanguageData>

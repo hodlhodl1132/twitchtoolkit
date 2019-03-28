@@ -12,7 +12,6 @@ namespace TwitchToolkit.Incidents
 {
     public class IncidentWorker_CallForAid : IncidentWorker_Raid
     {
-        readonly string Quote;
 
         public IncidentWorker_CallForAid(string quote) : base(quote)
         {

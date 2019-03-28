@@ -36,7 +36,7 @@ namespace TwitchToolkit
 
             HarmonyMethod savePostfix = new HarmonyMethod(typeof(HarmonyPatches).GetMethod("SaveGame_Postfix"));
 
-            harmony.Patch(saveMethod, savePostfix, null);
+            harmony.Patch(saveMethod, null, savePostfix, null);
             harmony.Patch(original: AccessTools.Method(type: typeof(IncidentWorker), name: "SendStandardLetter", parameters: new Type[] {}), prefix: new HarmonyMethod(type: patchType, name: nameof(ChangeLetterTextPrefix)));
             harmony.Patch(original: AccessTools.Method(type: typeof(IncidentWorker), name: "SendStandardLetter", parameters: new[] { typeof(LookTargets), typeof(Faction), typeof(string[])}), prefix: new HarmonyMethod(type: patchType, name: nameof(ChangeLetterTextArgsPrefix)));
         }

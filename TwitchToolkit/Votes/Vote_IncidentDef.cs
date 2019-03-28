@@ -27,13 +27,27 @@ namespace TwitchToolkit.Votes
 
         public override void StartVote()
         {
-            VoteWindow window = new VoteWindow(this);
-            Find.WindowStack.Add(window);
+            // if streamers has both voting chat messagse and voting window off, create the window still
+            if (ToolkitSettings.VotingWindow || (!ToolkitSettings.VotingWindow && !ToolkitSettings.VotingChatMsgs))
+            {
+                VoteWindow window = new VoteWindow(this);
+                Find.WindowStack.Add(window);
+            }
+
+            if (ToolkitSettings.VotingChatMsgs)
+            {
+                Toolkit.client.SendMessage("TwitchStoriesChatMessageNewVote".Translate() + ": " + "TwitchToolKitVoteInstructions".Translate());
+                foreach (KeyValuePair<int, IncidentDef> pair in incidents)
+                {
+                    Toolkit.client.SendMessage($"[{pair.Key + 1}]  {pair.Value.LabelCap}");
+                }
+            }
         }
 
         public override void EndVote()
         {
             Ticker.FiringIncidents.Enqueue(new FiringIncident(incidents[DecideWinner()], source, parms));
+            Ticker.lastEvent = DateTime.Now;
             Find.WindowStack.TryRemove(typeof(VoteWindow));
             Messages.Message(new Message("Chat voted for: " + incidents[DecideWinner()].LabelCap, MessageTypeDefOf.NeutralEvent), true);
         }

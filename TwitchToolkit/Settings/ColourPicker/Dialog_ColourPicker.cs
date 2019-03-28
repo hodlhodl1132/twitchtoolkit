@@ -449,9 +449,7 @@ namespace ColourPicker
                 }
                 catch( Exception e )
                 {
-#if DEBUG
                     Log.Message("Falied to convert from" + hex + "\n" + e);
-#endif
                     col = Color.white;
                     return false;
                 }

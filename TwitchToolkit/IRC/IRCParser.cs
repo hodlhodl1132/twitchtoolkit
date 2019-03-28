@@ -29,11 +29,20 @@ namespace TwitchToolkit.IRC
         string _key;
         string _value;
 
+        public void NewParse()
+        {
+
+        }
+
         public void Parse(byte[] buffer, int length, OnMessage callback)
         {         
             Decoder decoder = Helper.LanguageEncoding().GetDecoder();
-            char[] chars = new char[decoder.GetCharCount(buffer,0,buffer.Length)];
-            decoder.GetChars(buffer, 0, buffer.Length, chars,0);
+            char[] chars;
+
+            int charCount = decoder.GetCharCount(buffer, 0, buffer.Length);
+            chars = new Char[charCount];
+            int charLength = decoder.GetChars(buffer, 0, buffer.Length, chars, 0, true);
+            _state = IRCParserState.Start;
             for (int i = 0; i < length; i++)
             {
                 var b = chars[i];
@@ -152,7 +161,6 @@ namespace TwitchToolkit.IRC
                                     }
                                 }
                             }
-
                             callback(_message);
                             _state = IRCParserState.Start;
                         }
@@ -176,6 +184,8 @@ namespace TwitchToolkit.IRC
                         if (b == ';' || b == ' ')
                         {
                             _message.Parameters.Add(_key, _value);
+                            _key = "";
+                            _value = "";
                         }
 
                         if (b == ';') _state = IRCParserState.Key;

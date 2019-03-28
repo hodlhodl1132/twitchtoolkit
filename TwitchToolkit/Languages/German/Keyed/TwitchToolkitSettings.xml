@@ -87,5 +87,22 @@
   <TwitchToolkitRefreshViewers>Zuschauer neu laden</TwitchToolkitRefreshViewers>
   <TwitchToolkitCommandsLanguage>Translate commands to German</TwitchToolkitCommandsLanguage>
   <TwitchToolkitChatVotedFor>Chat voted for:</TwitchToolkitChatVotedFor>
-  <TwitchToolkitUpdateSpreadsheet>Update Price Spreadsheet</TwitchToolkitUpdateSpreadsheet>
+  <TwitchToolkitTimedStorytelling>Make event votes to happen on timed schedule (Requires HodlBot Storyteller)</TwitchToolkitTimedStorytelling>
+  <TwitchToolkitTimeBetweenStorytellingEvents>Minutes between forced event votes</TwitchToolkitTimeBetweenStorytellingEvents>
+  <TwitchToolkitHideOauth>Hide oauth key from stream</TwitchToolkitHideOauth>
+  <TwitchToolkitHideOauthButton>Hide oauth</TwitchToolkitHideOauthButton>
+  <TwitchToolkitConnected>Connected</TwitchToolkitConnected>
+  <TwitchToolkitDisconnect>Disconnect</TwitchToolkitDisconnect>
+  <TwitchToolkitConnect>Connect</TwitchToolkitConnect>
+  <TwitchToolkitReconnect>Reconnect</TwitchToolkitReconnect>
+  <TwitchToolkitNewConnection>New Connection</TwitchToolkitNewConnection>
+  <TwitchToolkitGetNewOauthKey>Get Oauth Key</TwitchToolkitGetNewOauthKey>
+  <TwitchToolkitWhatIsSeparateChannel>Using separate chatroom allows you to create a seperate room for the most used commands.</TwitchToolkitWhatIsSeparateChannel>
+  <TwitchToolkitLearnMore>Learn More</TwitchToolkitLearnMore>
+  <TwitchToolkitUseSeparateChannel>Use separate chatroom</TwitchToolkitUseSeparateChannel>
+  <TwitchToolkitStreamlabsSync>Sync viewer currency to streamlabs?</TwitchToolkitStreamlabsSync>
+  <TwitchToolkitIntegrations>Integrations</TwitchToolkitIntegrations>
+  <TwitchToolkitStreamelementsSync>Keep Stream Elements 100% in sync? (not recommended)</TwitchToolkitStreamelementsSync>
+  <TwitchToolkitImportStreamElements>Import Currency</TwitchToolkitImportStreamElements>
+  <TwitchToolkitExportStreamElements>Export Currency</TwitchToolkitExportStreamElements>
 </LanguageData>

@@ -11,7 +11,7 @@ namespace TwitchToolkit.Incidents
     public abstract class IncidentWorker_Raid : IncidentWorker_PawnsArrive
     {
         public static TwitchToolkit _mod = LoadedModManager.GetMod<TwitchToolkit>();
-        readonly string Quote;
+        public string Quote;
 
         public IncidentWorker_Raid(string quote)
         {
@@ -60,6 +60,7 @@ namespace TwitchToolkit.Incidents
         protected override bool TryExecuteWorker(IncidentParms parms)
         {
             this.ResolveRaidPoints(parms);
+            if (this.disableEvent) return false;
             if (!this.TryResolveRaidFaction(parms))
             {
                 return false;
@@ -276,5 +277,7 @@ namespace TwitchToolkit.Incidents
             Find.TickManager.DebugSetTicksGame(ticksGame);
             DebugTables.MakeTablesDialog<PawnsArrivalModeDef>(DefDatabase<PawnsArrivalModeDef>.AllDefs, list.ToArray());
         }
+
+        public bool disableEvent = false;
     }
 }

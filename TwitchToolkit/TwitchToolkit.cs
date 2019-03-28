@@ -87,7 +87,6 @@ namespace TwitchToolkit
         }
 
         Ticker ticker;
-        Timer timer;
         public DateTime StartTime;
         DateTime _lastTick = DateTime.MinValue;
         DateTime _timerElapsed = DateTime.MinValue;

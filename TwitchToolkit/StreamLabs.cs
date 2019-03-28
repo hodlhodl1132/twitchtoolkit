@@ -20,11 +20,5 @@ namespace TwitchToolkit
             string[] args = { "http://127.0.0.1:6779", $"{{\"method\":\"get\",\"username\":\"{viewer.username}\"}}" };
             return Convert.ToInt32(WebClientHelper.UploadString(args));
         }
-
-        public static bool ParseJsonResponse(RequestState request)
-        {
-            Helper.Log(request.jsonString);
-            return true;
-        }
     }
 }

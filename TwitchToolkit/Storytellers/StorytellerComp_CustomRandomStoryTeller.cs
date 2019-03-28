@@ -29,7 +29,14 @@ namespace TwitchToolkit
         {
             if (VoteHandler.voteActive)
                 yield break;
-            if (Rand.MTBEventOccurs(this.Props.mtbDays, 60000f, 1000f))
+
+            if (VoteHelper.TimeForEventVote())
+            {
+                MakeRandomVoteEvent(target);
+                yield break;                        
+            }
+
+            if (Rand.MTBEventOccurs(Props.mtbDays, 60000f, 1000f) && !ToolkitSettings.TimedStorytelling)
             {
                 bool targetIsRaidBeacon = target.IncidentTargetTags().Contains(IncidentTargetTagDefOf.Map_RaidBeacon);
                 List<IncidentCategoryDef> triedCategories = new List<IncidentCategoryDef>();
@@ -39,7 +46,7 @@ namespace TwitchToolkit
                 for (; ; )
                 {
                     IncidentCategoryDef category = this.ChooseRandomCategory(target, triedCategories);
-                    Helper.Log($"Trying Category{category}");
+                    Helper.Log($"Trying Category {category}");
                     parms = this.GenerateParms(category, target);
                     options = from d in base.UsableIncidentsInCategory(category, target)
                               where !d.NeedsParmsPoints || parms.points >= d.minThreatPoints
@@ -98,7 +105,7 @@ namespace TwitchToolkit
             yield break;
         }
 
-        private IncidentCategoryDef ChooseRandomCategory(IIncidentTarget target, List<IncidentCategoryDef> skipCategories)
+        public IncidentCategoryDef ChooseRandomCategory(IIncidentTarget target, List<IncidentCategoryDef> skipCategories)
         {
             if (!skipCategories.Contains(IncidentCategoryDefOf.ThreatBig))
             {
@@ -119,6 +126,86 @@ namespace TwitchToolkit
             IncidentParms incidentParms = StorytellerUtility.DefaultParmsNow(incCat, target);
             incidentParms.points *= this.Props.randomPointsFactorRange.RandomInRange;
             return incidentParms;
+        }
+
+        public void MakeRandomVoteEvent(IIncidentTarget target)
+        {
+            Helper.Log("Forcing vote event");
+            if (!VoteHandler.voteActive)
+            {
+                if (ToolkitSettings.TimedStorytelling)
+                {
+                    bool targetIsRaidBeacon = target.IncidentTargetTags().Contains(IncidentTargetTagDefOf.Map_RaidBeacon);
+                    List<IncidentCategoryDef> triedCategories = new List<IncidentCategoryDef>();
+                    IncidentDef incDef;
+                    List<IncidentDef> pickedoptions = new List<IncidentDef>();
+                    IEnumerable<IncidentDef> options;
+
+                        IncidentCategoryDef category = this.ChooseRandomCategory(target, triedCategories);
+                        Helper.Log($"Trying Category{category}");
+                        parms = this.GenerateParms(category, target);
+                        options = from d in base.UsableIncidentsInCategory(category, target)
+                                    where !d.NeedsParmsPoints || parms.points >= d.minThreatPoints
+                                    select d;
+
+
+                        if (options.TryRandomElementByWeight(new Func<IncidentDef, float>(base.IncidentChanceFinal), out incDef))
+                        {
+
+                        }
+                        triedCategories.Add(category);
+
+                        if (triedCategories.Count >= this.Props.categoryWeights.Count)
+                        {
+
+                        }
+
+
+                    Helper.Log($"Events Possible: {options.Count()}");
+
+                    if (options.Count() > 1)
+                    {
+                        options = options.Where(k => k != incDef);
+                        pickedoptions.Add(incDef);
+                        for (int x = 0; x < ToolkitSettings.VoteOptions - 1 && x < options.Count(); x++)
+                        {
+                            options.TryRandomElementByWeight(new Func<IncidentDef, float>(base.IncidentChanceFinal), out IncidentDef picked);
+                            if (picked != null)
+                            {
+                                options = options.Where(k => k != picked);
+                                pickedoptions.Add(picked);
+                            }
+                        }
+
+                        Dictionary<int, IncidentDef> incidents = new Dictionary<int, IncidentDef>();
+                        for (int i = 0; i < pickedoptions.Count(); i++)
+                        {
+                            incidents.Add(i, pickedoptions.ToList()[i]);
+                        }
+                        if (incidents.Count > 1)
+                        {
+                            VoteHandler.QueueVote(new VoteIncidentDef(incidents, this, parms));
+                            Helper.Log("Events created");
+                        }
+                    }
+                }
+            }
+        }
+
+        public IIncidentTarget GetRandomTarget()
+        {
+            List<IIncidentTarget> targets = Find.Storyteller.AllIncidentTargets;
+
+            if (targets == null)
+                throw new Exception("No valid targets");
+
+            if (targets.Count() > 1)
+            {
+                System.Random rnd = new System.Random();
+                return targets[rnd.Next(1, targets.Count()) - 1];
+            }
+
+            return targets[0];           
         }
     }
 }

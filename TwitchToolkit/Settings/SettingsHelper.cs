@@ -36,7 +36,7 @@ namespace TwitchToolkit
             Text.Anchor = TextAnchor.MiddleRight;
             //Widgets.Label(rect4, String.Format(format, val));
             string buffer = val.ToString();
-            Widgets.TextFieldNumeric<float>(rect4, ref val, ref buffer, min, max);
+            Widgets.TextFieldNumeric<float>(rect4, ref val, ref buffer);
 
             if (!tooltip.NullOrEmpty())
             {
@@ -68,6 +68,16 @@ namespace TwitchToolkit
             }
             Text.Anchor = anchor;
             ls.Gap(ls.verticalSpacing);
+        }
+
+        public static bool CenteredButton(this Listing_Standard ls, string label, float buttonWidth = 250f, float buttonHeight = 30f)
+        {
+            Rect rect = ls.GetRect(Text.LineHeight);
+            Rect rect2 = new Rect((rect.width - buttonWidth) / 2, rect.y, buttonWidth, buttonHeight);
+
+            bool result = Widgets.ButtonText(rect2, label, true, false, true);
+            ls.Gap(ls.verticalSpacing * 2);
+            return result;
         }
 
 

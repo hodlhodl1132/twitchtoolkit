@@ -149,7 +149,7 @@ namespace TwitchToolkit.Store
                 // invalid price
                 Helper.Log("Invalid price detected?");
             }
-            else if (viewer.coins < this.calculatedprice && !ToolkitSettings.UnlimitedCoins)
+            else if (viewer.GetViewerCoins() < this.calculatedprice && !ToolkitSettings.UnlimitedCoins)
             {
                 // send message not enough coins
                 this.errormessage = Helper.ReplacePlaceholder("TwitchToolkitNotEnoughCoins".Translate(), viewer: viewer.username, amount: this.calculatedprice.ToString(), first: viewer.GetViewerCoins().ToString());

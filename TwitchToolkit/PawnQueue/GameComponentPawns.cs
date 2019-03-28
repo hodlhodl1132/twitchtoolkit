@@ -10,6 +10,7 @@ namespace TwitchToolkit.PawnQueue
     {
         public GameComponentPawns(Game game)
         {
+
         }
 
         public bool HasUserBeenNamed(string username)

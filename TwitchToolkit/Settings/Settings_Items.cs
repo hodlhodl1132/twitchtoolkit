@@ -44,7 +44,7 @@ namespace TwitchToolkit.Settings
 
             foreach(Item item in StoreInventory.items)
             {
-                if (searchQuery != "" && !item.abr.Contains(searchQuery)) continue;
+                if (searchQuery != "" && !item.abr.ToLower().Contains(searchQuery.ToLower())) continue;
                 string price = item.price.ToString();
 
         // price adjustment Convert.ToInt32(item.BaseMarketValue * 10 / 6)

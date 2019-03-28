@@ -12,6 +12,7 @@ namespace TwitchToolkit.IRC
         public string Args = "";
         public string Channel = "";
         public string Message = "";
+        public bool Whisper = false;
         public Dictionary<string, string> Parameters = new Dictionary<string, string>();
     }
 }

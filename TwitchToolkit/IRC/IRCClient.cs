@@ -4,10 +4,11 @@ using System.Net.Security;
 using System.Text;
 using System.Collections.Generic;
 using System.Threading;
+using Verse;
 
 namespace TwitchToolkit.IRC
 {
-    public delegate void OnPrivMsg(string channel, string user, string message);
+    public delegate void OnPrivMsg(IRCMessage message);
     
 
     public class IRCClient
@@ -120,7 +121,7 @@ namespace TwitchToolkit.IRC
         {
             get
             {
-                if (_socket != null)
+                if (_socket == null)
                 {
                     return false;
                 }
@@ -188,6 +189,7 @@ namespace TwitchToolkit.IRC
         void OnCommand(IRCMessage message)
         {
             _ircMessages.Put(message.Cmd + " " + message.Args);
+
             switch (message.Cmd)
             {
                 case "USERSTATE":
@@ -204,12 +206,13 @@ namespace TwitchToolkit.IRC
                     Send("PONG\n");
                     break;
                 case "376":
-                    if (ToolkitSettings.ChatroomUUID != "" && ToolkitSettings.ChannelID != "")
+                    if (ToolkitSettings.UseSeparateChatRoom && ToolkitSettings.ChatroomUUID != "" && ToolkitSettings.ChannelID != "")
                     {
                         Send(
                             "CAP REQ :twitch.tv/membership\n" +
                             "CAP REQ :twitch.tv/tags\n" +
                             "CAP REQ :twitch.tv/commands\n" +
+                            "JOIN #" + _channel + "\n" +
                             "JOIN #chatrooms:" + ToolkitSettings.ChannelID + ":" + ToolkitSettings.ChatroomUUID + "\n"
                             );
                     }
@@ -228,13 +231,14 @@ namespace TwitchToolkit.IRC
                 case "PRIVMSG":
                     if (OnPrivMsg != null && !ToolkitSettings.WhisperCmdsOnly)
                     {
-                        OnPrivMsg.Invoke(message.Channel, message.User, message.Message);
+                        OnPrivMsg.Invoke(message);
                     }
                     break;
                 case "WHISPER":
                     if (OnPrivMsg != null && ToolkitSettings.WhisperCmdsAllowed)
                     {
-                        OnPrivMsg.Invoke(message.Channel, message.User, message.Message);
+                        message.Whisper = true;
+                        OnPrivMsg.Invoke(message);
                     }
                     break;
                 case "PONG":
@@ -242,7 +246,7 @@ namespace TwitchToolkit.IRC
                 default:
                     if (OnUnkwnMsg != null)
                     {
-                        OnUnkwnMsg.Invoke(message.Channel, message.User, message.Message);
+                        OnUnkwnMsg.Invoke(message);
                     }
                     break;
             }
@@ -250,7 +254,7 @@ namespace TwitchToolkit.IRC
 
         public void SendMessage(string message, bool botchannel = false)
         {
-            if (ToolkitSettings.ChatroomUUID != "" && ToolkitSettings.ChannelID != "")
+            if (ToolkitSettings.UseSeparateChatRoom && ToolkitSettings.ChatroomUUID != "" && ToolkitSettings.ChannelID != "" && botchannel)
             {
                 _messageQueue.Enqueue("PRIVMSG #chatrooms:" + ToolkitSettings.ChannelID + ":" + ToolkitSettings.ChatroomUUID + " :" + message + "\n");
             }

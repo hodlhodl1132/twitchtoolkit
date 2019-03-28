@@ -16,7 +16,7 @@
   <TwitchToolkitEarningCoinsMessage>earning coins is now toggled</TwitchToolkitEarningCoinsMessage>
   <TwitchToolkitStorePurchasesMessage>store purchases are now toggled</TwitchToolkitStorePurchasesMessage>
   <TwitchToolkitBalanceMessage>Coins: {amount} - Karma: {karma}%</TwitchToolkitBalanceMessage>
-  <TwitchToolkitInstructions>events/items can be purchased in game. Example: '!buyevent skillincrease' or '!buyitem beer 5'. Purchase list:</TwitchToolkitInstructions>
+  <TwitchToolkitInstructions>events/items can be purchased in game. Example: '{first} party' or '{second} beer 5'. Purchase list: {third}</TwitchToolkitInstructions>
   <TwitchToolkitWhatIsKarma>karma is the rate at which you earn coins. Buying bad events lowers karma while good events/items raise your karma. You are currently earning karma at a rate of</TwitchToolkitWhatIsKarma>
   <TwitchToolkitPurchaseList>Purchase list:</TwitchToolkitPurchaseList>
   <TwitchToolkitGiftCoins>you have been gifted {amount} coins from @{from}</TwitchToolkitGiftCoins>

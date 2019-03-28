@@ -35,21 +35,24 @@ namespace TwitchToolkit.IRC
                 client.Reconnect();
         }
 
-        void OnPrivMsg(string channel, string user, string message)
+        void OnPrivMsg(IRCMessage message)
         {
-            if (activeChatWindow != null && !message.StartsWith("!") && user != ToolkitSettings.Username)
+            if (activeChatWindow != null && !message.Message.StartsWith("!") && message.User != ToolkitSettings.Username)
             {
-                if ((_voteActive && !int.TryParse(message, out int result)) || !_voteActive)
+                if ((_voteActive && !int.TryParse(message.Message[0].ToString(), out int result)) || !_voteActive)
                 {
-                    string colorcode = Viewer.GetViewerColorCode(user);
-                    activeChatWindow.AddMessage(message, user, colorcode);
+                    activeChatWindow.AddMessage(
+                        message.Message,
+                        message.User,
+                        (message.Parameters.ContainsKey("color")) ? message.Parameters["color"].Remove(0, 1) : Viewer.GetViewerColorCode(message.User)
+                    );
                 }
 
             }
 
-            if (Helper.ModActive) Commands.CheckCommand(message, user);
+            if (Helper.ModActive) Commands.CheckCommand(message);
 
-            if (VoteHandler.voteActive && int.TryParse(message[0].ToString(), out int voteKey)) VoteHandler.currentVote.RecordVote(Viewers.GetViewer(user).id, voteKey - 1);
+            if (VoteHandler.voteActive && int.TryParse(message.Message[0].ToString(), out int voteKey)) VoteHandler.currentVote.RecordVote(Viewers.GetViewer(message.User).id, voteKey - 1);
         }
 
         public string[] MessageLog
@@ -62,15 +65,15 @@ namespace TwitchToolkit.IRC
             }
         }
 
-        public void SendMessage(string message)
+        public void SendMessage(string message, bool v = false)
         {
             if (client != null)
-                client.SendMessage(message);
+                client.SendMessage(message, v);
         }
 
         public ChatWindow activeChatWindow = null;
         bool _voteActive = false;
-        IRCClient client = null;
+        public IRCClient client = null;
 
         static string _ircHost = "irc.twitch.tv";
         static short _ircPort = 443;

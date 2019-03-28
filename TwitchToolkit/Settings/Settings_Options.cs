@@ -23,6 +23,8 @@ namespace TwitchToolkit.Settings
 
             optionsListing.SliderLabeled("TwitchToolkitVoteTime".Translate(), ref ToolkitSettings.VoteTime, Math.Round((double)ToolkitSettings.VoteTime).ToString(), 1f, 15f);
             optionsListing.SliderLabeled("TwitchToolkitVoteOptions".Translate(), ref ToolkitSettings.VoteOptions, Math.Round((double)ToolkitSettings.VoteOptions).ToString(), 2f, 5f);
+            optionsListing.CheckboxLabeled("TwitchToolkitTimedStorytelling".Translate(), ref ToolkitSettings.TimedStorytelling);
+            optionsListing.SliderLabeled("TwitchToolkitTimeBetweenStorytellingEvents".Translate(), ref ToolkitSettings.TimeBetweenStorytellingEvents, Math.Round((double)ToolkitSettings.TimeBetweenStorytellingEvents).ToString(), 1f, 30f);
             optionsListing.CheckboxLabeled("TwitchToolkitVotingChatMsgs".Translate(), ref ToolkitSettings.VotingChatMsgs);
             optionsListing.CheckboxLabeled("TwitchToolkitVotingWindow".Translate(), ref ToolkitSettings.VotingWindow);
             optionsListing.CheckboxLabeled("TwitchToolkitLargeVotingWindow".Translate(), ref ToolkitSettings.LargeVotingWindow);

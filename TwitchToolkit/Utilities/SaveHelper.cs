@@ -87,7 +87,14 @@ namespace TwitchToolkit.Utilities
                     for (int i = 0; i < node["total"]; i++)
                     {
                         Viewer viewer = new Viewer(node["viewers"][i]["username"]);
-                        viewer.SetViewerCoins(node["viewers"][i]["coins"].AsInt);
+                        if (ToolkitSettings.SyncStreamLabs)
+                        {
+                            viewer.SetViewerCoins(StreamLabs.GetViewerPoints(viewer));
+                        }
+                        else
+                        {
+                            viewer.SetViewerCoins(node["viewers"][i]["coins"].AsInt);
+                        }
                         viewer.SetViewerKarma(node["viewers"][i]["karma"].AsInt);
                         listOfViewers.Add(viewer);
                     }

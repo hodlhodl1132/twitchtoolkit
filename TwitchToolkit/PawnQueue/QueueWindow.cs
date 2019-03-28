@@ -109,6 +109,17 @@ namespace TwitchToolkit.PawnQueue
             }
 
             button.y += 28;
+            if (Widgets.ButtonText(button, "Already Named"))
+            {
+                pawnComponent.pawnHistory.Add(currentPawn.Name.ToString(), currentPawn);
+            
+                currentViewer = null;
+                currentPawn = null;
+                usernamesPool = null;
+                activeChoice = false;
+            }
+
+            button.y += 28;
             if (Widgets.ButtonText(button, "Skip"))
             {
                 //skip
@@ -142,5 +153,7 @@ namespace TwitchToolkit.PawnQueue
             usernamesPool = null;
             activeChoice = false;
         }
+
+        public override Vector2 InitialSize => new Vector2(360f, 300f);
     }
 }
