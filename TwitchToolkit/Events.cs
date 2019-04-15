@@ -287,7 +287,7 @@ namespace TwitchToolkit
             }
 
 
-            q += "<b><i><color=#00ffffff>";
+            q += "<b><i>";
 
             if (chatmsg == null)
             {
@@ -298,7 +298,7 @@ namespace TwitchToolkit
                 q += chatmsg;
             }
 
-            q += "</color></i></b>";
+            q += "</i></b>";
 
 
             return q;

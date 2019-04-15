@@ -15,7 +15,6 @@ namespace TwitchToolkit.Settings
             optionsListing.CheckboxLabeled(Helper.ReplacePlaceholder("TwitchToolkitWhisperOnly".Translate(), first: ToolkitSettings.Username), ref ToolkitSettings.WhisperCmdsOnly);
             optionsListing.CheckboxLabeled("TwitchToolkitPurchaseConfirmations".Translate(), ref ToolkitSettings.PurchaseConfirmations);
             optionsListing.CheckboxLabeled("TwitchToolkitRepeatViewerNames".Translate(), ref ToolkitSettings.RepeatViewerNames);
-            optionsListing.CheckboxLabeled("TwitchToolkitViewerColonistQueue".Translate(), ref ToolkitSettings.ViewerNamedColonistQueue);
             optionsListing.CheckboxLabeled("TwitchToolkitMinifiableBuildings".Translate(), ref ToolkitSettings.MinifiableBuildings);
 
             optionsListing.GapLine();

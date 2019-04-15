@@ -50,20 +50,20 @@ namespace TwitchToolkit.Settings
                 {
                     optionsListing.Label("TwitchToolkitConnected".Translate());
                     if (optionsListing.CenteredButton("TwitchToolkitDisconnect".Translate())) Toolkit.client.Disconnect();
+                    if (optionsListing.CenteredButton("TwitchToolkitReconnect".Translate())) Toolkit.client.Reconnect();
                 }
 
-                if (Toolkit.client.client == null)
+                if (Toolkit.client.client == null || !Toolkit.client.client.Connected)
                 {
                     if (optionsListing.CenteredButton("TwitchToolkitConnect".Translate())) Toolkit.client.Connect();
-                }                     
-
+                }
             }
-
-            if (Toolkit.client.client != null && !Toolkit.client.client.Connected)
+            else
             {
-                if (optionsListing.CenteredButton("TwitchToolkitReconnect".Translate())) Toolkit.client.Reconnect();
+                optionsListing.Label("Need new connection");
                 if (optionsListing.CenteredButton("TwitchToolkitNewConnection".Translate())) Toolkit.client = new IRC.ToolkitIRC();
             }
+
                 
         }
 

@@ -6,7 +6,7 @@ using System.Text;
 using TwitchToolkit.Store;
 using Verse;
 
-namespace TwitchToolkit
+namespace TwitchToolkit.Store
 {
     public class Item
     {

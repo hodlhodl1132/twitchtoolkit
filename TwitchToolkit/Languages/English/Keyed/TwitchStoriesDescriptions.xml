@@ -31,8 +31,8 @@
   <TwitchStoriesDescription43>A bunch of large meteorites have struck ground in the area.</TwitchStoriesDescription43>
   <TwitchStoriesDescription50>A tornado has touched down in this region, and will proceed to wreak havoc on its way.</TwitchStoriesDescription50>
   <TwitchStoriesDescription51>10 tornados have touched down in this region, and will proceed to wreak havoc on their way.</TwitchStoriesDescription51>
-  <TwitchStoriesDescription54>The gender of {colonist} has changed.</TwitchStoriesDescription54>
-  <TwitchStoriesDescription55>A colonist has had a breakthrough and will get a permanent {skill} boost</TwitchStoriesDescription55>
+  <TwitchStoriesDescription54>The gender of {colonist} has changed to {gender}.</TwitchStoriesDescription54>
+  <TwitchStoriesDescription55>A {colonist} has had a breakthrough and will get a permanent xp boost of {first} to {skill}</TwitchStoriesDescription55>
   <TwitchStoriesDescription57>Everyone in your colony takes a hit of luciferium.</TwitchStoriesDescription57>
   <TwitchStoriesDescription60>Some animals have decided to live in your area.</TwitchStoriesDescription60>
   <TwitchStoriesDescription66>Maybe you should have been a bit nicer to the animals in your surrounding. The rabbits and deers were plotting against you for the longest time now. They have finally collected enough meat to pay the big boys...</TwitchStoriesDescription66>

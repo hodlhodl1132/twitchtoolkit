@@ -7,6 +7,7 @@ using RimWorld;
 using System.Linq;
 using UnityEngine;
 using TwitchToolkit.Votes;
+using TwitchToolkit.Store;
 
 namespace TwitchToolkit
 {
@@ -17,6 +18,9 @@ namespace TwitchToolkit
         public static Queue<Event> Events = new Queue<Event>();
         public static Queue<FiringIncident> FiringIncidents = new Queue<FiringIncident>();
         public static Queue<VoteEvent> VoteEvents = new Queue<VoteEvent>();
+        public static Queue<IncidentWorker> Incidents = new Queue<IncidentWorker>();
+        public static Queue<IncidentHelper> IncidentHelpers = new Queue<IncidentHelper>();
+        public static Queue<IncidentHelperVariables> IncidentHelperVariables = new Queue<IncidentHelperVariables>();
 
         public bool CreatedByController { get; internal set; }
 
@@ -104,10 +108,36 @@ namespace TwitchToolkit
                 double getTime = (double)Time.time / 60f;
                 int time = Convert.ToInt32(Math.Truncate(getTime));
 
+                if (Incidents.Count > 0)
+                {
+                    var incident = Incidents.Dequeue();
+			        IncidentParms incidentParms = new IncidentParms();
+			        incidentParms.target = Helper.AnyPlayerMap;
+                    if (!incident.TryExecute(incidentParms))
+                    {
+                        Helper.playerMessages.RemoveAt(0);
+                    }
+                }
+
                 if (FiringIncidents.Count > 0)
                 {
+                    Helper.Log("Firing " + FiringIncidents.First().def.defName);
                     var incident = FiringIncidents.Dequeue();
                     incident.def.Worker.TryExecute(incident.parms);
+                }
+
+                if (IncidentHelpers.Count > 0)
+                {
+                    var incidentHelper = IncidentHelpers.Dequeue();
+                    incidentHelper.TryExecute();
+                }
+
+                if (IncidentHelperVariables.Count > 0)
+                {
+                    var incidentHelper = IncidentHelperVariables.Dequeue();
+                    incidentHelper.TryExecute();
+                    if (Purchase_Handler.viewerNamesDoingVariableCommands.Contains(incidentHelper.viewer.username))
+                        Purchase_Handler.viewerNamesDoingVariableCommands.Remove(incidentHelper.viewer.username);
                 }
 
                 VoteHandler.CheckForQueuedVotes();

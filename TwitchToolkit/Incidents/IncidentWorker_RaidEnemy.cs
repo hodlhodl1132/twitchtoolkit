@@ -8,8 +8,6 @@ namespace TwitchToolkit.Incidents
 {
     public class IncidentWorker_RaidEnemy : IncidentWorker_Raid
     {
-        public IncidentWorker_RaidEnemy(string quote) : base(quote) { }
-
         protected override bool FactionCanBeGroupSource(Faction f, Map map, bool desperate = false)
         {
             return base.FactionCanBeGroupSource(f, map, desperate) && f.HostileTo(Faction.OfPlayer) && (desperate || (float)GenDate.DaysPassed >= f.def.earliestRaidDays);

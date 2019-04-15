@@ -9,6 +9,7 @@ using Verse;
 
 namespace TwitchToolkit.PawnQueue
 {
+    [StaticConstructorOnStartup]
     public class Alert_UnnamedColonist : Alert
     {
         public Alert_UnnamedColonist()

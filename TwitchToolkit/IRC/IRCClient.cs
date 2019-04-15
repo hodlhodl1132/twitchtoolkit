@@ -254,12 +254,15 @@ namespace TwitchToolkit.IRC
 
         public void SendMessage(string message, bool botchannel = false)
         {
+            Helper.Log("making message");
             if (ToolkitSettings.UseSeparateChatRoom && ToolkitSettings.ChatroomUUID != "" && ToolkitSettings.ChannelID != "" && botchannel)
             {
+                Helper.Log("chatroom msg made");
                 _messageQueue.Enqueue("PRIVMSG #chatrooms:" + ToolkitSettings.ChannelID + ":" + ToolkitSettings.ChatroomUUID + " :" + message + "\n");
             }
             else
             {
+                Helper.Log("main msg made");
                 _messageQueue.Enqueue("PRIVMSG #" + _channel + " :" + message + "\n");
             }
             _messageHandle.Set();

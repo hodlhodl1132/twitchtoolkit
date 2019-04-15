@@ -8,6 +8,7 @@ using TSIncidents = TwitchToolkit.Incidents;
 using System.Text;
 using TwitchToolkit.Store;
 using TwitchToolkit.Incidents;
+using TwitchToolkit.IRC;
 
 namespace TwitchToolkit
 {
@@ -15,6 +16,7 @@ namespace TwitchToolkit
     {
         private static bool _infestationPossible = false;
         public static string _state = null;
+        public static List<string> playerMessages = new List<string>();
         static System.Random _random = new System.Random();
 
         public static void Reset()
@@ -71,7 +73,7 @@ namespace TwitchToolkit
                 if (Current.Game == null || Current.Game.Maps == null)
                     return null;
                 else
-                    return Find.CurrentMap;    
+                    return Current.Game.AnyPlayerHomeMap;    
             }
         }
 
@@ -498,7 +500,7 @@ namespace TwitchToolkit
 
         public static bool RaidPossible(float points, PawnsArrivalModeDef arrival, RaidStrategyDef strategy = null, Faction faction = null)
         {
-            var raidEnemy = new TSIncidents.IncidentWorker_RaidEnemy(null);
+            var raidEnemy = new TSIncidents.IncidentWorker_RaidEnemy();
             raidEnemy.def = IncidentDefOf.RaidEnemy;
             return raidEnemy.CanFireNow(new IncidentParms
             {
@@ -513,7 +515,7 @@ namespace TwitchToolkit
         public static void Raid(string quote, float points, PawnsArrivalModeDef arrival, RaidStrategyDef strategy = null, Faction faction = null)
         {
             if (points < 0) return;
-            var raidEnemy = new TSIncidents.IncidentWorker_RaidEnemy(quote);
+            var raidEnemy = new TSIncidents.IncidentWorker_RaidEnemy();
             raidEnemy.def = IncidentDefOf.RaidEnemy;
             if (quote != null)
             {
@@ -864,7 +866,7 @@ namespace TwitchToolkit
 
         public static void MilitaryAid(string quote)
         {
-            var incident = new TSIncidents.IncidentWorker_CallForAid(quote);
+            var incident = new TSIncidents.IncidentWorker_CallForAid();
             
             FactionManager manager = Find.FactionManager;
 
@@ -1014,7 +1016,7 @@ namespace TwitchToolkit
         public static void Inspiration(string quote)
         {
             List<string> inspirations = new List<string>() { "Inspired_Creativity", "Inspired_Recruitment", "Inspired_Surgery", "Inspired_Trade" };
-            inspirations.Shuffle(_random);
+            inspirations.Shuffle();
             foreach (Pawn pawn in GetColonists(1))
             {
                 foreach (string inspiration in inspirations)
@@ -1349,7 +1351,7 @@ namespace TwitchToolkit
 
         public static bool AnimalsWanderInPossible()
         {
-            var incident = new TSIncidents.IncidentWorker_SpecificAnimalsWanderIn(null, "TwitchStoriesLetterLabelAnimalsWanderIn", null, false, _random.Next(4, 11));
+            var incident = new TSIncidents.IncidentWorker_SpecificAnimalsWanderIn("TwitchStoriesLetterLabelAnimalsWanderIn", null, false, _random.Next(4, 11));
             incident.def = IncidentDef.Named("HerdMigration");
             return incident.CanFireNow(new IncidentParms
             {
@@ -1359,7 +1361,7 @@ namespace TwitchToolkit
 
         public static void AnimalsWanderIn(string quote)
         {
-            var incident = new TSIncidents.IncidentWorker_SpecificAnimalsWanderIn(quote, "TwitchStoriesLetterLabelAnimalsWanderIn", null, false, _random.Next(4, 11));
+            var incident = new TSIncidents.IncidentWorker_SpecificAnimalsWanderIn("TwitchStoriesLetterLabelAnimalsWanderIn", null, false, _random.Next(4, 11));
             incident.def = IncidentDef.Named("HerdMigration");
             incident.TryExecute(new IncidentParms
             {
@@ -1394,7 +1396,7 @@ namespace TwitchToolkit
 
         public static bool PredatorsPossible()
         {
-            var incident = new TSIncidents.IncidentWorker_SpecificAnimalsWanderIn(null, "TwitchStoriesLetterLabelPredators", PawnKindDef.Named("Bear_Grizzly"), false, 1, true);
+            var incident = new TSIncidents.IncidentWorker_SpecificAnimalsWanderIn("TwitchStoriesLetterLabelPredators", PawnKindDef.Named("Bear_Grizzly"), false, 1, true);
             incident.def = IncidentDef.Named("HerdMigration");
             return incident.CanFireNow(new IncidentParms
             {
@@ -1426,7 +1428,7 @@ namespace TwitchToolkit
 
             animalCount = animalCount * GetColonists(1).Count();
 
-            var incident = new TSIncidents.IncidentWorker_SpecificAnimalsWanderIn(quote, "TwitchStoriesLetterLabelPredators", PawnKindDef.Named(animal), false, (int)animalCount, true);
+            var incident = new TSIncidents.IncidentWorker_SpecificAnimalsWanderIn("TwitchStoriesLetterLabelPredators", PawnKindDef.Named(animal), false, (int)animalCount, true);
             incident.def = IncidentDef.Named("HerdMigration");
             incident.TryExecute(new IncidentParms
             {
@@ -1595,7 +1597,7 @@ namespace TwitchToolkit
 
         public static bool FarmAnimalsPossible()
         {
-            var incident = new TSIncidents.IncidentWorker_SpecificAnimalsWanderIn(null, null, null, true, 1, false, true);
+            var incident = new TSIncidents.IncidentWorker_SpecificAnimalsWanderIn(null, null, true, 1, false, true);
             incident.def = IncidentDef.Named("FarmAnimalsWanderIn");
             return incident.CanFireNow(new IncidentParms
             {
@@ -1607,7 +1609,7 @@ namespace TwitchToolkit
         {
             int num = _random.Next(2, 6);
             quote = ReplacePlaceholder(quote, amount: num.ToString());
-            var incident = new TSIncidents.IncidentWorker_SpecificAnimalsWanderIn(quote, null, null, true, num, false, true);
+            var incident = new TSIncidents.IncidentWorker_SpecificAnimalsWanderIn( null, null, true, num, false, true);
             incident.def = IncidentDef.Named("FarmAnimalsWanderIn");
             incident.TryExecute(new IncidentParms
             {
@@ -1617,7 +1619,7 @@ namespace TwitchToolkit
 
         public static bool YorkshireTerrierPossible()
         {
-            var incident = new TSIncidents.IncidentWorker_SpecificAnimalsWanderIn(null, null, PawnKindDef.Named("YorkshireTerrier"), true, _random.Next(3, 8), false, true);
+            var incident = new TSIncidents.IncidentWorker_SpecificAnimalsWanderIn(null, PawnKindDef.Named("YorkshireTerrier"), true, _random.Next(3, 8), false, true);
             incident.def = IncidentDef.Named("FarmAnimalsWanderIn");
             return incident.CanFireNow(new IncidentParms
             {
@@ -1627,7 +1629,7 @@ namespace TwitchToolkit
 
         public static void YorkshireTerrier(string quote)
         {
-            var incident = new TSIncidents.IncidentWorker_SpecificAnimalsWanderIn(quote, null, PawnKindDef.Named("YorkshireTerrier"), true, _random.Next(3, 8), false, true);
+            var incident = new TSIncidents.IncidentWorker_SpecificAnimalsWanderIn(null, PawnKindDef.Named("YorkshireTerrier"), true, _random.Next(3, 8), false, true);
             incident.def = IncidentDef.Named("FarmAnimalsWanderIn");
             incident.TryExecute(new IncidentParms
             {
@@ -1707,10 +1709,10 @@ namespace TwitchToolkit
         public static void MentalBreak(string quote, int severity = 0)
         {
             string[][] mentalBreaks = {
-        new string[]{"Binging_Food","Wander_OwnRoom","InsultingSpree","TargetedInsultingSpree","Wander_Sad"},
-        new string[]{"CorpseObsession","Wander_Psychotic","SadisticRage","Binging_DrugMajor","Tantrum","TargetedTantrum"},
-        new string[]{"Berserk","Catatonic","FireStartingSpree","GiveUpExit","Binging_DrugExtreme","Jailbreaker","MurderousRage","RunWild","Slaughterer"}
-      };
+                new string[]{"Binging_Food","Wander_OwnRoom","InsultingSpree","TargetedInsultingSpree","Wander_Sad"},
+                new string[]{"CorpseObsession","Wander_Psychotic","SadisticRage","Binging_DrugMajor","Tantrum","TargetedTantrum"},
+                new string[]{"Berserk","Catatonic","FireStartingSpree","GiveUpExit","Binging_DrugExtreme","Jailbreaker","MurderousRage","RunWild","Slaughterer"}
+              };
 
             int i = 0;
             for (; i < 100; i++)

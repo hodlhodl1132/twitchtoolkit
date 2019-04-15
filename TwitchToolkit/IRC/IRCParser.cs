@@ -45,10 +45,14 @@ namespace TwitchToolkit.IRC
             _state = IRCParserState.Start;
             for (int i = 0; i < length; i++)
             {
+                if (i > 8024) continue;
                 var b = chars[i];
                 switch (_state)
                 {
                     case IRCParserState.Start:
+                        Helper.Log($"{_state} starts at {i} {b}");
+                        string msg = "";
+                        foreach(char c in chars) msg += c;
                         _message = new IRCMessage();
                         _key = "";
                         _value = "";

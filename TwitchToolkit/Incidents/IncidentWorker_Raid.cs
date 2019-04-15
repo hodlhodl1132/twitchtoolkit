@@ -11,12 +11,6 @@ namespace TwitchToolkit.Incidents
     public abstract class IncidentWorker_Raid : IncidentWorker_PawnsArrive
     {
         public static TwitchToolkit _mod = LoadedModManager.GetMod<TwitchToolkit>();
-        public string Quote;
-
-        public IncidentWorker_Raid(string quote)
-        {
-            Quote = quote;
-        }
 
         protected abstract bool TryResolveRaidFaction(IncidentParms parms);
 
@@ -76,7 +70,7 @@ namespace TwitchToolkit.Incidents
             PawnGroupMakerParms defaultPawnGroupMakerParms = IncidentParmsUtility.GetDefaultPawnGroupMakerParms(combat, parms, false);
             List<Pawn> list = PawnGroupMakerUtility.GeneratePawns(defaultPawnGroupMakerParms, true).ToList<Pawn>();
             List<string> viewernames = Viewers.ParseViewersFromJson();
-            if (viewernames != null)
+            if (list.Count > 0 && viewernames != null)
             {
                 int count = 0;
                 int totalviewers = viewernames.Count();
@@ -138,12 +132,6 @@ namespace TwitchToolkit.Incidents
             else if (list.Any<Pawn>())
             {
                 list2.Add(list[0]);
-            }
-
-            if (Quote != null)
-            {
-                letterText += "\n\n";
-                letterText += Quote;
             }
 
             Find.LetterStack.ReceiveLetter(letterLabel, letterText, this.GetLetterDef(), list2, parms.faction, stringBuilder.ToString());

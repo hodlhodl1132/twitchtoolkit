@@ -52,7 +52,7 @@ namespace TwitchToolkit
         #region StoreSettings
         public static bool EarningCoins = true;
         public static bool StoreOpen = false;
-        public static string CustomPricingSheetLink = "https://bit.ly/2C7bls0";
+        public static string CustomPricingSheetLink = "https://twitchtoolkit.github.io/item-list/";
         #endregion
 
         #region Options
@@ -147,6 +147,11 @@ namespace TwitchToolkit
         public static Dictionary<string, bool> ViewerModerators = new Dictionary<string, bool>();
         #endregion
 
+        #region ViewerSettings
+        public static bool ChargeViewersForQueue = false;
+        public static int CostToJoinQueue = 0;
+        #endregion
+
         private static Vector2 scrollVector2;
 
         public void DoWindowContents(Rect rect)
@@ -216,22 +221,25 @@ namespace TwitchToolkit
             gapline.Begin(gapliRect);
             gapline.Gap();
             gapline.End();
-
-            Listing_Standard optionsListing = new Listing_Standard();
+        
             Rect optionsRect = rect;
             optionsRect.y = 145;
-            optionsRect.height = 450f;
-            optionsRect.yMax = 630f;
+            optionsRect.height = 620f;
+            optionsRect.yMax = 765f;
+
+            Rect scrollViewer = new Rect(optionsRect);
+            scrollViewer.height -= 145f;
+            scrollViewer.yMax -= 145f;
             
-            Rect viewRect = new Rect(0,0, rect.width - 100f, 650f);
+            Rect viewRect = new Rect(0, 0, rect.width - 100f, 430f);
             viewRect.width -= 25f;
 
-            if (currentTab == SettingsTab.Events) viewRect.height = StoreInventory.incItems.Count() * 62f + 60f;
-            if (currentTab == SettingsTab.Items) viewRect.height = StoreInventory.items.Count() * 34f + 34;
-            if (currentTab == SettingsTab.Karma || currentTab == SettingsTab.Options) viewRect.height += 170f;
+            if (currentTab == SettingsTab.Karma) viewRect.height += 250f;
             
+            Listing_Standard optionsListing = new Listing_Standard();
+
             optionsListing.Begin(optionsRect);
-            optionsListing.BeginScrollView(optionsRect, ref scrollVector2, ref viewRect);
+            optionsListing.BeginScrollView(scrollViewer, ref scrollVector2, ref viewRect);
 
             switch(currentTab)
             {
@@ -304,7 +312,7 @@ namespace TwitchToolkit
 
             Scribe_Values.Look(ref EarningCoins, "EarningCoins", true);
             Scribe_Values.Look(ref StoreOpen, "StoreOpen", false);
-            Scribe_Values.Look(ref CustomPricingSheetLink, "CustomPricingSheetLink", "https://bit.ly/2C7bls0");
+            Scribe_Values.Look(ref CustomPricingSheetLink, "CustomPricingSheetLink", "https://twitchtoolkit.github.io/item-list/");
 
             Scribe_Values.Look(ref WhisperCmdsAllowed, "WhisperCmdsAllowed", true);
             Scribe_Values.Look(ref WhisperCmdsOnly, "WhisperCmdsOnly", false);
@@ -377,6 +385,9 @@ namespace TwitchToolkit
 
             Scribe_Collections.Look(ref ViewerColorCodes, "ViewerColorCodes", LookMode.Value, LookMode.Value);
             Scribe_Collections.Look(ref ViewerModerators, "ViewerModerators", LookMode.Value, LookMode.Value);
+
+            Scribe_Values.Look(ref ChargeViewersForQueue, "ChargeViewersForQueue", false);
+            Scribe_Values.Look(ref CostToJoinQueue, "CostToJoinQueue", 0);
 
             if (Toolkit.client == null && OAuth != "") Toolkit.client = new IRC.ToolkitIRC();
         }

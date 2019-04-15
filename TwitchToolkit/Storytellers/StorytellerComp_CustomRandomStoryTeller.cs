@@ -7,6 +7,7 @@ using System.Text;
 using TwitchToolkit.Votes;
 using UnityEngine;
 using Verse;
+using System.Threading;
 
 namespace TwitchToolkit
 {
@@ -22,6 +23,11 @@ namespace TwitchToolkit
         }
 
         readonly TwitchToolkit _twitchstories = LoadedModManager.GetMod<TwitchToolkit>();
+        private IIncidentTarget incidentTarget;
+        private FiringIncident singleIncident = null;
+        private VoteIncidentDef incidentOptions = null;
+        private bool makeIncidentOptions = false;
+        private Thread thread = null;
 
         public IncidentParms parms { get; private set; }
 
@@ -35,20 +41,61 @@ namespace TwitchToolkit
                 MakeRandomVoteEvent(target);
                 yield break;                        
             }
+            if (thread !=null)
+            {
+                thread = new Thread(new ThreadStart(ThreadProc));
 
+                thread.Start();
+            }
+            else
+            {
+                if (singleIncident != null)
+                {
+                    thread.Join();
+                    thread = null;
+                    yield return singleIncident;
+                }
+
+                if (makeIncidentOptions && incidentOptions != null)
+                {
+                    thread.Join();
+                    thread = null;
+                    VoteHandler.QueueVote(incidentOptions);
+                }
+                Thread.Sleep(0);
+                yield break;
+            }
+            yield break;
+        }
+
+        public void ThreadProc()
+        {
+            var result = MakeIntervalIncidentsThread();
+            if (result == typeof(FiringIncident))
+            {
+                singleIncident = result as FiringIncident;
+            }
+            else if (incidentOptions != null)
+            {
+                makeIncidentOptions = true;
+            }
+        }
+
+        public IEnumerable<FiringIncident> MakeIntervalIncidentsThread()
+        {
             if (Rand.MTBEventOccurs(Props.mtbDays, 60000f, 1000f) && !ToolkitSettings.TimedStorytelling)
             {
-                bool targetIsRaidBeacon = target.IncidentTargetTags().Contains(IncidentTargetTagDefOf.Map_RaidBeacon);
+                bool targetIsRaidBeacon = incidentTarget.IncidentTargetTags().Contains(IncidentTargetTagDefOf.Map_RaidBeacon);
                 List<IncidentCategoryDef> triedCategories = new List<IncidentCategoryDef>();
                 IncidentDef incDef;
                 List<IncidentDef> pickedoptions = new List<IncidentDef>();
                 IEnumerable<IncidentDef> options;
                 for (; ; )
                 {
-                    IncidentCategoryDef category = this.ChooseRandomCategory(target, triedCategories);
+                    IncidentCategoryDef category = this.ChooseRandomCategory(incidentTarget, triedCategories);
                     Helper.Log($"Trying Category {category}");
-                    parms = this.GenerateParms(category, target);
-                    options = from d in base.UsableIncidentsInCategory(category, target)
+                    parms = this.GenerateParms(category, incidentTarget);
+                    options = from d in base.UsableIncidentsInCategory(category, incidentTarget)
                               where !d.NeedsParmsPoints || parms.points >= d.minThreatPoints
                               select d;
 
@@ -62,6 +109,7 @@ namespace TwitchToolkit
                     {
                         goto Block_6;
                     }
+                    Thread.Sleep(0);
                 }
 
                 Helper.Log($"Events Possible: {options.Count()}");
@@ -77,6 +125,7 @@ namespace TwitchToolkit
                         {
                             options = options.Where(k => k != picked);
                             pickedoptions.Add(picked);
+                            Thread.Sleep(0);
                         }
                     }
 
@@ -85,9 +134,9 @@ namespace TwitchToolkit
                     {
                         incidents.Add(i, pickedoptions.ToList()[i]);
                     }
-                    VoteHandler.QueueVote(new VoteIncidentDef(incidents, this, parms));
+                    incidentOptions = new VoteIncidentDef(incidents, this, parms);
                     Helper.Log("Events created");
-                    yield break;
+                    yield return null;
                 }
                 else if (options.Count() == 1)
                 {
@@ -100,9 +149,10 @@ namespace TwitchToolkit
                     // yield return new FiringIncident(incDef, this, parms);
                     // _twitchstories.StartVote(options, this, parms);
                 }
+
             Block_6:;
+            Thread.Sleep(0);
             }
-            yield break;
         }
 
         public IncidentCategoryDef ChooseRandomCategory(IIncidentTarget target, List<IncidentCategoryDef> skipCategories)

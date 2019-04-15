@@ -12,12 +12,6 @@ namespace TwitchToolkit.Incidents
 {
     public class IncidentWorker_CallForAid : IncidentWorker_Raid
     {
-
-        public IncidentWorker_CallForAid(string quote) : base(quote)
-        {
-            Quote = quote;
-        }
-
         protected override bool FactionCanBeGroupSource(Faction f, Map map, bool desperate = false)
 		{
 			IEnumerable<IAttackTarget> targetsHostileToColony = map.attackTargetsCache.TargetsHostileToColony;
@@ -116,10 +110,10 @@ namespace TwitchToolkit.Incidents
 			return "LetterRelatedPawnsRaidFriendly".Translate(Faction.OfPlayer.def.pawnsPlural, parms.faction.def.pawnsPlural);
 		}
 
-		[CompilerGenerated]
+        [CompilerGenerated]
 		private static Func<IAttackTarget, bool> target0;
 
 		[CompilerGenerated]
 		private static Func<IAttackTarget, bool> target1;
-	}
+    }
 }

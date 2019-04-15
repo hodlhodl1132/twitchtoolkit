@@ -9,7 +9,6 @@ namespace TwitchToolkit.Incidents
 {
     public class IncidentWorker_SpecificAnimalsWanderIn : IncidentWorker
     {
-        string Quote;
         string Label;
         PawnKindDef PawnKindDef;
         bool JoinColony;
@@ -21,9 +20,8 @@ namespace TwitchToolkit.Incidents
 
         const float TotalBodySizeToSpawn = 2.5f;
 
-        public IncidentWorker_SpecificAnimalsWanderIn(string quote, string label = null, PawnKindDef pawnKindDef = null, bool joinColony = false, int count = 0, bool manhunter = false, bool defaultText = false)
+        public IncidentWorker_SpecificAnimalsWanderIn(string label = null, PawnKindDef pawnKindDef = null, bool joinColony = false, int count = 0, bool manhunter = false, bool defaultText = false)
         {
-            Quote = quote;
             Label = label;
             PawnKindDef = pawnKindDef;
             JoinColony = joinColony;
@@ -86,15 +84,6 @@ namespace TwitchToolkit.Incidents
             }
 
             var text = DefaultText ? "LetterFarmAnimalsWanderIn".Translate(PawnKindDef.GetLabelPlural(-1)) : "";
-
-            if (Quote != null)
-            {
-                if (DefaultText)
-                {
-                    text += "\n\n";
-                }
-                text += Quote;
-            }
 
             Find.LetterStack.ReceiveLetter((Label ?? "LetterLabelFarmAnimalsWanderIn").Translate(PawnKindDef.GetLabelPlural(-1)).CapitalizeFirst(), text, Manhunter ? LetterDefOf.NegativeEvent : LetterDefOf.PositiveEvent, new TargetInfo(intVec, map, false), null, null);
             return true;

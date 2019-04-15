@@ -60,31 +60,7 @@ namespace TwitchToolkit
 
         public void RegisterTicker() => ticker = Ticker.Instance;
 
-        string _version;
-        public string Version
-        {
-            get
-            {
-                if (_version != null)
-                {
-                    return _version;
-                }
-
-                System.Reflection.Assembly assembly = System.Reflection.Assembly.GetAssembly(typeof(Verse.Map));
-                if (assembly == null)
-                {
-                    return null;
-                }
-
-                System.Diagnostics.FileVersionInfo fileVersion = System.Diagnostics.FileVersionInfo.GetVersionInfo(assembly.Location);
-                if (fileVersion == null)
-                {
-                    return null;
-                }
-
-                return (_version = fileVersion.FileVersion);
-            }
-        }
+        public string Version = "2.0.10";
 
         Ticker ticker;
         public DateTime StartTime;

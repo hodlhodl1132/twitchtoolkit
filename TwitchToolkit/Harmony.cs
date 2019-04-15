@@ -6,6 +6,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using TwitchToolkit.Incidents;
+using TwitchToolkit.IRC;
 using TwitchToolkit.Store;
 using TwitchToolkit.Utilities;
 using TwitchToolkitDev;
@@ -24,11 +25,7 @@ namespace TwitchToolkit
             if (ToolkitSettings.SyncStreamElements)
                 StreamElements.ImportPoints();
 
-            SaveHelper.LoadListOfIncItems();
-            SaveHelper.LoadListOfItems();
             SaveHelper.LoadListOfViewers();
-            StoreInventory.LoadItemsIfNotLoaded();
-            StoreInventory.LoadIncItemsIfNotLoaded();
 
             HarmonyInstance harmony = HarmonyInstance.Create("com.github.harmony.rimworld.mod.twitchtoolkit");
 
@@ -37,8 +34,7 @@ namespace TwitchToolkit
             HarmonyMethod savePostfix = new HarmonyMethod(typeof(HarmonyPatches).GetMethod("SaveGame_Postfix"));
 
             harmony.Patch(saveMethod, null, savePostfix, null);
-            harmony.Patch(original: AccessTools.Method(type: typeof(IncidentWorker), name: "SendStandardLetter", parameters: new Type[] {}), prefix: new HarmonyMethod(type: patchType, name: nameof(ChangeLetterTextPrefix)));
-            harmony.Patch(original: AccessTools.Method(type: typeof(IncidentWorker), name: "SendStandardLetter", parameters: new[] { typeof(LookTargets), typeof(Faction), typeof(string[])}), prefix: new HarmonyMethod(type: patchType, name: nameof(ChangeLetterTextArgsPrefix)));
+            harmony.Patch(original: AccessTools.Method(type: typeof(LetterMaker), name: "MakeLetter", parameters: new[] { typeof(string), typeof(string), typeof(LetterDef)}), prefix: new HarmonyMethod(type: patchType, name: nameof(AddLastPlayerMessagePrefix)));
         }
 
         public static void SaveGame_Postfix()
@@ -47,34 +43,14 @@ namespace TwitchToolkit
             SaveHelper.SaveAllModData();
         }
 
-        public static void ChangeLetterTextPrefix(IncidentWorker __instance)
+        public static void AddLastPlayerMessagePrefix(string label, ref string text, LetterDef def)
         {
-            Helper.Log("Patch ran");
-            var text = __instance.def.letterText;
-            Helper.Log("Ran patch state " + Helper._state);
-            if (Helper._state != null)
+            if (Helper.playerMessages.Count > 0)
             {
-                text += "\n\n";
-                text += Helper._state;
-                Helper._state = null;
+                string msg = Helper.playerMessages[0];
+                text += msg;
+                Helper.playerMessages.RemoveAt(0);
             }
-            __instance.def.letterText = text;
-            
-        }
-
-        public static void ChangeLetterTextArgsPrefix(IncidentWorker __instance, LookTargets lookTargets, Faction relatedFaction = null, params string[] textArgs)
-        {
-            Helper.Log("Patch ran");
-            var text = __instance.def.letterText;
-            Helper.Log("Ran patch state " + Helper._state);
-            if (Helper._state != null)
-            {
-                text += "\n\n";
-                text += Helper._state;
-                Helper._state = null;
-            }
-            __instance.def.letterText = text;
-            
         }
     }
 

@@ -45,6 +45,80 @@ namespace TwitchToolkit
             }
         }
 
+        public static void GiveAllViewersCoins(int amount)
+        {
+            List<string> usernames = ParseViewersFromJson();
+            if (usernames != null)
+            {
+                foreach (string username in usernames)
+                {
+                    Viewer viewer = Viewers.GetViewer(username);
+                    if (viewer != null && viewer.GetViewerKarma() > 1)
+                    {
+                        viewer.GiveViewerCoins(amount);
+                    }
+                }
+            }
+        }
+
+        public static void SetAllViewersCoins(int amount)
+        {
+            if (All != null)
+            {
+                foreach (Viewer viewer in All)
+                {
+                    if (viewer != null)
+                    {
+                        viewer.SetViewerCoins(amount);
+                    }
+                }
+            }
+        }
+
+        public static void GiveAllViewersKarma(int amount)
+        {
+            List<string> usernames = ParseViewersFromJson();
+            if (usernames != null)
+            {
+                foreach (string username in usernames)
+                {
+                    Viewer viewer = Viewers.GetViewer(username);
+                    if (viewer != null && viewer.GetViewerKarma() > 1)
+                    {
+                        viewer.SetViewerKarma( Math.Min(ToolkitSettings.KarmaCap, viewer.GetViewerKarma() + amount) );
+                    }
+                }
+            }
+        }
+
+        public static void TakeAllViewersKarma(int amount)
+        {
+            if (All != null)
+            {
+                foreach (Viewer viewer in All)
+                {
+                    if (viewer != null)
+                    {
+                        viewer.SetViewerKarma( Math.Max(0, viewer.GetViewerKarma() - amount) );
+                    }
+                }
+            }
+        }
+
+        public static void SetAllViewersKarma(int amount)
+        {
+            if (All != null)
+            {
+                foreach (Viewer viewer in All)
+                {
+                    if (viewer != null)
+                    {
+                        viewer.SetViewerKarma( amount );
+                    }
+                }
+            }
+        }
+
         public static List<string> ParseViewersFromJson()
         {
             List<string> usernames = new List<string>();
@@ -96,7 +170,6 @@ namespace TwitchToolkit
                 viewer = new Viewer(user);
                 viewer.SetViewerCoins((int)ToolkitSettings.StartingBalance);
                 viewer.karma = ToolkitSettings.StartingKarma;
-                All.Add(viewer);
             }
             return viewer;
         }

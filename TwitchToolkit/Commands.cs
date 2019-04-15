@@ -1,8 +1,11 @@
-﻿using System;
+﻿using RimWorld;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using TwitchToolkit.Incidents;
 using TwitchToolkit.IRC;
+using TwitchToolkit.PawnQueue;
 using TwitchToolkit.Utilities;
 using Verse;
 
@@ -311,7 +314,6 @@ namespace TwitchToolkit.Store
                             }
                         }
 
-
                         if (viewer.GetViewerCoins() >= amount)
                         {
                             viewer.TakeViewerCoins(amount);
@@ -319,6 +321,30 @@ namespace TwitchToolkit.Store
                             _client.SendMessage($"@{giftee.username} " + Helper.ReplacePlaceholder("TwitchToolkitGiftCoins".Translate(), amount: amount.ToString(), from: viewer.username), true);
                         }
                     }
+                }
+
+                if (message.StartsWith("!buy ticket") && ToolkitSettings.ViewerNamedColonistQueue && AllowCommand(msg.Channel))
+                {
+                    GameComponentPawns pawnComponent = Current.Game.GetComponent<GameComponentPawns>();
+
+                    if (pawnComponent.HasUserBeenNamed(user) || pawnComponent.UserInViewerQueue(user))
+                    {
+                        return;
+                    }
+
+                    if (ToolkitSettings.ChargeViewersForQueue)
+                    {
+                        if (viewer.GetViewerCoins() < ToolkitSettings.CostToJoinQueue)
+                        {
+                            _client.SendMessage($"@{user} you do not have enough coins to purchase a ticket, it costs {ToolkitSettings.CostToJoinQueue} and you have {viewer.GetViewerCoins()}.", SendToChatroom(msg.Channel));
+                            return;
+                        }
+
+                        viewer.TakeViewerCoins(ToolkitSettings.CostToJoinQueue);
+                    }
+
+                    pawnComponent.AddViewerToViewerQueue(user);
+                    _client.SendMessage($"@{user} you have purchased a ticket and are in the queue!", SendToChatroom(msg.Channel));
                 }
             }
 
@@ -329,50 +355,12 @@ namespace TwitchToolkit.Store
 
             if (ToolkitSettings.StoreOpen)
             {
-                if (message.StartsWith(ToolkitSettings.BuyeventCmd) && AllowCommand(msg.Channel))
+
+                if ((message.StartsWith("!buy") || message.StartsWith("!gambleskill")) && AllowCommand(msg.Channel))
                 {
-                    if (message.Split(' ').Count() < 2 || (message.Split(' ')[1] == "carepackage"))
-                    {
-                        return;
-                    }
-                    
-                    StoreCommands command = new StoreCommands(message, Viewers.GetViewer(user));
-                    if (command.errormessage != null)
-                    {
-                        _client.SendMessage(command.errormessage, true);
-                    }
-                    else if (command.successmessage != null && ToolkitSettings.PurchaseConfirmations)
-                    {
-                        _client.SendMessage(command.successmessage, true);
-                    }
+                    if (message.Split(' ').Count() < 2) return;
+                    Purchase_Handler.ResolvePurchase(viewer, msg, SendToChatroom(msg.Channel));
                 }
-
-                if (message.StartsWith(ToolkitSettings.BuyitemCmd) && AllowCommand(msg.Channel))
-                {
-                    string[] command = message.Split(' ');
-
-                    if (command.Length < 2)
-                    {
-                        return;
-                    }
-
-                    string item = command[1];
-                    command[1] = "TwitchToolkitCarepackage".Translate();
-                    command[0] = item.ToLower();
-
-                    string newcommand = string.Join(" ", command);
-                    Helper.Log("Attemping item purchase " + newcommand);
-                    StoreCommands command2 = new StoreCommands(newcommand, Viewers.GetViewer(user));
-                    if (command2.errormessage != null)
-                    {
-                        _client.SendMessage(command2.errormessage, true);
-                    }
-                    else if (command2.successmessage != null && ToolkitSettings.PurchaseConfirmations)
-                    {
-                        _client.SendMessage(command2.successmessage, true);
-                    }
-                }
-
             }
 
             if (message.StartsWith(ToolkitSettings.ModsettingsCmd))
@@ -411,7 +399,7 @@ namespace TwitchToolkit.Store
             }
 
 
-            if (ToolkitSettings.CommandsModsEnabled && message.Contains("!installedmods") && (DateTime.Now - modsCommandCooldown).TotalSeconds >= 10)
+            if (ToolkitSettings.CommandsModsEnabled && message.StartsWith("!installedmods") && (DateTime.Now - modsCommandCooldown).TotalSeconds >= 10)
             {
                 modsCommandCooldown = DateTime.Now;
                 string modmsg = "Version: " + _mod.Version + ", Mods: ";
@@ -430,18 +418,24 @@ namespace TwitchToolkit.Store
                 }
                 return;
             }
+
+            List<TwitchInterfaceBase> modExtensions = Current.Game.components.OfType<TwitchInterfaceBase>().ToList();
+            foreach(TwitchInterfaceBase parser in modExtensions)
+            {
+                parser.ParseCommand(msg);
+            }
         }
 
-        static bool AllowCommand(string channel)
+        public static bool AllowCommand(string channel)
         {
             if (!ToolkitSettings.UseSeparateChatRoom) return true;
             if (channel == "#chatrooms:" + ToolkitSettings.ChannelID + ":" + ToolkitSettings.ChatroomUUID) return true;
             return false;
         }
 
-        static bool SendToChatroom(string channel)
+        public static bool SendToChatroom(string channel)
         {
-            if (channel == "#chatrooms:" + ToolkitSettings.ChannelID + ":" + ToolkitSettings.ChatroomUUID) return true;
+            if (channel == "#chatrooms:" + ToolkitSettings.ChannelID + ":" + ToolkitSettings.ChatroomUUID && ToolkitSettings.UseSeparateChatRoom) return true;
             return false;
         }
 

@@ -67,6 +67,7 @@ namespace TwitchToolkit.IRC
 
         public void SendMessage(string message, bool v = false)
         {
+            Helper.Log($"message: {message} bool: {v}");
             if (client != null)
                 client.SendMessage(message, v);
         }

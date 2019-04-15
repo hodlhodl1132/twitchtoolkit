@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using TwitchToolkit.Store;
 
 namespace TwitchToolkit
 {
@@ -10,6 +11,10 @@ namespace TwitchToolkit
         public int id;
         public int coins { get; set; }
         public int karma { get; set; }
+
+        public bool mod = false;
+        public bool subscriber = false;
+        public bool vip = false;
 
         public DateTime last_seen;
 
@@ -22,6 +27,11 @@ namespace TwitchToolkit
 
         public static bool IsModerator(string user)
         {
+            if (Viewers.GetViewer(user).mod)
+            {
+                return true;
+            }
+
             if (ToolkitSettings.ViewerModerators == null)
             {
                 return false;
@@ -78,6 +88,16 @@ namespace TwitchToolkit
             this.karma = this.GetViewerKarma() - karma;
             return this.GetViewerKarma();
         }
+
+        public void CalculateNewKarma(KarmaType karmaType, int price)
+        {
+            int old = this.GetViewerKarma();
+            int newKarma = Karma.CalculateNewKarma(old, karmaType, price);
+            
+            SetViewerKarma(newKarma);
+            Store_Logger.LogKarmaChange(username, old, newKarma);
+        }
+
         public void SetViewerCoins(int coins)
         {
             this.coins = coins;
@@ -87,7 +107,8 @@ namespace TwitchToolkit
 
         public void GiveViewerCoins(int coins)
         {
-            this.coins = GetViewerCoins();
+            if (ToolkitSettings.SyncStreamLabs)
+                this.coins = StreamLabs.GetViewerPoints(this);
             // do not let user go below 0 coins
             if (this.coins + coins < 0)
             {
@@ -102,26 +123,24 @@ namespace TwitchToolkit
 
         public void TakeViewerCoins(int coins)
         {
-            Helper.Log("taking " + coins);
             if (ToolkitSettings.SyncStreamLabs)
                 this.coins = StreamLabs.GetViewerPoints(this);
 
-            Helper.Log("balance before " + coins);
             SetViewerCoins(this.coins - coins);
-            Helper.Log("balance after " + coins);
         }
 
         public static string GetViewerColorCode(string username)
         {
             if (ToolkitSettings.ViewerColorCodes == null)
             {
-                return "FF0000";
+                ToolkitSettings.ViewerColorCodes = new Dictionary<string, string>();
             }
 
             if (!ToolkitSettings.ViewerColorCodes.ContainsKey(username))
             {
                 SetViewerColorCode(Helper.GetRandomColorCode(), username);
             }
+            
             return ToolkitSettings.ViewerColorCodes[username];
         }
 

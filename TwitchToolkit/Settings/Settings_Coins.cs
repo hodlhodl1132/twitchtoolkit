@@ -11,10 +11,10 @@ namespace TwitchToolkit.Settings
     {
         public static void DoWindowContents(Rect rect, Listing_Standard optionsListing)
         {
-            optionsListing.SliderLabeled("TwitchToolkitStartingBalance".Translate(), ref ToolkitSettings.StartingBalance, Math.Round((float)ToolkitSettings.StartingBalance).ToString(), 0f, 500f);
+            optionsListing.AddLabeledNumericalTextField("TwitchToolkitStartingBalance".Translate(), ref ToolkitSettings.StartingBalance, 0.8f);
             optionsListing.SliderLabeled("TwitchToolkitCoinInterval".Translate(), ref ToolkitSettings.CoinInterval, Math.Round((float)ToolkitSettings.CoinInterval).ToString(), 1f, 15f);
             optionsListing.SliderLabeled("TwitchToolkitCoinAmount".Translate(), ref ToolkitSettings.CoinAmount, Math.Round((float)ToolkitSettings.CoinAmount).ToString(), 0f, 100f);
-            optionsListing.SliderLabeled("TwitchToolkitMinimumPurchasePrice".Translate(), ref ToolkitSettings.MinimumPurchasePrice, Math.Round((float)ToolkitSettings.MinimumPurchasePrice).ToString(), 1f, 250f);
+            optionsListing.AddLabeledNumericalTextField("TwitchToolkitMinimumPurchasePrice".Translate(), ref ToolkitSettings.MinimumPurchasePrice, 0.8f);
 
             optionsListing.CheckboxLabeled("TwitchToolkitUnlimitedCoins".Translate(), ref ToolkitSettings.UnlimitedCoins);
             optionsListing.CheckboxLabeled("TwitchToolkitGiftingCoins".Translate(), ref ToolkitSettings.GiftingCoins);
