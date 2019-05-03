@@ -85,7 +85,8 @@ namespace TwitchToolkit.PawnQueue
             queueButtons.y += 26;
             if (Widgets.ButtonText(queueButtons, "Ban Viewer from Queue"))
             {
-                pawnComponent.BanUserFromQueue(selectedUsername);
+                Viewer viewer = Viewers.GetViewer(selectedUsername);
+                viewer.BanViewer();
             }
         }
 
@@ -127,6 +128,10 @@ namespace TwitchToolkit.PawnQueue
                     if (unnamedColonists.Count > 0)
                     {
                         selectedPawn = unnamedColonists[0];
+                    }
+                    else
+                    {
+                        selectedPawn = allColonists[0];
                     }
                     pawnIndex = allColonists.FindIndex(s => s == selectedPawn);
                     break;
@@ -192,7 +197,7 @@ namespace TwitchToolkit.PawnQueue
 
             NameTriple currentName = pawn.Name as NameTriple;
             pawn.Name = new NameTriple(currentName.First, username, currentName.Last);
-            pawnComponent.AssignUserToPawn(selectedUsername, selectedPawn);
+            pawnComponent.AssignUserToPawn(selectedUsername.ToLower(), selectedPawn);
             GetPawn(PawnQueueSelector.FirstDefault);
         }
 

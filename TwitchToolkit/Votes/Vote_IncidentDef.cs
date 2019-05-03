@@ -39,7 +39,7 @@ namespace TwitchToolkit.Votes
                 Toolkit.client.SendMessage("TwitchStoriesChatMessageNewVote".Translate() + ": " + "TwitchToolKitVoteInstructions".Translate());
                 foreach (KeyValuePair<int, IncidentDef> pair in incidents)
                 {
-                    Toolkit.client.SendMessage($"[{pair.Key + 1}]  {pair.Value.LabelCap}");
+                    Toolkit.client.SendMessage($"[{pair.Key + 1}]  {VoteKeyLabel(pair.Key)}");
                 }
             }
         }
@@ -57,8 +57,8 @@ namespace TwitchToolkit.Votes
             return incidents[id].LabelCap;
         }
 
-        Dictionary<int, IncidentDef> incidents = null;
-        StorytellerComp source = null;
-        IncidentParms parms = null;
+        public Dictionary<int, IncidentDef> incidents = null;
+        public StorytellerComp source = null;
+        public IncidentParms parms = null;
     }
 }

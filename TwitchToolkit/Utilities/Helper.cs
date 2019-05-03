@@ -17,7 +17,6 @@ namespace TwitchToolkit
         private static bool _infestationPossible = false;
         public static string _state = null;
         public static List<string> playerMessages = new List<string>();
-        static System.Random _random = new System.Random();
 
         public static void Reset()
         {
@@ -73,7 +72,12 @@ namespace TwitchToolkit
                 if (Current.Game == null || Current.Game.Maps == null)
                     return null;
                 else
-                    return Current.Game.AnyPlayerHomeMap;    
+                {
+                    List<Map> maps = Current.Game.Maps.Where(s => s.IsPlayerHome).ToList();
+                    maps.Shuffle();
+
+                    return maps[0];
+                }
             }
         }
 
@@ -90,10 +94,10 @@ namespace TwitchToolkit
         }
 
         private static string[] defaultColors = { "FF0000", "0000FF", "008000", "008000", "FF7F50", "9ACD32", "FF4500", "2E8B57", "DAA520", "D2691E", "5F9EA0", "1E90FF", "FF69B4", "8A2BE2", "8A2BE2"};
+
         public static string GetRandomColorCode()
         {
-            System.Random random = new System.Random();
-            return defaultColors[random.Next(defaultColors.Length)];
+            return defaultColors[Verse.Rand.Range(0, defaultColors.Length - 1)];
         }
 
         public static void Log(string message)
@@ -259,7 +263,7 @@ namespace TwitchToolkit
             }
         }
 
-        static bool GetRandomVec3(ThingDef thing, Map map, out IntVec3 vec, int contract = 0)
+        public static bool GetRandomVec3(ThingDef thing, Map map, out IntVec3 vec, int contract = 0)
         {
             return CellFinderLoose.TryFindSkyfallerCell(thing, map, out vec, contract, map.Center, 99999, true, false, false, true, true, false, null);
         }
@@ -517,11 +521,6 @@ namespace TwitchToolkit
             if (points < 0) return;
             var raidEnemy = new TSIncidents.IncidentWorker_RaidEnemy();
             raidEnemy.def = IncidentDefOf.RaidEnemy;
-            if (quote != null)
-            {
-                _state = quote;
-                Helper.Log("state set to " + _state);
-            }
             raidEnemy.TryExecute(new IncidentParms
             {
                 target = Helper.AnyPlayerMap,
@@ -705,8 +704,6 @@ namespace TwitchToolkit
                 pawns[i].health.AddHediff(HediffDefOf.Blindness, eyes);
             }
 
-            quote = ReplacePlaceholder(quote, colonist: pawns.RandomElement(_random).Name.ToString());
-
             Vote(quote, LetterDefOf.NegativeEvent);
         }
 
@@ -786,7 +783,6 @@ namespace TwitchToolkit
             incident.def.tale = null;
             incident.def.category = new IncidentCategoryDef();
             incident.def.category.tale = null;
-            Log("Checking self tame");
             return incident.CanFireNow(new IncidentParms
             {
                 target = Helper.AnyPlayerMap
@@ -821,7 +817,7 @@ namespace TwitchToolkit
             Vote(quote, LetterDefOf.NeutralEvent);
         }
 
-        static void Vomit(Map map)
+        public static void Vomit(Map map)
         {
             var vomitDef = ThingDef.Named("DropPodIncoming");
             vomitDef.label = "vomit (incoming)";
@@ -1037,7 +1033,8 @@ namespace TwitchToolkit
                 }
             }
 
-            IncreaseRandomSkill(Events.GetQuote(55, "Inspired by chat"));
+            // TODO: FIX
+            //IncreaseRandomSkill(Events.GetQuote(55, "Inspired by chat"));
         }
 
         public static void Meteorite(string quote)
@@ -1087,7 +1084,7 @@ namespace TwitchToolkit
             });
         }
 
-        static Thing MeteoriteSpawn(Map map, bool mayHitColony)
+        public static Thing MeteoriteSpawn(Map map, bool mayHitColony)
         {
             IntVec3 intVec;
             if (mayHitColony)
@@ -1351,7 +1348,7 @@ namespace TwitchToolkit
 
         public static bool AnimalsWanderInPossible()
         {
-            var incident = new TSIncidents.IncidentWorker_SpecificAnimalsWanderIn("TwitchStoriesLetterLabelAnimalsWanderIn", null, false, _random.Next(4, 11));
+            var incident = new TSIncidents.IncidentWorker_SpecificAnimalsWanderIn("TwitchStoriesLetterLabelAnimalsWanderIn", null, false, Verse.Rand.Range(4, 11));
             incident.def = IncidentDef.Named("HerdMigration");
             return incident.CanFireNow(new IncidentParms
             {
@@ -1361,7 +1358,7 @@ namespace TwitchToolkit
 
         public static void AnimalsWanderIn(string quote)
         {
-            var incident = new TSIncidents.IncidentWorker_SpecificAnimalsWanderIn("TwitchStoriesLetterLabelAnimalsWanderIn", null, false, _random.Next(4, 11));
+            var incident = new TSIncidents.IncidentWorker_SpecificAnimalsWanderIn("TwitchStoriesLetterLabelAnimalsWanderIn", null, false, Verse.Rand.Range(4, 11));
             incident.def = IncidentDef.Named("HerdMigration");
             incident.TryExecute(new IncidentParms
             {
@@ -1407,7 +1404,7 @@ namespace TwitchToolkit
         public static void Predators(string quote)
         {
             string[] animals = { "Bear_Grizzly", "Bear_Polar", "Rhinoceros", "Elephant", "Megasloth", "Thrumbo" };
-            string animal = animals[_random.Next(0, animals.Length)];
+            string animal = animals[Verse.Rand.Range(0, animals.Length)];
 
             ThingDef def = ThingDef.Named(animal);
             float averagePower = 0;
@@ -1583,7 +1580,7 @@ namespace TwitchToolkit
                     }
 
                     var before = skill.Level;
-                    var amount = _random.Next(1, 5);
+                    var amount = Verse.Rand.Range(1, 5);
                     skill.Level += amount;
 
                     quote = ReplacePlaceholder(quote, colonist: pawn.Name.ToString(), skill: skill.def.skillLabel, from: before.ToString(), to: skill.Level.ToString(), amount: amount.ToString());
@@ -1607,7 +1604,7 @@ namespace TwitchToolkit
 
         public static void FarmAnimals(string quote)
         {
-            int num = _random.Next(2, 6);
+            int num = Verse.Rand.Range(2, 6);
             quote = ReplacePlaceholder(quote, amount: num.ToString());
             var incident = new TSIncidents.IncidentWorker_SpecificAnimalsWanderIn( null, null, true, num, false, true);
             incident.def = IncidentDef.Named("FarmAnimalsWanderIn");
@@ -1619,7 +1616,7 @@ namespace TwitchToolkit
 
         public static bool YorkshireTerrierPossible()
         {
-            var incident = new TSIncidents.IncidentWorker_SpecificAnimalsWanderIn(null, PawnKindDef.Named("YorkshireTerrier"), true, _random.Next(3, 8), false, true);
+            var incident = new TSIncidents.IncidentWorker_SpecificAnimalsWanderIn(null, PawnKindDef.Named("YorkshireTerrier"), true, Verse.Rand.Range(3, 8), false, true);
             incident.def = IncidentDef.Named("FarmAnimalsWanderIn");
             return incident.CanFireNow(new IncidentParms
             {
@@ -1629,7 +1626,7 @@ namespace TwitchToolkit
 
         public static void YorkshireTerrier(string quote)
         {
-            var incident = new TSIncidents.IncidentWorker_SpecificAnimalsWanderIn(null, PawnKindDef.Named("YorkshireTerrier"), true, _random.Next(3, 8), false, true);
+            var incident = new TSIncidents.IncidentWorker_SpecificAnimalsWanderIn(null, PawnKindDef.Named("YorkshireTerrier"), true, Verse.Rand.Range(3, 8), false, true);
             incident.def = IncidentDef.Named("FarmAnimalsWanderIn");
             incident.TryExecute(new IncidentParms
             {
@@ -1717,7 +1714,7 @@ namespace TwitchToolkit
             int i = 0;
             for (; i < 100; i++)
             {
-                string mentalBreak = mentalBreaks[severity][_random.Next(0, mentalBreaks[severity].Length)];
+                string mentalBreak = mentalBreaks[severity][Verse.Rand.Range(0, mentalBreaks[severity].Length)];
                 MentalBreakDef breakDef = DefDatabase<MentalBreakDef>.GetNamed(mentalBreak, true);
                 if (MentalBreak(quote, breakDef) == true)
                 {
@@ -1805,7 +1802,7 @@ namespace TwitchToolkit
             var goldDef = ThingDef.Named("DropPodIncoming");
             var goldThing = new Thing();
             goldThing.def = ThingDefOf.Gold;
-            goldThing.stackCount = _random.Next(min, max) * GetColonists(1).Count();
+            goldThing.stackCount = Verse.Rand.Range(min, max) * GetColonists(1).Count();
 
             IntVec3 vec = Rain(goldDef, goldThing);
 

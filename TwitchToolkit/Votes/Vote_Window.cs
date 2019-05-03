@@ -15,8 +15,13 @@ namespace TwitchToolkit
         static TwitchToolkit mod = Toolkit.Mod;
         Vote vote = null;
         List<int> optionsKeys = null;
-        public VoteWindow(Vote vote)
+        public VoteWindow(Vote vote, string title = null)
         {
+            if (title != null)
+            {
+                this.title = title;
+            }
+
             this.preventCameraMotion = false;
             this.closeOnCancel = false;
             this.closeOnAccept = false;
@@ -42,19 +47,20 @@ namespace TwitchToolkit
             Text.Font = ToolkitSettings.LargeVotingWindow ? GameFont.Medium : GameFont.Small;
             float lineheight = ToolkitSettings.LargeVotingWindow ? 50 : 30;
 
-
-            Widgets.Label(inRect, "<b><color=#76BA4E>" + "TwitchStoriesChatMessageNewVote".Translate() + ": " + "TwitchToolKitVoteInstructions".Translate() + "</color></b>");
-            inRect.y += lineheight / 2;
+            string titleLabel = "<b><color=#76BA4E>" + title + "</color></b>";
+            float titleHeight = Text.CalcHeight(titleLabel, inRect.width);
+            Widgets.Label(inRect, titleLabel);
+            inRect.y += titleHeight + 10;
             for (int i = 0; i < optionsKeys.Count; i++)
             {
-                inRect.y += lineheight;
                 string msg = "[" + (i + 1) + "] ";
                 msg += (vote.VoteKeyLabel(i)) + $": {vote.voteCounts[i]}";
                 Widgets.Label(inRect, msg);
+                inRect.y += lineheight;
             }
             int secondsElapsed = TimeHelper.SecondsElapsed(VoteHandler.voteStartedAt);
 
-            Rect bar = new Rect(inRect.x, inRect.y + lineheight, 225, 20);
+            Rect bar = new Rect(inRect.x, inRect.y, 225, 20);
             Widgets.FillableBar(bar, ((float)ToolkitSettings.VoteTime * 60f - (float)secondsElapsed) / ((float)ToolkitSettings.VoteTime * 60f));
             
             Text.Font = old;
@@ -64,7 +70,7 @@ namespace TwitchToolkit
         {
             get
             {
-                return ToolkitSettings.LargeVotingWindow ? new Vector2(400, 140 + (optionsKeys.Count * 50f)) : new Vector2(300, 110 + (optionsKeys.Count * 30f));
+                return ToolkitSettings.LargeVotingWindow ? new Vector2(400, 80 + (optionsKeys.Count * 50f) + Text.CalcHeight(title, 400)) : new Vector2(300, 50 + (optionsKeys.Count * 30f) + Text.CalcHeight(title, 300));
             }
         }
 
@@ -89,6 +95,6 @@ namespace TwitchToolkit
             ToolkitSettings.VotingWindowy = this.windowRect.y;
         }
 
-
+        private string title = "What should happen next?";
     }
 }

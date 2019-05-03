@@ -15,7 +15,6 @@ namespace TwitchToolkit
     {
         public Timer timer = null;
 
-        public static Queue<Event> Events = new Queue<Event>();
         public static Queue<FiringIncident> FiringIncidents = new Queue<FiringIncident>();
         public static Queue<VoteEvent> VoteEvents = new Queue<VoteEvent>();
         public static Queue<IncidentWorker> Incidents = new Queue<IncidentWorker>();
@@ -63,7 +62,6 @@ namespace TwitchToolkit
                             _game = null;
                         }
 
-                        Helper.Log("registering game");
                         _game = Current.Game;
                         if (_game != null)
                         {
@@ -142,11 +140,6 @@ namespace TwitchToolkit
 
                 VoteHandler.CheckForQueuedVotes();
 
-                if (Events.Count() > 0)
-                {
-                    var evt = Events.Dequeue();
-                    evt.Start();
-                }
                 if (_lastCoinReward < 0)
                 {
                     _lastCoinReward = time;

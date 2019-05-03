@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using TwitchToolkit.Incidents;
 using TwitchToolkit.PawnQueue;
+using TwitchToolkit.Settings;
 using TwitchToolkit.Store;
 using Verse;
 
@@ -24,9 +25,7 @@ namespace TwitchToolkit.IncidentHelpers.Special
 
             pawn = allCorpses[0];
             PawnTracker.pawnsToRevive.Add(pawn);
-            
 
-            Helper.Log("Found candidate " + pawn.Name);
             return true;
         }
 
@@ -130,7 +129,7 @@ namespace TwitchToolkit.IncidentHelpers.Special
                 return false;
             }
 
-            target = Current.Game.AnyPlayerHomeMap;
+            target = Helper.AnyPlayerMap;
             if (target == null)
             {
                 return false;
@@ -235,8 +234,9 @@ namespace TwitchToolkit.IncidentHelpers.Special
 
         public override void TryExecute()
         {
-            System.Random rand = new System.Random();
-            float xpWon = pawn.skills.GetSkill(skill).XpRequiredForLevelUp * ((float)rand.Next(50, 150) / 100f);
+            float customMultiplier = CustomSettings.LookupFloatSetting("Toolkit.LevelPawn.XPMultiplier") > 0 ? CustomSettings.LookupFloatSetting("Toolkit.LevelPawn.XPMultiplier") : 0.5f;
+            float xpWon = pawn.skills.GetSkill(skill).XpRequiredForLevelUp * customMultiplier * ((float)Verse.Rand.Range(0.5f, 1.5f));
+            xpWon = IncidentHelper_PointsHelper.RollProportionalGamePoints(storeIncident, pointsWager, xpWon);
             pawn.skills.Learn(skill, xpWon, true);
             viewer.TakeViewerCoins(pointsWager);
             viewer.CalculateNewKarma(this.storeIncident.karmaType, pointsWager);
@@ -251,89 +251,6 @@ namespace TwitchToolkit.IncidentHelpers.Special
         private SkillDef skill = null;
 
         public override Viewer viewer { get; set; }
-    }
-
-    public class AddTrait : IncidentHelperVariables
-    {
-        public override bool IsPossible(string message, Viewer viewer, bool separateChannel = false)
-        {
-            this.separateChannel = separateChannel;
-            this.viewer = viewer;
-            string[] command = message.Split(' ');
-            if (command.Length < 3)
-            {
-                Toolkit.client.SendMessage($"@{viewer.username} syntax is {this.storeIncident.syntax}", separateChannel);
-                return false;
-            }
-
-            GameComponentPawns gameComponent = Current.Game.GetComponent<GameComponentPawns>();
-
-            if (!gameComponent.HasUserBeenNamed(viewer.username))
-            {
-                Toolkit.client.SendMessage($"@{viewer.username} you must be in the colony to use this command.", separateChannel);
-                return false;
-            }
-
-            pawn = gameComponent.PawnAssignedToUser(viewer.username);
-
-            if (pawn.story.traits.allTraits != null && pawn.story.traits.allTraits.Count >= 4)
-            {
-                Toolkit.client.SendMessage($"@{viewer.username} your pawn already has max 4 traits.", separateChannel);
-                return false;
-            }
-
-            string traitKind = command[2].ToLower();
-
-            List<TraitDef> allTraits = DefDatabase<TraitDef>.AllDefs.Where(s =>
-                string.Join("", s.defName.Split(' ')).ToLower() == traitKind
-            ).ToList();
-
-
-            if (allTraits.Count < 1)
-            {
-                Toolkit.client.SendMessage($"@{viewer.username} skill {traitKind} not found.", separateChannel);
-                return false;
-            }
-
-            traitDef = allTraits[0];
-
-            if (!pawn.story.traits.allTraits.Any((Trait tr) => 
-                traitDef.ConflictsWith(tr)) && 
-                (traitDef.conflictingTraits == null || 
-                !traitDef.conflictingTraits.Any((TraitDef tr) => pawn.story.traits.HasTrait(tr))))
-            {
-                return true;
-            }
-
-            foreach (Trait tr in pawn.story.traits.allTraits)
-            {
-                if (tr.def.ConflictsWith(trait) || traitDef.ConflictsWith(tr))
-                {
-                    Toolkit.client.SendMessage($"@{viewer.username} {traitDef.defName} conflicts with your pawn's trait {tr.LabelCap}.");
-                    return false;
-                }
-            }
-
-            return true;
-        }
-
-        public override void TryExecute()
-        {
-            trait = new Trait(traitDef, PawnGenerator.RandomTraitDegree(traitDef));
-            pawn.story.traits.GainTrait(trait);
-            viewer.TakeViewerCoins(storeIncident.cost);
-            viewer.CalculateNewKarma(storeIncident.karmaType, storeIncident.cost);
-            VariablesHelpers.SendPurchaseMessage($"{viewer.username} has purchased " + trait.LabelCap + " for " + pawn.Name + ".", separateChannel);
-            string text = $"@{viewer.username} just added the trait " + traitDef.LabelCap + " to " + pawn.Name + ".";
-            Current.Game.letterStack.ReceiveLetter("Trait", text, LetterDefOf.PositiveEvent, pawn);
-        }
-
-        public override Viewer viewer { get; set; }
-
-        private bool separateChannel = false;
-        private Pawn pawn = null;
-        private TraitDef traitDef = null;
-        private Trait trait = null;
     }
 
     public class ChangeGender : IncidentHelperVariables
@@ -541,6 +458,44 @@ namespace TwitchToolkit.IncidentHelpers.Special
         public override Viewer viewer { get; set; }
     }
 
+    public class BuyPrisoner : IncidentHelperVariables
+    {
+        public override bool IsPossible(string message, Viewer viewer, bool separateChannel = false)
+        {
+            this.separateChannel = separateChannel;
+            this.viewer = viewer;
+            string[] command = message.Split(' ');
+
+
+            GameComponentPawns gameComponent = Current.Game.GetComponent<GameComponentPawns>();
+
+            if (gameComponent.HasUserBeenNamed(viewer.username))
+            {
+                Toolkit.client.SendMessage($"@{viewer.username} you are already in the colony.", separateChannel);
+                return false;
+            }
+
+            worker = new IncidentWorker_PrisonerJoins();
+            worker.def = IncidentDefOf.WandererJoin;
+
+            parms = StorytellerUtility.DefaultParmsNow(IncidentCategoryDefOf.Misc, Helper.AnyPlayerMap);
+
+            return true;
+        }
+
+        public override void TryExecute()
+        {
+            worker.TryExecute(parms);
+        }
+
+        private IncidentWorker worker;
+        private IncidentParms parms;
+
+        private bool separateChannel;
+
+        public override Viewer viewer { get; set; }
+    }
+
     public static class PawnTracker
     {
         public static List<Pawn> pawnsToRevive = new List<Pawn>();
@@ -554,6 +509,4 @@ namespace TwitchToolkit.IncidentHelpers.Special
             thing.TryGetComp<CompQuality>().SetQuality(qual, ArtGenerationContext.Outsider);
         }
     }
-
-    
 }

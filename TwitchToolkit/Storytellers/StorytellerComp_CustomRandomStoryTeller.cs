@@ -251,8 +251,7 @@ namespace TwitchToolkit
 
             if (targets.Count() > 1)
             {
-                System.Random rnd = new System.Random();
-                return targets[rnd.Next(1, targets.Count()) - 1];
+                return targets[Verse.Rand.Range(1, targets.Count()) - 1];
             }
 
             return targets[0];           

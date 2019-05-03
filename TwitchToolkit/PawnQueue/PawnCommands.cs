@@ -39,6 +39,10 @@ namespace TwitchToolkit.PawnQueue
                 for (int i = 0; i < skills.Count; i++)
                 {
                     output += $"{skills[i].def.LabelCap}: {skills[i].levelInt}";
+
+                    if (skills[i].passion == Passion.Minor) output += "+";
+                    if (skills[i].passion == Passion.Major) output += "++";
+
                     if (i != skills.Count - 1)
                     {
                         output += ", ";
@@ -77,6 +81,7 @@ namespace TwitchToolkit.PawnQueue
                 for (int i = 0; i < traits.Count; i++)
                 {
                     output += traits[i].LabelCap;
+
                     if (i != traits.Count - 1)
                     {
                         output += ", ";
@@ -165,7 +170,7 @@ namespace TwitchToolkit.PawnQueue
                 }
             }
 
-
+            Store_Logger.LogString("Parsed pawn command");
         }
 
         public Dictionary<string, string> nameRequests = new Dictionary<string, string>();

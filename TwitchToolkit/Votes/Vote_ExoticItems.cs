@@ -35,13 +35,13 @@ namespace TwitchToolkit.Votes
         {
             if (ToolkitSettings.VotingWindow || (!ToolkitSettings.VotingWindow && !ToolkitSettings.VotingChatMsgs))
             {
-                VoteWindow window = new VoteWindow(this);
+                VoteWindow window = new VoteWindow(this, "Which exotic item should the colony receive?");
                 Find.WindowStack.Add(window);
             }
 
             if (ToolkitSettings.VotingChatMsgs)
             {
-                Toolkit.client.SendMessage("Which exotic item should the colony receive?" + ": " + "TwitchToolKitVoteInstructions".Translate());
+                Toolkit.client.SendMessage("Which exotic item should the colony receive?");
                 foreach (KeyValuePair<int, List<Thing>> pair in thingsOptions)
                 {
                     Toolkit.client.SendMessage($"[{pair.Key + 1}]  {VoteKeyLabel(pair.Key)}");

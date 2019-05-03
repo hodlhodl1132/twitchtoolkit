@@ -27,7 +27,6 @@ namespace TwitchToolkit.Votes
 
         public void RecordVote(int userId, int voteKey)
         {
-            Helper.Log("id " + userId + " votekey" + voteKey);
             if (!VoteKeyExists(voteKey)) return;
             if (viewerVotes.ContainsKey(userId)) viewerVotes[userId] = voteKey;
             else viewerVotes.Add(userId, voteKey);
@@ -47,7 +46,7 @@ namespace TwitchToolkit.Votes
 
         public int DecideWinner()
         {
-            return voteCounts.Aggregate((k, i) => k.Value > i.Value ? k : k.Value == i.Value ? (new System.Random().Next(0, 1) == 0 ? k : i) : i).Key;
+            return voteCounts.Aggregate((k, i) => k.Value > i.Value ? k : k.Value == i.Value ? (Verse.Rand.Range(0, 1) == 0 ? k : i) : i).Key;
         }
 
         public abstract void StartVote();

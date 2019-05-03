@@ -125,14 +125,13 @@ namespace TwitchToolkit.Store
                         // item needs to be worth money, also not an animal
                         if (item.BaseMarketValue > 0f && item.race == null)
                         {
-                            Helper.Log("Adding item " + item.label);
                             int id = StoreInventory.items.Count();
                             StoreInventory.items.Add(new Item(Convert.ToInt32(item.BaseMarketValue * 10 / 6), label, item.defName));             
                         }
                     }
                     catch (InvalidCastException e)
                     {
-                        Helper.Log("Existing item except " + e.Message);
+                        Helper.Log("Existing item exception " + e.Message);
                     }
                 }
             }

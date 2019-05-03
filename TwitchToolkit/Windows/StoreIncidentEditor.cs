@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using TwitchToolkit.Incidents;
+using TwitchToolkit.Settings;
 using TwitchToolkit.Store;
 using UnityEngine;
 using Verse;
@@ -29,12 +30,18 @@ namespace TwitchToolkit.Windows
             {
                 this.storeIncidentVariables = storeIncidentVariables;
                 this.variableIncident = true;
+
+                this.extraWindowHeight = storeIncidentVariables.customSettingKeys != null ?
+                    (storeIncidentVariables.customSettingKeys.Count * 28f) + 28f :
+                    0f;
             }
 
             karmaTypeStrings = Enum.GetNames(typeof(KarmaType));
 
             setKarmaType = storeIncident.karmaType.ToString();
         }
+
+        public override Vector2 InitialSize => new Vector2(500f, 500f + extraWindowHeight);
 
         public override void PostClose()
         {
@@ -46,7 +53,6 @@ namespace TwitchToolkit.Windows
         {
             if (!checkedForBackup || !haveBackup)
             {
-                Helper.Log("checking for backup");
                 MakeSureSaveExists();
                 return;
             }
@@ -80,6 +86,41 @@ namespace TwitchToolkit.Windows
                 ls.AddLabeledRadioList("Karma Type", karmaTypeStrings, ref setKarmaType);
 
                 storeIncident.karmaType = (KarmaType) Enum.Parse(typeof(KarmaType), setKarmaType);
+
+                if (variableIncident)
+                {
+                    ls.Gap();
+                    ls.GapLine();
+                    ls.Label("Custom Settings");
+
+                    int KeyIndex = 0;
+
+                    if (storeIncidentVariables.customSettingStringValues != null)
+                    {
+                        foreach (string str in storeIncidentVariables.customSettingStringValues)
+                        {
+                            string key = storeIncidentVariables.customSettingKeys[KeyIndex];
+                            CustomSettings.SetStringSetting(key, ls.TextEntryLabeled(StripSettingKey(key), CustomSettings.LookupStringSetting(key)));
+                            KeyIndex++;
+                        }
+                    }
+
+                    if (storeIncidentVariables.customSettingFloatValues != null)
+                    {
+                        foreach (float flt in storeIncidentVariables.customSettingFloatValues)
+                        {
+                            string key = storeIncidentVariables.customSettingKeys[KeyIndex];
+                            float newValue = CustomSettings.LookupFloatSetting(key);
+                            string newValueBuffer = newValue.ToString();
+                            ls.TextFieldNumericLabeled<float>(StripSettingKey(key), ref newValue, ref newValueBuffer);
+                            CustomSettings.SetFloatSetting(key, newValue);
+                            KeyIndex++;
+                        }
+                    }
+
+
+                    ls.GapLine();
+                }
 
                 ls.Gap();
 
@@ -126,6 +167,15 @@ namespace TwitchToolkit.Windows
                 Store_IncidentEditor.SaveCopy(storeIncident);
             }
         }
+
+        public string StripSettingKey(string key)
+        {
+            string[] split = key.Split('.');
+
+            return split[split.Count() - 1];
+        }
+
+        public float extraWindowHeight = 0;
 
         public bool checkedForBackup = false;
         public bool haveBackup = false;

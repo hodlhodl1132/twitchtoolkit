@@ -46,7 +46,7 @@ namespace TwitchToolkit.IncidentHelpers.Raids
             
             worker = new Incidents.IncidentWorker_RaidEnemy();
             worker.def = IncidentDefOf.RaidEnemy;
-            
+
             return worker.CanFireNow(parms);
         }
 
@@ -121,9 +121,15 @@ namespace TwitchToolkit.IncidentHelpers.Raids
             {
                 viewer.TakeViewerCoins(pointsWager);
                 viewer.CalculateNewKarma(this.storeIncident.karmaType, pointsWager);
-                VariablesHelpers.SendPurchaseMessage($"Starting drop raid with {pointsWager} points wagered and {(int)parms.points} raid points purchased by {viewer.username}", separateChannel);
+                VariablesHelpers.SendPurchaseMessage(
+                    Helper.ReplacePlaceholder("TranslationKey".Translate(), 
+                    amount: pointsWager.ToString(), 
+                    first: Convert.ToInt32(parms.points).ToString(), 
+                    viewer: viewer.username), 
+                separateChannel);
                 return;
             }
+
             Toolkit.client.SendMessage($"@{viewer.username} not enough points spent for drop raid.", separateChannel);
         }
 
@@ -169,7 +175,7 @@ namespace TwitchToolkit.IncidentHelpers.Raids
             parms = StorytellerUtility.DefaultParmsNow(IncidentCategoryDefOf.RaidBeacon, target);
             parms.points = IncidentHelper_PointsHelper.RollProportionalGamePoints(storeIncident, pointsWager, parms.points);
             parms.raidStrategy = DefDatabase<RaidStrategyDef>.GetNamed("ImmediateAttackSappers");
-            parms.raidArrivalMode = PawnsArrivalModeDefOf.EdgeDrop;
+            //parms.raidArrivalMode = PawnsArrivalModeDefOf.EdgeDrop;
             parms.faction = Find.FactionManager.RandomEnemyFaction(false, false, false, TechLevel.Industrial);
 
             worker = new Incidents.IncidentWorker_RaidEnemy();
@@ -232,7 +238,7 @@ namespace TwitchToolkit.IncidentHelpers.Raids
             parms = StorytellerUtility.DefaultParmsNow(IncidentCategoryDefOf.RaidBeacon, target);
             parms.points = IncidentHelper_PointsHelper.RollProportionalGamePoints(storeIncident, pointsWager, parms.points);
             parms.raidStrategy = DefDatabase<RaidStrategyDef>.GetNamed("Siege");
-            parms.raidArrivalMode = PawnsArrivalModeDefOf.EdgeDrop;
+            //parms.raidArrivalMode = PawnsArrivalModeDefOf.EdgeDrop;
             parms.faction = Find.FactionManager.RandomEnemyFaction(false, false, false, TechLevel.Industrial);
 
             worker = new Incidents.IncidentWorker_RaidEnemy();

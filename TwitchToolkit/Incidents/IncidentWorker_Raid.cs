@@ -69,19 +69,18 @@ namespace TwitchToolkit.Incidents
             parms.points = IncidentWorker_Raid.AdjustedRaidPoints(parms.points, parms.raidArrivalMode, parms.raidStrategy, parms.faction, combat);
             PawnGroupMakerParms defaultPawnGroupMakerParms = IncidentParmsUtility.GetDefaultPawnGroupMakerParms(combat, parms, false);
             List<Pawn> list = PawnGroupMakerUtility.GeneratePawns(defaultPawnGroupMakerParms, true).ToList<Pawn>();
-            List<string> viewernames = Viewers.ParseViewersFromJson();
+            List<string> viewernames = Viewers.ParseViewersFromJsonAndFindActiveViewers();
             if (list.Count > 0 && viewernames != null)
             {
                 int count = 0;
                 int totalviewers = viewernames.Count();
-                System.Random rnd = new System.Random();
                 foreach(Pawn pawn in list)
                 {
                     if (count == list.Count() || viewernames.NullOrEmpty() || pawn.RaceProps.IsMechanoid)
                     {
                         continue;
                     }     
-                    int thisviewer = rnd.Next(0, viewernames.Count());
+                    int thisviewer = Verse.Rand.Range(0, viewernames.Count());
                     NameTriple name = pawn.Name as NameTriple;
                     NameTriple newname = new NameTriple(name.First, viewernames[thisviewer], name.Last);
                     if (!newname.UsedThisGame || ToolkitSettings.RepeatViewerNames)

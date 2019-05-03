@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using TwitchToolkit.Windows;
 using UnityEngine;
 using Verse;
 
@@ -13,30 +14,19 @@ namespace TwitchToolkit.Settings
         {
             optionsListing.CheckboxLabeled("TwitchToolkitViewerColonistQueue".Translate(), ref ToolkitSettings.ViewerNamedColonistQueue);
             optionsListing.CheckboxLabeled("Charge viewers to join queue?", ref ToolkitSettings.ChargeViewersForQueue);
-            optionsListing.AddLabeledNumericalTextField("TwitchToolkitStartingBalance".Translate(), ref ToolkitSettings.CostToJoinQueue, 0.8f);
+            optionsListing.AddLabeledNumericalTextField("Cost to join queue:", ref ToolkitSettings.CostToJoinQueue, 0.8f);
 
             optionsListing.Gap();
             optionsListing.GapLine();
 
-            if (!resetCoinsWarning && optionsListing.CenteredButton("TwitchToolkitResetViewersCoinsOne".Translate())) resetCoinsWarning = true;
-            if (resetCoinsWarning && optionsListing.CenteredButton("TwitchToolkitResetViewersCoinsTwo".Translate()))
+            if (optionsListing.CenteredButton("Edit Viewers"))
             {
-                Viewers.ResetViewersCoins();
-                resetCoinsWarning = false;
-            }
+                Type type = typeof(Window_Viewers);
+                Find.WindowStack.TryRemove(type);
 
-            if (!resetKarmaWarning && optionsListing.CenteredButton("TwitchToolkitResetViewersKarmaOne".Translate())) resetKarmaWarning = true;
-            if (resetKarmaWarning && optionsListing.CenteredButton("TwitchToolkitResetViewersKarmaTwo".Translate()))
-            {
-                Viewers.ResetViewersKarma();
-                resetKarmaWarning = false;
+                Window window = new Window_Viewers();
+                Find.WindowStack.Add(window);
             }
-
-            if (optionsListing.CenteredButton("TwitchToolkitKarmaRound".Translate())) Viewers.AwardViewersCoins();
-            if (optionsListing.CenteredButton("TwitchToolkitRefreshViewers".Translate())) Viewers.RefreshViewers();
         }
-        
-        static bool resetCoinsWarning = false;
-        static bool resetKarmaWarning = false;
     }
 }

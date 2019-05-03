@@ -8,8 +8,18 @@ using Verse;
 
 namespace TwitchToolkit.Store
 {
+    [StaticConstructorOnStartup]
     public static class Purchase_Handler
     {
+        static Purchase_Handler()
+        {
+            client = Toolkit.client;
+            allStoreIncidentsSimple = DefDatabase<StoreIncidentSimple>.AllDefs.ToList();
+            allStoreIncidentsVariables = DefDatabase<StoreIncidentVariables>.AllDefs.ToList();
+
+            viewerNamesDoingVariableCommands = new List<string>();
+        }
+
         public static void ResolvePurchase(Viewer viewer, IRCMessage message, bool separateChannel = false)
         {
             List<string> command = message.Message.Split(' ').ToList();
@@ -106,6 +116,8 @@ namespace TwitchToolkit.Store
                 viewer.TakeViewerCoins(cost);
             }
 
+            Store_Component component = Current.Game.GetComponent<Store_Component>();
+
             QueuePlayerMessage(viewer, message.Message);
             Ticker.IncidentHelpers.Enqueue(helper);
             Store_Logger.LogPurchase(viewer.username, message.Message);
@@ -156,7 +168,10 @@ namespace TwitchToolkit.Store
                 return;
             }
 
+            Store_Component component = Current.Game.GetComponent<Store_Component>();
+
             QueuePlayerMessage(viewer, message.Message, incident.variables);
+
             Ticker.IncidentHelperVariables.Enqueue(helper);
             Store_Logger.LogPurchase(viewer.username, message.Message);
             component.LogIncident(incident);
@@ -211,6 +226,8 @@ namespace TwitchToolkit.Store
                 return false;
             }
 
+            Store_Component component = Current.Game.GetComponent<Store_Component>();
+
             switch (karmaType)
             {
                 case KarmaType.Bad:
@@ -232,6 +249,8 @@ namespace TwitchToolkit.Store
             {
                 return false;
             }
+
+            Store_Component component = Current.Game.GetComponent<Store_Component>();
 
             bool maxed = component.IncidentsInLogOf(incident.abbreviation) >= incident.eventCap;        
 
@@ -268,11 +287,10 @@ namespace TwitchToolkit.Store
             Helper.playerMessages.Add(output);
         }
 
-        static Store_Component component = Current.Game.GetComponent<Store_Component>();
-        static ToolkitIRC client = Toolkit.client;
-        public static List<StoreIncidentSimple> allStoreIncidentsSimple = DefDatabase<StoreIncidentSimple>.AllDefs.ToList();
-        public static List<StoreIncidentVariables> allStoreIncidentsVariables = DefDatabase<StoreIncidentVariables>.AllDefs.ToList();
+        static ToolkitIRC client;
+        public static List<StoreIncidentSimple> allStoreIncidentsSimple;
+        public static List<StoreIncidentVariables> allStoreIncidentsVariables;
 
-        public static List<string> viewerNamesDoingVariableCommands = new List<string>();
+        public static List<string> viewerNamesDoingVariableCommands;
     }
 }

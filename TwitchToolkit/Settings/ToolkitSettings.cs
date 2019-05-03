@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using TwitchToolkit.Settings;
 using TwitchToolkit.Store;
+using TwitchToolkit.Votes;
 using UnityEngine;
 using Verse;
 
@@ -145,11 +146,28 @@ namespace TwitchToolkit
         #region ViewerData
         public static Dictionary<string, string> ViewerColorCodes = new Dictionary<string, string>();
         public static Dictionary<string, bool> ViewerModerators = new Dictionary<string, bool>();
+        public static List<string> BannedViewers = new List<string>();
         #endregion
 
         #region ViewerSettings
         public static bool ChargeViewersForQueue = false;
         public static int CostToJoinQueue = 0;
+        #endregion
+
+        #region VoteSettings
+        public static Dictionary<string, int> VoteWeights = new Dictionary<string, int>();
+        #endregion
+
+        #region Storyteller
+        public static float AverageEventDays = 1;
+        public static float ToryTalkerMTBDays = 2;
+        public static float HodlBotMTBDays = 1;
+        public static bool UseToryTalkerWithHodlBot = true;
+        #endregion
+
+        #region CustomSettings
+        public static Dictionary<string, string> CustomSettingsStrings = new Dictionary<string, string>();
+        public static Dictionary<string, float> CustomSettingsFloats = new Dictionary<string, float>();
         #endregion
 
         private static Vector2 scrollVector2;
@@ -179,11 +197,11 @@ namespace TwitchToolkit
             if (options.ButtonText("TwitchToolkitCoins".Translate()))
                 currentTab = SettingsTab.Coins;
 
-            if (options.ButtonText("TwitchToolkitEvents".Translate()))
-                currentTab = SettingsTab.Events;
+            if (options.ButtonText("Storyteller"))
+                currentTab = SettingsTab.Storyteller;
 
-            if (options.ButtonText("TwitchToolkitItems".Translate()))
-                currentTab = SettingsTab.Items;
+            if (options.ButtonText("Patches"))
+                currentTab = SettingsTab.Patches;
 
             // Middle column
             options.NewColumn();
@@ -214,6 +232,9 @@ namespace TwitchToolkit
             if (options.ButtonText("TwitchToolkitIntegrations".Translate()))
                 currentTab = SettingsTab.Integrations;
 
+            if (options.ButtonText("Votes"))
+                currentTab = SettingsTab.Votes;
+
             options.End();
 
             Listing_Standard gapline = new Listing_Standard();
@@ -235,6 +256,7 @@ namespace TwitchToolkit
             viewRect.width -= 25f;
 
             if (currentTab == SettingsTab.Karma) viewRect.height += 250f;
+            if (currentTab == SettingsTab.Votes) viewRect.height = (DefDatabase<VotingIncident>.AllDefs.Count() * 30f) + 35f;
             
             Listing_Standard optionsListing = new Listing_Standard();
 
@@ -246,11 +268,11 @@ namespace TwitchToolkit
                 case SettingsTab.Coins:
                     Settings_Coins.DoWindowContents(viewRect, optionsListing);
                     break;
-                case SettingsTab.Events:
-                    Settings_Events.DoWindowContents(viewRect, optionsListing);
+                case SettingsTab.Storyteller:
+                    Settings_Storyteller.DoWindowContents(viewRect, optionsListing);
                     break;
-                case SettingsTab.Items:
-                    Settings_Items.DoWindowContents(viewRect, optionsListing);
+                case SettingsTab.Patches:
+                    Settings_Patches.DoWindowContents(viewRect, optionsListing);
                     break;
                 case SettingsTab.Store:
                     Settings_Store.DoWindowContents(viewRect, optionsListing);
@@ -272,6 +294,9 @@ namespace TwitchToolkit
                     break;
                 case SettingsTab.Integrations:
                     Settings_Integrations.DoWindowContents(viewRect, optionsListing);
+                    break;
+                case SettingsTab.Votes:
+                    Settings_VoteWeights.DoWindowContents(viewRect, optionsListing);
                     break;
                 default:
                     Settings_Chat.DoWindowContents(viewRect, optionsListing);
@@ -385,11 +410,27 @@ namespace TwitchToolkit
 
             Scribe_Collections.Look(ref ViewerColorCodes, "ViewerColorCodes", LookMode.Value, LookMode.Value);
             Scribe_Collections.Look(ref ViewerModerators, "ViewerModerators", LookMode.Value, LookMode.Value);
+            Scribe_Collections.Look(ref BannedViewers, "BannedViewers", LookMode.Value);
 
             Scribe_Values.Look(ref ChargeViewersForQueue, "ChargeViewersForQueue", false);
             Scribe_Values.Look(ref CostToJoinQueue, "CostToJoinQueue", 0);
 
+            Scribe_Collections.Look(ref VoteWeights, "VoteWeights", LookMode.Value, LookMode.Value);
+
+            Scribe_Values.Look(ref AverageEventDays, "AverageEventDays", 1);
+            Scribe_Values.Look(ref ToryTalkerMTBDays, "ToryTalkerMTBDays", 2);
+            Scribe_Values.Look(ref HodlBotMTBDays, "HodlBotMTBDays", 1);
+            Scribe_Values.Look(ref UseToryTalkerWithHodlBot, "UseToryTalkerWithHodlBot", true);
+
+            Scribe_Collections.Look(ref CustomSettingsStrings, "CustomSettingsStrings", LookMode.Value, LookMode.Value);
+            Scribe_Collections.Look(ref CustomSettingsFloats, "CustomSettingsFloats", LookMode.Value, LookMode.Value);
+
             if (Toolkit.client == null && OAuth != "") Toolkit.client = new IRC.ToolkitIRC();
+
+            if (BannedViewers == null || BannedViewers.Count < 1)
+            {
+                BannedViewers = new List<string>(PubliclyKnownBots);
+            }
         }
 
         static SettingsTab currentTab = SettingsTab.Chat;
@@ -398,15 +439,88 @@ namespace TwitchToolkit
         {
             Chat,
             Coins,
-            Events,
-            Items,
+            Storyteller,
+            Patches,
             Store,
             Karma,
             Commands,
             Cooldowns,
             Options,
             Viewers,
-            Integrations
+            Integrations,
+            Votes
         }
+
+        static string[] PubliclyKnownBots = new string[69] {
+            "0_applebadapple_0",
+            "activeenergy",
+            "Anotherttvviewer",
+            "apricotdrupefruit",
+            "avocadobadado",
+            "bananennanen",
+            "benutzer",
+            "BloodLustr",
+            "Chloescookieworld",
+            "cleverusernameduh",
+            "cogwhistle",
+            "commanderroot",
+            "commanderrott",
+            "communityshowcase",
+            "cutehealgirl",
+            "danCry",
+            "decafsmurf",
+            "djcozby",
+            "dosrev",
+            "electricallongboard",
+            "electricalskateboard",
+            "faegwent",
+            "freast",
+            "freddyybot",
+            "himekoelectric",
+            "host_giveaway",
+            "hostgiveaway",
+            "jade_elephant_association",
+            "laf21",
+            "lanfusion",
+            "llorx_falso",
+            "luki4fun_bot_master",
+            "M0psy",
+            "mattmongaming",
+            "mwmwmwmwmwmwmwmmwmwmwmwmw",
+            "n0tahacker",
+            "n0tahacker_",
+            "n3td3v",
+            "norkdorf",
+            "nosebleedgg",
+            "not47y",
+            "ogqp",
+            "p0sitivitybot",
+            "philderbeast",
+            "royalestreamers",
+            "shoutgamers",
+            "sickfold",
+            "skinnyseahorse",
+            "SkumShop",
+            "slocool",
+            "smallstreamersconnect",
+            "spectre_807",
+            "Stay_hydrated_bot",
+            "Stockholm_Sweden",
+            "StreamElixir",
+            "StreamPromoteBot",
+            "Subcentraldotnet",
+            "Texastryhard",
+            "teyd",
+            "thatsprettyokay",
+            "thelurkertv",
+            "thronezilla",
+            "tj_target",
+            "twitchprimereminder",
+            "uehebot",
+            "v_and_k",
+            "virgoproz",
+            "woppes",
+            "zanekyber"
+        };
     }
 }

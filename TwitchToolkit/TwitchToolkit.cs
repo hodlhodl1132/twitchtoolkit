@@ -49,12 +49,6 @@ namespace TwitchToolkit
                 _extraWait += (tick - _lastTick).TotalMilliseconds;
             }
 
-            if ((tick - _lastEventCheck).TotalSeconds > 120)
-            {
-                Helper.CheckInfestation();
-                _lastEventCheck = tick;
-            }
-
             _lastTick = tick;
         }
 

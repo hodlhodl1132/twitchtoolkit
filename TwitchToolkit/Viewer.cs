@@ -129,6 +129,27 @@ namespace TwitchToolkit
             SetViewerCoins(this.coins - coins);
         }
 
+        public bool IsBanned
+        {
+            get { return ToolkitSettings.BannedViewers.Contains(username); }
+        }
+
+        public void BanViewer()
+        {
+            if (!IsBanned)
+            {
+                ToolkitSettings.BannedViewers.Add(username);
+            }
+        }
+
+        public void UnBanViewer()
+        {
+            if (IsBanned)
+            {
+                ToolkitSettings.BannedViewers.Remove(username);
+            }
+        }
+
         public static string GetViewerColorCode(string username)
         {
             if (ToolkitSettings.ViewerColorCodes == null)

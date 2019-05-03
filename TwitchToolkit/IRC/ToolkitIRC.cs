@@ -37,20 +37,27 @@ namespace TwitchToolkit.IRC
 
         void OnPrivMsg(IRCMessage message)
         {
-            if (activeChatWindow != null && !message.Message.StartsWith("!") && message.User != ToolkitSettings.Username)
-            {
-                if ((_voteActive && !int.TryParse(message.Message[0].ToString(), out int result)) || !_voteActive)
-                {
-                    activeChatWindow.AddMessage(
-                        message.Message,
-                        message.User,
-                        (message.Parameters.ContainsKey("color")) ? message.Parameters["color"].Remove(0, 1) : Viewer.GetViewerColorCode(message.User)
-                    );
-                }
+            Store_Logger.LogString(message.Message);
+            Store_Logger.LogString($"connected: {Toolkit.client.client.Connected} - {DateTime.Now.ToShortTimeString()}");
 
-            }
+            //if (activeChatWindow != null && !message.Message.StartsWith("!") && message.User != ToolkitSettings.Username)
+            //{
+            //    if ((_voteActive && !int.TryParse(message.Message[0].ToString(), out int result)) || !_voteActive)
+            //    {
+            //        activeChatWindow.AddMessage(
+            //            message.Message,
+            //            message.User,
+            //            (message.Parameters.ContainsKey("color")) ? message.Parameters["color"].Remove(0, 1) : Viewer.GetViewerColorCode(message.User)
+            //        );
+            //    }
+
+            //}
+
+            Store_Logger.LogString("Checking command");
 
             if (Helper.ModActive) Commands.CheckCommand(message);
+
+            Store_Logger.LogString("Checking if is vote");
 
             if (VoteHandler.voteActive && int.TryParse(message.Message[0].ToString(), out int voteKey)) VoteHandler.currentVote.RecordVote(Viewers.GetViewer(message.User).id, voteKey - 1);
         }

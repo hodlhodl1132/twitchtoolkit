@@ -1,8 +1,7 @@
 ﻿using RimWorld;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using TwitchToolkit.IncidentHelpers.Traits;
 using TwitchToolkit.Incidents;
 using TwitchToolkit.IRC;
 using Verse;
@@ -48,6 +47,8 @@ namespace TwitchToolkit.Store
 
                 FindLookup(searchObject, searchQuery);
             }
+
+            Store_Logger.LogString("Finished lookup parse");
         }
 
         public void FindLookup(string searchObject, string searchQuery)
@@ -69,6 +70,9 @@ namespace TwitchToolkit.Store
                     break;
                 case "animal":
                     FindLookup("animals", searchQuery);
+                    break;
+                case "trait":
+                    FindLookup("traits", searchQuery);
                     break;
                 case "diseases":
                     IncidentDef[] allDiseases = DefDatabase<IncidentDef>.AllDefs.Where(s => 
@@ -128,6 +132,18 @@ namespace TwitchToolkit.Store
 
                     foreach (PawnKindDef animal in allAnimals)
                         results.Add(animal.defName.ToLower());
+                    SendTenResults(searchObject.CapitalizeFirst(), searchQuery, results.ToArray());
+                    break;
+                case "traits":
+                    BuyableTrait[] allTrait = AllTraits.buyableTraits.Where(s =>
+                        s.label.Contains(searchQuery) ||
+                        s.label == searchQuery ||
+                        s.def.defName.ToLower().Contains(searchQuery) ||
+                        s.def.defName == searchQuery
+                    ).Take(10).ToArray();
+
+                    foreach (BuyableTrait trait in allTrait)
+                        results.Add(trait.label);
                     SendTenResults(searchObject.CapitalizeFirst(), searchQuery, results.ToArray());
                     break;
             }

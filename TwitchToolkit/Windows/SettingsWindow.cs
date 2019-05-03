@@ -11,13 +11,13 @@ namespace TwitchToolkit.Windows
     {
         public SettingsWindow(Mod mod)
         {
-            this.mod = mod;
+            this.Mod = mod;
             this.doCloseButton = true;
         }
 
         public override void DoWindowContents(Rect inRect)
         {
-            mod.DoSettingsWindowContents(inRect);
+            Mod.DoSettingsWindowContents(inRect);
         }
 
         public override Vector2 InitialSize
@@ -28,6 +28,11 @@ namespace TwitchToolkit.Windows
 			}
 		}
 
-        private Mod mod = null;
+        public override void PostClose()
+        {
+            Mod.WriteSettings();
+        }
+
+        public Mod Mod { get; set; }
     }
 }

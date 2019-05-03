@@ -55,5 +55,15 @@ namespace TwitchToolkit.Store
         {
             LogString($"{username}'s karma went from {oldKarma} to {newKarma}");
         }
+
+        public static void LogGiveCoins(string username, string giftee, int amount)
+        {
+            LogString($"{username} gave viewer {giftee} {amount} coins @ {DateTime.Now.ToShortTimeString()}");
+        }
+
+        public static void LogGiftCoins(string username, string giftee, int amount)
+        {
+            LogString($"{username} gifted viewer {giftee} {amount} coins @ {DateTime.Now.ToShortTimeString()}");
+        }
     }
 }

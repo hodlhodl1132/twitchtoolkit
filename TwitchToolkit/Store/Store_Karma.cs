@@ -148,7 +148,7 @@ namespace TwitchToolkit
                     }
                 }
             }
-            if (newkarma < 1 && !ToolkitSettings.BanViewersWhoPurchaseAlwaysBad)
+            if (newkarma < 1 && ToolkitSettings.BanViewersWhoPurchaseAlwaysBad)
             {
                 newkarma = 1;
             }

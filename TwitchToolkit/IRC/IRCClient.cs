@@ -5,6 +5,7 @@ using System.Text;
 using System.Collections.Generic;
 using System.Threading;
 using Verse;
+using TwitchToolkit.Store;
 
 namespace TwitchToolkit.IRC
 {
@@ -123,8 +124,10 @@ namespace TwitchToolkit.IRC
             {
                 if (_socket == null)
                 {
+                    Log.Warning("Socket is null");
                     return false;
                 }
+
                 return _socket.Connected;
             }
         }
@@ -171,6 +174,7 @@ namespace TwitchToolkit.IRC
         {
             try
             {
+                Store_Logger.LogString("Reading buffer");
                 _sslStream.BeginRead(_buffer, 0, _buffer.Length, new AsyncCallback(ReadCallback), null);
             }
             catch (Exception)
@@ -181,6 +185,7 @@ namespace TwitchToolkit.IRC
 
         void ReadCallback(IAsyncResult asyncResult)
         {
+            Store_Logger.LogString("Reading callback");
             var read = _sslStream.EndRead(asyncResult);
             _parser.Parse(_buffer, read, OnCommand);
             Read();
@@ -254,15 +259,12 @@ namespace TwitchToolkit.IRC
 
         public void SendMessage(string message, bool botchannel = false)
         {
-            Helper.Log("making message");
             if (ToolkitSettings.UseSeparateChatRoom && ToolkitSettings.ChatroomUUID != "" && ToolkitSettings.ChannelID != "" && botchannel)
             {
-                Helper.Log("chatroom msg made");
                 _messageQueue.Enqueue("PRIVMSG #chatrooms:" + ToolkitSettings.ChannelID + ":" + ToolkitSettings.ChatroomUUID + " :" + message + "\n");
             }
             else
             {
-                Helper.Log("main msg made");
                 _messageQueue.Enqueue("PRIVMSG #" + _channel + " :" + message + "\n");
             }
             _messageHandle.Set();

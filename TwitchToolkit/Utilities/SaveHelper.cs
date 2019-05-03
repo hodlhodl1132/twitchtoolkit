@@ -6,6 +6,7 @@ using System.Text;
 using SimpleJSON;
 using TwitchToolkit.Store;
 using UnityEngine;
+using Verse;
 
 namespace TwitchToolkit.Utilities
 {
@@ -33,6 +34,8 @@ namespace TwitchToolkit.Utilities
 
         public static void SaveAllModData()
         {
+            Log.Warning("Saving data");
+
             SaveListOfViewersAsJson();
         }
 
@@ -65,6 +68,8 @@ namespace TwitchToolkit.Utilities
                 viewerslisttemplate["viewers"].Add(vwr.id.ToString(), v);
             }
             viewerslisttemplate["total"] = newViewers.Count;
+
+            Log.Warning("Saving viewers file");
 
             SaveJsonToDataPath(viewerslisttemplate.ToString(), viewerDataPath);
         }

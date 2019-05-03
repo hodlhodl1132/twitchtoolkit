@@ -20,6 +20,16 @@ namespace TwitchToolkit.Store
         public static void CheckCommand(IRCMessage msg)
         {
 
+            if (msg == null)
+            {
+                return;
+            }
+
+            if (msg.Message == null)
+            {
+                return;
+            }
+
             string message = msg.Message;
             string user = msg.User;
             if (message.Split(' ')[0] == "/w")
@@ -28,11 +38,15 @@ namespace TwitchToolkit.Store
                 messagewhisper.RemoveAt(0);
                 message = string.Join(" ", messagewhisper.ToArray());
                 Helper.Log(message);
-        
             }
 
             Viewer viewer = Viewers.GetViewer(user);
             viewer.last_seen = DateTime.Now;
+
+            if (viewer.IsBanned)
+            {
+                return;
+            }
             
             //admin commands
             if (user.ToLower() == ToolkitSettings.Channel.ToLower())
@@ -180,6 +194,7 @@ namespace TwitchToolkit.Store
                             Helper.Log($"Giving viewer {giftee.username} {amount} coins");
                             giftee.GiveViewerCoins(amount);
                             _client.SendMessage($"@{user} " + Helper.ReplacePlaceholder("TwitchToolkitGivingCoins".Translate(), viewer: giftee.username, amount: amount.ToString(), newbalance: giftee.coins.ToString()), SendToChatroom(msg.Channel));
+                            Store_Logger.LogGiveCoins(user, giftee.username, amount);
                         }
                     }
                     catch (InvalidCastException e)
@@ -319,6 +334,7 @@ namespace TwitchToolkit.Store
                             viewer.TakeViewerCoins(amount);
                             giftee.GiveViewerCoins(amount);
                             _client.SendMessage($"@{giftee.username} " + Helper.ReplacePlaceholder("TwitchToolkitGiftCoins".Translate(), amount: amount.ToString(), from: viewer.username), true);
+                            Store_Logger.LogGiftCoins(viewer.username, giftee.username, amount);
                         }
                     }
                 }
@@ -419,11 +435,21 @@ namespace TwitchToolkit.Store
                 return;
             }
 
+            Store_Logger.LogString("Checked all commands, checking components");
+
             List<TwitchInterfaceBase> modExtensions = Current.Game.components.OfType<TwitchInterfaceBase>().ToList();
+
+            if (modExtensions == null)
+            {
+                return;
+            }
+
             foreach(TwitchInterfaceBase parser in modExtensions)
             {
                 parser.ParseCommand(msg);
             }
+
+            Store_Logger.LogString("Command parsed");
         }
 
         public static bool AllowCommand(string channel)

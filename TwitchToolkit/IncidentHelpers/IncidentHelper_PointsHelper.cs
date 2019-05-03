@@ -35,26 +35,22 @@ namespace TwitchToolkit.IncidentHelpers
 
             Helper.Log($"points wager: {pointsWager} threat points: {threatPoints} chanceBigRaid: {chanceAtHigherRaid} chanceSmallRaid: {chanceAtSmallerRaid}");
 
-            System.Random rand = new System.Random();
             float multiplier = 1;
             
             // try for big raid
-            if (chanceAtHigherRaid * 10 > rand.Next(1, 1000))
+            if (chanceAtHigherRaid * 10 > Verse.Rand.Range(1, 1000))
             {
-                Helper.Log("making bigger raid");
                 multiplier = (float)( (1f / 1078f) * Math.Pow(pointsRatio, 2d) );
                 multiplier += (579f/10780f) * pointsRatio;
                 multiplier += 1083f/1078f;
             }
             // try for small raid
-            else if (chanceAtSmallerRaid * 10 > rand.Next(1, 1000))
+            else if (chanceAtSmallerRaid * 10 > Verse.Rand.Range(1, 1000))
             {
                 multiplier = (float)( (0.003887f) * Math.Pow(pointsRatio, 2d) );
                 multiplier += (0.05977f * pointsRatio);
                 multiplier += 0.594f;             
             }
-
-            Helper.Log("raid multiplier is " + multiplier);
 
             return new PointsWagerTarget(threatPoints * multiplier, target);
         }
@@ -70,12 +66,11 @@ namespace TwitchToolkit.IncidentHelpers
             float rollToCoinRatio = totalPossible / 8;
             int totalRolls = (int) Math.Round(pointsWager / rollToCoinRatio);
         
-            System.Random rnd = new System.Random();
             int highestRoll = 65;
 
             for (int i = 0; i < totalRolls; i++)
             {
-                int roll = rnd.Next(65, 135);
+                int roll = Verse.Rand.Range(65, 135);
                 if (roll > highestRoll)
                 {
                     highestRoll = roll;

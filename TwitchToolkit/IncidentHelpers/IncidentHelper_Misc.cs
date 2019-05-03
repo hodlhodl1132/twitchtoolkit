@@ -15,19 +15,17 @@ namespace TwitchToolkit.IncidentHelpers.Misc
         public override bool IsPossible()
         {
             worker = new RimWorld.IncidentWorker_CropBlight();
-            worker.def = new IncidentDef();
+            worker.def = IncidentDef.Named("CropBlight");
 
-            parms = new IncidentParms();
+            Map map = Helper.AnyPlayerMap;
 
-            List<Map> allMaps = Current.Game.Maps;
-            foreach (Map map in allMaps)
+            if (map != null)
             {
-                parms.target = map;
-                if (worker.CanFireNow(parms))
-                {
-                    return true;
-                }
+                parms = StorytellerUtility.DefaultParmsNow(IncidentCategoryDefOf.Misc, map);
+
+                return worker.CanFireNow(parms);
             }
+
             return false;
         }
 
@@ -47,17 +45,15 @@ namespace TwitchToolkit.IncidentHelpers.Misc
             worker = new RimWorld.IncidentWorker_RefugeeChased();
             worker.def = IncidentDef.Named("RefugeeChased");
 
-            parms = new IncidentParms();
+            Map map = Helper.AnyPlayerMap;
 
-            List<Map> allMaps = Current.Game.Maps;
-            foreach (Map map in allMaps)
+            if (map != null)
             {
-                parms.target = map;
-                if (worker.CanFireNow(parms))
-                {
-                    return true;
-                }
+                parms = StorytellerUtility.DefaultParmsNow(IncidentCategoryDefOf.Misc, map);
+
+                return worker.CanFireNow(parms);
             }
+
             return false;
         }
 
@@ -77,17 +73,19 @@ namespace TwitchToolkit.IncidentHelpers.Misc
             worker = new RimWorld.IncidentWorker_SelfTame();
             worker.def = IncidentDef.Named("SelfTame");
 
-            parms = new IncidentParms();
+            Map map = Helper.AnyPlayerMap;
 
-            List<Map> allMaps = Current.Game.Maps;
-            foreach (Map map in allMaps)
+            if (map != null)
             {
-                parms.target = map;
-                if (worker.CanFireNow(parms))
-                {
-                    return true;
-                }
+                parms = StorytellerUtility.DefaultParmsNow(IncidentCategoryDefOf.Misc, map);
+
+                bool canFire = worker.CanFireNow(parms);
+
+                Helper.Log("Can fire " + canFire);
+
+                return canFire;
             }
+
             return false;
         }
 
@@ -107,17 +105,15 @@ namespace TwitchToolkit.IncidentHelpers.Misc
             worker = new RimWorld.IncidentWorker_WandererJoin();
             worker.def = IncidentDefOf.WandererJoin;
 
-            parms = new IncidentParms();
+            Map map = Helper.AnyPlayerMap;
 
-            List<Map> allMaps = Current.Game.Maps;
-            foreach (Map map in allMaps)
+            if (map != null)
             {
-                parms.target = map;
-                if (worker.CanFireNow(parms))
-                {
-                    return true;
-                }
+                parms = StorytellerUtility.DefaultParmsNow(IncidentCategoryDefOf.Misc, map);
+
+                return worker.CanFireNow(parms);
             }
+
             return false;
         }
 
@@ -138,17 +134,15 @@ namespace TwitchToolkit.IncidentHelpers.Misc
             worker = new RimWorld.IncidentWorker_ResourcePodCrash();
             worker.def = IncidentDefOf.ShipChunkDrop;
 
-            parms = new IncidentParms();
+            Map map = Helper.AnyPlayerMap;
 
-            List<Map> allMaps = Current.Game.Maps;
-            foreach (Map map in allMaps)
+            if (map != null)
             {
-                parms.target = map;
-                if (worker.CanFireNow(parms))
-                {
-                    return true;
-                }
+                parms = StorytellerUtility.DefaultParmsNow(IncidentCategoryDefOf.Misc, map);
+
+                return worker.CanFireNow(parms);
             }
+
             return false;
         }
 
@@ -168,17 +162,15 @@ namespace TwitchToolkit.IncidentHelpers.Misc
             worker = new RimWorld.IncidentWorker_TransportPodCrash();
             worker.def = IncidentDefOf.ShipChunkDrop;
 
-            parms = new IncidentParms();
+            Map map = Helper.AnyPlayerMap;
 
-            List<Map> allMaps = Current.Game.Maps;
-            foreach (Map map in allMaps)
+            if (map != null)
             {
-                parms.target = map;
-                if (worker.CanFireNow(parms))
-                {
-                    return true;
-                }
+                parms = StorytellerUtility.DefaultParmsNow(IncidentCategoryDefOf.Misc, map);
+
+                return worker.CanFireNow(parms);
             }
+
             return false;
         }
 
@@ -198,17 +190,15 @@ namespace TwitchToolkit.IncidentHelpers.Misc
             worker = new RimWorld.IncidentWorker_TraderCaravanArrival();
             worker.def = IncidentDefOf.TraderCaravanArrival;
 
-            parms = new IncidentParms();
+            Map map = Helper.AnyPlayerMap;
 
-            List<Map> allMaps = Current.Game.Maps;
-            foreach (Map map in allMaps)
+            if (map != null)
             {
-                parms.target = map;
-                if (worker.CanFireNow(parms))
-                {
-                    return true;
-                }
+                parms = StorytellerUtility.DefaultParmsNow(IncidentCategoryDefOf.Misc, map);
+
+                return worker.CanFireNow(parms);
             }
+
             return false;
         }
 
@@ -228,17 +218,15 @@ namespace TwitchToolkit.IncidentHelpers.Misc
             worker = new RimWorld.IncidentWorker_OrbitalTraderArrival();
             worker.def = IncidentDefOf.OrbitalTraderArrival;
 
-            parms = new IncidentParms();
+            Map map = Helper.AnyPlayerMap;
 
-            List<Map> allMaps = Current.Game.Maps;
-            foreach (Map map in allMaps)
+            if (map != null)
             {
-                parms.target = map;
-                if (worker.CanFireNow(parms))
-                {
-                    return true;
-                }
+                parms = StorytellerUtility.DefaultParmsNow(IncidentCategoryDefOf.Misc, map);
+
+                return worker.CanFireNow(parms);
             }
+
             return false;
         }
 
@@ -255,7 +243,7 @@ namespace TwitchToolkit.IncidentHelpers.Misc
     {
         public override bool IsPossible()
         {
-            List<Pawn> allPawns = Current.Game.AnyPlayerHomeMap.mapPawns.FreeColonistsAndPrisonersSpawned.ToList();
+            List<Pawn> allPawns = Helper.AnyPlayerMap.mapPawns.FreeColonistsAndPrisonersSpawned.ToList();
             if (allPawns == null || allPawns.Count < 1)
             {
                 return false;
@@ -282,13 +270,11 @@ namespace TwitchToolkit.IncidentHelpers.Misc
     {
         public override bool IsPossible()
         {
-            Helper.Log("testing if possible");
-            List<Pawn> pawns = Current.Game.AnyPlayerHomeMap.mapPawns.FreeColonistsSpawned.ToList();
+            List<Pawn> pawns = Helper.AnyPlayerMap.mapPawns.FreeColonistsSpawned.ToList();
             pawns.Shuffle();
 
             foreach (Pawn pawn in pawns)
             {
-                Helper.Log("testing pawn " + pawn.Name);
                 if (pawn.Inspired) continue;
 
                 randomAvailableInspirationDef = (
@@ -296,8 +282,6 @@ namespace TwitchToolkit.IncidentHelpers.Misc
                     where true
                     select x).RandomElementByWeightWithFallback((InspirationDef x) => x.Worker.CommonalityFor(pawn), null
                 );
-
-                Helper.Log("trying inspiration " + randomAvailableInspirationDef.defName);
 
                 if (randomAvailableInspirationDef != null)
                 {
@@ -310,7 +294,7 @@ namespace TwitchToolkit.IncidentHelpers.Misc
 
         public override void TryExecute()
         {
-            
+
         }
 
         private bool successfulInspiration = false;
@@ -324,17 +308,15 @@ namespace TwitchToolkit.IncidentHelpers.Misc
             worker = new RimWorld.IncidentWorker_MeteoriteImpact();
             worker.def = IncidentDef.Named("MeteoriteImpact");
 
-            parms = new IncidentParms();
+            Map map = Helper.AnyPlayerMap;
 
-            List<Map> allMaps = Current.Game.Maps;
-            foreach (Map map in allMaps)
+            if (map != null)
             {
-                parms.target = map;
-                if (worker.CanFireNow(parms))
-                {
-                    return true;
-                }
+                parms = StorytellerUtility.DefaultParmsNow(IncidentCategoryDefOf.Misc, map);
+
+                return worker.CanFireNow(parms);
             }
+
             return false;
         }
 
@@ -354,17 +336,15 @@ namespace TwitchToolkit.IncidentHelpers.Misc
             worker = new RimWorld.IncidentWorker_WandererJoin();
             worker.def = IncidentDef.Named("StrangerInBlackJoin");
 
-            parms = new IncidentParms();
+            Map map = Helper.AnyPlayerMap;
 
-            List<Map> allMaps = Current.Game.Maps;
-            foreach (Map map in allMaps)
+            if (map != null)
             {
-                parms.target = map;
-                if (worker.CanFireNow(parms))
-                {
-                    return true;
-                }
+                parms = StorytellerUtility.DefaultParmsNow(IncidentCategoryDefOf.Misc, map);
+
+                return worker.CanFireNow(parms);
             }
+
             return false;
         }
 
@@ -384,17 +364,15 @@ namespace TwitchToolkit.IncidentHelpers.Misc
             worker = new RimWorld.IncidentWorker_AnimalInsanitySingle();
             worker.def = IncidentDef.Named("AnimalInsanitySingle");
 
-            parms = new IncidentParms();
+            Map map = Helper.AnyPlayerMap;
 
-            List<Map> allMaps = Current.Game.Maps;
-            foreach (Map map in allMaps)
+            if (map != null)
             {
-                parms.target = map;
-                if (worker.CanFireNow(parms))
-                {
-                    return true;
-                }
+                parms = StorytellerUtility.DefaultParmsNow(IncidentCategoryDefOf.Misc, map);
+
+                return worker.CanFireNow(parms);
             }
+
             return false;
         }
 
@@ -414,17 +392,15 @@ namespace TwitchToolkit.IncidentHelpers.Misc
             worker = new RimWorld.IncidentWorker_PsychicDrone();
             worker.def = IncidentDef.Named("PsychicDrone");
 
-            parms = new IncidentParms();
+            Map map = Helper.AnyPlayerMap;
 
-            List<Map> allMaps = Current.Game.Maps;
-            foreach (Map map in allMaps)
+            if (map != null)
             {
-                parms.target = map;
-                if (worker.CanFireNow(parms))
-                {
-                    return true;
-                }
+                parms = StorytellerUtility.DefaultParmsNow(IncidentCategoryDefOf.Misc, map);
+
+                return worker.CanFireNow(parms);
             }
+
             return false;
         }
 
@@ -444,17 +420,15 @@ namespace TwitchToolkit.IncidentHelpers.Misc
             worker = new RimWorld.IncidentWorker_PsychicSoothe();
             worker.def = IncidentDef.Named("PsychicSoothe");
 
-            parms = new IncidentParms();
+            Map map = Helper.AnyPlayerMap;
 
-            List<Map> allMaps = Current.Game.Maps;
-            foreach (Map map in allMaps)
+            if (map != null)
             {
-                parms.target = map;
-                if (worker.CanFireNow(parms))
-                {
-                    return true;
-                }
+                parms = StorytellerUtility.DefaultParmsNow(IncidentCategoryDefOf.Misc, map);
+
+                return worker.CanFireNow(parms);
             }
+
             return false;
         }
 
@@ -474,17 +448,15 @@ namespace TwitchToolkit.IncidentHelpers.Misc
             worker = new RimWorld.IncidentWorker_AmbrosiaSprout();
             worker.def = IncidentDef.Named("AmbrosiaSprout");
 
-            parms = new IncidentParms();
+            Map map = Helper.AnyPlayerMap;
 
-            List<Map> allMaps = Current.Game.Maps;
-            foreach (Map map in allMaps)
+            if (map != null)
             {
-                parms.target = map;
-                if (worker.CanFireNow(parms))
-                {
-                    return true;
-                }
+                parms = StorytellerUtility.DefaultParmsNow(IncidentCategoryDefOf.Misc, map);
+
+                return worker.CanFireNow(parms);
             }
+
             return false;
         }
 
@@ -504,17 +476,15 @@ namespace TwitchToolkit.IncidentHelpers.Misc
             worker = new RimWorld.IncidentWorker_HerdMigration();
             worker.def = IncidentDef.Named("HerdMigration");
 
-            parms = new IncidentParms();
+            Map map = Helper.AnyPlayerMap;
 
-            List<Map> allMaps = Current.Game.Maps;
-            foreach (Map map in allMaps)
+            if (map != null)
             {
-                parms.target = map;
-                if (worker.CanFireNow(parms))
-                {
-                    return true;
-                }
+                parms = StorytellerUtility.DefaultParmsNow(IncidentCategoryDefOf.Misc, map);
+
+                return worker.CanFireNow(parms);
             }
+
             return false;
         }
 
@@ -534,17 +504,15 @@ namespace TwitchToolkit.IncidentHelpers.Misc
             worker = new RimWorld.IncidentWorker_FarmAnimalsWanderIn();
             worker.def = IncidentDef.Named("FarmAnimalsWanderIn");
 
-            parms = new IncidentParms();
+            Map map = Helper.AnyPlayerMap;
 
-            List<Map> allMaps = Current.Game.Maps;
-            foreach (Map map in allMaps)
+            if (map != null)
             {
-                parms.target = map;
-                if (worker.CanFireNow(parms))
-                {
-                    return true;
-                }
+                parms = StorytellerUtility.DefaultParmsNow(IncidentCategoryDefOf.Misc, map);
+
+                return worker.CanFireNow(parms);
             }
+
             return false;
         }
 
@@ -564,17 +532,15 @@ namespace TwitchToolkit.IncidentHelpers.Misc
             worker = new RimWorld.IncidentWorker_WildManWandersIn();
             worker.def = IncidentDef.Named("WildManWandersIn");
 
-            parms = new IncidentParms();
+            Map map = Helper.AnyPlayerMap;
 
-            List<Map> allMaps = Current.Game.Maps;
-            foreach (Map map in allMaps)
+            if (map != null)
             {
-                parms.target = map;
-                if (worker.CanFireNow(parms))
-                {
-                    return true;
-                }
+                parms = StorytellerUtility.DefaultParmsNow(IncidentCategoryDefOf.Misc, map);
+
+                return worker.CanFireNow(parms);
             }
+
             return false;
         }
 
@@ -594,17 +560,15 @@ namespace TwitchToolkit.IncidentHelpers.Misc
             worker = new RimWorld.IncidentWorker_ThrumboPasses();
             worker.def = IncidentDef.Named("ThrumboPasses");
 
-            parms = new IncidentParms();
+            Map map = Helper.AnyPlayerMap;
 
-            List<Map> allMaps = Current.Game.Maps;
-            foreach (Map map in allMaps)
+            if (map != null)
             {
-                parms.target = map;
-                if (worker.CanFireNow(parms))
-                {
-                    return true;
-                }
+                parms = StorytellerUtility.DefaultParmsNow(IncidentCategoryDefOf.Misc, map);
+
+                return worker.CanFireNow(parms);
             }
+
             return false;
         }
 
@@ -624,17 +588,15 @@ namespace TwitchToolkit.IncidentHelpers.Misc
             worker = new RimWorld.IncidentWorker_ShipChunkDrop();
             worker.def = IncidentDef.Named("ShipChunkDrop");
 
-            parms = new IncidentParms();
+            Map map = Helper.AnyPlayerMap;
 
-            List<Map> allMaps = Current.Game.Maps;
-            foreach (Map map in allMaps)
+            if (map != null)
             {
-                parms.target = map;
-                if (worker.CanFireNow(parms))
-                {
-                    return true;
-                }
+                parms = StorytellerUtility.DefaultParmsNow(IncidentCategoryDefOf.Misc, map);
+
+                return worker.CanFireNow(parms);
             }
+
             return false;
         }
 
@@ -654,17 +616,15 @@ namespace TwitchToolkit.IncidentHelpers.Misc
             worker = new RimWorld.IncidentWorker_TravelerGroup();
             worker.def = IncidentDef.Named("TravelerGroup");
 
-            parms = new IncidentParms();
+            Map map = Helper.AnyPlayerMap;
 
-            List<Map> allMaps = Current.Game.Maps;
-            foreach (Map map in allMaps)
+            if (map != null)
             {
-                parms.target = map;
-                if (worker.CanFireNow(parms))
-                {
-                    return true;
-                }
+                parms = StorytellerUtility.DefaultParmsNow(IncidentCategoryDefOf.Misc, map);
+
+                return worker.CanFireNow(parms);
             }
+
             return false;
         }
 
@@ -684,17 +644,15 @@ namespace TwitchToolkit.IncidentHelpers.Misc
             worker = new RimWorld.IncidentWorker_VisitorGroup();
             worker.def = IncidentDef.Named("VisitorGroup");
 
-            parms = new IncidentParms();
+            Map map = Helper.AnyPlayerMap;
 
-            List<Map> allMaps = Current.Game.Maps;
-            foreach (Map map in allMaps)
+            if (map != null)
             {
-                parms.target = map;
-                if (worker.CanFireNow(parms))
-                {
-                    return true;
-                }
+                parms = StorytellerUtility.DefaultParmsNow(IncidentCategoryDefOf.Misc, map);
+
+                return worker.CanFireNow(parms);
             }
+
             return false;
         }
 
@@ -711,7 +669,7 @@ namespace TwitchToolkit.IncidentHelpers.Misc
     {
         public override bool IsPossible()
         {
-            List<Pawn> allPawns = Current.Game.AnyPlayerHomeMap.mapPawns.FreeColonistsSpawned.ToList();
+            List<Pawn> allPawns = Helper.AnyPlayerMap.mapPawns.FreeColonistsSpawned.ToList();
             allPawns.Shuffle();
 
             foreach (Pawn pawn in allPawns)
@@ -755,17 +713,15 @@ namespace TwitchToolkit.IncidentHelpers.Misc
             worker = new IncidentWorker_SpecificAnimalsWanderIn(null, animalKind, true, num, false, true);
             worker.def = IncidentDef.Named("FarmAnimalsWanderIn");
 
-            parms = new IncidentParms();
+            Map map = Helper.AnyPlayerMap;
 
-            List<Map> allMaps = Current.Game.Maps;
-            foreach (Map map in allMaps)
+            if (map != null)
             {
-                parms.target = map;
-                if (worker.CanFireNow(parms))
-                {
-                    return true;
-                }
+                parms = StorytellerUtility.DefaultParmsNow(IncidentCategoryDefOf.Misc, map);
+
+                return worker.CanFireNow(parms);
             }
+
             return false;
         }
 
@@ -823,17 +779,71 @@ namespace TwitchToolkit.IncidentHelpers.Misc
             worker = new Incidents.IncidentWorker_Alphabeavers();
             worker.def = IncidentDef.Named("Alphabeavers");
 
-            parms = new IncidentParms();
+            Map map = Helper.AnyPlayerMap;
 
-            List<Map> allMaps = Current.Game.Maps;
-            foreach (Map map in allMaps)
+            if (map != null)
             {
-                parms.target = map;
-                if (worker.CanFireNow(parms))
-                {
-                    return true;
-                }
+                parms = StorytellerUtility.DefaultParmsNow(IncidentCategoryDefOf.Misc, map);
+
+                return worker.CanFireNow(parms);
             }
+
+            return false;
+        }
+
+        public override void TryExecute()
+        {
+            worker.TryExecute(parms);
+        }
+
+        private IncidentParms parms = null;
+        private IncidentWorker worker = null;
+    }
+
+    public class ShipPartPoison : IncidentHelper
+    {
+        public override bool IsPossible()
+        {
+            worker = new IncidentWorker_ShipChunkDrop();
+            worker.def = IncidentDef.Named("PoisonShipPartCrash");
+
+            Map map = Helper.AnyPlayerMap;
+
+            if (map != null)
+            {
+                parms = StorytellerUtility.DefaultParmsNow(IncidentCategoryDefOf.Misc, map);
+
+                return worker.CanFireNow(parms);
+            }
+
+            return false;
+        }
+
+        public override void TryExecute()
+        {
+            worker.TryExecute(parms);
+        }
+
+        private IncidentParms parms = null;
+        private IncidentWorker worker = null;
+    }
+
+    public class ShipPartPsychic : IncidentHelper
+    {
+        public override bool IsPossible()
+        {
+            worker = new IncidentWorker_ShipChunkDrop();
+            worker.def = IncidentDef.Named("PsychicEmanatorShipPartCrash");
+
+            Map map = Helper.AnyPlayerMap;
+
+            if (map != null)
+            {
+                parms = StorytellerUtility.DefaultParmsNow(IncidentCategoryDefOf.Misc, map);
+
+                return worker.CanFireNow(parms);
+            }
+
             return false;
         }
 

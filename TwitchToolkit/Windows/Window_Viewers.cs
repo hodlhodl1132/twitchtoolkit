@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using TwitchToolkit.PawnQueue;
 using UnityEngine;
 using Verse;
 
@@ -12,414 +13,335 @@ namespace TwitchToolkit.Windows
         public Window_Viewers()
         {
             Viewers.RefreshViewers();
-            this.doCloseButton = true;
-        }
-
-        public override Vector2 InitialSize
-        {
-            get
+            if (Current.Game != null)
             {
-                return new Vector2(600f, 600f);
+                this.component = Current.Game.GetComponent<GameComponentPawns>();
             }
+            this.doCloseButton = true;
         }
 
         public override void DoWindowContents(Rect inRect)
         {
-            GameFont normal = Text.Font;
+            float firstColumn = inRect.width * 0.67f;
+            float cellHeight = 28f;
 
-            Rect title = new Rect(10f, 0f, 300f, 26f);
-            Text.Font = GameFont.Medium;
-            Widgets.Label(title, "Viewer Tool");
+            Rect searchBar = new Rect(0, 0, firstColumn * 0.66F, cellHeight);
+            viewerBuffer = searchQuery;
+            searchQuery = Widgets.TextEntryLabeled(searchBar, "Search:", searchQuery);
 
-            Text.Font = GameFont.Small;
+            searchBar.x += searchBar.width;
+            searchBar.width = 20f;
 
-            if (notificationFrames > 0)
+            if (Widgets.ButtonText(searchBar, "X") ||
+                searchQuery == "" ||
+                (searchQuery != viewerBuffer && (selectedViewer != null || allViewers))
+                )
             {
-                title.width = 340f;
-                title.x = inRect.width - 340f;
-                Widgets.Label(title, notification);
-
-                notificationFrames--;
+                ClearViewer();
             }
 
-            Rect leftHalf = new Rect(10f, 38f, (inRect.width - 20f) / 2f, inRect.height - 40f);
-            Rect rightHalf = new Rect(leftHalf);
-            rightHalf.x = leftHalf.width + 10f;
+            searchBar.x += searchBar.width;
+            searchBar.width = firstColumn / 3;
 
-            Rect coinAmountBox = new Rect(leftHalf.x, leftHalf.y, leftHalf.width, 28f);
-
-            string coinBuffer = coinBoxAmount.ToString();
-            Widgets.TextFieldNumericLabeled<int>(coinAmountBox, "Coins:", ref coinBoxAmount, ref coinBuffer);
-
-
-            Rect smallBtn = new Rect(leftHalf.width / 2f, leftHalf.y + 38f, leftHalf.width / 2f, 28f);
-
-            // left half
-            if (Widgets.ButtonText(smallBtn, "Give All Coins"))
+            if (Widgets.ButtonText(searchBar, "All Viewers"))
             {
-                Viewers.GiveAllViewersCoins(coinBoxAmount);
-                if (selectedViewer != null)
-                {
-                    viewersCoins += coinBoxAmount;
-                    viewerCoinBuffer = viewersCoins.ToString();
-                    UpdateViewer();
-                }
-                
-                CreateNotification("Gave all viewers " + coinBoxAmount + " coins.");
+                SelectAllViewers();
             }
 
-            smallBtn.y += 38f;
-
-            if (Widgets.ButtonText(smallBtn, "Take All Coins"))
+            if (selectedViewer == null && allViewers == false)
             {
-                Viewers.GiveAllViewersCoins(- (coinBoxAmount));
-                if (selectedViewer != null)
+                if (searchQuery == "")
                 {
-                    viewersCoins -= coinBoxAmount;
-                    viewerCoinBuffer = viewersCoins.ToString();
-                    UpdateViewer();
+                    return;
                 }
 
-                CreateNotification("Took " + coinBoxAmount + " coins from every viewer.");
-            }
+                List<Viewer> searchViewers = Viewers.All.Where(s =>
+                        s.username.Contains(searchQuery.ToLower()) ||
+                        s.username == searchQuery.ToLower()
+                    ).Take(6).ToList();
 
-            smallBtn.y += 38f;
+                Rect viewerButton = new Rect(0, searchBar.y + cellHeight, 200f, cellHeight);
 
-            if (!setAllCoinsWarning && Widgets.ButtonText(smallBtn, "Set All Coins"))
-            {
-                setAllCoinsWarning = true;
-            }
-
-            if (setAllCoinsWarning && Widgets.ButtonText(smallBtn, "Are you sure?"))
-            {
-                Viewers.SetAllViewersCoins(coinBoxAmount);
-                if (selectedViewer != null)
+                foreach (Viewer viewer in searchViewers)
                 {
-                    viewersCoins = coinBoxAmount;
-                    viewerCoinBuffer = viewersCoins.ToString();
-                    UpdateViewer();
-                }
-
-                CreateNotification("Set all viewers coins to " + coinBoxAmount);
-                setAllCoinsWarning = false;
-            }
-
-            smallBtn.y += 38f;
-
-            if (!resetAllCoinsWarning && Widgets.ButtonText(smallBtn, "Reset All Coins"))
-            {
-                resetAllCoinsWarning = true;
-            }
-
-            if (resetAllCoinsWarning && Widgets.ButtonText(smallBtn, "Are you sure?"))
-            {
-                Viewers.SetAllViewersCoins(ToolkitSettings.StartingBalance);
-                if (selectedViewer != null)
-                {
-                    viewersCoins = ToolkitSettings.StartingBalance;
-                    viewerCoinBuffer = viewersCoins.ToString();
-                    UpdateViewer();
-                }
-
-                CreateNotification("Set all viewers coins to " + ToolkitSettings.StartingBalance);
-                resetAllCoinsWarning = false; 
-            }
-
-            Rect karmaAmountBox = new Rect(coinAmountBox);
-            karmaAmountBox.y = smallBtn.y + 38f;
-
-            string karmaBuffer = karmaBoxAmount.ToString();
-            Widgets.TextFieldNumericLabeled<int>(karmaAmountBox, "Karma %:", ref karmaBoxAmount, ref karmaBuffer);
-
-            smallBtn.y = karmaAmountBox.y + 38f;
-
-            if (Widgets.ButtonText(smallBtn, "Give All Karma"))
-            {
-                Viewers.GiveAllViewersKarma(karmaBoxAmount);
-                if (selectedViewer != null)
-                {
-                    viewersKarma = Math.Min(karmaBoxAmount + viewersKarma, ToolkitSettings.KarmaCap);
-                    viewerKarmaBuffer = viewersKarma.ToString();
-                    UpdateViewer();
-                }
-                
-                CreateNotification("Gave all viewers " + karmaBoxAmount + " karma.");
-            }
-
-            smallBtn.y += 38f;
-
-            if (Widgets.ButtonText(smallBtn, "Take All Karma"))
-            {
-                Viewers.TakeAllViewersKarma(karmaBoxAmount);
-                if (selectedViewer != null)
-                {
-                    viewersKarma = Math.Max( viewersKarma - karmaBoxAmount, 0);
-                    viewerKarmaBuffer = viewersKarma.ToString();
-                    UpdateViewer();
-                }
-
-                CreateNotification("Took " + karmaBoxAmount + "% karma from every viewer.");
-            }
-
-            smallBtn.y += 38f;
-
-            if (!setAllKarmaWarning && Widgets.ButtonText(smallBtn, "Set All Karma"))
-            {
-                setAllKarmaWarning = true;
-            }
-
-            if (setAllKarmaWarning && Widgets.ButtonText(smallBtn, "Are you sure?"))
-            {
-                Viewers.SetAllViewersKarma(karmaBoxAmount);
-                if (selectedViewer != null)
-                {
-                    viewersKarma = karmaBoxAmount;
-                    viewerKarmaBuffer = viewersKarma.ToString();
-                    UpdateViewer();
-                }
-
-                CreateNotification("Set all viewers karma to " + karmaBoxAmount);
-                setAllKarmaWarning = false;
-            }
-            
-            smallBtn.y += 38f;
-
-            if (!resetAllKarmaWarning && Widgets.ButtonText(smallBtn, "Reset All Karma"))
-            {
-                resetAllKarmaWarning = true;
-            }
-
-            if (resetAllKarmaWarning && Widgets.ButtonText(smallBtn, "Are you sure?"))
-            {
-                Viewers.SetAllViewersKarma(karmaBoxAmount);
-                if (selectedViewer != null)
-                {
-                    viewersKarma = ToolkitSettings.StartingKarma;
-                    viewerKarmaBuffer = viewersKarma.ToString();
-                    UpdateViewer();
-                }
-
-                CreateNotification("Set all viewers karma to " + ToolkitSettings.StartingKarma);
-                resetAllKarmaWarning = false;
-            }
-
-            // right half
-            Rect viewerLabel = new Rect(rightHalf.x + 100, rightHalf.y, rightHalf.width, 28f);
-
-            if (selectedViewer != null)
-            {
-                if (viewersCoins != viewersCoinsCached)
-                {
-                    UpdateViewer();
-                }
-
-                string colorCode = Viewer.GetViewerColorCode(selectedViewer.username);
-                Widgets.Label(viewerLabel, $"<b>Viewer:</b> <color=#{colorCode}>{selectedViewer.username}</color>");
-
-                viewerLabel.y += 98f;
-
-                if (Viewer.IsModerator(selectedViewer.username))
-                {
-                    Widgets.Label(viewerLabel, "<b><color=#008000>Moderator</color></b>");
-
-                    viewerLabel.y += 38f;
-                }
-
-                viewerLabel.x = rightHalf.x + 10;
-
-                Widgets.TextFieldNumericLabeled<int>(viewerLabel, "Coins:", ref viewersCoins, ref viewerCoinBuffer);
-
-                viewerLabel.y += 38f;
-
-                Widgets.TextFieldNumericLabeled<int>(viewerLabel, "Karma %:", ref viewersKarma, ref viewerKarmaBuffer);
-
-                viewerLabel.y += 38f;
-                viewerLabel.width = viewerLabel.width / 2;
-                viewerLabel.x = rightHalf.x + (rightHalf.width / 2f);
-
-                if (Widgets.ButtonText(viewerLabel, "Give Coins"))
-                {
-                    viewersCoins += coinBoxAmount;
-                    viewerCoinBuffer = viewersCoins.ToString();
-                    UpdateViewer();
-                }
-
-                viewerLabel.y += 38f;
-
-                if (Widgets.ButtonText(viewerLabel, "Take Coins"))
-                {
-                    viewersCoins -= coinBoxAmount;
-                    viewerCoinBuffer = viewersCoins.ToString();
-                    UpdateViewer();
-                }
-
-                viewerLabel.y += 38f;
-
-                if (Widgets.ButtonText(viewerLabel, "Set Coins"))
-                {
-                    viewersCoins = coinBoxAmount;
-                    viewerCoinBuffer = viewersCoins.ToString();
-                    UpdateViewer();
-                }
-
-                viewerLabel.y += 38f;
-
-                if (Widgets.ButtonText(viewerLabel, "Reset Coins"))
-                {
-                    viewersCoins = ToolkitSettings.StartingBalance;
-                    viewerCoinBuffer = viewersCoins.ToString();
-                    UpdateViewer();
-                }
-
-                viewerLabel.y += 38f;
-
-                if (Widgets.ButtonText(viewerLabel, "Make Moderator"))
-                {
-                    selectedViewer.SetAsModerator();
-                }
-
-                viewerLabel.y += 38f;
-
-                if (Widgets.ButtonText(viewerLabel, "Remove Moderator"))
-                {
-                    selectedViewer.RemoveAsModerator();
-                }
-            }
-
-            if (lastSearch != usernameSearch)
-            {
-                selectedViewer = null;
-                FindViewers();
-            }
-
-            Rect viewerBar = new Rect(rightHalf.x, 70f, rightHalf.width, 28f);
-            usernameSearch = Widgets.TextEntryLabeled(viewerBar, "Search:", usernameSearch);
-
-            if (searchResults != null && searchResults.Count > 0)
-            {
-                Rect vwrBtn = new Rect((inRect.width - 20f) * 0.75f, viewerBar.y + 38f, rightHalf.width / 2f, 28f);
-
-                foreach (Viewer viewer in searchResults)
-                {
-                    if (Widgets.ButtonText(vwrBtn, viewer.username))
+                    if (Widgets.ButtonText(viewerButton, viewer.username))
                     {
-                        SetViewer(viewer);
+                        SelectViewer(viewer);
                     }
-                    vwrBtn.y += 28f;
                 }
+
+                return;
             }
 
-            Rect bottomBar = new Rect(10f, inRect.height - 78f, (inRect.width - 20f) / 2f, 28f);
+            Rect editLabel = new Rect(0, searchBar.y + cellHeight + 10f, firstColumn, cellHeight);
+            Widgets.Label(editLabel, "Editing: " + viewerBuffer);
 
-            if (Widgets.ButtonText(bottomBar, "Give viewers coins by karma"))
-            {
-                selectedViewer = null;
-                Viewers.AwardViewersCoins();
-                CreateNotification("Gave all viewers coins based on their karma");
-            }
+            // three rows
+            Rect smallLabel = new Rect(0, editLabel.y + cellHeight, firstColumn * 0.33f, cellHeight);
+            Rect smallButton = new Rect(0, smallLabel.y + cellHeight, firstColumn * 0.33f, cellHeight);
 
-            bottomBar.x += bottomBar.width + 5f;
+            // first row
+            Widgets.Label(smallLabel, "Coins");
             
-            if (!resetAllViewersWarning && Widgets.ButtonText(bottomBar, "Reset All Viewers"))
+            if (Widgets.ButtonText(smallButton, "Give"))
             {
-                resetAllViewersWarning = true;
+                OpenEditProp(EditPropsActions.Give, EditProp.Coins);
             }
 
-            if (resetAllViewersWarning && Widgets.ButtonText(bottomBar, "Are you sure?"))
+            smallButton.y += cellHeight;
+
+            if (Widgets.ButtonText(smallButton, "Take"))
             {
-                selectedViewer = null;
-                Viewers.ResetViewers();
-                CreateNotification($"Reset all viewers to {ToolkitSettings.StartingBalance} coins and {ToolkitSettings.StartingKarma}% karma.");
-                resetAllViewersWarning = false;
+                OpenEditProp(EditPropsActions.Take, EditProp.Coins);
             }
 
-        }
+            smallButton.y += cellHeight;
 
-        public void CreateNotification(string message)
-        {
-            notification = message;
-            notificationFrames = 240;
-        }
+            if (Widgets.ButtonText(smallButton, "Set"))
+            {
+                OpenEditProp(EditPropsActions.Set, EditProp.Coins);
+            }
 
-        private void FindViewers()
-        {
-            lastSearch = usernameSearch;
+            // second row
 
-            searchResults = Viewers.All.Where(s => 
-                usernameSearch != "" &&
-                (s.username.Contains(usernameSearch) ||
-                s.username == usernameSearch)
-            ).Take(6).ToList();
-        }
+            smallButton.y = smallLabel.y + cellHeight;
+            smallButton.x = firstColumn * 0.45f;
+            smallLabel.x = smallButton.x;
 
-        private void SetViewer(Viewer viewer)
-        {
-            selectedViewer = viewer;
-            searchResults = new List<Viewer>();
+            Widgets.Label(smallLabel, "Karma");
 
-            int coins = viewer.GetViewerCoins();
-            int karma = viewer.GetViewerKarma();
+            if (Widgets.ButtonText(smallButton, "Give"))
+            {
+                OpenEditProp(EditPropsActions.Give, EditProp.Karma);
+            }
 
-            viewersCoins = coins;
-            viewersCoinsCached = coins;
+            smallButton.y += cellHeight;
 
-            viewersKarma = karma;
-            viewersKarmaCached = karma;
+            if (Widgets.ButtonText(smallButton, "Take"))
+            {
+                OpenEditProp(EditPropsActions.Take, EditProp.Karma);
+            }
 
-            viewerCoinBuffer = coins.ToString();
-            viewerKarmaBuffer = karma.ToString();
-        }
+            smallButton.y += cellHeight;
 
-        private void UpdateViewer()
-        {
+            if (Widgets.ButtonText(smallButton, "Set"))
+            {
+                OpenEditProp(EditPropsActions.Set, EditProp.Karma);
+            }
+
+            float viewerInfoHeight = smallButton.y + cellHeight;
+
+            // third row
+
+            if (allViewers)
+            {
+                smallButton.y = smallLabel.y + cellHeight;
+                smallButton.x = firstColumn * 1f;
+                smallLabel.x = smallButton.x;
+                smallLabel.width = 400f;
+
+                if (Widgets.ButtonText(smallButton, "Karma round"))
+                {
+                    Viewers.AwardViewersCoins();
+                }
+
+                smallButton.y += cellHeight;
+
+
+                //// banned viewers
+                //if (Widgets.ButtonText(smallButton, "placeholder"))
+                //{
+
+                //}
+
+                //smallButton.y += cellHeight;
+
+                if (Widgets.ButtonText(smallButton, (resetAllWarning ? "Are you sure?" : "Reset All")))
+                {
+                    if (resetAllWarning)
+                    {
+                        Viewers.ResetViewers();
+                        resetAllWarning = false;
+                    }
+                    else
+                    {
+                        resetAllWarning = true;
+                    }
+                }
+
+                smallButton.y += cellHeight;
+
+                if (Widgets.ButtonText(smallButton, (resetCoinWarning ? "Are you sure?" : "Reset All Coins")))
+                {
+                    if (resetCoinWarning)
+                    {
+                        Viewers.ResetViewersCoins();
+                        resetCoinWarning = false;
+                    }
+                    else
+                    {
+                        resetCoinWarning = true;
+                    }
+                }
+
+                smallButton.y += cellHeight;
+
+                if (Widgets.ButtonText(smallButton, (resetKarmaWarning ? "Are you sure?" : "Reset All Karma")))
+                {
+                    if (resetKarmaWarning)
+                    {
+                        Viewers.ResetViewersKarma();
+                        resetKarmaWarning = false;
+                    }
+                    else
+                    {
+                        resetKarmaWarning = true;
+                    }
+                }
+
+                smallButton.y += cellHeight;
+            }
+
             if (selectedViewer == null)
             {
                 return;
             }
 
-            CreateNotification("Updated viewer");
 
-            viewersCoinsCached = viewersCoins;
-            viewersKarmaCached = viewersKarma;
+            // viewer info
 
-            selectedViewer.SetViewerCoins(viewersCoins);
-            selectedViewer.SetViewerKarma(viewersKarma);
+            smallLabel.x = 0f;
+            smallLabel.width = 200f;
+            smallLabel.y = viewerInfoHeight + 20f;
+
+            string colorCode = Viewer.GetViewerColorCode(selectedViewer.username);
+            Widgets.Label(smallLabel, $"<b>Viewer:</b> <color=#{colorCode}>{selectedViewer.username}</color>");
+
+            smallLabel.y += cellHeight;
+            smallButton.y = smallLabel.y;
+            smallButton.x = 250f;
+
+            Widgets.Label(smallLabel, "Banned: " + (selectedViewer.IsBanned ? "Yes" : "No"));
+            if (Widgets.ButtonText(smallButton, (selectedViewer.IsBanned ? "Unban" : "Ban")))
+            {
+                if (selectedViewer.IsBanned)
+                {
+                    selectedViewer.UnBanViewer();
+                }
+                else
+                {
+                    selectedViewer.BanViewer();
+                }
+            }
+
+            smallLabel.y += cellHeight;
+            smallButton.y = smallLabel.y;
+
+            Widgets.Label(smallLabel, "Toolkit Mod: " + (selectedViewer.mod ? "Yes" : "No"));
+            if (Widgets.ButtonText(smallButton, (selectedViewer.mod ? "Unmod" : "Mod")))
+            {
+                selectedViewer.mod = !selectedViewer.mod;
+            }
+
+            if (component != null)
+            {
+                smallLabel.y += cellHeight;
+                smallButton.y = smallLabel.y;
+
+                Widgets.Label(smallLabel, "Colonist: " + (component.HasUserBeenNamed(selectedViewer.username) ? component.PawnAssignedToUser(selectedViewer.username).Name.ToStringShort : "None"));
+                if (component.HasUserBeenNamed(selectedViewer.username) && Widgets.ButtonText(smallButton, "Unassign"))
+                {
+                    component.pawnHistory.Remove(selectedViewer.username);
+                }
+            }
+
+
+
+            smallLabel.y += cellHeight;
+
+            Widgets.Label(smallLabel, "Coins: " + selectedViewer.GetViewerCoins());
+
+            smallLabel.y += cellHeight;
+
+            Widgets.Label(smallLabel, "Karma: " + selectedViewer.GetViewerKarma() + "%");
+
+            smallButton.y = smallLabel.y + cellHeight;
+            smallButton.x = 0f;
+
+            if (Widgets.ButtonText(smallButton, (resetWarning ? "Are you sure?" : "Reset Viewer")))
+            {
+                if (resetWarning)
+                {
+                    Viewers.All = Viewers.All.Where(s => s != selectedViewer).ToList();
+                    string username = selectedViewer.username;
+                    resetWarning = false;
+                    SelectViewer(Viewers.GetViewer(username));
+                }
+                else
+                {
+                    resetWarning = true;
+                }
+            }
         }
 
-        private List<Viewer> searchResults = new List<Viewer>();
+        public void OpenEditProp(EditPropsActions action, EditProp prop)
+        {
+            Find.WindowStack.TryRemove(typeof(Window_ViewerEditProp));
 
-        private int coinBoxAmount = 0;
+            Window_ViewerEditProp window;
 
-        private int karmaBoxAmount = 0;
+            if (selectedViewer != null)
+            {
+                window = new Window_ViewerEditProp(action, prop, selectedViewer);
+            }
+            else
+            {
+                window = new Window_ViewerEditProp(action, prop);
+            }
 
-        private int notificationFrames = 0;
+            Find.WindowStack.Add(window);
+        }
 
-        private string notification = "";
+        public void SelectViewer(Viewer viewer)
+        {
+            this.selectedViewer = viewer;
+            this.viewerBuffer = viewer.username;
+            this.searchQuery = viewerBuffer;
+            this.allViewers = false;
+        }
+
+        public void SelectAllViewers()
+        {
+            this.selectedViewer = null;
+            this.allViewers = true;
+            this.viewerBuffer = "All Viewers";
+            this.searchQuery = viewerBuffer;
+        }
+
+        public void ClearViewer()
+        {
+            selectedViewer = null;
+            allViewers = false;
+            viewerBuffer = "";
+            searchQuery = viewerBuffer;
+        }
+
+        private GameComponentPawns component = null;
 
         private Viewer selectedViewer = null;
 
-        private string usernameSearch = "";
+        private string viewerBuffer = "";
 
-        private string lastSearch = "";
+        private bool allViewers = false;
 
-        // viewer cached
+        private string searchQuery = "";
 
-        private int viewersCoinsCached;
-        private int viewersKarmaCached;
+        private bool resetWarning = false;
 
-        private int viewersCoins;
-        private int viewersKarma;
+        private bool resetAllWarning = false;
 
-        private string viewerCoinBuffer;
-        private string viewerKarmaBuffer;
+        private bool resetCoinWarning = false;
 
-        // bool warnings
-        private bool setAllCoinsWarning = false;
-        private bool resetAllCoinsWarning = false;
-
-        private bool setAllKarmaWarning = false;
-        private bool resetAllKarmaWarning = false;
-
-        private bool resetAllViewersWarning = false;
+        private bool resetKarmaWarning = false;
     }
 }

@@ -40,6 +40,7 @@ namespace TwitchToolkit.Windows
             if (Widgets.ButtonText(resetButton, "Reset Items"))
             {
                 Store_ItemEditor.ResetItemsToDefault();
+                GetTradeables(false);
             }
 
             Rect sortLabel = new Rect(inRect.width - 470f, 32f, 100f, 24f);
@@ -170,6 +171,7 @@ namespace TwitchToolkit.Windows
                 if (Widgets.ButtonText(rect1, "Disable"))
                 {
                     newPrice = -10;
+                    tradeablesPrices[index] = newPrice;
                 }
                 tradeablesPrices[index] = newPrice;
             }
@@ -183,7 +185,14 @@ namespace TwitchToolkit.Windows
             {
                 if (Widgets.ButtonText(rect2, "Reset"))
                 {
-                    tradeablesPrices[index] = Convert.ToInt32(thing.BaseMarketValue * 10 / 6);
+                    newPrice = Convert.ToInt32(thing.BaseMarketValue * 10 / 6);
+
+                    if (newPrice < 1)
+                    {
+                        newPrice = 1;
+                    }
+
+                    tradeablesPrices[index] = newPrice;
                 }
             }
 
@@ -231,9 +240,9 @@ namespace TwitchToolkit.Windows
 			}
         }
 
-        private void GetTradeables()
+        private void GetTradeables(bool save = true)
         {
-            if (cachedTradeables.Count > 0)
+            if (save && cachedTradeables.Count > 0)
             {
                 Store_ItemEditor.UpdateStoreItems(cachedTradeables, tradeablesPrices);
             }
@@ -243,7 +252,6 @@ namespace TwitchToolkit.Windows
             cachedTradeables = new List<ThingDef>();
             
             string searchShort = string.Join("", searchQuery.Split(' ')).ToLower();
-            Log.Warning("Search " + searchShort);
 
             IEnumerable<ThingDef> tradeableitems = from t in DefDatabase<ThingDef>.AllDefs
                     where (t.tradeability.TraderCanSell() || ThingSetMakerUtility.CanGenerate(t) ) &&
@@ -251,17 +259,21 @@ namespace TwitchToolkit.Windows
                     (t.FirstThingCategory != null) &&
                     (t.BaseMarketValue > 0) &&
                     (searchQuery == "" || 
-                        ( t.defName.ToLower().Contains(searchShort) ||
-                        string.Join("", t.label.Split(' ')).ToLower().Contains(searchShort) ||
-                        t.defName.ToLower() == searchShort ||
-                        string.Join("", t.label.Split(' ')).ToLower() == searchShort ||
-                        string.Join("", t.FirstThingCategory.LabelCap.Split(' ')).ToLower().Contains(searchShort) ||
-                        t.FirstThingCategory.LabelCap.ToLower() == searchShort )
+                        (
+                            t.defName.ToLower().Contains(searchShort) ||
+                            string.Join("", t.label.Split(' ')).ToLower().Contains(searchShort) ||
+                            t.defName.ToLower() == searchShort ||
+                            string.Join("", t.label.Split(' ')).ToLower() == searchShort ||
+                            (
+                                t.FirstThingCategory == null ||
+                                string.Join("", t.FirstThingCategory.LabelCap.Split(' ')).ToLower().Contains(searchShort) ||
+                                t.FirstThingCategory.LabelCap.ToLower() == searchShort 
+                            )
+                        )
                     )
                     orderby t.LabelCap
                     select t;
 
-            Helper.Log("Found " + tradeableitems.Count() + " items");
             foreach(ThingDef item in tradeableitems)
             {
                 // item needs to be worth money, also not an animal
@@ -283,7 +295,6 @@ namespace TwitchToolkit.Windows
                 Item storeItem = Item.GetItemFromDefName(item.defName);
                 if (storeItem != null)
                 {
-                    Helper.Log("Loading item " + storeItem.abr + " with price " + storeItem.price);
                     tradeablesPrices.Add(storeItem.price);
                 }
                 else

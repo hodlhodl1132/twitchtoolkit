@@ -64,7 +64,6 @@ namespace TwitchToolkit.Incidents
 
         protected override void ResolveRaidStrategy(IncidentParms parms, PawnGroupKindDef groupKind)
 		{
-            Helper.Log("Resolving strategy");
 			if (parms.raidStrategy != null)
 			{
 				return;

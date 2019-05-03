@@ -1,54 +1,18 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Defs>
   <StorytellerDef ParentName="BaseStoryteller">
-    <defName>hodlbotstoryteller</defName>
-    <label>Hodlbot</label>
-    <description>Hodlbot likes to keep things fair but exciting.
-
-HodlBot, created by Randy, mimics his storytelling through having absolutely no filter in what events he chooses for the colony, all while consulting with chat about what should happen to colonies. This bot is based off of the created of the mod and streamer, Hodl! twitch.tv/hodlhodl</description>
-    <portraitLarge>Things/TwitchToolkitHodl</portraitLarge>
-    <portraitTiny>Things/TwitchToolkitHodlTiny</portraitTiny>
-    <listOrder>1</listOrder>
+    <defName>ToryTalker</defName>
+    <label>Tory Talker</label>
+    <description>Tory loves to chit-chat. Also she seems to listens to what most people want.\n\nBut be aware, that will not always be what you want.</description>
+    <portraitLarge>Things/TwitchStoriesStoryteller</portraitLarge>
+    <portraitTiny>Things/TwitchStoriesStorytellerTiny</portraitTiny>
+    <listOrder>2</listOrder>
     <comps>
-      <!-- Home all -->
-      <li Class="TwitchToolkit.StorytellerCompProperties_CustomRandomStoryTeller">
+      <li Class="TwitchToolkit.Storytellers.StorytellerCompProperties_ToryTalker">
+        <mtbDays>1</mtbDays>
         <allowedTargetTags>
           <li>Map_PlayerHome</li>
         </allowedTargetTags>
-        <minDaysPassed>1</minDaysPassed>
-        <mtbDays>1.00</mtbDays>
-        <maxThreatBigIntervalDays>13</maxThreatBigIntervalDays>
-        <minIncChancePopulationIntentFactor>0.2</minIncChancePopulationIntentFactor>
-        <randomPointsFactorRange>0.5~1.5</randomPointsFactorRange>
-        <skipThreatBigIfRaidBeacon>true</skipThreatBigIfRaidBeacon>
-        <categoryWeights>
-          <Misc>5.2</Misc>
-          <ThreatBig>1.0</ThreatBig>
-          <OrbitalVisitor>1.0</OrbitalVisitor>
-          <FactionArrival>1.0</FactionArrival>
-          <ThreatSmall>0.7</ThreatSmall>
-          <ShipChunkDrop>0.5</ShipChunkDrop>
-        </categoryWeights>
-      </li>
-      <li Class="StorytellerCompProperties_Disease">
-        <category>DiseaseHuman</category>
-        <minDaysPassed>0</minDaysPassed>
-      </li>
-      <li Class="StorytellerCompProperties_Disease">
-        <category>DiseaseAnimal</category>
-        <minDaysPassed>0</minDaysPassed>
-      </li>
-      <!-- Home special threats -->
-      <li Class="TwitchToolkit.StorytellerCompProperties_CustomOnOffCycle">
-        <category>RaidBeacon</category>
-        <allowedTargetTags>
-          <li>Map_RaidBeacon</li>
-        </allowedTargetTags>
-        <onDays>1.0</onDays>
-        <offDays>0.5</offDays>
-        <minSpacingDays>0.04</minSpacingDays>
-        <applyRaidBeaconThreatMtbFactor>true</applyRaidBeaconThreatMtbFactor>
-        <numIncidentsRange>1~2</numIncidentsRange>
       </li>
       <!-- Ally/neutral interaction -->
       <li Class="StorytellerCompProperties_FactionInteraction">
@@ -91,6 +55,162 @@ HodlBot, created by Randy, mimics his storytelling through having absolutely no 
         </allowedTargetTags>
         <onDays>30</onDays>
         <minSpacingDays>0.2</minSpacingDays>
+        <numIncidentsRange>4</numIncidentsRange>
+        <acceptFractionByDaysPassedCurve>
+          <points>
+            <li>(5, 0)</li>
+            <li>(30, 1)</li>
+          </points>
+        </acceptFractionByDaysPassedCurve>
+      </li>
+      <li Class="TwitchToolkit.StorytellerCompProperties_CustomCategoryMTB">
+        <category>Misc</category>
+        <allowedTargetTags>
+          <li>World</li>
+        </allowedTargetTags>
+        <minDaysPassed>1</minDaysPassed>
+        <mtbDays>15</mtbDays>
+      </li>
+      <!-- Triggered -->
+      <li Class="StorytellerCompProperties_Triggered">
+        <incident>StrangerInBlackJoin</incident>
+        <delayTicks>180</delayTicks>
+      </li>
+    </comps>
+  </StorytellerDef>
+  
+  <StorytellerDef ParentName="BaseStoryteller">
+    <defName>hodlbotstoryteller</defName>
+    <label>Hodlbot</label>
+    <description>Hodlbot likes to keep things fair but exciting.
+
+HodlBot, created by Randy, mimics his storytelling through having absolutely no filter in what events he chooses for the colony, all while consulting with chat about what should happen to colonies. This bot is based off of the created of the mod and streamer, Hodl! twitch.tv/hodlhodl</description>
+    <portraitLarge>Things/TwitchToolkitHodl</portraitLarge>
+    <portraitTiny>Things/TwitchToolkitHodlTiny</portraitTiny>
+    <listOrder>1</listOrder>
+    <comps>
+      <!-- Home all -->
+      <!--<li Class="TwitchToolkit.StorytellerCompProperties_CustomRandomStoryTeller">
+        <allowedTargetTags>
+          <li>Map_PlayerHome</li>
+        </allowedTargetTags>
+        <minDaysPassed>1</minDaysPassed>
+        <mtbDays>1.00</mtbDays>
+        <maxThreatBigIntervalDays>13</maxThreatBigIntervalDays>
+        <minIncChancePopulationIntentFactor>0.2</minIncChancePopulationIntentFactor>
+        <randomPointsFactorRange>0.5~1.5</randomPointsFactorRange>
+        <skipThreatBigIfRaidBeacon>true</skipThreatBigIfRaidBeacon>
+        <categoryWeights>
+          <Misc>5.2</Misc>
+          <ThreatBig>1.0</ThreatBig>
+          <OrbitalVisitor>1.0</OrbitalVisitor>
+          <FactionArrival>1.0</FactionArrival>
+          <ThreatSmall>0.7</ThreatSmall>
+          <ShipChunkDrop>0.5</ShipChunkDrop>
+        </categoryWeights>
+      </li>-->
+      <li Class="TwitchToolkit.StorytellerCompProperties_Random">
+        <allowedTargetTags>
+          <li>Map_PlayerHome</li>
+        </allowedTargetTags>
+        <minDaysPassed>1</minDaysPassed>
+        <mtbDays>1.00</mtbDays>
+        <maxThreatBigIntervalDays>13</maxThreatBigIntervalDays>
+        <minIncChancePopulationIntentFactor>0.2</minIncChancePopulationIntentFactor>
+        <randomPointsFactorRange>0.5~1.5</randomPointsFactorRange>
+        <skipThreatBigIfRaidBeacon>true</skipThreatBigIfRaidBeacon>
+        <categoryWeights>
+          <Misc>8</Misc>
+          <ThreatBig>1.0</ThreatBig>
+          <OrbitalVisitor>1.5</OrbitalVisitor>
+          <FactionArrival>1.0</FactionArrival>
+          <ThreatSmall>0.7</ThreatSmall>
+          <ShipChunkDrop>0.6</ShipChunkDrop>
+        </categoryWeights>
+      </li>
+      <li Class="TwitchToolkit.Storytellers.StorytellerCompProperties_ToryTalkerHodlBot">
+        <allowedTargetTags>
+          <li>Map_PlayerHome</li>
+        </allowedTargetTags>
+      </li>
+      <li Class="StorytellerCompProperties_Disease">
+        <category>DiseaseHuman</category>
+        <minDaysPassed>0</minDaysPassed>
+      </li>
+      <li Class="StorytellerCompProperties_Disease">
+        <category>DiseaseAnimal</category>
+        <minDaysPassed>0</minDaysPassed>
+      </li>
+      <!-- Home special threats -->
+      <li Class="TwitchToolkit.StorytellerCompProperties_CustomOnOffCycle">
+        <category>RaidBeacon</category>
+        <allowedTargetTags>
+          <li>Map_RaidBeacon</li>
+        </allowedTargetTags>
+        <onDays>1.0</onDays>
+        <offDays>0.5</offDays>
+        <minSpacingDays>0.04</minSpacingDays>
+        <applyRaidBeaconThreatMtbFactor>true</applyRaidBeaconThreatMtbFactor>
+        <numIncidentsRange>1~2</numIncidentsRange>
+      </li>
+      <!-- Ally/neutral interaction -->
+      <li Class="StorytellerCompProperties_FactionInteraction">
+        <incident>RaidFriendly</incident>
+        <baseIncidentsPerYear>10</baseIncidentsPerYear>
+        <minSpacingDays>0.4</minSpacingDays>
+        <fullAlliesOnly>true</fullAlliesOnly>
+        <minDanger>High</minDanger>
+      </li>
+      <!-- Caravan / temp map -->
+      <li Class="TwitchToolkit.StorytellerCompProperties_Random">
+        <allowedTargetTags>
+          <li>Caravan</li>
+          <li>Map_TempIncident</li>
+        </allowedTargetTags>
+        <minDaysPassed>1</minDaysPassed>
+        <mtbDays>1.00</mtbDays>
+        <maxThreatBigIntervalDays>13</maxThreatBigIntervalDays>
+        <minIncChancePopulationIntentFactor>0.2</minIncChancePopulationIntentFactor>
+        <randomPointsFactorRange>0.5~1.5</randomPointsFactorRange>
+        <skipThreatBigIfRaidBeacon>true</skipThreatBigIfRaidBeacon>
+        <categoryWeights>
+          <Misc>2.0</Misc>
+          <ThreatSmall>1.0</ThreatSmall>
+          <ThreatBig>1.0</ThreatBig>
+        </categoryWeights>
+      </li>
+      <li Class="StorytellerCompProperties_CategoryIndividualMTBByBiome">
+        <category>Misc</category>
+        <allowedTargetTags>
+          <li>Caravan</li>
+          <li>Map_TempIncident</li>
+        </allowedTargetTags>
+      </li>
+      <li Class="StorytellerCompProperties_CategoryIndividualMTBByBiome">
+        <category>ThreatSmall</category>
+        <applyCaravanVisibility>true</applyCaravanVisibility>
+        <allowedTargetTags>
+          <li>Caravan</li>
+          <li>Map_TempIncident</li>
+        </allowedTargetTags>
+      </li>
+      <li Class="StorytellerCompProperties_CategoryIndividualMTBByBiome">
+        <category>ThreatBig</category>
+        <applyCaravanVisibility>true</applyCaravanVisibility>
+        <allowedTargetTags>
+          <li>Caravan</li>
+          <li>Map_TempIncident</li>
+        </allowedTargetTags>
+      </li>
+      <!-- World -->
+      <li Class="StorytellerCompProperties_JourneyOffer"/>
+      <li Class="TwitchToolkit.StorytellerCompProperties_CustomOnOffCycle">
+        <category>WorldQuest</category>
+        <allowedTargetTags>
+          <li>World</li>
+        </allowedTargetTags>
+        <onDays>30</onDays>
+        <minSpacingDays>5</minSpacingDays>
         <numIncidentsRange>4</numIncidentsRange>
         <acceptFractionByDaysPassedCurve>
           <points>

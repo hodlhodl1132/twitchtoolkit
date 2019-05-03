@@ -17,7 +17,6 @@ namespace TwitchToolkit.Store
         static Store_ItemEditor()
         {
             LoadStoreItemList();
-            FindItemsNotInList();
         }
 
         public static IEnumerable<ThingDef> GetDefaultItems()
@@ -39,7 +38,7 @@ namespace TwitchToolkit.Store
 
             foreach (ThingDef def in tradeableItems)
             {
-                allItems.Add( new Item(Convert.ToInt32(def.BaseMarketValue * 10 / 6), string.Join("", def.label.Split(' ')).ToLower(), def.defName) );
+                allItems.Add( new Item(Convert.ToInt32(def.BaseMarketValue * 10 / 6), string.Join("", def.label.Split(' ')).ToLower().Replace("\"", ""), def.defName) );
             }
 
             StoreInventory.items = allItems;
@@ -55,7 +54,7 @@ namespace TwitchToolkit.Store
 
                 if (item == null)
                 {
-                    StoreInventory.items.Add( new Item( Convert.ToInt32(def.BaseMarketValue * 10 / 6), string.Join("", def.label.Split(' ')).ToLower(), def.defName ) );
+                    StoreInventory.items.Add( new Item( Convert.ToInt32(def.BaseMarketValue * 10 / 6), string.Join("", def.label.Split(' ')).ToLower().Replace("\"", ""), def.defName ) );
                 }
             }
 
@@ -66,7 +65,6 @@ namespace TwitchToolkit.Store
         {
             for (int i = 0; i < allItems.Count; i++)
             {
-                if (itemPrices[i] < 1) continue;
 
                 Item item = StoreInventory.items.Find(s => s.defname == allItems[i].defName);
                 if (item != null)
@@ -94,27 +92,42 @@ namespace TwitchToolkit.Store
             json.AppendLine("{");
             json.AppendLine("\t\"items\" : [");
 
-            List<Item> allItems = StoreInventory.items;
-            int itemsDiscluded = 0;
-
-            for (int i = 0; i < allItems.Count; i++)
+            if (StoreInventory.items == null)
             {
-                if (allItems[i].price < 1)
+                return;
+            }
+
+            List<Item> allItems = StoreInventory.items;
+
+            int finalCount = allItems.Count;
+
+            for (int i = 0; i < finalCount; i++)
+            {
+                ThingDef thing;
+                IEnumerable<ThingDef> search = DefDatabase<ThingDef>.AllDefs.Where(s => s.defName == allItems[i].defname);
+
+                if (search == null || search.Count() < 1)
                 {
-                    itemsDiscluded ++;
+                    finalCount--;
                     continue;
                 }
+                else
+                {
+                    thing = search.ElementAt(0);
+                }
+
+                string category = thing.FirstThingCategory != null ? thing.FirstThingCategory.LabelCap : "Uncategorized";
 
                 json.AppendLine("\t{");
                 json.AppendLine("\t\t\"abr\": \"" + allItems[i].abr + "\",");
                 json.AppendLine("\t\t\"price\": " + allItems[i].price + ",");
-                json.AppendLine("\t\t\"category\": \"" + DefDatabase<ThingDef>.GetNamed(allItems[i].defname).FirstThingCategory.LabelCap + "\",");
+                json.AppendLine("\t\t\"category\": \"" + category + "\",");
                 json.AppendLine("\t\t\"defname\": \"" + allItems[i].defname + "\"");
                 json.AppendLine("\t}" + (i != allItems.Count - 1 ? "," : ""));
             }
 
             json.AppendLine("\t],");
-            json.AppendLine("\t\"total\": " + (allItems.Count - itemsDiscluded));
+            json.AppendLine("\t\"total\": " + finalCount);
             json.AppendLine("}");
 
             using (StreamWriter streamWriter = File.CreateText (Path.Combine(dataPath, "StoreItems.json")))
@@ -138,9 +151,14 @@ namespace TwitchToolkit.Store
                     var node = JSON.Parse(jsonString);
                     Helper.Log(node.ToString());
 
+                    if (StoreInventory.items == null)
+                    {
+                        StoreInventory.items = new List<Item>();
+                    }
+
                     for (int i = 0; i < node["total"]; i++)
                     {
-                        Item item = StoreInventory.items.Find(x => x.abr == node["items"][i]["abr"] );
+                        Item item = StoreInventory.items.Find(x => x.defname == node["items"][i]["defname"] );
                         if (item != null)
                         {
                             item.price = node["items"][i]["price"].AsInt;
@@ -156,6 +174,8 @@ namespace TwitchToolkit.Store
             {
                 Log.Warning(e.Message);
             }
+
+            FindItemsNotInList();
         }
 
         public static string dataPath = SaveHelper.dataPath;

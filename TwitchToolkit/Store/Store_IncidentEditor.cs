@@ -140,13 +140,14 @@ namespace TwitchToolkit.Store
             {
                 if (CopyExists(incident))
                 {
-                    Helper.Log("loading incident " + incident.label + " which has cost of " + incident.cost);
                     LoadCopy(incident);
                 }
             }
 
             foreach (StoreIncidentVariables incident in variableIncidents)
             {
+                incident.RegisterCustomSettings();
+
                 if (CopyExists(incident))
                 {
                     LoadCopy(incident);
@@ -276,9 +277,7 @@ namespace TwitchToolkit.Store
 
         public static void LoadBackup(StoreIncidentSimple incident)
         {
-            Helper.Log("loading simple backup");
             StoreIncidentSimple incNew = simpleIncidentsBackup.ToList().Find(s => incident.defName == s.defName);
-            Helper.Log($"backup: {incNew.cost} - {incNew.defName}");
             incident.abbreviation = incNew.abbreviation;
             incident.cost = incNew.cost;
             incident.eventCap = incNew.eventCap;

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RimWorld;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -40,25 +41,6 @@ namespace TwitchToolkit.PawnQueue
         public bool HasUserBeenNamed(string username)
         {
             return pawnHistory.ContainsKey(username);
-        }
-
-        public bool HasUserBeenBanned(string username)
-        {
-            return namesBanned.Contains(username);
-
-        }
-
-        public void BanUserFromQueue(string username)
-        {
-            if (viewerNameQueue.Contains(username))
-            {
-                viewerNameQueue.Remove(username);
-            }
-            
-            if (!HasUserBeenNamed(username))
-            {
-                namesBanned.Add(username);
-            }
         }
 
         public bool HasPawnBeenNamed(Pawn pawn)
@@ -109,8 +91,7 @@ namespace TwitchToolkit.PawnQueue
             {
                 return null;
             }
-            System.Random rnd = new System.Random();
-            return viewerNameQueue[rnd.Next(0, viewerNameQueue.Count - 1)];
+            return viewerNameQueue[Verse.Rand.Range(0, viewerNameQueue.Count - 1)];
         }
 
         public int ViewersInQueue()
@@ -122,12 +103,10 @@ namespace TwitchToolkit.PawnQueue
         {
             base.ExposeData();
             Scribe_Collections.Look(ref pawnHistory, "pawnHistory", LookMode.Value, LookMode.Reference, ref pawnNames, ref listPawns);
-            Scribe_Collections.Look(ref namesBanned, "namesBanned", LookMode.Value);
             Scribe_Collections.Look(ref viewerNameQueue, "viewerNameQueue", LookMode.Value);
         }
 
         public Dictionary<string, Pawn> pawnHistory = new Dictionary<string, Pawn>();
-        public List<string> namesBanned = new List<string>();
         public List<string> viewerNameQueue = new List<string>();
         public List<Pawn> listPawns = new List<Pawn>();
         public List<string> pawnNames = new List<string>();

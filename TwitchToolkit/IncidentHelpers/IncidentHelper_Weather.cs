@@ -11,6 +11,7 @@ namespace TwitchToolkit.IncidentHelpers.Weather
         {
             weather = DefDatabase<WeatherDef>.GetNamed("Clear");
             List<Map> allMaps = Current.Game.Maps;
+            allMaps.Shuffle();
             foreach (Map map in allMaps)
             {
                 if (map.weatherManager.curWeather != weather)
@@ -37,6 +38,7 @@ namespace TwitchToolkit.IncidentHelpers.Weather
         {
             weather = DefDatabase<WeatherDef>.GetNamed("Rain");
             List<Map> allMaps = Current.Game.Maps;
+            allMaps.Shuffle();
             foreach (Map map in allMaps)
             {
                 if (map.weatherManager.curWeather != weather)
@@ -89,6 +91,7 @@ namespace TwitchToolkit.IncidentHelpers.Weather
         {
             weather = DefDatabase<WeatherDef>.GetNamed("RainyThunderstorm");
             List<Map> allMaps = Current.Game.Maps;
+            allMaps.Shuffle();
             foreach (Map map in allMaps)
             {
                 if (map.weatherManager.curWeather != weather)
@@ -115,6 +118,7 @@ namespace TwitchToolkit.IncidentHelpers.Weather
         {
             weather = DefDatabase<WeatherDef>.GetNamed("DryThunderstorm");
             List<Map> allMaps = Current.Game.Maps;
+            allMaps.Shuffle();
             foreach (Map map in allMaps)
             {
                 if (map.weatherManager.curWeather != weather)
@@ -141,6 +145,7 @@ namespace TwitchToolkit.IncidentHelpers.Weather
         {
             weather = DefDatabase<WeatherDef>.GetNamed("SnowGentle");
             List<Map> allMaps = Current.Game.Maps;
+            allMaps.Shuffle();
             foreach (Map map in allMaps)
             {
                 if (map.weatherManager.curWeather != weather)
@@ -167,6 +172,7 @@ namespace TwitchToolkit.IncidentHelpers.Weather
         {
             weather = DefDatabase<WeatherDef>.GetNamed("SnowHard");
             List<Map> allMaps = Current.Game.Maps;
+            allMaps.Shuffle();
             foreach (Map map in allMaps)
             {
                 if (map.weatherManager.curWeather != weather)
@@ -193,6 +199,7 @@ namespace TwitchToolkit.IncidentHelpers.Weather
         {
             weather = DefDatabase<WeatherDef>.GetNamed("Fog");
             List<Map> allMaps = Current.Game.Maps;
+            allMaps.Shuffle();
             foreach (Map map in allMaps)
             {
                 if (map.weatherManager.curWeather != weather)
@@ -223,6 +230,7 @@ namespace TwitchToolkit.IncidentHelpers.Weather
             parms = new IncidentParms();
 
             List<Map> allMaps = Current.Game.Maps;
+            allMaps.Shuffle();
             foreach (Map map in allMaps)
             {
                 parms.target = map;
@@ -253,6 +261,7 @@ namespace TwitchToolkit.IncidentHelpers.Weather
             parms = new IncidentParms();
 
             List<Map> allMaps = Current.Game.Maps;
+            allMaps.Shuffle();
             foreach (Map map in allMaps)
             {
                 parms.target = map;
@@ -283,6 +292,7 @@ namespace TwitchToolkit.IncidentHelpers.Weather
             parms = new IncidentParms();
 
             List<Map> allMaps = Current.Game.Maps;
+            allMaps.Shuffle();
             foreach (Map map in allMaps)
             {
                 parms.target = map;
@@ -313,6 +323,7 @@ namespace TwitchToolkit.IncidentHelpers.Weather
             parms = new IncidentParms();
 
             List<Map> allMaps = Current.Game.Maps;
+            allMaps.Shuffle();
             foreach (Map map in allMaps)
             {
                 parms.target = map;
@@ -343,6 +354,7 @@ namespace TwitchToolkit.IncidentHelpers.Weather
             parms = new IncidentParms();
 
             List<Map> allMaps = Current.Game.Maps;
+            allMaps.Shuffle();
             foreach (Map map in allMaps)
             {
                 parms.target = map;
@@ -373,6 +385,7 @@ namespace TwitchToolkit.IncidentHelpers.Weather
             parms = new IncidentParms();
 
             List<Map> allMaps = Current.Game.Maps;
+            allMaps.Shuffle();
             foreach (Map map in allMaps)
             {
                 parms.target = map;
@@ -403,6 +416,7 @@ namespace TwitchToolkit.IncidentHelpers.Weather
             parms = new IncidentParms();
 
             List<Map> allMaps = Current.Game.Maps;
+            allMaps.Shuffle();
             foreach (Map map in allMaps)
             {
                 parms.target = map;
@@ -433,6 +447,7 @@ namespace TwitchToolkit.IncidentHelpers.Weather
             parms = new IncidentParms();
 
             List<Map> allMaps = Current.Game.Maps;
+            allMaps.Shuffle();
             foreach (Map map in allMaps)
             {
                 parms.target = map;

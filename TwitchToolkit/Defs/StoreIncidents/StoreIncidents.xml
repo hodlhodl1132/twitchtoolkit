@@ -242,7 +242,7 @@
     <karmaType>Good</karmaType>
   </TwitchToolkit.Incidents.StoreIncidentSimple>
 
-  <TwitchToolkit.Incidents.StoreIncidentSimple>
+  <!--<TwitchToolkit.Incidents.StoreIncidentSimple>
     <defName>GenderSwap</defName>
     <label>gender swap</label>
     <abbreviation>genderswap</abbreviation>
@@ -250,7 +250,7 @@
     <eventCap>2</eventCap>
     <incidentHelper>TwitchToolkit.IncidentHelpers.Misc.GenderSwap</incidentHelper>
     <karmaType>Neutral</karmaType>
-  </TwitchToolkit.Incidents.StoreIncidentSimple>
+  </TwitchToolkit.Incidents.StoreIncidentSimple>-->
 
   <TwitchToolkit.Incidents.StoreIncidentSimple>
     <defName>Inspiration</defName>
@@ -429,6 +429,26 @@
     <cost>600</cost>
     <eventCap>1</eventCap>
     <incidentHelper>TwitchToolkit.IncidentHelpers.Misc.Alphabeavers</incidentHelper>
+    <karmaType>Bad</karmaType>
+  </TwitchToolkit.Incidents.StoreIncidentSimple>
+
+  <TwitchToolkit.Incidents.StoreIncidentSimple>
+    <defName>ShipPartPoison</defName>
+    <label>ship part poison</label>
+    <abbreviation>shippartpoison</abbreviation>
+    <cost>1900</cost>
+    <eventCap>1</eventCap>
+    <incidentHelper>TwitchToolkit.IncidentHelpers.Misc.ShipPartPoison</incidentHelper>
+    <karmaType>Bad</karmaType>
+  </TwitchToolkit.Incidents.StoreIncidentSimple>
+
+  <TwitchToolkit.Incidents.StoreIncidentSimple>
+    <defName>ShipPartPsychic</defName>
+    <label>ship part psychic</label>
+    <abbreviation>shippartpsychic</abbreviation>
+    <cost>2400</cost>
+    <eventCap>1</eventCap>
+    <incidentHelper>TwitchToolkit.IncidentHelpers.Misc.ShipPartPsychic</incidentHelper>
     <karmaType>Bad</karmaType>
   </TwitchToolkit.Incidents.StoreIncidentSimple>
 
@@ -622,24 +642,48 @@
     <maxWager>10000</maxWager>
     <syntax>!gambleskill skill 1500</syntax>
     <variables>2</variables>
+    <customSettingKeys>
+      <li>Toolkit.LevelPawn.XPMultiplier</li>
+    </customSettingKeys>
+    <customSettingFloatValues>
+      <li>0.5</li>
+    </customSettingFloatValues>
   </TwitchToolkit.Incidents.StoreIncidentVariables>
 
   <TwitchToolkit.Incidents.StoreIncidentVariables>
     <defName>AddTrait</defName>
     <label>add trait</label>
-    <abbreviation>addtrait</abbreviation>
+    <abbreviation>trait</abbreviation>
     <cost>3500</cost>
     <eventCap>5</eventCap>
-    <incidentHelper>TwitchToolkit.IncidentHelpers.Special.AddTrait</incidentHelper>
+    <incidentHelper>TwitchToolkit.IncidentHelpers.Traits.AddTrait</incidentHelper>
     <karmaType>Good</karmaType>
-    <syntax>!buy addtrait cannibal</syntax>
+    <syntax>!buy trait cannibal</syntax>
+    <variables>1</variables>
+    <customSettingKeys>
+      <li>Toolkit.AddTrait.MaxTraits</li>
+    </customSettingKeys>
+    <customSettingFloatValues>
+      <li>4</li>
+    </customSettingFloatValues>
+  </TwitchToolkit.Incidents.StoreIncidentVariables>
+
+  <TwitchToolkit.Incidents.StoreIncidentVariables>
+    <defName>RemoveTrait</defName>
+    <label>remove trait</label>
+    <abbreviation>removetrait</abbreviation>
+    <cost>5500</cost>
+    <eventCap>5</eventCap>
+    <incidentHelper>TwitchToolkit.IncidentHelpers.Traits.RemoveTrait</incidentHelper>
+    <karmaType>Good</karmaType>
+    <syntax>!buy removetrait cannibal</syntax>
     <variables>1</variables>
   </TwitchToolkit.Incidents.StoreIncidentVariables>
 
   <TwitchToolkit.Incidents.StoreIncidentVariables>
     <defName>ChangeGender</defName>
     <label>change gender</label>
-    <abbreviation>changegender</abbreviation>
+    <abbreviation>genderswap</abbreviation>
     <cost>600</cost>
     <eventCap>2</eventCap>
     <incidentHelper>TwitchToolkit.IncidentHelpers.Special.ChangeGender</incidentHelper>
@@ -657,5 +701,16 @@
     <minPointsToFire>0</minPointsToFire>
     <syntax>!buy itemname quantity</syntax>
     <variables>2</variables>
+  </TwitchToolkit.Incidents.StoreIncidentVariables>
+
+  <TwitchToolkit.Incidents.StoreIncidentVariables>
+    <defName>BuyPrisoner</defName>
+    <label>prisoner</label>
+    <abbreviation>prisoner</abbreviation>
+    <cost>1000</cost>
+    <eventCap>5</eventCap>
+    <incidentHelper>TwitchToolkit.IncidentHelpers.Special.BuyPrisoner</incidentHelper>
+    <karmaType>Good</karmaType>
+    <syntax>!buy prisoner</syntax>
   </TwitchToolkit.Incidents.StoreIncidentVariables>
 </Defs>

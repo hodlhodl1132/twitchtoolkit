@@ -62,10 +62,12 @@
     <Compile Include="IncidentHelpers\IncidentHelper_Misc.cs" />
     <Compile Include="IncidentHelpers\IncidentHelper_PointsHelper.cs" />
     <Compile Include="IncidentHelpers\IncidentHelper_Special.cs" />
+    <Compile Include="IncidentHelpers\IncidentHelper_Traits.cs" />
     <Compile Include="IncidentHelpers\VariablesHelpers.cs" />
     <Compile Include="IncidentHelpers\IncidentHelper_Weather.cs" />
     <Compile Include="IncidentHelpers\IncidentHelper_Raid.cs" />
     <Compile Include="Incidents\IncidentWorker_Alphabeavers.cs" />
+    <Compile Include="Incidents\IncidentWorker_PrisonerJoins.cs" />
     <Compile Include="Incidents\StoreIncident.cs" />
     <Compile Include="Incidents\IncidentWorker_CallForAid.cs" />
     <Compile Include="Incidents\IncidentWorker_PoisonShipPartCrash.cs" />
@@ -89,18 +91,21 @@
     <Compile Include="Settings\ColourPicker\ColourWrapper.cs" />
     <Compile Include="Settings\ColourPicker\Dialog_ColourPicker.cs" />
     <Compile Include="Settings\ColourPicker\HSV.cs" />
+    <Compile Include="Settings\CustomSettings.cs" />
     <Compile Include="Settings\SettingsHelper.cs" />
     <Compile Include="Settings\Settings_Chat.cs" />
     <Compile Include="Settings\Settings_Coins.cs" />
     <Compile Include="Settings\Settings_Commands.cs" />
     <Compile Include="Settings\Settings_Cooldowns.cs" />
-    <Compile Include="Settings\Settings_Events.cs" />
-    <Compile Include="Settings\Settings_Items.cs" />
     <Compile Include="Settings\Settings_Karma.cs" />
+    <Compile Include="Settings\Settings_Patches.cs" />
+    <Compile Include="Settings\Settings_ToolkitExtensions.cs" />
     <Compile Include="Settings\Settings_Options.cs" />
     <Compile Include="Settings\Settings_Store.cs" />
     <Compile Include="Settings\Settings_Integrations.cs" />
+    <Compile Include="Settings\Settings_Storyteller.cs" />
     <Compile Include="Settings\Settings_Viewers.cs" />
+    <Compile Include="Settings\Settings_VoteWeights.cs" />
     <Compile Include="Store\Purchase_Handler.cs" />
     <Compile Include="Store\StoreIncidents.cs" />
     <Compile Include="Store\Store_Component.cs" />
@@ -115,9 +120,32 @@
     <Compile Include="Storytellers\StorytellerCompProperties_CustomCategoryMTB.cs" />
     <Compile Include="Storytellers\StorytellerCompProperties_CustomOnOffCycle.cs" />
     <Compile Include="Storytellers\StorytellerCompProperties_CustomRandomStoryTeller.cs" />
+    <Compile Include="Storytellers\StorytellerCompProperties_Random.cs" />
+    <Compile Include="Storytellers\StorytellerCompProperties_ToryTalkerHodlBot.cs" />
+    <Compile Include="Storytellers\StorytellerCompProperties_TwitchToolkit.cs" />
+    <Compile Include="Storytellers\StorytellerCompProperties_ToryTalker.cs" />
+    <Compile Include="Storytellers\StorytellerComp_Random.cs" />
+    <Compile Include="Storytellers\StorytellerComp_ToryTalkerHodlBot.cs" />
+    <Compile Include="Storytellers\StorytellerComp_TwitchToolkit.cs" />
+    <Compile Include="Storytellers\StorytellerComp_ToryTalker.cs" />
+    <Compile Include="Storytellers\StoryTellerVoteTracker.cs" />
+    <Compile Include="Storytellers\VotingIncidentEntry.cs" />
     <Compile Include="StreamLabs.cs" />
     <Compile Include="Votes\Vote_ExoticItems.cs" />
     <Compile Include="Votes\Vote_MentalBreak.cs" />
+    <Compile Include="Votes\Vote_VotingIncident.cs" />
+    <Compile Include="Votes\VotingIncident.cs" />
+    <Compile Include="VotingHelpers\VotingHelpers_Animals.cs" />
+    <Compile Include="VotingHelpers\VotingHelpers_Colonists.cs" />
+    <Compile Include="VotingHelpers\VotingHelpers_Diseases.cs" />
+    <Compile Include="VotingHelpers\VotingHelpers_Drops.cs" />
+    <Compile Include="VotingHelpers\VotingHelpers_Enviroment.cs" />
+    <Compile Include="VotingHelpers\VotingHelpers_Foreigners.cs" />
+    <Compile Include="VotingHelpers\VotingHelpers_Hazards.cs" />
+    <Compile Include="VotingHelpers\VotingHelpers_Mind.cs" />
+    <Compile Include="VotingHelpers\VotingHelpers_Raids.cs" />
+    <Compile Include="VotingHelpers\VotingHelpers_Weather.cs" />
+    <Compile Include="VotingHelpers\VotingHelper_GameCondition.cs" />
     <Compile Include="Windows\SettingsWindow.cs" />
     <Compile Include="Windows\StoreIncidentEditor.cs" />
     <Compile Include="Windows\StoreIncidentsWindow.cs" />
@@ -130,6 +158,7 @@
     </Compile>
     <Compile Include="Windows\Window_Loading.cs" />
     <Compile Include="Windows\Window_NewChat.cs" />
+    <Compile Include="Windows\Window_ViewerEditProp.cs" />
     <Compile Include="Windows\Window_Viewers.cs" />
     <Compile Include="Windows\Window_Warning.cs" />
     <Compile Include="Utilities\Scheduled.cs" />
@@ -148,7 +177,6 @@
     <Compile Include="Windows\Window_MainTab.cs" />
     <Compile Include="Utilities\Helper.cs" />
     <Compile Include="Settings\ToolkitSettings.cs" />
-    <Compile Include="Events.cs" />
     <Compile Include="Ticker.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="Incidents\IncidentWorker_PsychicEmanatorShipPartCrash.cs" />
@@ -274,9 +302,19 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="Defs\VotingIncidents\ToryTalker.xml">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Patches\HumansNamed.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Textures\Things\TwitchStoriesStoryteller.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Textures\Things\TwitchStoriesStorytellerTiny.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Textures\Things\TwitchToolkitSpartan.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

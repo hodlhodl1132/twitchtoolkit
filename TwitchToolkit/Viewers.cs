@@ -15,12 +15,18 @@ namespace TwitchToolkit
 
         public static void AwardViewersCoins(int setamount = 0)
         {
-            List<string> usernames = ParseViewersFromJson();
+            List<string> usernames = ParseViewersFromJsonAndFindActiveViewers();
             if (usernames != null)
             {
                 foreach (string username in usernames)
                 {
                     Viewer viewer = GetViewer(username);
+
+                    if (viewer.IsBanned)
+                    {
+                        continue;
+                    }
+
                     if (setamount > 0)
                     {
                         viewer.GiveViewerCoins(setamount);
@@ -45,9 +51,19 @@ namespace TwitchToolkit
             }
         }
 
-        public static void GiveAllViewersCoins(int amount)
+        public static void GiveAllViewersCoins(int amount, List<Viewer> viewers = null)
         {
-            List<string> usernames = ParseViewersFromJson();
+            if (viewers != null)
+            {
+                foreach (Viewer viewer in viewers)
+                {
+                    viewer.GiveViewerCoins(amount);
+                }
+
+                return;
+            }
+
+            List<string> usernames = ParseViewersFromJsonAndFindActiveViewers();
             if (usernames != null)
             {
                 foreach (string username in usernames)
@@ -61,8 +77,18 @@ namespace TwitchToolkit
             }
         }
 
-        public static void SetAllViewersCoins(int amount)
+        public static void SetAllViewersCoins(int amount, List<Viewer> viewers = null)
         {
+            if (viewers != null)
+            {
+                foreach (Viewer viewer in viewers)
+                {
+                    viewer.SetViewerCoins(amount);
+                }
+
+                return;
+            }
+
             if (All != null)
             {
                 foreach (Viewer viewer in All)
@@ -75,9 +101,19 @@ namespace TwitchToolkit
             }
         }
 
-        public static void GiveAllViewersKarma(int amount)
+        public static void GiveAllViewersKarma(int amount, List<Viewer> viewers = null)
         {
-            List<string> usernames = ParseViewersFromJson();
+            if (viewers != null)
+            {
+                foreach (Viewer viewer in viewers)
+                {
+                    viewer.SetViewerKarma(Math.Min(ToolkitSettings.KarmaCap, viewer.GetViewerKarma() + amount));
+                }
+
+                return;
+            }
+
+            List<string> usernames = ParseViewersFromJsonAndFindActiveViewers();
             if (usernames != null)
             {
                 foreach (string username in usernames)
@@ -91,8 +127,18 @@ namespace TwitchToolkit
             }
         }
 
-        public static void TakeAllViewersKarma(int amount)
+        public static void TakeAllViewersKarma(int amount, List<Viewer> viewers = null)
         {
+            if (viewers != null)
+            {
+                foreach (Viewer viewer in viewers)
+                {
+                    viewer.SetViewerKarma(Math.Max(0, viewer.GetViewerKarma() - amount));
+                }
+
+                return;
+            }
+
             if (All != null)
             {
                 foreach (Viewer viewer in All)
@@ -105,8 +151,18 @@ namespace TwitchToolkit
             }
         }
 
-        public static void SetAllViewersKarma(int amount)
+        public static void SetAllViewersKarma(int amount, List<Viewer> viewers = null)
         {
+            if (viewers != null)
+            {
+                foreach (Viewer viewer in viewers)
+                {
+                    viewer.SetViewerKarma(amount);
+                }
+
+                return;
+            }
+
             if (All != null)
             {
                 foreach (Viewer viewer in All)
@@ -119,7 +175,7 @@ namespace TwitchToolkit
             }
         }
 
-        public static List<string> ParseViewersFromJson()
+        public static List<string> ParseViewersFromJsonAndFindActiveViewers()
         {
             List<string> usernames = new List<string>();
 
@@ -148,6 +204,18 @@ namespace TwitchToolkit
                     usernames.Add(usernameconvert);
                 }
             }
+
+            // for bigger streams, the chatter api can get buggy. Therefore we add viewers active in chat within last 30 minutes just in case.
+
+            foreach (Viewer viewer in All.Where(s => s.last_seen != null && TimeHelper.MinutesElapsed(s.last_seen) <= ToolkitSettings.TimeBeforeHalfCoins))
+            {
+                if (!usernames.Contains(viewer.username))
+                {
+                    Log.Warning("Viewer " + viewer.username + " added to active viewers through chat participation but not in chatter list.");
+                    usernames.Add(viewer.username);
+                }
+            }
+
             return usernames;
         }
 

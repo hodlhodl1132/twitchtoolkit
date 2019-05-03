@@ -16,8 +16,17 @@ namespace TwitchToolkit.Settings
             optionsListing.SliderLabeled("TwitchToolkitCoinAmount".Translate(), ref ToolkitSettings.CoinAmount, Math.Round((float)ToolkitSettings.CoinAmount).ToString(), 0f, 100f);
             optionsListing.AddLabeledNumericalTextField("TwitchToolkitMinimumPurchasePrice".Translate(), ref ToolkitSettings.MinimumPurchasePrice, 0.8f);
 
+            optionsListing.Gap();
+
             optionsListing.CheckboxLabeled("TwitchToolkitUnlimitedCoins".Translate(), ref ToolkitSettings.UnlimitedCoins);
             optionsListing.CheckboxLabeled("TwitchToolkitGiftingCoins".Translate(), ref ToolkitSettings.GiftingCoins);
+
+            optionsListing.GapLine();
+            optionsListing.Gap();
+
+            optionsListing.CheckboxLabeled("TwitchToolkitChatReqsForCoins".Translate(), ref ToolkitSettings.ChatReqsForCoins);
+            optionsListing.SliderLabeled("TwitchToolkitTimeBeforeHalfCoins".Translate(), ref ToolkitSettings.TimeBeforeHalfCoins, Math.Round((double)ToolkitSettings.TimeBeforeHalfCoins).ToString(), 15f, 120f);
+            optionsListing.SliderLabeled("TwitchToolkitTimeBeforeNoCoins".Translate(), ref ToolkitSettings.TimeBeforeNoCoins, Math.Round((double)ToolkitSettings.TimeBeforeNoCoins).ToString(), 30f, 240f);
         }
     }
 }

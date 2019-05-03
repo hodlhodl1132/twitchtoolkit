@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Verse;
+using Verse.AI;
 
 namespace TwitchToolkit.Votes
 {
@@ -30,7 +31,12 @@ namespace TwitchToolkit.Votes
 
             bool breakPawn = breaks.TryRandomElementByWeight((MentalBreakDef d) => d.Worker.CommonalityFor(pawn), out MentalBreakDef mentalBreakDef);
         	string text = "MentalStateReason_Mood".Translate();
-			text = text + "\n\n" + "FinalStraw".Translate("Tired of chat's shit");
+			text = text + "\n\n" + "FinalStraw".Translate("Chat said something that upset them.");
+
+            if (!pawn.Awake())
+            {
+                pawn.jobs.EndCurrentJob(JobCondition.InterruptForced, true);
+            }
 
             if (breakPawn && mentalBreakDef.Worker.TryStart(pawn, text, false))
             {        
@@ -44,13 +50,13 @@ namespace TwitchToolkit.Votes
         {
             if (ToolkitSettings.VotingWindow || (!ToolkitSettings.VotingWindow && !ToolkitSettings.VotingChatMsgs))
             {
-                VoteWindow window = new VoteWindow(this);
+                VoteWindow window = new VoteWindow(this, "Which colonist should experience a mental break?");
                 Find.WindowStack.Add(window);
             }
 
             if (ToolkitSettings.VotingChatMsgs)
             {
-                Toolkit.client.SendMessage("Which pawn should experience a mental break?" + ": " + "TwitchToolKitVoteInstructions".Translate());
+                Toolkit.client.SendMessage("Which colonist should experience a mental break?");
                 foreach (KeyValuePair<int, Pawn> pair in pawnOptions)
                 {
                     Toolkit.client.SendMessage($"[{pair.Key + 1}]  {VoteKeyLabel(pair.Key)}");

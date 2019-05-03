@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Text;
+using TwitchToolkit.Store;
 
 namespace TwitchToolkit.IRC
 {
@@ -35,7 +36,8 @@ namespace TwitchToolkit.IRC
         }
 
         public void Parse(byte[] buffer, int length, OnMessage callback)
-        {         
+        {
+            Store_Logger.LogString("parsing string");
             Decoder decoder = Helper.LanguageEncoding().GetDecoder();
             char[] chars;
 
@@ -50,7 +52,7 @@ namespace TwitchToolkit.IRC
                 switch (_state)
                 {
                     case IRCParserState.Start:
-                        Helper.Log($"{_state} starts at {i} {b}");
+                        //Helper.Log($"{_state} starts at {i} {b}");
                         string msg = "";
                         foreach(char c in chars) msg += c;
                         _message = new IRCMessage();
