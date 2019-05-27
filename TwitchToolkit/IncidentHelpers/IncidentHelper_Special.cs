@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using TwitchToolkit.IncidentHelpers.IncidentHelper_Settings;
 using TwitchToolkit.Incidents;
 using TwitchToolkit.PawnQueue;
 using TwitchToolkit.Settings;
@@ -234,13 +235,32 @@ namespace TwitchToolkit.IncidentHelpers.Special
 
         public override void TryExecute()
         {
-            float customMultiplier = CustomSettings.LookupFloatSetting("Toolkit.LevelPawn.XPMultiplier") > 0 ? CustomSettings.LookupFloatSetting("Toolkit.LevelPawn.XPMultiplier") : 0.5f;
+            float customMultiplier = LevelPawnSettings.xpMultiplier > 0 ? LevelPawnSettings.xpMultiplier : 0.5f;
             float xpWon = pawn.skills.GetSkill(skill).XpRequiredForLevelUp * customMultiplier * ((float)Verse.Rand.Range(0.5f, 1.5f));
             xpWon = IncidentHelper_PointsHelper.RollProportionalGamePoints(storeIncident, pointsWager, xpWon);
+
             pawn.skills.Learn(skill, xpWon, true);
             viewer.TakeViewerCoins(pointsWager);
             viewer.CalculateNewKarma(this.storeIncident.karmaType, pointsWager);
-            VariablesHelpers.SendPurchaseMessage($"Increasing skill for {pawn.LabelCap} with {pointsWager} coins wagered and {(int)xpWon} xp for {skill.defName} purchased by {viewer.username}", separateChannel);
+
+            SkillRecord record = pawn.skills.GetSkill(skill);
+            string increaseText = $" Level {record.levelInt}: {(int)record.xpSinceLastLevel} / {(int)record.XpRequiredForLevelUp}.";
+
+            float percent = 35;
+            string passionPlus = "";
+            Passion passion = record.passion;
+            if (passion == Passion.Minor)
+            {
+                percent = 100;
+                passionPlus = "+";
+            }
+            if (passion == Passion.Major)
+            {
+                percent = 150;
+                passionPlus = "++";
+            }
+            
+            VariablesHelpers.SendPurchaseMessage($"Increasing skill {skill.LabelCap} for {pawn.LabelCap} with {pointsWager} coins wagered and ({(int)xpWon} * {percent}%){passionPlus} {(int)xpWon * (percent / 100f)} xp purchased by {viewer.username}. {increaseText}", separateChannel);
             string text = Helper.ReplacePlaceholder("TwitchStoriesDescription55".Translate(), colonist: pawn.Name.ToString(), skill: skill.defName, first: Math.Round(xpWon).ToString());
             Current.Game.letterStack.ReceiveLetter("TwitchToolkitIncreaseSkill".Translate(), text, LetterDefOf.PositiveEvent, pawn);
         }
@@ -352,7 +372,37 @@ namespace TwitchToolkit.IncidentHelpers.Special
                 Toolkit.client.SendMessage($"@{viewer.username} item not found.", separateChannel);
                 return false;
             }
-            
+
+            ThingDef itemThingDef = ThingDef.Named(item.defname);
+
+            bool isResearched = true;
+            ResearchProjectDef researchProject = null;
+
+            Log.Warning("Checking researched");
+            if (itemThingDef.recipeMaker != null &&
+                itemThingDef.recipeMaker.researchPrerequisite != null &&
+                !itemThingDef.recipeMaker.researchPrerequisite.IsFinished)
+            {
+                Log.Warning("Recipe not researched");
+                isResearched = false;
+                researchProject = itemThingDef.recipeMaker.researchPrerequisite;
+            }
+            else if (!itemThingDef.IsResearchFinished)
+            {
+                Log.Warning("Building not researched");
+                isResearched = false;
+                researchProject = itemThingDef.researchPrerequisites.ElementAt(0);
+            }
+
+            if (BuyItemSettings.mustResearchFirst && !isResearched)
+            {
+                string output = $"@{viewer.username} {itemThingDef.LabelCap} has not been researched yet, must finish research project {researchProject.LabelCap} first.";
+
+                Toolkit.client.SendMessage(output, separateChannel);
+
+                return false;
+            }
+
             string quantityKey = command[3];
 
             if (quantityKey == null || quantityKey == "")
@@ -406,6 +456,12 @@ namespace TwitchToolkit.IncidentHelpers.Special
             ThingDef stuff = null;
             ThingDef itemThingDef = ThingDef.Named(item.defname);
 
+            if (itemThingDef.race != null)
+            {
+                TryExecuteAnimal(itemThingDef, quantity);
+                return;
+            }
+
             if (itemThingDef.MadeFromStuff)
 			{
 				if (!(from x in GenStuff.AllowedStuffsFor(itemThingDef, TechLevel.Undefined)
@@ -445,6 +501,21 @@ namespace TwitchToolkit.IncidentHelpers.Special
 
             Helper.CarePackage(letter, LetterDefOf.PositiveEvent, vec);
 
+            EndCarePackage();
+        }
+
+        private void TryExecuteAnimal(ThingDef animal, int count)
+        {
+            string letter = Helper.ReplacePlaceholder("TwitchStoriesDescription80".Translate(), from: viewer.username, amount: quantity.ToString(), item: item.abr.CapitalizeFirst());
+            IncidentWorker worker = new IncidentWorker_SpecificAnimalsWanderIn("TwitchToolkitCarePackage", PawnKindDef.Named(animal.defName), true, count, false, true);
+            worker.def = IncidentDef.Named("FarmAnimalsWanderIn");
+            worker.TryExecute(StorytellerUtility.DefaultParmsNow(IncidentCategoryDefOf.Misc, Helper.AnyPlayerMap));
+
+            EndCarePackage();
+        }
+
+        private void EndCarePackage()
+        {
             viewer.TakeViewerCoins(price);
             viewer.CalculateNewKarma(storeIncident.karmaType, price);
             VariablesHelpers.SendPurchaseMessage(Helper.ReplacePlaceholder("TwitchToolkitItemPurchaseConfirm".Translate(), amount: quantity.ToString(), item: item.abr, viewer: viewer.username), separateChannel);

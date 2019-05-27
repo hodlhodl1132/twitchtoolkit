@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using Verse;
 using TwitchToolkit.Utilities;
+using TwitchToolkit.Store;
 
 namespace TwitchToolkit
 {
@@ -33,19 +34,46 @@ namespace TwitchToolkit
                     }
                     else
                     {
-                        // to earn full coins you either need to half talked within timebeforehalfcoins limit or chatreqs is turned off
-                        if( TimeHelper.MinutesElapsed(viewer.last_seen) < ToolkitSettings.TimeBeforeHalfCoins || !ToolkitSettings.ChatReqsForCoins || true)
-                        { 
-                            double karmabonus = ((double)viewer.GetViewerKarma() / 100d) * (double)ToolkitSettings.CoinAmount;
-                            viewer.GiveViewerCoins(Convert.ToInt32(karmabonus));
-                        }
-                        // otherwise you earn half if you have talked withing timebefore no coins
-                        else if (TimeHelper.MinutesElapsed(viewer.last_seen) < ToolkitSettings.TimeBeforeNoCoins || !ToolkitSettings.ChatReqsForCoins)
+                        int baseCoins = ToolkitSettings.CoinAmount;
+                        float baseMultiplier = viewer.GetViewerKarma() / 100;
+
+                        if (viewer.IsSub)
                         {
-                            double karmabonus = (((double)viewer.GetViewerKarma() / 100d) * (double)ToolkitSettings.CoinAmount) / 2;
-                            viewer.GiveViewerCoins(Convert.ToInt32(karmabonus));
+                            baseCoins += ToolkitSettings.SubscriberExtraCoins;
+                            baseMultiplier *= ToolkitSettings.SubscriberCoinMultiplier;
                         }
-                        // else you get nothing for lurking
+                        else if (viewer.IsVIP)
+                        {
+                            baseCoins += ToolkitSettings.VIPExtraCoins;
+                            baseMultiplier *= ToolkitSettings.VIPCoinMultiplier;
+                        }
+                        else if (viewer.mod)
+                        {
+                            baseCoins += ToolkitSettings.ModExtraCoins;
+                            baseMultiplier *= ToolkitSettings.ModCoinMultiplier;
+                        }
+
+                        // check if viewer is active in chat
+                        int minutesSinceViewerWasActive = TimeHelper.MinutesElapsed(viewer.last_seen);
+
+                        if (ToolkitSettings.ChatReqsForCoins)
+                        {
+                            if (minutesSinceViewerWasActive > ToolkitSettings.TimeBeforeHalfCoins)
+                            {
+                                baseMultiplier *= 0.5f;
+                            }
+
+                            if (minutesSinceViewerWasActive > ToolkitSettings.TimeBeforeNoCoins)
+                            {
+                                baseMultiplier *= 0f;
+                            }
+                        }
+
+                        double coinsToReward = (double)baseCoins * baseMultiplier;
+
+                        Store_Logger.LogString($"{viewer.username} gets {baseCoins} * {baseMultiplier} coins, total {(int)Math.Ceiling(coinsToReward)}");
+                        
+                        viewer.GiveViewerCoins((int)Math.Ceiling(coinsToReward));
                     }
                 }
             }
@@ -240,6 +268,11 @@ namespace TwitchToolkit
                 viewer.karma = ToolkitSettings.StartingKarma;
             }
             return viewer;
+        }
+
+        public static Viewer GetViewerById(int id)
+        {
+            return All.Find(s => s.id == id);
         }
 
         public static void RefreshViewers()

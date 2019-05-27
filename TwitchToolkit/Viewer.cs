@@ -25,6 +25,10 @@ namespace TwitchToolkit
             Viewers.All.Add(this);
         }
 
+        public bool IsSub => subscriber;
+
+        public bool IsVIP => vip;
+
         public static bool IsModerator(string user)
         {
             if (Viewers.GetViewer(user).mod)

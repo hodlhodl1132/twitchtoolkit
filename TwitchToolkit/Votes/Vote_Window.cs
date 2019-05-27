@@ -47,7 +47,7 @@ namespace TwitchToolkit
             Text.Font = ToolkitSettings.LargeVotingWindow ? GameFont.Medium : GameFont.Small;
             float lineheight = ToolkitSettings.LargeVotingWindow ? 50 : 30;
 
-            string titleLabel = "<b><color=#76BA4E>" + title + "</color></b>";
+            string titleLabel = "<b>" + title + "</b>";
             float titleHeight = Text.CalcHeight(titleLabel, inRect.width);
             Widgets.Label(inRect, titleLabel);
             inRect.y += titleHeight + 10;
@@ -70,7 +70,7 @@ namespace TwitchToolkit
         {
             get
             {
-                return ToolkitSettings.LargeVotingWindow ? new Vector2(400, 80 + (optionsKeys.Count * 50f) + Text.CalcHeight(title, 400)) : new Vector2(300, 50 + (optionsKeys.Count * 30f) + Text.CalcHeight(title, 300));
+                return ToolkitSettings.LargeVotingWindow ? new Vector2(400, 80 + (optionsKeys.Count * 60f) + Text.CalcHeight(title, 400)) : new Vector2(300, 50 + (optionsKeys.Count * 30f) + Text.CalcHeight(title, 300));
             }
         }
 

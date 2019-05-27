@@ -122,8 +122,7 @@ namespace TwitchToolkit.Store
                 {
                     try
                     { 
-                        // item needs to be worth money, also not an animal
-                        if (item.BaseMarketValue > 0f && item.race == null)
+                        if (item.BaseMarketValue > 0f)
                         {
                             int id = StoreInventory.items.Count();
                             StoreInventory.items.Add(new Item(Convert.ToInt32(item.BaseMarketValue * 10 / 6), label, item.defName));             

@@ -24,8 +24,7 @@ namespace TwitchToolkit.Store
             return from t in DefDatabase<ThingDef>.AllDefs
                 where (t.tradeability.TraderCanSell() || ThingSetMakerUtility.CanGenerate(t)) &&
                 (t.building == null || t.Minifiable || ToolkitSettings.MinifiableBuildings) &&
-                (t.BaseMarketValue > 0) &&
-                (t.race == null)
+                (t.BaseMarketValue > 0)
                 orderby t.LabelCap
                 select t;
         }

@@ -70,7 +70,7 @@ namespace TwitchToolkit.IncidentHelpers
 
             for (int i = 0; i < totalRolls; i++)
             {
-                int roll = Verse.Rand.Range(65, 135);
+                int roll = Verse.Rand.Range(65, 125);
                 if (roll > highestRoll)
                 {
                     highestRoll = roll;

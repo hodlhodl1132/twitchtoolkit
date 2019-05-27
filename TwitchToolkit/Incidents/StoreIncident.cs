@@ -31,32 +31,8 @@ namespace TwitchToolkit.Incidents
     {
         public void RegisterCustomSettings()
         {
-            bool ScanningFloats = false;
-            int index = 0;
-
-            foreach(string key in customSettingKeys)
-            {
-                if (customSettingStringValues != null && customSettingStringValues.Count > index && CustomSettings.LookupStringSetting(key) == null)
-                {
-                    Log.Warning("Registering custom setting from " + LabelCap + " " + key + " " + customSettingStringValues[index]);
-                    CustomSettings.SetStringSetting(key, customSettingStringValues[index]);
-                    index++;
-                    continue;
-                }
-                else
-                {
-                    index = 0;
-                    ScanningFloats = true;
-                }
-
-                if (ScanningFloats && customSettingFloatValues != null && customSettingFloatValues.Count > index && CustomSettings.LookupFloatSetting(key) <= 0)
-                {
-                    Log.Warning("Registering custom setting from " + LabelCap + " " + key + " " + customSettingFloatValues[index]);
-                    CustomSettings.SetFloatSetting(key, customSettingFloatValues[index]);
-                    index++;
-                    continue;
-                }
-            }
+            if (settings == null)
+                settings = StoreIncidentMaker.MakeIncidentVariablesSettings(this);
         }
 
         public int minPointsToFire = 0;
@@ -69,11 +45,11 @@ namespace TwitchToolkit.Incidents
 
         public new Type incidentHelper = typeof(IncidentHelperVariables);
 
-        public List<string> customSettingKeys = new List<string>();
+        public bool customSettings = false;
 
-        public List<string> customSettingStringValues = new List<string>();
+        public Type customSettingsHelper = typeof(IncidentHelperVariablesSettings);
 
-        public List<float> customSettingFloatValues = new List<float>();
+        public IncidentHelperVariablesSettings settings = null;
     }
 
     public static class StoreIncidentMaker
@@ -90,7 +66,22 @@ namespace TwitchToolkit.Incidents
             IncidentHelperVariables helper = (IncidentHelperVariables)Activator.CreateInstance(def.incidentHelper);
             helper.storeIncident = def;
             return helper;
-        }      
+        }
+
+        public static IncidentHelperVariablesSettings MakeIncidentVariablesSettings(StoreIncidentVariables def)
+        {
+            if (!def.customSettings)
+                return null;
+
+            return (IncidentHelperVariablesSettings)Activator.CreateInstance(def.customSettingsHelper);
+        }
+    }
+
+    public abstract class IncidentHelperVariablesSettings
+    {
+        public abstract void ExposeData();
+
+        public abstract void EditSettings();
     }
 
     [DefOf]

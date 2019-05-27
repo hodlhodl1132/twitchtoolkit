@@ -59,7 +59,7 @@ namespace TwitchToolkit.IncidentHelpers.Raids
                 VariablesHelpers.SendPurchaseMessage($"Starting raid with {pointsWager} points wagered and {(int)parms.points} raid points purchased by {viewer.username}", separateChannel);
                 return;
             }
-            Toolkit.client.SendMessage($"@{viewer.username} not enough points spent for raid.", separateChannel);
+            Toolkit.client.SendMessage($"@{viewer.username} could not generate parms for raid.", separateChannel);
         }
 
         public int pointsWager = 0;
@@ -130,7 +130,7 @@ namespace TwitchToolkit.IncidentHelpers.Raids
                 return;
             }
 
-            Toolkit.client.SendMessage($"@{viewer.username} not enough points spent for drop raid.", separateChannel);
+            Toolkit.client.SendMessage($"@{viewer.username} could not generate parms for drop raid.", separateChannel);
         }
 
         public int pointsWager = 0;
@@ -193,7 +193,7 @@ namespace TwitchToolkit.IncidentHelpers.Raids
                 VariablesHelpers.SendPurchaseMessage($"Starting sapper raid with {pointsWager} points wagered and {(int)parms.points} raid points purchased by {viewer.username}", separateChannel);
                 return;
             }
-            Toolkit.client.SendMessage($"@{viewer.username} not enough points spent for sapper raid.", separateChannel);
+            Toolkit.client.SendMessage($"@{viewer.username} could not generate parms for sapper raid.", separateChannel);
         }
 
         public int pointsWager = 0;
@@ -256,7 +256,7 @@ namespace TwitchToolkit.IncidentHelpers.Raids
                 VariablesHelpers.SendPurchaseMessage($"Starting siege raid with {pointsWager} points wagered and {(int)parms.points} raid points purchased by {viewer.username}", separateChannel);
                 return;
             }
-            Toolkit.client.SendMessage($"@{viewer.username} not enough points spent for siege raid.", separateChannel);
+            Toolkit.client.SendMessage($"@{viewer.username} could not generate parms for siege raid.", separateChannel);
         }
 
         public int pointsWager = 0;
@@ -319,7 +319,7 @@ namespace TwitchToolkit.IncidentHelpers.Raids
                 VariablesHelpers.SendPurchaseMessage($"Starting mechanoid raid with {pointsWager} points wagered and {(int)parms.points} raid points purchased by {viewer.username}", separateChannel);
                 return;
             }
-            Toolkit.client.SendMessage($"@{viewer.username} not enough points spent for mechanoid raid.", separateChannel);
+            Toolkit.client.SendMessage($"@{viewer.username} could not generate parms for mechanoid raid.", separateChannel);
         }
 
         public int pointsWager = 0;
@@ -361,20 +361,30 @@ namespace TwitchToolkit.IncidentHelpers.Raids
                 return false;
             }
 
-            parms = StorytellerUtility.DefaultParmsNow(IncidentCategoryDefOf.RaidBeacon, target);
-            parms.points = IncidentHelper_PointsHelper.RollProportionalGamePoints(storeIncident, pointsWager, parms.points);
-            parms = StorytellerUtility.DefaultParmsNow(worker.def.category, target);
-            parms.faction = Find.FactionManager.OfInsects;
+            Log.Warning("found target");
+
+            parms = StorytellerUtility.DefaultParmsNow(IncidentCategoryDefOf.ThreatBig, target);
+            parms.points = IncidentHelper_PointsHelper.RollProportionalGamePoints(storeIncident, pointsWager, StorytellerUtility.DefaultThreatPointsNow(target));
+            parms.forced = true;
+
+            Log.Warning("genned parms");
 
             worker = new IncidentWorker_Infestation();
             worker.def = IncidentDef.Named("Infestation");
 
+            bool canFire = worker.CanFireNow(parms);
 
-            return worker.CanFireNow(parms);
+            if (!canFire)
+            {
+                Toolkit.client.SendMessage($"@{viewer.username} Found no place for infestation to occur.", separateChannel);
+            }
+
+            return canFire;
         }
 
         public override void TryExecute()
         {
+            Log.Warning("trying execution");
             if (worker.TryExecute(parms))
             {
                 viewer.TakeViewerCoins(pointsWager);
@@ -382,7 +392,7 @@ namespace TwitchToolkit.IncidentHelpers.Raids
                 VariablesHelpers.SendPurchaseMessage($"Starting infestation raid with {pointsWager} points wagered and {(int)parms.points} raid points purchased by {viewer.username}", separateChannel);
                 return;
             }
-            Toolkit.client.SendMessage($"@{viewer.username} not enough points spent for infestation.", separateChannel);
+            Toolkit.client.SendMessage($"@{viewer.username} could not generate parms for infestation.", separateChannel);
         }
 
         public int pointsWager = 0;
@@ -442,7 +452,7 @@ namespace TwitchToolkit.IncidentHelpers.Raids
                 VariablesHelpers.SendPurchaseMessage($"Starting manhunterpack with {pointsWager} points wagered and {(int)parms.points} raid points purchased by {viewer.username}", separateChannel);
                 return;
             }
-            Toolkit.client.SendMessage($"@{viewer.username} not enough points spent for manhunter pack.", separateChannel);
+            Toolkit.client.SendMessage($"@{viewer.username} could not generate parms for manhunter pack.", separateChannel);
         }
 
         public int pointsWager = 0;

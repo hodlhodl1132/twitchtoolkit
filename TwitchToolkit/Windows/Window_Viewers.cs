@@ -68,6 +68,8 @@ namespace TwitchToolkit.Windows
                     {
                         SelectViewer(viewer);
                     }
+
+                    viewerButton.y += viewerButton.height;
                 }
 
                 return;

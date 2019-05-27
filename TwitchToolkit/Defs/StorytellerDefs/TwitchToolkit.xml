@@ -1,15 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Defs>
   <StorytellerDef ParentName="BaseStoryteller">
-    <defName>ToryTalker</defName>
-    <label>Tory Talker</label>
-    <description>Tory loves to chit-chat. Also she seems to listens to what most people want.\n\nBut be aware, that will not always be what you want.</description>
+    <defName>StorytellerPacks</defName>
+    <label>Storyteller Packs</label>
+    <description>Create your own voting experience with a selection of storytelling packs.</description>
     <portraitLarge>Things/TwitchStoriesStoryteller</portraitLarge>
     <portraitTiny>Things/TwitchStoriesStorytellerTiny</portraitTiny>
     <listOrder>2</listOrder>
     <comps>
-      <li Class="TwitchToolkit.Storytellers.StorytellerCompProperties_ToryTalker">
-        <mtbDays>1</mtbDays>
+      <li Class="TwitchToolkit.Storytellers.StorytellerCompProperties_TwitchToolkit">
         <allowedTargetTags>
           <li>Map_PlayerHome</li>
         </allowedTargetTags>
@@ -79,7 +78,7 @@
     </comps>
   </StorytellerDef>
   
-  <StorytellerDef ParentName="BaseStoryteller">
+  <!--<StorytellerDef ParentName="BaseStoryteller">
     <defName>hodlbotstoryteller</defName>
     <label>Hodlbot</label>
     <description>Hodlbot likes to keep things fair but exciting.
@@ -89,8 +88,8 @@ HodlBot, created by Randy, mimics his storytelling through having absolutely no 
     <portraitTiny>Things/TwitchToolkitHodlTiny</portraitTiny>
     <listOrder>1</listOrder>
     <comps>
-      <!-- Home all -->
-      <!--<li Class="TwitchToolkit.StorytellerCompProperties_CustomRandomStoryTeller">
+      --><!-- Home all --><!--
+      --><!--<li Class="TwitchToolkit.StorytellerCompProperties_CustomRandomStoryTeller">
         <allowedTargetTags>
           <li>Map_PlayerHome</li>
         </allowedTargetTags>
@@ -108,7 +107,7 @@ HodlBot, created by Randy, mimics his storytelling through having absolutely no 
           <ThreatSmall>0.7</ThreatSmall>
           <ShipChunkDrop>0.5</ShipChunkDrop>
         </categoryWeights>
-      </li>-->
+      </li>--><!--
       <li Class="TwitchToolkit.StorytellerCompProperties_Random">
         <allowedTargetTags>
           <li>Map_PlayerHome</li>
@@ -128,11 +127,6 @@ HodlBot, created by Randy, mimics his storytelling through having absolutely no 
           <ShipChunkDrop>0.6</ShipChunkDrop>
         </categoryWeights>
       </li>
-      <li Class="TwitchToolkit.Storytellers.StorytellerCompProperties_ToryTalkerHodlBot">
-        <allowedTargetTags>
-          <li>Map_PlayerHome</li>
-        </allowedTargetTags>
-      </li>
       <li Class="StorytellerCompProperties_Disease">
         <category>DiseaseHuman</category>
         <minDaysPassed>0</minDaysPassed>
@@ -141,7 +135,7 @@ HodlBot, created by Randy, mimics his storytelling through having absolutely no 
         <category>DiseaseAnimal</category>
         <minDaysPassed>0</minDaysPassed>
       </li>
-      <!-- Home special threats -->
+      --><!-- Home special threats --><!--
       <li Class="TwitchToolkit.StorytellerCompProperties_CustomOnOffCycle">
         <category>RaidBeacon</category>
         <allowedTargetTags>
@@ -153,7 +147,7 @@ HodlBot, created by Randy, mimics his storytelling through having absolutely no 
         <applyRaidBeaconThreatMtbFactor>true</applyRaidBeaconThreatMtbFactor>
         <numIncidentsRange>1~2</numIncidentsRange>
       </li>
-      <!-- Ally/neutral interaction -->
+      --><!-- Ally/neutral interaction --><!--
       <li Class="StorytellerCompProperties_FactionInteraction">
         <incident>RaidFriendly</incident>
         <baseIncidentsPerYear>10</baseIncidentsPerYear>
@@ -161,7 +155,7 @@ HodlBot, created by Randy, mimics his storytelling through having absolutely no 
         <fullAlliesOnly>true</fullAlliesOnly>
         <minDanger>High</minDanger>
       </li>
-      <!-- Caravan / temp map -->
+      --><!-- Caravan / temp map --><!--
       <li Class="TwitchToolkit.StorytellerCompProperties_Random">
         <allowedTargetTags>
           <li>Caravan</li>
@@ -202,7 +196,7 @@ HodlBot, created by Randy, mimics his storytelling through having absolutely no 
           <li>Map_TempIncident</li>
         </allowedTargetTags>
       </li>
-      <!-- World -->
+      --><!-- World --><!--
       <li Class="StorytellerCompProperties_JourneyOffer"/>
       <li Class="TwitchToolkit.StorytellerCompProperties_CustomOnOffCycle">
         <category>WorldQuest</category>
@@ -227,7 +221,7 @@ HodlBot, created by Randy, mimics his storytelling through having absolutely no 
         <minDaysPassed>1</minDaysPassed>
         <mtbDays>15</mtbDays>
       </li>
-      <!-- Triggered -->
+      --><!-- Triggered --><!--
       <li Class="StorytellerCompProperties_Triggered">
         <incident>StrangerInBlackJoin</incident>
         <delayTicks>180</delayTicks>
@@ -242,9 +236,9 @@ HodlBot, created by Randy, mimics his storytelling through having absolutely no 
     <portraitTiny>Things/TwitchToolkitUristTiny</portraitTiny>
     <listOrder>2</listOrder>
     <comps>
-      <!-- Intro -->
+      --><!-- Intro --><!--
       <li Class="StorytellerCompProperties_ClassicIntro"/>
-      <!-- Home threats -->
+      --><!-- Home threats --><!--
       <li Class="TwitchToolkit.StorytellerCompProperties_CustomOnOffCycle">
         <category>ThreatBig</category>
         <minDaysPassed>11.0</minDaysPassed>
@@ -281,7 +275,7 @@ HodlBot, created by Randy, mimics his storytelling through having absolutely no 
           </points>
         </acceptPercentFactorPerThreatPointsCurve>
       </li>
-      <!-- Home misc -->
+      --><!-- Home misc --><!--
       <li Class="TwitchToolkit.StorytellerCompProperties_CustomCategoryMTB">
         <category>Misc</category>
         <allowedTargetTags>
@@ -299,7 +293,7 @@ HodlBot, created by Randy, mimics his storytelling through having absolutely no 
         <category>DiseaseAnimal</category>
         <minDaysPassed>9</minDaysPassed>
       </li>
-      <!-- Ally/neutral interaction -->
+      --><!-- Ally/neutral interaction --><!--
       <li Class="StorytellerCompProperties_FactionInteraction">
         <incident>RaidFriendly</incident>
         <baseIncidentsPerYear>15</baseIncidentsPerYear>
@@ -334,7 +328,7 @@ HodlBot, created by Randy, mimics his storytelling through having absolutely no 
           <li>Map_PlayerHome</li>
         </allowedTargetTags>
       </li>
-      <!-- Caravan / temp map -->
+      --><!-- Caravan / temp map --><!--
       <li Class="StorytellerCompProperties_CategoryIndividualMTBByBiome">
         <category>Misc</category>
         <allowedTargetTags>
@@ -358,7 +352,7 @@ HodlBot, created by Randy, mimics his storytelling through having absolutely no 
           <li>Map_TempIncident</li>
         </allowedTargetTags>
       </li>
-      <!-- World -->
+      --><!-- World --><!--
       <li Class="StorytellerCompProperties_JourneyOffer"/>
       <li Class="TwitchToolkit.StorytellerCompProperties_CustomOnOffCycle">
         <category>WorldQuest</category>
@@ -383,20 +377,20 @@ HodlBot, created by Randy, mimics his storytelling through having absolutely no 
         <minDaysPassed>15</minDaysPassed>
         <mtbDays>15</mtbDays>
       </li>
-      <!-- Orbital -->
+      --><!-- Orbital --><!--
       <li Class="TwitchToolkit.StorytellerCompProperties_CustomOnOffCycle">
         <incident>OrbitalTraderArrival</incident>
         <onDays>7</onDays>
         <offDays>8</offDays>
         <numIncidentsRange>1</numIncidentsRange>
       </li>
-      <!-- Triggered -->
+      --><!-- Triggered --><!--
       <li Class="StorytellerCompProperties_Triggered">
         <incident>StrangerInBlackJoin</incident>
         <delayTicks>180</delayTicks>
       </li>
     </comps>
-  </StorytellerDef>
+  </StorytellerDef>-->
   
   <StorytellerDef ParentName="BaseStoryteller">
     <defName>phoebebot</defName>

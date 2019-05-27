@@ -23,6 +23,19 @@ namespace TwitchToolkit.Votes
         public Type votingHelper = typeof(IncidentHelper);
 
         public VotingHelper helper = null;
+
+        public VotingHelper Helper
+        {
+            get
+            {
+                if (helper == null)
+                {
+                    helper = VotingIncidentMaker.makeVotingHelper(this);
+                }
+
+                return helper;
+            }
+        }
     }
 
     public abstract class VotingHelper : IncidentHelper

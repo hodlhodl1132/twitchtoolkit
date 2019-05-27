@@ -1,5 +1,6 @@
 ﻿using RimWorld;
 using System.Collections.Generic;
+using TwitchToolkit.Incidents;
 using TwitchToolkit.Store;
 using Verse;
 
@@ -53,6 +54,40 @@ namespace TwitchToolkit.IncidentHelpers.Weather
         public override void TryExecute()
         {
             Helper.Weather("TwitchStoriesDescription30".Translate(), weather, LetterDefOf.PositiveEvent);
+        }
+
+        private Map target = null;
+        private WeatherDef weather = null;
+    }
+
+    public class VomitRain : IncidentHelper
+    {
+        public override bool IsPossible()
+        {
+            weather = DefDatabase<WeatherDef>.GetNamed("VomitRain");
+            List<Map> allMaps = Current.Game.Maps;
+            allMaps.Shuffle();
+            foreach (Map map in allMaps)
+            {
+                if (map.weatherManager.curWeather != weather)
+                {
+                    target = map;
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public override void TryExecute()
+        {
+            IncidentWorker worker = new IncidentWorker_VomitRain
+            {
+                def = IncidentDef.Named("VomitRain")
+            };
+
+            IncidentParms parms = StorytellerUtility.DefaultParmsNow(IncidentCategoryDefOf.Misc, target);
+
+            worker.TryExecute(parms);
         }
 
         private Map target = null;

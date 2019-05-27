@@ -739,13 +739,12 @@ namespace TwitchToolkit.IncidentHelpers.Misc
     {
         public override bool IsPossible()
         {
-            Pawn pawn = PartyUtility.FindRandomPartyOrganizer(Faction.OfPlayer, Helper.AnyPlayerMap);
+            pawn = PartyUtility.FindRandomPartyOrganizer(Faction.OfPlayer, Helper.AnyPlayerMap);
             if (pawn == null)
             {
                 return false;
             }
 
-            IntVec3 intVec;
             if (!RCellFinder.TryFindPartySpot(pawn, out intVec))
             {
                 return false;
@@ -756,20 +755,14 @@ namespace TwitchToolkit.IncidentHelpers.Misc
 
         public override void TryExecute()
         {
-            Pawn pawn = PartyUtility.FindRandomPartyOrganizer(Faction.OfPlayer, Helper.AnyPlayerMap);
-            if (pawn == null)
-            {
-                return;
-            }
-            if (!RCellFinder.TryFindPartySpot(pawn, out IntVec3 intVec))
-            {
-                return;
-            }
             Verse.AI.Group.LordMaker.MakeNewLord(pawn.Faction, new LordJob_Joinable_Party(intVec, pawn), Helper.AnyPlayerMap, null);
             string text = "LetterNewParty".Translate(pawn.LabelShort, pawn);
 
             Find.LetterStack.ReceiveLetter("LetterLabelNewParty".Translate(), text, LetterDefOf.PositiveEvent, new TargetInfo(intVec, Helper.AnyPlayerMap, false), null, null);
         }
+
+        private IntVec3 intVec;
+        private Pawn pawn = null;
     }
 
     public class Alphabeavers : IncidentHelper
@@ -854,5 +847,23 @@ namespace TwitchToolkit.IncidentHelpers.Misc
 
         private IncidentParms parms = null;
         private IncidentWorker worker = null;
+    }
+
+    public class VomitRain : IncidentHelper
+    {
+        public override bool IsPossible()
+        {
+            return true;
+        }
+
+        public override void TryExecute()
+        {
+            int count = 50;
+
+            for (int i = 0; i < count; i++)
+            {
+                Helper.Vomit(Helper.AnyPlayerMap);
+            }
+        }
     }
 }

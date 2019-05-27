@@ -20,7 +20,10 @@ namespace TwitchToolkit.Storytellers
 
         public override IEnumerable<FiringIncident> MakeIntervalIncidents(IIncidentTarget target)
         {
-            if (!VoteHandler.voteActive && Rand.MTBEventOccurs(ToolkitSettings.ToryTalkerMTBDays, 60000f, 1000f))
+            voteTracker = Current.Game.GetComponent<StoryTellerVoteTracker>();
+
+            if (!VoteHandler.voteActive &&
+                Rand.MTBEventOccurs(ToolkitSettings.ToryTalkerMTBDays, 60000f, 1000f))
             {
                 List<VotingIncidentEntry> entries = VotingIncidentsByWeight();
                 List<VotingIncidentEntry> winners = new List<VotingIncidentEntry>();
@@ -54,20 +57,38 @@ namespace TwitchToolkit.Storytellers
                     incidents.Add(i, winners[i].incident);
                 }
 
-                VoteHandler.QueueVote(new Vote_VotingIncident(incidents));
+                StorytellerPack pack = DefDatabase<StorytellerPack>.GetNamed("ToryTalker");
+
+                VoteHandler.QueueVote(new Vote_ToryTalker(incidents, pack, "Which event should happen next?"));
             }
 
             yield break;
         }
 
-        public List<VotingIncidentEntry> VotingIncidentsByWeight()
+        public virtual List<VotingIncidentEntry> VotingIncidentsByWeight()
         {
+            voteTracker = Current.Game.GetComponent<StoryTellerVoteTracker>();
             List<VotingIncident> candidates;
+            if (voteTracker.VoteHistory.ContainsKey(voteTracker.lastID))
+            {
+                List<KeyValuePair<int, int>> history = voteTracker.VoteHistory.ToList();
+                Log.Warning("History count " + history.Count);
+                history.OrderBy(s => s.Value);
+                IEnumerable<VotingIncident> search = DefDatabase<VotingIncident>.AllDefs.Where(s => s.defName == voteTracker.VoteIDs[history[0].Key]);
+                Log.Warning("Search count " + search.Count());
+                if (search != null && search.Count() > 0)
+                {
+                    previousVote = search.ElementAt(0);
+                }
+            }
+
             if (previousVote != null)
             {
                 candidates = new List<VotingIncident>(DefDatabase<VotingIncident>.AllDefs.Where(s =>
                     s != previousVote
                     ));
+
+                Log.Warning($"Previous vote was {previousVote.defName}");
             }
             else
             {
@@ -78,13 +99,15 @@ namespace TwitchToolkit.Storytellers
 
             foreach (VotingIncident incident in candidates)
             {
-                voteEntries.Add(new VotingIncidentEntry(incident, CalculateVotingIncidentWeight(incident)));
+                int weight = CalculateVotingIncidentWeight(incident);
+                Log.Warning($"Incident {incident.LabelCap} weighted at {weight}");
+                voteEntries.Add(new VotingIncidentEntry(incident, weight));
             }
 
             return voteEntries;
         }
 
-        public int CalculateVotingIncidentWeight(VotingIncident incident)
+        public virtual int CalculateVotingIncidentWeight(VotingIncident incident)
         {
             int previousWinsInVotingPeriod = voteTracker.TimesVoteHasBeenWonInVotingPeriod(incident);
 
@@ -92,9 +115,9 @@ namespace TwitchToolkit.Storytellers
 
             int weightRemovedFromVotingPeriodWins = previousWinsInVotingPeriod * 20;
 
-            int weightRemovedFromPreviousCategory = incident.eventCategory == previousCategory ? 50 : 0;
+            int weightRemovedFromPreviousCategory = incident.eventCategory == voteTracker.previousCategory ? 50 : 0;
 
-            int weightRemovedFromPreviousType = incident.eventType == previousType ? 50 : 0;
+            int weightRemovedFromPreviousType = incident.eventType == voteTracker.previousType ? 50 : 0;
 
             return Convert.ToInt32(Math.Max(initialWeight -
                 weightRemovedFromVotingPeriodWins -
@@ -107,12 +130,8 @@ namespace TwitchToolkit.Storytellers
             return true;
         }
 
-        private EventCategory previousCategory = EventCategory.Invasion;
-
-        private EventType previousType = EventType.Bad;
-
         private VotingIncident previousVote = null;
 
-        private StoryTellerVoteTracker voteTracker = Current.Game.GetComponent<StoryTellerVoteTracker>();
+        public StoryTellerVoteTracker voteTracker;
     }
 }

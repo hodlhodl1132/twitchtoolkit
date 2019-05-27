@@ -14,6 +14,14 @@ namespace TwitchToolkit.Settings
             optionsListing.SliderLabeled("TwitchToolkitStartingKarma".Translate(), ref ToolkitSettings.StartingKarma, Math.Round((double)ToolkitSettings.StartingKarma).ToString(), 50, 250);
             optionsListing.SliderLabeled("TwitchToolkitKarmaCap".Translate(), ref ToolkitSettings.KarmaCap, Math.Round((double)ToolkitSettings.KarmaCap).ToString(), 150, 600);
             optionsListing.CheckboxLabeled("TwitchToolkitBanViewersWhoAreBad".Translate(), ref ToolkitSettings.BanViewersWhoPurchaseAlwaysBad);
+
+            optionsListing.Gap();
+
+            string minKarmaBuffer = ToolkitSettings.KarmaMinimum.ToString();
+            optionsListing.TextFieldNumericLabeled("What is the minimum amount of karma viewers can reach?", ref ToolkitSettings.KarmaMinimum, ref minKarmaBuffer, -100, 100);
+
+            optionsListing.Gap();
+
             optionsListing.CheckboxLabeled("TwitchToolkitKarmaReqsForGifting".Translate(), ref ToolkitSettings.KarmaReqsForGifting);
             
             optionsListing.Gap();

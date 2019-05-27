@@ -22,6 +22,16 @@
   </TwitchToolkit.Incidents.StoreIncidentSimple>
 
   <TwitchToolkit.Incidents.StoreIncidentSimple>
+    <defName>VomitRain</defName>
+    <label>vomit rain</label>
+    <abbreviation>vomitrain</abbreviation>
+    <cost>1600</cost>
+    <eventCap>1</eventCap>
+    <incidentHelper>TwitchToolkit.IncidentHelpers.Weather.VomitRain</incidentHelper>
+    <karmaType>Neutral</karmaType>
+  </TwitchToolkit.Incidents.StoreIncidentSimple>
+
+  <TwitchToolkit.Incidents.StoreIncidentSimple>
     <defName>FoggyRain</defName>
     <label>foggy rain</label>
     <abbreviation>foggyrain</abbreviation>
@@ -34,7 +44,7 @@
   <TwitchToolkit.Incidents.StoreIncidentSimple>
     <defName>RainyThunderStorm</defName>
     <label>rainy thunderstorm</label>
-    <abbreviation>clearweather</abbreviation>
+    <abbreviation>rainythunderstorm</abbreviation>
     <cost>250</cost>
     <eventCap>1</eventCap>
     <incidentHelper>TwitchToolkit.IncidentHelpers.Weather.RainyThunderStorm</incidentHelper>
@@ -616,7 +626,8 @@
     <variables>1</variables>
   </TwitchToolkit.Incidents.StoreIncidentVariables>
 
-  <TwitchToolkit.Incidents.StoreIncidentVariables>
+  <!-- Merged into buy item incident -->
+  <!--<TwitchToolkit.Incidents.StoreIncidentVariables>
     <defName>SpawnAnimal</defName>
     <label>spawn animal</label>
     <abbreviation>animal</abbreviation>
@@ -627,8 +638,8 @@
     <minPointsToFire>1500</minPointsToFire>
     <maxWager>10000</maxWager>
     <syntax>!buy animal animalname 1500</syntax>
-    <variables>1</variables>
-  </TwitchToolkit.Incidents.StoreIncidentVariables>
+    <variables>2</variables>
+  </TwitchToolkit.Incidents.StoreIncidentVariables>-->
 
   <TwitchToolkit.Incidents.StoreIncidentVariables>
     <defName>LevelPawn</defName>
@@ -642,12 +653,8 @@
     <maxWager>10000</maxWager>
     <syntax>!gambleskill skill 1500</syntax>
     <variables>2</variables>
-    <customSettingKeys>
-      <li>Toolkit.LevelPawn.XPMultiplier</li>
-    </customSettingKeys>
-    <customSettingFloatValues>
-      <li>0.5</li>
-    </customSettingFloatValues>
+    <customSettings>true</customSettings>
+    <customSettingsHelper>TwitchToolkit.IncidentHelpers.IncidentHelper_Settings.LevelPawnSettings</customSettingsHelper>
   </TwitchToolkit.Incidents.StoreIncidentVariables>
 
   <TwitchToolkit.Incidents.StoreIncidentVariables>
@@ -660,12 +667,8 @@
     <karmaType>Good</karmaType>
     <syntax>!buy trait cannibal</syntax>
     <variables>1</variables>
-    <customSettingKeys>
-      <li>Toolkit.AddTrait.MaxTraits</li>
-    </customSettingKeys>
-    <customSettingFloatValues>
-      <li>4</li>
-    </customSettingFloatValues>
+    <customSettings>true</customSettings>
+    <customSettingsHelper>TwitchToolkit.IncidentHelpers.IncidentHelper_Settings.AddTraitSettings</customSettingsHelper>
   </TwitchToolkit.Incidents.StoreIncidentVariables>
 
   <TwitchToolkit.Incidents.StoreIncidentVariables>
@@ -701,6 +704,8 @@
     <minPointsToFire>0</minPointsToFire>
     <syntax>!buy itemname quantity</syntax>
     <variables>2</variables>
+    <customSettings>true</customSettings>
+    <customSettingsHelper>TwitchToolkit.IncidentHelpers.IncidentHelper_Settings.BuyItemSettings</customSettingsHelper>
   </TwitchToolkit.Incidents.StoreIncidentVariables>
 
   <TwitchToolkit.Incidents.StoreIncidentVariables>

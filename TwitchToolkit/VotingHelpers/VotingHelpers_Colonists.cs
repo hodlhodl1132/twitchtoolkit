@@ -147,6 +147,8 @@ namespace TwitchToolkit.VotingHelpers.VotingHelpers_Colonists
                     candidates.Shuffle();
                     foreach (Pawn candidate in candidates)
                     {
+                        if (pawn.story.traits.allTraits == null) continue;
+
                         if (pawn.story.traits.allTraits.Count <= 3)
                         {
                             if (pawn.story.traits.allTraits.Where(s => s.def == traitDef).Count() < 1)

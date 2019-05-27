@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Verse;
 
 namespace TwitchToolkit.Storytellers
 {
@@ -18,16 +19,55 @@ namespace TwitchToolkit.Storytellers
 
         public override IEnumerable<FiringIncident> MakeIntervalIncidents(IIncidentTarget target)
         {
+            CheckIfPacksAreEnabled();
+
+            StoryTellerVoteTracker voteTracker = Current.Game.GetComponent<StoryTellerVoteTracker>();
+
             // get different voting packs
+            List<StorytellerPack> allPacks = DefDatabase<StorytellerPack>.AllDefs.Where(s =>
+                s.enabled &&
+                voteTracker.HaveMinimumDaysBetweenEventsPassed(s)
+            ).ToList();
 
-            // check weights of different vote types
+            if (allPacks == null || allPacks.Count < 1)
+            {
+                Log.Warning("No story teller packs found");
+                yield break;
+            }
 
-            // decide on vote type
+            // randomize
+            allPacks.Shuffle();
 
-            // redirect to vote
-                // track vote type
+            StorytellerPack chosen = allPacks[0];
+
+            // let the comp do the work
+            foreach (FiringIncident incident in chosen.StorytellerComp.MakeIntervalIncidents(target))
+            {
+                yield return incident;
+            }
 
             yield break;
+        }
+
+        private void CheckIfPacksAreEnabled()
+        {
+            List<StorytellerComp> comps = Current.Game.storyteller.storytellerComps;
+
+            foreach (StorytellerPack pack in DefDatabase<StorytellerPack>.AllDefs)
+            {
+                if (pack.defName == "HodlBot")
+                {
+                    pack.enabled = ToolkitSettings.HodlBotEnabled;
+                }
+                else if (pack.defName == "ToryTalker")
+                {
+                    pack.enabled = ToolkitSettings.ToryTalkerEnabled;
+                }
+                else if (pack.defName == "UristBot")
+                {
+                    pack.enabled = ToolkitSettings.UristBotEnabled;
+                }
+            }
         }
     }
 }

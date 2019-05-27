@@ -48,6 +48,8 @@ namespace TwitchToolkit.Store
             }
 
             LoadCopies();
+
+            Store_IncidentEditor.UpdatePriceSheet();
         }
 
         public static void SaveCopy(StoreIncident incident)
@@ -146,8 +148,6 @@ namespace TwitchToolkit.Store
 
             foreach (StoreIncidentVariables incident in variableIncidents)
             {
-                incident.RegisterCustomSettings();
-
                 if (CopyExists(incident))
                 {
                     LoadCopy(incident);

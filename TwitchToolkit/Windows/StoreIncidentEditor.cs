@@ -22,6 +22,8 @@ namespace TwitchToolkit.Windows
                 throw new ArgumentNullException();
             }
 
+            MakeSureSaveExists(true);
+
             StoreIncidentVariables storeIncidentVariables = DefDatabase<StoreIncidentVariables>.AllDefs.ToList().Find(s =>
                 s.defName == storeIncident.defName
             );
@@ -30,10 +32,6 @@ namespace TwitchToolkit.Windows
             {
                 this.storeIncidentVariables = storeIncidentVariables;
                 this.variableIncident = true;
-
-                this.extraWindowHeight = storeIncidentVariables.customSettingKeys != null ?
-                    (storeIncidentVariables.customSettingKeys.Count * 28f) + 28f :
-                    0f;
             }
 
             karmaTypeStrings = Enum.GetNames(typeof(KarmaType));
@@ -41,12 +39,13 @@ namespace TwitchToolkit.Windows
             setKarmaType = storeIncident.karmaType.ToString();
         }
 
-        public override Vector2 InitialSize => new Vector2(500f, 500f + extraWindowHeight);
+        public override Vector2 InitialSize => new Vector2(500f, 500f);
 
         public override void PostClose()
         {
             MakeSureSaveExists(true);
             Store_IncidentEditor.UpdatePriceSheet();
+            Toolkit.Mod.WriteSettings();
         }
 
         public override void DoWindowContents(Rect inRect)
@@ -79,48 +78,14 @@ namespace TwitchToolkit.Windows
                     ls.Gap();
 
                     ls.SliderLabeled("Maximum coin wager", ref storeIncidentVariables.maxWager, storeIncidentVariables.cost.ToString(), storeIncident.cost, 20000f);
-                }    
+                }  
+                
 
                 ls.Gap();
 
                 ls.AddLabeledRadioList("Karma Type", karmaTypeStrings, ref setKarmaType);
 
                 storeIncident.karmaType = (KarmaType) Enum.Parse(typeof(KarmaType), setKarmaType);
-
-                if (variableIncident)
-                {
-                    ls.Gap();
-                    ls.GapLine();
-                    ls.Label("Custom Settings");
-
-                    int KeyIndex = 0;
-
-                    if (storeIncidentVariables.customSettingStringValues != null)
-                    {
-                        foreach (string str in storeIncidentVariables.customSettingStringValues)
-                        {
-                            string key = storeIncidentVariables.customSettingKeys[KeyIndex];
-                            CustomSettings.SetStringSetting(key, ls.TextEntryLabeled(StripSettingKey(key), CustomSettings.LookupStringSetting(key)));
-                            KeyIndex++;
-                        }
-                    }
-
-                    if (storeIncidentVariables.customSettingFloatValues != null)
-                    {
-                        foreach (float flt in storeIncidentVariables.customSettingFloatValues)
-                        {
-                            string key = storeIncidentVariables.customSettingKeys[KeyIndex];
-                            float newValue = CustomSettings.LookupFloatSetting(key);
-                            string newValueBuffer = newValue.ToString();
-                            ls.TextFieldNumericLabeled<float>(StripSettingKey(key), ref newValue, ref newValueBuffer);
-                            CustomSettings.SetFloatSetting(key, newValue);
-                            KeyIndex++;
-                        }
-                    }
-
-
-                    ls.GapLine();
-                }
 
                 ls.Gap();
 
@@ -138,6 +103,18 @@ namespace TwitchToolkit.Windows
 
                 ls.Gap();
             }
+
+            if (variableIncident && storeIncidentVariables.customSettings)
+            {
+                ls.Gap();
+
+                if (ls.ButtonTextLabeled("Edit Extra Settings", "Settings"))
+                {
+                    storeIncidentVariables.settings.EditSettings();
+                }
+            }
+
+            ls.Gap();
 
             if (storeIncident.defName != "Item" && ls.ButtonTextLabeled("Reset to Default", "Reset"))
             {
@@ -161,21 +138,18 @@ namespace TwitchToolkit.Windows
         public void MakeSureSaveExists(bool forceSave = true)
         {
             checkedForBackup = true;
+
+            Log.Warning("Checking if save exists");
+
+            if (storeIncident == null)
+                Log.Error("incident is null");
+
             haveBackup = Store_IncidentEditor.CopyExists(storeIncident);
             if (!haveBackup || forceSave)
             {
                 Store_IncidentEditor.SaveCopy(storeIncident);
             }
         }
-
-        public string StripSettingKey(string key)
-        {
-            string[] split = key.Split('.');
-
-            return split[split.Count() - 1];
-        }
-
-        public float extraWindowHeight = 0;
 
         public bool checkedForBackup = false;
         public bool haveBackup = false;

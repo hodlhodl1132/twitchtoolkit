@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using TwitchToolkit.Incidents;
 using TwitchToolkit.Votes;
 using Verse;
 
@@ -28,10 +29,10 @@ namespace TwitchToolkit.VotingHelpers.VotingHelpers_Enviroment
     {
         public override bool IsPossible()
         {
-            if (target is Map map)
+            if (target is Map)
             {
                 map = target as Map;
-                return true;
+                return map.IsPlayerHome;
             }
 
             return false;
@@ -39,7 +40,14 @@ namespace TwitchToolkit.VotingHelpers.VotingHelpers_Enviroment
 
         public override void TryExecute()
         {
-            Helper.Vomit(map);
+            IncidentWorker worker = new IncidentWorker_VomitRain
+            {
+                def = IncidentDef.Named("VomitRain")
+            };
+
+            IncidentParms parms = StorytellerUtility.DefaultParmsNow(IncidentCategoryDefOf.Misc, map);
+
+            worker.TryExecute(parms);
         }
 
         private Map map;
@@ -91,7 +99,7 @@ namespace TwitchToolkit.VotingHelpers.VotingHelpers_Enviroment
     {
         public override bool IsPossible()
         {
-            if (target is Map map)
+            if (target is Map)
             {
                 map = target as Map;
                 return true;

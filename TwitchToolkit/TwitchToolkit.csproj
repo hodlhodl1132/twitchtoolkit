@@ -56,18 +56,26 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Commands.cs" />
+    <Compile Include="GameConditions\GameCondition_VomitRain.cs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Compile>
     <Compile Include="Harmony.cs" />
     <Compile Include="IncidentHelpers\IncidentHelper_Diseases.cs" />
     <Compile Include="IncidentHelpers\IncidentHelper_MilitaryAid.cs" />
     <Compile Include="IncidentHelpers\IncidentHelper_Misc.cs" />
     <Compile Include="IncidentHelpers\IncidentHelper_PointsHelper.cs" />
+    <Compile Include="IncidentHelpers\IncidentHelper_Settings.cs" />
     <Compile Include="IncidentHelpers\IncidentHelper_Special.cs" />
     <Compile Include="IncidentHelpers\IncidentHelper_Traits.cs" />
+    <Compile Include="IncidentHelpers\SettingsWindows\Window_BuyItem.cs" />
+    <Compile Include="IncidentHelpers\SettingsWindows\Window_AddTrait.cs" />
+    <Compile Include="IncidentHelpers\SettingsWindows\Window_LevelPawn.cs" />
     <Compile Include="IncidentHelpers\VariablesHelpers.cs" />
     <Compile Include="IncidentHelpers\IncidentHelper_Weather.cs" />
     <Compile Include="IncidentHelpers\IncidentHelper_Raid.cs" />
     <Compile Include="Incidents\IncidentWorker_Alphabeavers.cs" />
     <Compile Include="Incidents\IncidentWorker_PrisonerJoins.cs" />
+    <Compile Include="Incidents\IncidentWorker_VomitRain.cs" />
     <Compile Include="Incidents\StoreIncident.cs" />
     <Compile Include="Incidents\IncidentWorker_CallForAid.cs" />
     <Compile Include="Incidents\IncidentWorker_PoisonShipPartCrash.cs" />
@@ -76,7 +84,10 @@
     <Compile Include="Incidents\IncidentWorker_ResourcePodFrenzy.cs" />
     <Compile Include="Incidents\IncidentWorker_ShipPartCrash.cs" />
     <Compile Include="IRC\ConcurrentCircularBuffer.cs" />
+    <Compile Include="IRC\NotificationMessage.cs" />
+    <Compile Include="IRC\Notifier.cs" />
     <Compile Include="IRC\Reconnecter.cs" />
+    <Compile Include="IRC\Socket.IO.Client.cs" />
     <Compile Include="IRC\ToolkitIRC.cs" />
     <Compile Include="IRC\TwitchBadges.cs" />
     <Compile Include="IRC\TwitchInterfaceBase.cs" />
@@ -91,7 +102,6 @@
     <Compile Include="Settings\ColourPicker\ColourWrapper.cs" />
     <Compile Include="Settings\ColourPicker\Dialog_ColourPicker.cs" />
     <Compile Include="Settings\ColourPicker\HSV.cs" />
-    <Compile Include="Settings\CustomSettings.cs" />
     <Compile Include="Settings\SettingsHelper.cs" />
     <Compile Include="Settings\Settings_Chat.cs" />
     <Compile Include="Settings\Settings_Coins.cs" />
@@ -117,22 +127,36 @@
     <Compile Include="Store\Store_Lookup.cs" />
     <Compile Include="Store\Store_Pawn.cs" />
     <Compile Include="Store\Store_Inventory.cs" />
+    <Compile Include="Storytellers\CustomStorytellerUI.cs" />
     <Compile Include="Storytellers\StorytellerCompProperties_CustomCategoryMTB.cs" />
     <Compile Include="Storytellers\StorytellerCompProperties_CustomOnOffCycle.cs" />
     <Compile Include="Storytellers\StorytellerCompProperties_CustomRandomStoryTeller.cs" />
+    <Compile Include="Storytellers\StorytellerCompProperties_HodlBot.cs" />
     <Compile Include="Storytellers\StorytellerCompProperties_Random.cs" />
-    <Compile Include="Storytellers\StorytellerCompProperties_ToryTalkerHodlBot.cs" />
     <Compile Include="Storytellers\StorytellerCompProperties_TwitchToolkit.cs" />
     <Compile Include="Storytellers\StorytellerCompProperties_ToryTalker.cs" />
+    <Compile Include="Storytellers\StorytellerCompProperties_UristBot.cs" />
+    <Compile Include="Storytellers\StorytellerComp_HodlBot.cs" />
     <Compile Include="Storytellers\StorytellerComp_Random.cs" />
-    <Compile Include="Storytellers\StorytellerComp_ToryTalkerHodlBot.cs" />
     <Compile Include="Storytellers\StorytellerComp_TwitchToolkit.cs" />
     <Compile Include="Storytellers\StorytellerComp_ToryTalker.cs" />
+    <Compile Include="Storytellers\StorytellerComp_UristBot.cs" />
+    <Compile Include="Storytellers\StorytellerPack.cs" />
+    <Compile Include="Storytellers\StorytellerPackWindows\Window_GlobalVoteWeights.cs" />
+    <Compile Include="Storytellers\StorytellerPackWindows\Window_HodlBotSettings.cs" />
+    <Compile Include="Storytellers\StorytellerPackWindows\Window_StorytellerPacks.cs" />
+    <Compile Include="Storytellers\StorytellerPackWindows\Window_ToryTalkerSettings.cs" />
     <Compile Include="Storytellers\StoryTellerVoteTracker.cs" />
     <Compile Include="Storytellers\VotingIncidentEntry.cs" />
+    <Compile Include="Storytellers\Window_UristBotSettings.cs" />
     <Compile Include="StreamLabs.cs" />
+    <Compile Include="Utilities\CustomMatLoader.cs" />
+    <Compile Include="Utilities\WeatherOverlay_VomitRain.cs" />
     <Compile Include="Votes\Vote_ExoticItems.cs" />
+    <Compile Include="Votes\Vote_HodlBot.cs" />
     <Compile Include="Votes\Vote_MentalBreak.cs" />
+    <Compile Include="Votes\Vote_RaidStrategy.cs" />
+    <Compile Include="Votes\Vote_ToryTalker.cs" />
     <Compile Include="Votes\Vote_VotingIncident.cs" />
     <Compile Include="Votes\VotingIncident.cs" />
     <Compile Include="VotingHelpers\VotingHelpers_Animals.cs" />
@@ -199,6 +223,15 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <Content Include="Defs\Misc\GameConditions.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Defs\Misc\IncidentWorkers.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Textures\Weather\VomitRainWorldOverlay.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <None Include="About\About.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <SubType>Designer</SubType>
@@ -209,9 +242,13 @@
     <None Include="Defs\Misc\MainButtonDefs\TwitchToolkit.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Defs\StorytellerDefs\TwitchToolkit.xml">
+    <Content Include="Defs\Misc\Weather.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
+    </Content>
+    <Content Include="Defs\StorytellerDefs\TwitchToolkit.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -299,8 +336,11 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <Content Include="Defs\StoreIncidents\StoreIncidents.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Defs\StorytellerDefs\StorytellerPacks.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Defs\VotingIncidents\ToryTalker.xml">
       <SubType>Designer</SubType>

@@ -8,8 +8,10 @@ using System.Text;
 using TwitchToolkit.Incidents;
 using TwitchToolkit.IRC;
 using TwitchToolkit.Store;
+using TwitchToolkit.Storytellers.StorytellerPackWindows;
 using TwitchToolkit.Utilities;
 using TwitchToolkitDev;
+using UnityEngine;
 using Verse;
 
 namespace TwitchToolkit
@@ -34,7 +36,16 @@ namespace TwitchToolkit
             HarmonyMethod savePostfix = new HarmonyMethod(typeof(HarmonyPatches).GetMethod("SaveGame_Postfix"));
 
             harmony.Patch(saveMethod, null, savePostfix, null);
-            harmony.Patch(original: AccessTools.Method(type: typeof(LetterMaker), name: "MakeLetter", parameters: new[] { typeof(string), typeof(string), typeof(LetterDef)}), prefix: new HarmonyMethod(type: patchType, name: nameof(AddLastPlayerMessagePrefix)));
+            harmony.Patch(original: AccessTools.Method(type: typeof(LetterMaker), name: "MakeLetter", parameters: new[] { typeof(string), typeof(string), typeof(LetterDef) }), prefix: new HarmonyMethod(type: patchType, name: nameof(AddLastPlayerMessagePrefix)));
+
+            harmony.Patch(
+                original: AccessTools.Method(
+                        type: typeof(StorytellerUI),
+                        name: "DrawStorytellerSelectionInterface"
+                    ),
+                    postfix: new HarmonyMethod(type: patchType, name: nameof(DrawCustomStorytellerInterface)
+                )
+            );
         }
 
         public static void SaveGame_Postfix()
@@ -51,6 +62,21 @@ namespace TwitchToolkit
                 text += msg;
                 Helper.playerMessages.RemoveAt(0);
             }
+        }
+
+        public static void DrawCustomStorytellerInterface(Rect rect, ref StorytellerDef chosenStoryteller, ref DifficultyDef difficulty, Listing_Standard infoListing)
+        {
+            if (chosenStoryteller.defName != "StorytellerPacks") return;
+
+            Rect storytellerPacksButton = new Rect(140f, rect.height - 50f, 190f, 38f);
+
+            if (Widgets.ButtonText(storytellerPacksButton, "Storyteller Packs"))
+            {
+                Window_StorytellerPacks window = new Window_StorytellerPacks();
+                Find.WindowStack.TryRemove(window.GetType());
+                Find.WindowStack.Add(window);
+            }
+
         }
     }
 

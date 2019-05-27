@@ -18,16 +18,15 @@ namespace TwitchToolkit.IRC
 
         public override void ParseCommand(IRCMessage msg)
         {
+            Viewer viewer = Viewers.GetViewer(msg.User);
+
             foreach (KeyValuePair<string, string> pair in msg.Parameters)
             {
-                //Log.Warning($"{pair.Key} : {pair.Value}");
-
-                return;
-
+                //Log.Warning(pair.Key + " : " + pair.Value);
                 switch (pair.Key)
                 {
                     case "color":
-                        if (pair.Value == null) return;
+                        if (pair.Value == null) break;
                         string colorCode = "";
                         if (pair.Value.Length > 6)
                         {
@@ -49,19 +48,32 @@ namespace TwitchToolkit.IRC
 
                         break;
                     case "mod":
-                        if (pair.Value == null) return;
+                        if (viewer.mod || pair.Value == null) break;
                         bool modValue = int.TryParse(pair.Value, out int modStatus);
                         if (modValue && modStatus == 1)
                         {
-                            Viewers.GetViewer(msg.User).mod = true;
+                            viewer.mod = true;
                         }
                         break;
                     case "subscriber":
-                        if (pair.Value == null) return;
+                        if (pair.Value == null) break;
                         bool subValue = int.TryParse(pair.Value, out int subStatus);
                         if (subValue && subStatus == 1)
                         {
-                            Viewers.GetViewer(msg.User).subscriber = true;
+                            viewer.subscriber = true;
+                        }
+                        break;
+
+                    case "badges":
+                        if (pair.Value == null) break;
+                        IEnumerable<string> badges = pair.Value.Split(',');
+                        foreach (string badge in badges)
+                        {
+                            if (badge == "vip/1")
+                            {
+                                viewer.vip = true;
+                                break;
+                            }
                         }
                         break;
                 }

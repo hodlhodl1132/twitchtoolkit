@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using TwitchToolkit.Incidents;
 using TwitchToolkit.Settings;
 using TwitchToolkit.Store;
 using TwitchToolkit.Votes;
@@ -21,6 +22,8 @@ namespace TwitchToolkit
 
         #region TwitchChatRooms
         public static bool UseSeparateChatRoom = false;
+        public static bool AllowBothChatRooms = false;
+        public static bool WhispersGoToChatRoom = true;
         public static string ChannelID = "";
         public static string ChatroomUUID = "";
         #endregion
@@ -61,7 +64,6 @@ namespace TwitchToolkit
         public static bool WhisperCmdsOnly = false; 
         public static bool PurchaseConfirmations = true;
         public static bool RepeatViewerNames = false;
-        public static bool ViewerNamedColonistQueue = false;
         public static bool MinifiableBuildings = false; //
         #endregion
 
@@ -95,6 +97,7 @@ namespace TwitchToolkit
         public static bool KarmaReqsForGifting = false;
         public static int MinimumKarmaToRecieveGifts = 33;
         public static int MinimumKarmaToSendGifts = 100;
+        public static int KarmaMinimum = 10;
         #endregion
 
         #region KarmaBonusValues
@@ -150,8 +153,22 @@ namespace TwitchToolkit
         #endregion
 
         #region ViewerSettings
+        public static bool EnableViewerQueue = true;
+        public static bool ViewerNamedColonistQueue = true;
         public static bool ChargeViewersForQueue = false;
         public static int CostToJoinQueue = 0;
+
+        public static int SubscriberExtraCoins = 10;
+        public static float SubscriberCoinMultiplier = 1.25f;
+        public static int SubscriberExtraVotes = 1;
+
+        public static int VIPExtraCoins = 5;
+        public static float VIPCoinMultiplier = 1.15f;
+        public static int VIPExtraVotes = 0;
+
+        public static int ModExtraCoins = 3;
+        public static float ModCoinMultiplier = 1.05f;
+        public static int ModExtraVotes = 0;
         #endregion
 
         #region VoteSettings
@@ -159,15 +176,25 @@ namespace TwitchToolkit
         #endregion
 
         #region Storyteller
-        public static float AverageEventDays = 1;
-        public static float ToryTalkerMTBDays = 2;
+
+        #region Hodlbot
+        public static bool HodlBotEnabled = true;
         public static float HodlBotMTBDays = 1;
-        public static bool UseToryTalkerWithHodlBot = true;
+
+        public static Dictionary<string, float> VoteTypeWeights = new Dictionary<string, float>();
+        public static Dictionary<string, float> VoteCategoryWeights = new Dictionary<string, float>();
         #endregion
 
-        #region CustomSettings
-        public static Dictionary<string, string> CustomSettingsStrings = new Dictionary<string, string>();
-        public static Dictionary<string, float> CustomSettingsFloats = new Dictionary<string, float>();
+        #region Torytalker
+        public static bool ToryTalkerEnabled = false;
+        public static float ToryTalkerMTBDays = 2;
+        #endregion
+
+        #region UristBot
+        public static bool UristBotEnabled = false;
+        public static float UristBotMTBDays = 6;
+        #endregion
+
         #endregion
 
         private static Vector2 scrollVector2;
@@ -188,7 +215,7 @@ namespace TwitchToolkit
             options.GapLine();
             options.Gap();
 
-            options.ColumnWidth = rect.width / 3;
+            options.ColumnWidth = (rect.width / 3) - 20f;
 
             // Left column
             if (options.ButtonText("TwitchToolkitChat".Translate()))
@@ -202,6 +229,11 @@ namespace TwitchToolkit
 
             if (options.ButtonText("Patches"))
                 currentTab = SettingsTab.Patches;
+
+            options.Gap();
+
+            if (options.ButtonText("Wiki"))
+                Application.OpenURL("https://github.com/hodldeeznuts/twitchtoolkit/wiki");
 
             // Middle column
             options.NewColumn();
@@ -223,16 +255,16 @@ namespace TwitchToolkit
             options.NewColumn();
             options.Gap(53f);
 
-            if (options.ButtonText("TwitchToolkitOptions".Translate()))
+            if (options.ButtonText(""))
                 currentTab = SettingsTab.Options;
 
             if (options.ButtonText("TwitchToolkitViewers".Translate()))
                 currentTab = SettingsTab.Viewers;
             
-            if (options.ButtonText("TwitchToolkitIntegrations".Translate()))
+            if (options.ButtonText(""))
                 currentTab = SettingsTab.Integrations;
 
-            if (options.ButtonText("Votes"))
+            if (options.ButtonText(""))
                 currentTab = SettingsTab.Votes;
 
             options.End();
@@ -252,11 +284,12 @@ namespace TwitchToolkit
             scrollViewer.height -= 145f;
             scrollViewer.yMax -= 145f;
             
-            Rect viewRect = new Rect(0, 0, rect.width - 100f, 430f);
-            viewRect.width -= 25f;
+            Rect viewRect = new Rect(0, 0, rect.width - 125f, 430f);
 
+            if (currentTab == SettingsTab.Chat) viewRect.height += 150f;
+            if (currentTab == SettingsTab.Storyteller) viewRect.height += 400f;
             if (currentTab == SettingsTab.Karma) viewRect.height += 250f;
-            if (currentTab == SettingsTab.Votes) viewRect.height = (DefDatabase<VotingIncident>.AllDefs.Count() * 30f) + 35f;
+            if (currentTab == SettingsTab.Viewers) viewRect.height += 80f;
             
             Listing_Standard optionsListing = new Listing_Standard();
 
@@ -286,18 +319,18 @@ namespace TwitchToolkit
                 case SettingsTab.Cooldowns:
                     Settings_Cooldowns.DoWindowContents(viewRect, optionsListing);
                     break;
-                case SettingsTab.Options:
-                    Settings_Options.DoWindowContents(viewRect, optionsListing);
-                    break;
+                //case SettingsTab.Options:
+                //    Settings_Options.DoWindowContents(viewRect, optionsListing);
+                //    break;
                 case SettingsTab.Viewers:
                     Settings_Viewers.DoWindowContents(viewRect, optionsListing);
                     break;
-                case SettingsTab.Integrations:
-                    Settings_Integrations.DoWindowContents(viewRect, optionsListing);
-                    break;
-                case SettingsTab.Votes:
-                    Settings_VoteWeights.DoWindowContents(viewRect, optionsListing);
-                    break;
+                //case SettingsTab.Integrations:
+                //    Settings_Integrations.DoWindowContents(viewRect, optionsListing);
+                //    break;
+                //case SettingsTab.Votes:
+                //    Settings_VoteWeights.DoWindowContents(viewRect, optionsListing);
+                //    break;
                 default:
                     Settings_Chat.DoWindowContents(viewRect, optionsListing);
                     break;
@@ -315,6 +348,8 @@ namespace TwitchToolkit
             Scribe_Values.Look(ref AutoConnect, "AutoConnect", true);
 
             Scribe_Values.Look(ref UseSeparateChatRoom, "UseSeparateChatRoom", false);
+            Scribe_Values.Look(ref AllowBothChatRooms, "AllowBothChatRooms", false);
+            Scribe_Values.Look(ref WhispersGoToChatRoom, "WhispersGoToChatRoom", true);
             Scribe_Values.Look(ref ChannelID, "ChannelID", "");
             Scribe_Values.Look(ref ChatroomUUID, "ChatroomUUID", "");
 
@@ -343,7 +378,6 @@ namespace TwitchToolkit
             Scribe_Values.Look(ref WhisperCmdsOnly, "WhisperCmdsOnly", false);
             Scribe_Values.Look(ref PurchaseConfirmations, "PurchaseConfirmations", true);
             Scribe_Values.Look(ref RepeatViewerNames, "RepeatViewerNames", false);
-            Scribe_Values.Look(ref ViewerNamedColonistQueue, "ViewerNamedColonistQueue", false);
             Scribe_Values.Look(ref MinifiableBuildings, "MinifiableBuildings", false);
 
             Scribe_Values.Look(ref SyncStreamElements, "SyncStreamElements", false);
@@ -369,6 +403,7 @@ namespace TwitchToolkit
             Scribe_Values.Look(ref KarmaReqsForGifting, "KarmaReqsForGifting", false);
             Scribe_Values.Look(ref MinimumKarmaToRecieveGifts, "MinimumKarmaToRecieveGifts", 33);
             Scribe_Values.Look(ref MinimumKarmaToSendGifts, "MinimumKarmaToSendGifts", 100);
+            Scribe_Values.Look(ref KarmaMinimum, "KarmaMinimum", 10);
 
             Scribe_Values.Look(ref TierOneGoodBonus, "TierOneGoodBonus", 16, true);
             Scribe_Values.Look(ref TierOneNeutralBonus, "TierOneNeutralBonus", 36, true);
@@ -412,18 +447,44 @@ namespace TwitchToolkit
             Scribe_Collections.Look(ref ViewerModerators, "ViewerModerators", LookMode.Value, LookMode.Value);
             Scribe_Collections.Look(ref BannedViewers, "BannedViewers", LookMode.Value);
 
+            Scribe_Values.Look(ref EnableViewerQueue, "EnableViewerQueue", true);
+            Scribe_Values.Look(ref ViewerNamedColonistQueue, "ViewerNamedColonistQueue", true);
             Scribe_Values.Look(ref ChargeViewersForQueue, "ChargeViewersForQueue", false);
             Scribe_Values.Look(ref CostToJoinQueue, "CostToJoinQueue", 0);
 
+            Scribe_Values.Look(ref SubscriberExtraCoins, "SubscriberExtraCoins", 10);
+            Scribe_Values.Look(ref SubscriberCoinMultiplier, "SubscriberCoinMultiplier", 1.25f);
+            Scribe_Values.Look(ref SubscriberExtraVotes, "SubscriberExtraVotes", 1);
+
+            Scribe_Values.Look(ref VIPExtraCoins, "VIPExtraCoins", 5);
+            Scribe_Values.Look(ref VIPCoinMultiplier, "VIPCoinMultiplier", 1.15f);
+            Scribe_Values.Look(ref VIPExtraVotes, "VIPExtraVotes", 0);
+
+            Scribe_Values.Look(ref ModExtraCoins, "ModExtraCoins", 3);
+            Scribe_Values.Look(ref ModCoinMultiplier, "ModCoinMultiplier", 1.15f);
+            Scribe_Values.Look(ref ModExtraVotes, "ModExtraVotes", 0);
+
             Scribe_Collections.Look(ref VoteWeights, "VoteWeights", LookMode.Value, LookMode.Value);
 
-            Scribe_Values.Look(ref AverageEventDays, "AverageEventDays", 1);
+            Scribe_Values.Look(ref ToryTalkerEnabled, "ToryTalkerEnabled", false);
             Scribe_Values.Look(ref ToryTalkerMTBDays, "ToryTalkerMTBDays", 2);
-            Scribe_Values.Look(ref HodlBotMTBDays, "HodlBotMTBDays", 1);
-            Scribe_Values.Look(ref UseToryTalkerWithHodlBot, "UseToryTalkerWithHodlBot", true);
 
-            Scribe_Collections.Look(ref CustomSettingsStrings, "CustomSettingsStrings", LookMode.Value, LookMode.Value);
-            Scribe_Collections.Look(ref CustomSettingsFloats, "CustomSettingsFloats", LookMode.Value, LookMode.Value);
+            Scribe_Values.Look(ref HodlBotEnabled, "HodlBotEnabled", true);
+            Scribe_Values.Look(ref HodlBotMTBDays, "HodlBotMTBDays", 1);
+
+            Scribe_Collections.Look(ref VoteTypeWeights, "VoteTypeWeights", LookMode.Value, LookMode.Value);
+            Scribe_Collections.Look(ref VoteCategoryWeights, "VoteCategoryWeights", LookMode.Value, LookMode.Value);
+
+            Scribe_Values.Look(ref UristBotEnabled, "UristBotEnabled", false);
+            Scribe_Values.Look(ref UristBotMTBDays, "UristBotMTBDays", 6);
+
+            List<StoreIncidentVariables> variableIncidents = DefDatabase<StoreIncidentVariables>.AllDefs.Where(s => s.customSettings).ToList();
+            
+            foreach (StoreIncidentVariables incident in variableIncidents)
+            {
+                incident.RegisterCustomSettings();
+                incident.settings.ExposeData();
+            }
 
             if (Toolkit.client == null && OAuth != "") Toolkit.client = new IRC.ToolkitIRC();
 

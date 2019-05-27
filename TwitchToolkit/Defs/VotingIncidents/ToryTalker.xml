@@ -350,7 +350,7 @@
     <storyteller>ToryTalker</storyteller>
     <eventType>Neutral</eventType>
     <eventCategory>Weather</eventCategory>
-    <votingHelper>TwitchToolkit.VotingHelpers.VotingHelpers_Weather.SnowGentle</votingHelper>
+    <votingHelper>TwitchToolkit.VotingHelpers.VotingHelpers_Weather.Fog</votingHelper>
   </TwitchToolkit.Votes.VotingIncident>
 
   <TwitchToolkit.Votes.VotingIncident>

@@ -148,9 +148,15 @@ namespace TwitchToolkit
                     }
                 }
             }
+
             if (newkarma < 1 && ToolkitSettings.BanViewersWhoPurchaseAlwaysBad)
             {
                 newkarma = 1;
+            }
+            
+            if (newkarma < ToolkitSettings.KarmaMinimum)
+            {
+                newkarma = ToolkitSettings.KarmaMinimum;
             }
 
             maxkarma = Convert.ToInt32(Math.Round(newkarma)) > ToolkitSettings.KarmaCap ? ToolkitSettings.KarmaCap : Convert.ToInt32(Math.Round(newkarma));

@@ -37,7 +37,6 @@ namespace TwitchToolkit.IRC
 
         public void Parse(byte[] buffer, int length, OnMessage callback)
         {
-            Store_Logger.LogString("parsing string");
             Decoder decoder = Helper.LanguageEncoding().GetDecoder();
             char[] chars;
 

@@ -17,7 +17,7 @@ namespace TwitchToolkit.Store
 
         public override void ParseCommand(IRCMessage msg)
         {
-            if (msg.Message.StartsWith("!lookup") && Commands.AllowCommand(msg.Channel))
+            if (msg.Message.StartsWith("!lookup") && Commands.AllowCommand(msg))
             {
 
                 string[] command = msg.Message.Split(' ');
@@ -45,34 +45,34 @@ namespace TwitchToolkit.Store
                     searchQuery = "";
                 }
 
-                FindLookup(searchObject, searchQuery);
+                FindLookup(msg, searchObject, searchQuery);
             }
 
             Store_Logger.LogString("Finished lookup parse");
         }
 
-        public void FindLookup(string searchObject, string searchQuery)
+        public void FindLookup(IRCMessage msg, string searchObject, string searchQuery)
         {
             List<string> results = new List<string>();
             switch(searchObject)
             {
                 case "disease":
-                    FindLookup("diseases", searchQuery);
+                    FindLookup(msg, "diseases", searchQuery);
                     break;
                 case "skill":
-                    FindLookup("skills", searchQuery);
+                    FindLookup(msg, "skills", searchQuery);
                     break;
                 case "event":
-                    FindLookup("events", searchQuery);
+                    FindLookup(msg, "events", searchQuery);
                     break;
                 case "item":
-                    FindLookup("items", searchQuery);
+                    FindLookup(msg, "items", searchQuery);
                     break;
                 case "animal":
-                    FindLookup("animals", searchQuery);
+                    FindLookup(msg, "animals", searchQuery);
                     break;
                 case "trait":
-                    FindLookup("traits", searchQuery);
+                    FindLookup(msg, "traits", searchQuery);
                     break;
                 case "diseases":
                     IncidentDef[] allDiseases = DefDatabase<IncidentDef>.AllDefs.Where(s => 
@@ -83,7 +83,7 @@ namespace TwitchToolkit.Store
 
                     foreach (IncidentDef disease in allDiseases)
                         results.Add(string.Join("", disease.LabelCap.Split(' ')).ToLower());
-                    SendTenResults(searchObject.CapitalizeFirst(), searchQuery, results.ToArray());
+                    SendTenResults(msg, searchObject.CapitalizeFirst(), searchQuery, results.ToArray());
                     break;
                 case "skills":
                     SkillDef[] allSkills = DefDatabase<SkillDef>.AllDefs.Where(s => 
@@ -93,7 +93,7 @@ namespace TwitchToolkit.Store
 
                     foreach (SkillDef skill in allSkills)
                         results.Add(skill.defName.ToLower());
-                    SendTenResults(searchObject.CapitalizeFirst(), searchQuery, results.ToArray());
+                    SendTenResults(msg, searchObject.CapitalizeFirst(), searchQuery, results.ToArray());
                     break;
                 case "events":
                     StoreIncident[] allEvents = DefDatabase<StoreIncident>.AllDefs.Where(s => 
@@ -106,7 +106,7 @@ namespace TwitchToolkit.Store
 
                     foreach (StoreIncident evt in allEvents)
                         results.Add(string.Join("", evt.abbreviation.Split(' ')).ToLower());
-                    SendTenResults(searchObject.CapitalizeFirst(), searchQuery, results.ToArray());
+                    SendTenResults(msg, searchObject.CapitalizeFirst(), searchQuery, results.ToArray());
                     break;
                 case "items":
                     Item[] allItems = StoreInventory.items.Where(s => 
@@ -119,7 +119,7 @@ namespace TwitchToolkit.Store
 
                     foreach (Item item in allItems)
                         results.Add(string.Join("", item.abr.Split(' ')).ToLower());
-                    SendTenResults(searchObject.CapitalizeFirst(), searchQuery, results.ToArray());
+                    SendTenResults(msg, searchObject.CapitalizeFirst(), searchQuery, results.ToArray());
                     break;
                 case "animals":
                     PawnKindDef[] allAnimals = DefDatabase<PawnKindDef>.AllDefs.Where(s =>
@@ -132,7 +132,7 @@ namespace TwitchToolkit.Store
 
                     foreach (PawnKindDef animal in allAnimals)
                         results.Add(animal.defName.ToLower());
-                    SendTenResults(searchObject.CapitalizeFirst(), searchQuery, results.ToArray());
+                    SendTenResults(msg, searchObject.CapitalizeFirst(), searchQuery, results.ToArray());
                     break;
                 case "traits":
                     BuyableTrait[] allTrait = AllTraits.buyableTraits.Where(s =>
@@ -144,12 +144,12 @@ namespace TwitchToolkit.Store
 
                     foreach (BuyableTrait trait in allTrait)
                         results.Add(trait.label);
-                    SendTenResults(searchObject.CapitalizeFirst(), searchQuery, results.ToArray());
+                    SendTenResults(msg, searchObject.CapitalizeFirst(), searchQuery, results.ToArray());
                     break;
             }
         }
 
-        public void SendTenResults(string searchObject, string searchQuery, string[] results)
+        public void SendTenResults(IRCMessage msg, string searchObject, string searchQuery, string[] results)
         {
             if (results.Count() < 1) return;
 
@@ -162,7 +162,7 @@ namespace TwitchToolkit.Store
                     output += ", ";
             }
 
-            Toolkit.client.SendMessage(output, true);
+            Toolkit.client.SendMessage(output, Commands.SendToChatroom(msg));
         }
     }
 }

@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+  <TwitchToolkit.Storytellers.StorytellerPack>
+    <defName>ToryTalker</defName>
+    <label>tory talker</label>
+    <enabled>false</enabled>
+    <minDaysBetweenEvents>2</minDaysBetweenEvents>
+    <storytellerCompPropertiesType>TwitchToolkit.Storytellers.StorytellerCompProperties_ToryTalker</storytellerCompPropertiesType>
+  </TwitchToolkit.Storytellers.StorytellerPack>1
+
+  <TwitchToolkit.Storytellers.StorytellerPack>
+    <defName>HodlBot</defName>
+    <label>hodl bot</label>
+    <enabled>true</enabled>
+    <minDaysBetweenEvents>5</minDaysBetweenEvents>
+    <storytellerCompPropertiesType>TwitchToolkit.Storytellers.StorytellerCompProperties_HodlBot</storytellerCompPropertiesType>
+  </TwitchToolkit.Storytellers.StorytellerPack>
+
+  <TwitchToolkit.Storytellers.StorytellerPack>
+    <defName>UristBot</defName>
+    <label>urist bot</label>
+    <enabled>false</enabled>
+    <minDaysBetweenEvents>6</minDaysBetweenEvents>
+    <storytellerCompPropertiesType>TwitchToolkit.Storytellers.StorytellerCompProperties_UristBot</storytellerCompPropertiesType>
+  </TwitchToolkit.Storytellers.StorytellerPack>
+</Defs>

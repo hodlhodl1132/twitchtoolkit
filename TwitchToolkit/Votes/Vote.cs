@@ -41,12 +41,46 @@ namespace TwitchToolkit.Votes
         public void CountVotes()
         {
             foreach (int key in optionsKeys) voteCounts[key] = 0;
-            foreach (KeyValuePair<int, int> vote in viewerVotes) voteCounts[vote.Value] += 1;
+            foreach (KeyValuePair<int, int> viewerVote in viewerVotes)
+            {
+                Viewer viewerById = Viewers.GetViewerById(viewerVote.Key);
+
+                int voteCount = 1;
+
+                if (viewerById.IsSub)
+                {
+                    voteCount += ToolkitSettings.SubscriberExtraVotes;
+                }
+                else if (viewerById.IsVIP)
+                {
+                    voteCount += ToolkitSettings.VIPExtraVotes;
+                }
+                else if (viewerById.mod)
+                {
+                    voteCount += ToolkitSettings.ModExtraVotes;
+                }
+
+                voteCounts[viewerVote.Value] += voteCount;
+            }
         }
 
         public int DecideWinner()
         {
-            return voteCounts.Aggregate((k, i) => k.Value > i.Value ? k : k.Value == i.Value ? (Verse.Rand.Range(0, 1) == 0 ? k : i) : i).Key;
+            int highestCount = voteCounts.Aggregate((k, i) => i.Value > k.Value ? i : k).Value;
+
+            List<KeyValuePair<int, int>> winners = new List<KeyValuePair<int, int>>();
+
+            foreach (KeyValuePair<int, int> vote in voteCounts)
+            {
+                if (vote.Value == highestCount)
+                {
+                    winners.Add(vote);
+                }
+            }
+
+            winners.Shuffle();
+
+            return winners[0].Key;
         }
 
         public abstract void StartVote();

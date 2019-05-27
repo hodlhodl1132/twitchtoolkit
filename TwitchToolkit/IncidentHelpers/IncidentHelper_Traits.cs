@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using TwitchToolkit.IncidentHelpers.IncidentHelper_Settings;
 using TwitchToolkit.PawnQueue;
 using TwitchToolkit.Settings;
 using TwitchToolkit.Store;
@@ -181,7 +182,7 @@ namespace TwitchToolkit.IncidentHelpers.Traits
 
             pawn = gameComponent.PawnAssignedToUser(viewer.username);
 
-            float customMaxTraits = CustomSettings.LookupFloatSetting("Toolkit.AddTrait.MaxTraits") > 0 ? CustomSettings.LookupFloatSetting("Toolkit.AddTrait.MaxTraits") : 4;
+            float customMaxTraits = AddTraitSettings.maxTraits > 0 ? AddTraitSettings.maxTraits : 4;
 
             if (pawn.story.traits.allTraits != null && pawn.story.traits.allTraits.Count >= customMaxTraits)
             {

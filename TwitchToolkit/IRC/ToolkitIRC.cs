@@ -5,6 +5,7 @@ using System.Text;
 using TwitchToolkit.Store;
 using TwitchToolkit.Utilities;
 using TwitchToolkit.Votes;
+using Verse;
 
 namespace TwitchToolkit.IRC
 {
@@ -18,6 +19,8 @@ namespace TwitchToolkit.IRC
 
         public void Connect()
         {
+            StripUsernameAndChannel();
+
             client = new IRCClient(_ircHost, _ircPort, ToolkitSettings.Username, ToolkitSettings.OAuth, ToolkitSettings.Channel.ToLower());
             client.OnPrivMsg += OnPrivMsg;
             client.Connect();
@@ -25,6 +28,7 @@ namespace TwitchToolkit.IRC
 
         public void Disconnect()
         {
+            Log.Warning("Disconnecting client");
             if (client != null)
                 client.Disconnect();
         }
@@ -79,8 +83,18 @@ namespace TwitchToolkit.IRC
                 client.SendMessage(message, v);
         }
 
+        private void StripUsernameAndChannel()
+        {
+            ToolkitSettings.Channel = ToolkitSettings.Channel.Replace("https://www.twitch.tv/", "");
+            ToolkitSettings.Channel = ToolkitSettings.Channel.Replace("www.twitch.tv/", "");
+            ToolkitSettings.Channel = ToolkitSettings.Channel.Replace("twitch.tv/", "");
+
+            ToolkitSettings.Username =  ToolkitSettings.Username.Replace("https://www.twitch.tv/", "");
+            ToolkitSettings.Username = ToolkitSettings.Username.Replace("www.twitch.tv/", "");
+            ToolkitSettings.Username = ToolkitSettings.Username.Replace("twitch.tv/", "");
+        }
+
         public ChatWindow activeChatWindow = null;
-        bool _voteActive = false;
         public IRCClient client = null;
 
         static string _ircHost = "irc.twitch.tv";

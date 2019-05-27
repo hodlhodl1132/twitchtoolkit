@@ -56,12 +56,12 @@ namespace TwitchToolkit.Windows
                 if (ascending)
                 {
                     ascending = false;
-                    cachedTradeables = cachedTradeables.OrderBy(s => s.FirstThingCategory.LabelCap).ToList();
+                    cachedTradeables = cachedTradeables.OrderBy(s => s.FirstThingCategory != null ? s.FirstThingCategory.LabelCap : "Animal").ToList();
                 }
                 else
                 {
                     ascending = true;
-                    cachedTradeables = cachedTradeables.OrderByDescending(s => s.FirstThingCategory.LabelCap).ToList();
+                    cachedTradeables = cachedTradeables.OrderByDescending(s => s.FirstThingCategory != null ? s.FirstThingCategory.LabelCap : "Animal").ToList();
                 }
                 
                 GetTradeablesPrices();
@@ -197,7 +197,7 @@ namespace TwitchToolkit.Windows
             }
 
             Rect categoryLabel = new Rect(num - 300, 0f, 200f, rect.height);
-            Widgets.Label(categoryLabel, thing.FirstThingCategory.LabelCap);
+            Widgets.Label(categoryLabel, thing.FirstThingCategory != null ? thing.FirstThingCategory.LabelCap : "Animal");
 
             Rect rect3 = new Rect(0f, 0f, 27f, 27f);
             Widgets.ThingIcon(rect3, thing);
@@ -246,7 +246,7 @@ namespace TwitchToolkit.Windows
             {
                 Store_ItemEditor.UpdateStoreItems(cachedTradeables, tradeablesPrices);
             }
-            
+
             lastSearch = searchQuery;
 
             cachedTradeables = new List<ThingDef>();
@@ -256,7 +256,7 @@ namespace TwitchToolkit.Windows
             IEnumerable<ThingDef> tradeableitems = from t in DefDatabase<ThingDef>.AllDefs
                     where (t.tradeability.TraderCanSell() || ThingSetMakerUtility.CanGenerate(t) ) &&
                     (t.building == null || t.Minifiable || ToolkitSettings.MinifiableBuildings) &&
-                    (t.FirstThingCategory != null) &&
+                    (t.FirstThingCategory != null || t.race != null) &&
                     (t.BaseMarketValue > 0) &&
                     (searchQuery == "" || 
                         (
@@ -265,9 +265,19 @@ namespace TwitchToolkit.Windows
                             t.defName.ToLower() == searchShort ||
                             string.Join("", t.label.Split(' ')).ToLower() == searchShort ||
                             (
-                                t.FirstThingCategory == null ||
-                                string.Join("", t.FirstThingCategory.LabelCap.Split(' ')).ToLower().Contains(searchShort) ||
-                                t.FirstThingCategory.LabelCap.ToLower() == searchShort 
+                                (t.race != null &&
+                                t.race.Animal &&
+                                    (t.race.ToString().ToLower().Contains(searchQuery) ||
+                                    t.race.ToString().ToLower() == searchQuery ||
+                                    "animal".Contains(searchQuery) ||
+                                    searchQuery == "animal")
+                                )
+                                ||
+                                (t.race == null &&
+                                    (t.FirstThingCategory == null ||
+                                    string.Join("", t.FirstThingCategory.LabelCap.Split(' ')).ToLower().Contains(searchShort) ||
+                                    t.FirstThingCategory.LabelCap.ToLower() == searchShort)
+                                )
                             )
                         )
                     )
@@ -276,8 +286,7 @@ namespace TwitchToolkit.Windows
 
             foreach(ThingDef item in tradeableitems)
             {
-                // item needs to be worth money, also not an animal
-                if (item.BaseMarketValue > 0f && item.race == null)
+                if (item.BaseMarketValue > 0f)
                 {
                     cachedTradeables.Add(item);
                 }

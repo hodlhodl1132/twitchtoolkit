@@ -11,6 +11,11 @@ namespace TwitchToolkit.Windows
 {
     public class StoreIncidentsWindow : Window
     {
+        public StoreIncidentsWindow()
+        {
+            Store_IncidentEditor.UpdatePriceSheet();
+        }
+
         public override void DoWindowContents(Rect inRect)
         {
             if (searchQuery != lastSearch)
@@ -120,6 +125,13 @@ namespace TwitchToolkit.Windows
                              where s.label.ToLower().Contains(searchQuery.ToLower()) ||
                                 s.abbreviation.ToLower().Contains(searchQuery.ToLower())
                              select s).ToList();
+        }
+
+        public override void Close(bool doCloseSound = true)
+        {
+            Store_IncidentEditor.UpdatePriceSheet();
+
+            base.Close(doCloseSound);
         }
 
         private string searchQuery = "";

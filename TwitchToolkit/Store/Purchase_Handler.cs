@@ -13,9 +13,12 @@ namespace TwitchToolkit.Store
     {
         static Purchase_Handler()
         {
-            client = Toolkit.client;
             allStoreIncidentsSimple = DefDatabase<StoreIncidentSimple>.AllDefs.ToList();
             allStoreIncidentsVariables = DefDatabase<StoreIncidentVariables>.AllDefs.ToList();
+
+            Log.Warning("trying to load vars after def database loaded");
+
+            Toolkit.Mod.GetSettings<ToolkitSettings>();
 
             viewerNamesDoingVariableCommands = new List<string>();
         }
@@ -107,7 +110,7 @@ namespace TwitchToolkit.Store
 
             if (!helper.IsPossible())
             {
-                client.SendMessage($"@{viewer.username} " + "TwitchToolkitEventNotPossible".Translate(), separateChannel);
+                Toolkit.client.SendMessage($"@{viewer.username} " + "TwitchToolkitEventNotPossible".Translate(), separateChannel);
                 return;
             }
 
@@ -126,7 +129,7 @@ namespace TwitchToolkit.Store
 
             if (ToolkitSettings.PurchaseConfirmations)
             {
-                client.SendMessage(
+                Toolkit.client.SendMessage(
                     Helper.ReplacePlaceholder(
                         "TwitchToolkitEventPurchaseConfirm".Translate(), 
                         first: incident.label.CapitalizeFirst(), 
@@ -181,7 +184,7 @@ namespace TwitchToolkit.Store
         {
             if (viewerNamesDoingVariableCommands.Contains(username))
             {
-                client.SendMessage($"@{username} you must wait for the game to unpause to buy something else.", separateChannel);
+                Toolkit.client.SendMessage($"@{username} you must wait for the game to unpause to buy something else.", separateChannel);
                 return true;
             }
             return false;
@@ -191,7 +194,7 @@ namespace TwitchToolkit.Store
         {
             if (!ToolkitSettings.UnlimitedCoins && viewer.GetViewerCoins() < finalPrice)
             {
-                client.SendMessage(
+                Toolkit.client.SendMessage(
                     Helper.ReplacePlaceholder(
                         "TwitchToolkitNotEnoughCoins".Translate(),
                         viewer: viewer.username,
@@ -212,7 +215,7 @@ namespace TwitchToolkit.Store
                 if (maxed)
                 {
                     Log.Message("KarmaType " + karmaType + " event cap has been reached");
-                    client.SendMessage($"@{username} " + "TwitchToolkitMaxEvents".Translate(), separateChannel);
+                    Toolkit.client.SendMessage($"@{username} " + "TwitchToolkitMaxEvents".Translate(), separateChannel);
                 }
 
                 return maxed;
@@ -257,7 +260,7 @@ namespace TwitchToolkit.Store
             if (maxed)
             {
                 Log.Message("StoreIncident max per day reached for " + incident.label);
-                client.SendMessage($"@{username} " + "TwitchToolkitEventOnCooldown".Translate(), separateChannel);
+                Toolkit.client.SendMessage($"@{username} " + "TwitchToolkitEventOnCooldown".Translate(), separateChannel);
             }
 
             return maxed;
@@ -287,7 +290,6 @@ namespace TwitchToolkit.Store
             Helper.playerMessages.Add(output);
         }
 
-        static ToolkitIRC client;
         public static List<StoreIncidentSimple> allStoreIncidentsSimple;
         public static List<StoreIncidentVariables> allStoreIncidentsVariables;
 

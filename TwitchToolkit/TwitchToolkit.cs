@@ -17,7 +17,6 @@ namespace TwitchToolkit
     {
         public TwitchToolkit(ModContentPack content) : base(content)
         {
-            GetSettings<ToolkitSettings>();
             Toolkit.Mod = this;
             if (ticker == null) RegisterTicker();
         }

@@ -11,9 +11,10 @@ namespace TwitchToolkit.Votes
     public class VoteIncidentDef : Vote
     {
 
-        public VoteIncidentDef(Dictionary<int, IncidentDef> incidents, StorytellerComp source, IncidentParms parms = null) : base(new List<int>(incidents.Keys))
+        public VoteIncidentDef(Dictionary<int, IncidentDef> incidents, StorytellerComp source, IncidentParms parms = null, string title = null) : base(new List<int>(incidents.Keys))
         {
             this.parms = parms;
+            this.title = title;
             try
             {
                 this.incidents = incidents;
@@ -36,7 +37,7 @@ namespace TwitchToolkit.Votes
 
             if (ToolkitSettings.VotingChatMsgs)
             {
-                Toolkit.client.SendMessage("TwitchStoriesChatMessageNewVote".Translate() + ": " + "TwitchToolKitVoteInstructions".Translate());
+                Toolkit.client.SendMessage(title ?? "TwitchStoriesChatMessageNewVote".Translate() + ": " + "TwitchToolKitVoteInstructions".Translate());
                 foreach (KeyValuePair<int, IncidentDef> pair in incidents)
                 {
                     Toolkit.client.SendMessage($"[{pair.Key + 1}]  {VoteKeyLabel(pair.Key)}");
@@ -60,5 +61,6 @@ namespace TwitchToolkit.Votes
         public Dictionary<int, IncidentDef> incidents = null;
         public StorytellerComp source = null;
         public IncidentParms parms = null;
+        public string title = null;
     }
 }

@@ -124,7 +124,6 @@ namespace TwitchToolkit.IRC
             {
                 if (_socket == null)
                 {
-                    Log.Warning("Socket is null");
                     return false;
                 }
 
@@ -137,25 +136,36 @@ namespace TwitchToolkit.IRC
             if (!Connected) { return; }
 
             _ircMessages.Clear();
+
             _ping = false;
             _socketReady = false;
 
-            if (_socket != null)
+            if (_socket != null && _socket.Connected)
             {
-                _socket.Disconnect(false);
+                try
+                {
+                    _socket.Close();
+                }
+                catch (Exception e)
+                {
+                    Log.Error(e.Message);
+                }
             }
         }
 
         public void Reconnect()
         {
-
             Disconnect();
-            Connect();
+            Toolkit.client.Connect();
         }
 
         void ConnectCallback(IAsyncResult asyncResult)
         {
-            _socket.EndConnect(asyncResult);
+            if (_socket != null)
+            {
+                _socket.EndConnect(asyncResult);
+            }
+            
             if (_socket == null || _socket.Connected == false)
             {
                 Connect();
@@ -174,7 +184,6 @@ namespace TwitchToolkit.IRC
         {
             try
             {
-                Store_Logger.LogString("Reading buffer");
                 _sslStream.BeginRead(_buffer, 0, _buffer.Length, new AsyncCallback(ReadCallback), null);
             }
             catch (Exception)
@@ -185,7 +194,6 @@ namespace TwitchToolkit.IRC
 
         void ReadCallback(IAsyncResult asyncResult)
         {
-            Store_Logger.LogString("Reading callback");
             var read = _sslStream.EndRead(asyncResult);
             _parser.Parse(_buffer, read, OnCommand);
             Read();
