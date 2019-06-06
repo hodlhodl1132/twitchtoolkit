@@ -31,21 +31,36 @@ namespace TwitchToolkit
 
             HarmonyInstance harmony = HarmonyInstance.Create("com.github.harmony.rimworld.mod.twitchtoolkit");
 
-            MethodInfo saveMethod = AccessTools.Method(typeof(Verse.GameDataSaveLoader), "SaveGame");
+            harmony.Patch(
+                    original: AccessTools.Method(
+                            type: typeof(GameDataSaveLoader),
+                            name: "SaveGame"),
+                    postfix: new HarmonyMethod(typeof(HarmonyPatches).GetMethod("SaveGame_Postfix"))
+                );
 
-            HarmonyMethod savePostfix = new HarmonyMethod(typeof(HarmonyPatches).GetMethod("SaveGame_Postfix"));
-
-            harmony.Patch(saveMethod, null, savePostfix, null);
-            harmony.Patch(original: AccessTools.Method(type: typeof(LetterMaker), name: "MakeLetter", parameters: new[] { typeof(string), typeof(string), typeof(LetterDef) }), prefix: new HarmonyMethod(type: patchType, name: nameof(AddLastPlayerMessagePrefix)));
+            harmony.Patch(
+                    original: AccessTools.Method(
+                        type: typeof(LetterMaker), 
+                        name: "MakeLetter", 
+                        parameters: new[] { typeof(string), typeof(string), typeof(LetterDef) }), 
+                    prefix: new HarmonyMethod(type: patchType, name: nameof(AddLastPlayerMessagePrefix))
+                );
 
             harmony.Patch(
                 original: AccessTools.Method(
                         type: typeof(StorytellerUI),
-                        name: "DrawStorytellerSelectionInterface"
-                    ),
+                        name: "DrawStorytellerSelectionInterface"),
                     postfix: new HarmonyMethod(type: patchType, name: nameof(DrawCustomStorytellerInterface)
                 )
             );
+
+            harmony.Patch(
+                    original: AccessTools.Method(
+                        type: typeof(GameDataSaveLoader),
+                        name: "LoadGame",
+                        parameters: new[] { typeof(string) }),
+                    postfix: new HarmonyMethod(type: patchType, name: nameof(NewTwitchConnection))
+                );
         }
 
         public static void SaveGame_Postfix()
@@ -76,7 +91,19 @@ namespace TwitchToolkit
                 Find.WindowStack.TryRemove(window.GetType());
                 Find.WindowStack.Add(window);
             }
+        }
 
+        static void NewTwitchConnection()
+        {
+            if (Toolkit.client != null)
+            {
+                Toolkit.client.Disconnect();
+            }
+
+            Log.Message("<color=#6441A4>== TWITCH TOOLKIT ==</color> Creating new chat client connection");
+
+            if (ToolkitSettings.AutoConnect)
+                ToolkitIRC.NewInstance();
         }
     }
 

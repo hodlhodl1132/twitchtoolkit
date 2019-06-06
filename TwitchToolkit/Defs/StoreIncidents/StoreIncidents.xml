@@ -1,5 +1,26 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Defs>
+  <!-- Hazards -->
+  <TwitchToolkit.Incidents.StoreIncidentSimple>
+    <defName>Tornado</defName>
+    <label>tornado</label>
+    <abbreviation>tornado</abbreviation>
+    <cost>800</cost>
+    <eventCap>1</eventCap>
+    <incidentHelper>TwitchToolkit.IncidentHelpers.Hazards.Tornado</incidentHelper>
+    <karmaType>Bad</karmaType>
+  </TwitchToolkit.Incidents.StoreIncidentSimple>
+
+  <TwitchToolkit.Incidents.StoreIncidentSimple>
+    <defName>Tornados</defName>
+    <label>tornados</label>
+    <abbreviation>tornados</abbreviation>
+    <cost>2600</cost>
+    <eventCap>1</eventCap>
+    <incidentHelper>TwitchToolkit.IncidentHelpers.Hazards.Tornados</incidentHelper>
+    <karmaType>Bad</karmaType>
+  </TwitchToolkit.Incidents.StoreIncidentSimple>
+  
   <!-- Weather -->
   <TwitchToolkit.Incidents.StoreIncidentSimple>
     <defName>ClearWeather</defName>
@@ -570,6 +591,20 @@
     <minPointsToFire>1500</minPointsToFire>
     <maxWager>10000</maxWager>
     <syntax>!buy manhunterpack 1500</syntax>
+    <variables>1</variables>
+  </TwitchToolkit.Incidents.StoreIncidentVariables>
+
+  <TwitchToolkit.Incidents.StoreIncidentVariables>
+    <defName>Predators</defName>
+    <label>predators</label>
+    <abbreviation>predators</abbreviation>
+    <cost>2500</cost>
+    <eventCap>1</eventCap>
+    <incidentHelper>TwitchToolkit.IncidentHelpers.Raids.Predators</incidentHelper>
+    <karmaType>Bad</karmaType>
+    <minPointsToFire>2500</minPointsToFire>
+    <maxWager>10000</maxWager>
+    <syntax>!buy predators 2500</syntax>
     <variables>1</variables>
   </TwitchToolkit.Incidents.StoreIncidentVariables>
 

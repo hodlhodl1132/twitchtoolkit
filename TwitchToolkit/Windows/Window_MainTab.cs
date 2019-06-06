@@ -33,7 +33,7 @@ namespace TwitchToolkit
         {
             get
             {
-                return new Vector2(560f, 386f);
+                return new Vector2(560f, 370f);
             }
         }
 
@@ -91,18 +91,23 @@ namespace TwitchToolkit
             }
 
             rectBtn.x += btnWidth + padding;
-            if (Toolkit.client != null)
+            if (Toolkit.client != null && Toolkit.client.Connected)
             {
-                if (Toolkit.client.client != null && Toolkit.client.client.Connected)
+                if (Widgets.ButtonText(rectBtn, "TwitchToolkitReconnect".Translate()))
                 {
-                    if (Widgets.ButtonText(rectBtn, "TwitchToolkitReconnect".Translate()))
-                    {
-                        Toolkit.client.Reconnect();
-                        Helper.playerMessages = new List<string>();
-                        Purchase_Handler.viewerNamesDoingVariableCommands = new List<string>();
-                    }
+                    Toolkit.client.Reconnect();
+                    Helper.playerMessages = new List<string>();
+                    Purchase_Handler.viewerNamesDoingVariableCommands = new List<string>();
                 }
             }
+            else
+            {
+                if (Widgets.ButtonText(rectBtn, "TwitchToolkitConnect".Translate()))
+                {
+                    ToolkitIRC.NewInstance();
+                }
+            }
+
 
             rectBtn.x = padding;
             rectBtn.y += padding + 28f;
@@ -134,12 +139,20 @@ namespace TwitchToolkit
             }
 
             //rectBtn.x += btnWidth + padding;
+            //if (Widgets.ButtonText(rectBtn, "Socket"))
+            //{
+            //    Window_SocketClient window = new Window_SocketClient();
+            //    Find.WindowStack.TryRemove(window.GetType());
+            //    Find.WindowStack.Add(window);
+            //}
+
+            //rectBtn.x += btnWidth + padding;
             //if (Widgets.ButtonText(rectBtn, "Badges"))
             //{
             //    TwitchBadges.GetBadgeInfo();
             //}
 
-            var rectMessages = new Rect(padding, rectBtn.height + 36f, inRect.width - (padding * 2), 180f);
+            var rectMessages = new Rect(padding, rectBtn.height + 36f, inRect.width - (padding * 3), 180f);
             if (Toolkit.client != null) Widgets.TextArea(rectMessages, string.Join("\r\n", Toolkit.client.MessageLog), true);
 
             btnWidth = inRect.width - (padding / 2);
@@ -148,9 +161,6 @@ namespace TwitchToolkit
 
             rectBtn.y += btnHeight + padding;
             Widgets.CheckboxLabeled(rectBtn, "TwitchToolkitEarningCoins".Translate(), ref ToolkitSettings.EarningCoins);
-
-            rectBtn.y += btnHeight + padding;
-            Widgets.CheckboxLabeled(rectBtn, "Auto Reconnect", ref reconnecter.autoReconnect);
         }
 
         private Reconnecter reconnecter = null;

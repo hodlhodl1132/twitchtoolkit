@@ -200,7 +200,7 @@ namespace TwitchToolkit.VotingHelpers.VotingHelpers_Animals
                 animalCount = 2.0f;
             }
 
-            worker = new IncidentWorker_SpecificAnimalsWanderIn("TwitchStoriesLetterLabelPredators", PawnKindDef.Named(animals[0]), false, (int)animalCount, true);
+            worker = new IncidentWorker_SpecificAnimalsWanderIn("TwitchStoriesLetterLabelPredators", PawnKindDef.Named(animals[0]), false, (int)animalCount, true, true);
             worker.def = IncidentDef.Named("HerdMigration");
 
             parms = StorytellerUtility.DefaultParmsNow(IncidentCategoryDefOf.ThreatBig, target);

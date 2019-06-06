@@ -122,10 +122,7 @@ namespace TwitchToolkit.IncidentHelpers.Raids
                 viewer.TakeViewerCoins(pointsWager);
                 viewer.CalculateNewKarma(this.storeIncident.karmaType, pointsWager);
                 VariablesHelpers.SendPurchaseMessage(
-                    Helper.ReplacePlaceholder("TranslationKey".Translate(), 
-                    amount: pointsWager.ToString(), 
-                    first: Convert.ToInt32(parms.points).ToString(), 
-                    viewer: viewer.username), 
+                    $"Starting drop raid with {pointsWager} points wagered and {(int)parms.points} raid points purchased by {viewer.username}", 
                 separateChannel);
                 return;
             }
@@ -361,22 +358,18 @@ namespace TwitchToolkit.IncidentHelpers.Raids
                 return false;
             }
 
-            Log.Warning("found target");
-
             parms = StorytellerUtility.DefaultParmsNow(IncidentCategoryDefOf.ThreatBig, target);
             parms.points = IncidentHelper_PointsHelper.RollProportionalGamePoints(storeIncident, pointsWager, StorytellerUtility.DefaultThreatPointsNow(target));
             parms.forced = true;
 
-            Log.Warning("genned parms");
-
             worker = new IncidentWorker_Infestation();
             worker.def = IncidentDef.Named("Infestation");
 
-            bool canFire = worker.CanFireNow(parms);
+            bool canFire = worker.CanFireNow(parms, true);
 
             if (!canFire)
             {
-                Toolkit.client.SendMessage($"@{viewer.username} Found no place for infestation to occur.", separateChannel);
+                Toolkit.client.SendMessage($"@{viewer.username} no suitable location for infestation to occur.", separateChannel);
             }
 
             return canFire;
@@ -384,7 +377,6 @@ namespace TwitchToolkit.IncidentHelpers.Raids
 
         public override void TryExecute()
         {
-            Log.Warning("trying execution");
             if (worker.TryExecute(parms))
             {
                 viewer.TakeViewerCoins(pointsWager);
@@ -450,6 +442,88 @@ namespace TwitchToolkit.IncidentHelpers.Raids
                 viewer.TakeViewerCoins(pointsWager);
                 viewer.CalculateNewKarma(this.storeIncident.karmaType, pointsWager);
                 VariablesHelpers.SendPurchaseMessage($"Starting manhunterpack with {pointsWager} points wagered and {(int)parms.points} raid points purchased by {viewer.username}", separateChannel);
+                return;
+            }
+            Toolkit.client.SendMessage($"@{viewer.username} could not generate parms for manhunter pack.", separateChannel);
+        }
+
+        public int pointsWager = 0;
+        public IIncidentTarget target = null;
+        public IncidentWorker worker = null;
+        public IncidentParms parms = null;
+        private bool separateChannel = false;
+
+        public override Viewer viewer { get; set; }
+    }
+
+    public class Predators : IncidentHelperVariables
+    {
+        public override bool IsPossible(string message, Viewer viewer, bool separateChannel = false)
+        {
+            this.separateChannel = separateChannel;
+            this.viewer = viewer;
+            string[] command = message.Split(' ');
+            if (command.Length < 3)
+            {
+                VariablesHelpers.ViewerDidWrongSyntax(viewer.username, storeIncident.syntax, separateChannel);
+                return false;
+            }
+
+            if (!VariablesHelpers.PointsWagerIsValid(
+                    command[2],
+                    viewer,
+                    ref pointsWager,
+                    ref storeIncident,
+                    separateChannel
+                ))
+            {
+                return false;
+            }
+
+            target = Current.Game.AnyPlayerHomeMap;
+            if (target == null)
+            {
+                return false;
+            }
+
+            parms = StorytellerUtility.DefaultParmsNow(IncidentCategoryDefOf.RaidBeacon, target);
+            parms.points = IncidentHelper_PointsHelper.RollProportionalGamePoints(storeIncident, pointsWager, parms.points);
+
+            List<string> animals = new List<string>()
+            { "Bear_Grizzly", "Bear_Polar", "Rhinoceros", "Elephant", "Megasloth", "Thrumbo" };
+
+            animals.Shuffle();
+
+            ThingDef def = ThingDef.Named(animals[0]);
+            float averagePower = 0;
+            if (def != null && def.race != null)
+            {
+                foreach (Tool t in def.tools)
+                {
+                    averagePower += t.power;
+                }
+                averagePower = averagePower / def.tools.Count;
+            }
+
+            float animalCount = 2.5f;
+            if (averagePower > 18)
+            {
+                animalCount = 2.0f;
+            }
+
+            worker = new IncidentWorker_SpecificAnimalsWanderIn("TwitchStoriesLetterLabelPredators", PawnKindDef.Named(animals[0]), false, (int)animalCount, true, true);
+            worker.def = IncidentDef.Named("HerdMigration");
+
+            return worker.CanFireNow(parms);
+        }
+
+        public override void TryExecute()
+        {
+            if (worker.TryExecute(parms))
+            {
+                viewer.TakeViewerCoins(pointsWager);
+                viewer.CalculateNewKarma(this.storeIncident.karmaType, pointsWager);
+                VariablesHelpers.SendPurchaseMessage($"Starting predator pack with {pointsWager} points wagered and {(int)parms.points} raid points purchased by {viewer.username}", separateChannel);
                 return;
             }
             Toolkit.client.SendMessage($"@{viewer.username} could not generate parms for manhunter pack.", separateChannel);

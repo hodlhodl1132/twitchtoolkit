@@ -122,7 +122,7 @@ namespace TwitchToolkit.Store
                 json.AppendLine("\t\t\"price\": " + allItems[i].price + ",");
                 json.AppendLine("\t\t\"category\": \"" + category + "\",");
                 json.AppendLine("\t\t\"defname\": \"" + allItems[i].defname + "\"");
-                json.AppendLine("\t}" + (i != allItems.Count - 1 ? "," : ""));
+                json.AppendLine("\t}" + (i != finalCount - 1 ? "," : ""));
             }
 
             json.AppendLine("\t],");

@@ -69,50 +69,13 @@ namespace TwitchToolkit.VotingHelpers.VotingHelpers_Hazards
         }
     }
 
-    public class Tornado : VotingHelper
+    public class Tornado : IncidentHelpers.Hazards.Tornado
     {
-        public override bool IsPossible()
-        {
-            if (target is Map map)
-            {
-                map = target as Map;
-                return true;
-            }
 
-            return false;
-        }
-
-        public override void TryExecute()
-        {
-            for (int i = 0; i < 1; i++)
-            {
-                IntVec3 loc;
-                if (!Helper.GetRandomVec3(ThingDefOf.Tornado, map, out loc, 30))
-                {
-                    return;
-                }
-                ThingDef tornado = ThingDef.Named("Tornado");
-                GenSpawn.Spawn(tornado, loc, map);
-            }
-        }
-
-        public Map map;
     }
 
-    public class Tornados : Tornado
+    public class Tornados : IncidentHelpers.Hazards.Tornados
     {
-        public override void TryExecute()
-        {
-            for (int i = 0; i < 5; i++)
-            {
-                IntVec3 loc;
-                if (!Helper.GetRandomVec3(ThingDefOf.Tornado, map, out loc, 30))
-                {
-                    return;
-                }
-                ThingDef tornado = ThingDef.Named("Tornado");
-                GenSpawn.Spawn(tornado, loc, map);
-            }
-        }
+
     }
 }

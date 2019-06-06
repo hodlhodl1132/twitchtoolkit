@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using TwitchToolkit.Utilities;
 using Verse;
 
 namespace TwitchToolkit.IRC
@@ -15,20 +16,31 @@ namespace TwitchToolkit.IRC
 
         public override void GameComponentTick()
         {
-            if (Find.TickManager.TicksGame % 5000 != 0)
+            if (!autoReconnect || Find.TickManager.TicksGame % reconnectTime != 0)
                 return;
 
-            if (Toolkit.client != null && Toolkit.client.client != null)
+            reconnectTime = 2500;
+
+            if (ToolkitSettings.AutoConnect && Toolkit.client == null)
             {
-                if (!Toolkit.client.client.Connected)
-                {
-                    Log.Warning("Disconnect deteced, attempting reconnect");
-                    Toolkit.client = new ToolkitIRC();
-                    Toolkit.client.Connect();
-                }
+                ToolkitIRC.NewInstance();
+            }
+            else if (Toolkit.client != null && !Toolkit.client.Connected)
+            {
+                Log.Warning("Disconnect detected, attempting reconnect");
+                ToolkitIRC.NewInstance();
+            }
+            else if (Ticker.LastIRCPong != 0 && TimeHelper.SecondsElapsed(DateTime.FromFileTime(Ticker.LastIRCPong)) > reconnectInterval )
+            {
+                Log.Warning($"Has been over {reconnectInterval} seconds since last message from server, reconnecting");
+                ToolkitIRC.NewInstance();
             }
         }
 
-        public bool autoReconnect = false;
+        public static bool autoReconnect = true;
+
+        public static int reconnectInterval = 300;
+
+        int reconnectTime = 100;        
     }
 }

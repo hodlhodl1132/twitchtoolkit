@@ -108,14 +108,17 @@ namespace TwitchToolkit.IRC
 
         public void Connect()
         {
-            if (_socket != null && _socket.Connected)
+            if (_socket != null)
             {
-                return;
+                Log.Warning("Can't connect, socket is not empty");
+                Disconnect();
             }
+            Log.Warning("Preparing socket");
             _ping = true;
             _socketReady = false;
             _socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             _socket.BeginConnect(_host, _port, new AsyncCallback(ConnectCallback), null);
+            Log.Warning("finished socket connection");
         }
 
         public bool Connected
@@ -140,11 +143,13 @@ namespace TwitchToolkit.IRC
             _ping = false;
             _socketReady = false;
 
-            if (_socket != null && _socket.Connected)
+            if (_socket != null)
             {
                 try
                 {
+                    Log.Warning("closing socket");
                     _socket.Close();
+                    Log.Warning("socket should be closed");
                 }
                 catch (Exception e)
                 {
@@ -155,8 +160,7 @@ namespace TwitchToolkit.IRC
 
         public void Reconnect()
         {
-            Disconnect();
-            Toolkit.client.Connect();
+            ToolkitIRC.NewInstance();
         }
 
         void ConnectCallback(IAsyncResult asyncResult)
@@ -201,6 +205,8 @@ namespace TwitchToolkit.IRC
 
         void OnCommand(IRCMessage message)
         {
+            Ticker.LastIRCPong = DateTime.Now.ToFileTime();
+
             _ircMessages.Put(message.Cmd + " " + message.Args);
 
             switch (message.Cmd)

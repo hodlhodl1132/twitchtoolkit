@@ -11,11 +11,17 @@ namespace TwitchToolkit.PawnQueue
 {
     class QueueWindow : Window
     {
-        static GameComponentPawns pawnComponent = Current.Game.GetComponent<GameComponentPawns>();
+        GameComponentPawns pawnComponent;
 
         public QueueWindow()
         {
             doCloseButton = true;
+            pawnComponent = Current.Game.GetComponent<GameComponentPawns>();
+            if (pawnComponent == null)
+            {
+                Log.Error("component null");
+                Close();
+            }
             GetPawn(PawnQueueSelector.FirstDefault);
         }
 
@@ -29,7 +35,7 @@ namespace TwitchToolkit.PawnQueue
 
             Rect rightSide = new Rect(130, 60, 300, 26);
             selectedUsername = Widgets.TextEntryLabeled(rightSide, "Username:", selectedUsername);
-            
+
             rightSide.width = 120;
             rightSide.y += 26;
             rightSide.x += 150;
@@ -54,7 +60,7 @@ namespace TwitchToolkit.PawnQueue
             Rect namedStatus = new Rect(0, 236, 300, 26);
             bool viewerNamed = pawnComponent.HasPawnBeenNamed(selectedPawn);
 
-            Widgets.Label(namedStatus, "Name: " + selectedPawn.Name);    
+            Widgets.Label(namedStatus, "Name: " + selectedPawn.Name);
 
             namedStatus.y += 26;
             Widgets.Label(
@@ -65,7 +71,7 @@ namespace TwitchToolkit.PawnQueue
                         "<color=#B2180E>Unnamed</color>"
                     )
                 );
-            
+
             Rect queueButtons = new Rect(0, 300, 200, 26);
 
             Widgets.Label(queueButtons, "Viewers in Queue: " + pawnComponent.ViewersInQueue());
@@ -119,6 +125,7 @@ namespace TwitchToolkit.PawnQueue
                     }
                     break;
                 case PawnQueueSelector.FirstDefault:
+                    Log.Warning("first or default");
                     allColonists = Find.ColonistBar.GetColonistsInOrder();
                     unnamedColonists = GetUnamedColonists();
                     selectedUsername = "";
@@ -138,7 +145,7 @@ namespace TwitchToolkit.PawnQueue
             }
         }
 
-        public static void NextColonist()
+        public void NextColonist()
         {
             List<Pawn> colonistsUnnamed = GetUnamedColonists();
             if (colonistsUnnamed.NullOrEmpty())
@@ -146,13 +153,12 @@ namespace TwitchToolkit.PawnQueue
 
         }
 
-        public static List<Pawn> GetUnamedColonists()
+        public List<Pawn> GetUnamedColonists()
         {
             List<Pawn> allColonists = Find.ColonistBar.GetColonistsInOrder();
             List<Pawn> colonistsUnnamed = new List<Pawn>();
             foreach (Pawn pawn in allColonists)
             {
-                
                 if (!pawnComponent.pawnHistory.ContainsValue(pawn))
                     colonistsUnnamed.Add(pawn);
             }
@@ -204,8 +210,8 @@ namespace TwitchToolkit.PawnQueue
         public string selectedUsername = "";
         public Pawn selectedPawn = null;
         public int pawnIndex = -1;
-        public List<Pawn> allColonists = null;
-        public List<Pawn> unnamedColonists = null;
+        public List<Pawn> allColonists = new List<Pawn>();
+        public List<Pawn> unnamedColonists = new List<Pawn>();
         public override Vector2 InitialSize => new Vector2(500f, 500f);
     }
 

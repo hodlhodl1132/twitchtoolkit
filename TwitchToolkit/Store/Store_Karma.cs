@@ -159,10 +159,7 @@ namespace TwitchToolkit
                 newkarma = ToolkitSettings.KarmaMinimum;
             }
 
-            maxkarma = Convert.ToInt32(Math.Round(newkarma)) > ToolkitSettings.KarmaCap ? ToolkitSettings.KarmaCap : Convert.ToInt32(Math.Round(newkarma));
-
-
-            // if banning veiwers who always purchase bad is off, protect them from 0 karma
+            maxkarma = Convert.ToInt32(Math.Ceiling(newkarma)) > ToolkitSettings.KarmaCap ? ToolkitSettings.KarmaCap : Convert.ToInt32(Math.Ceiling(newkarma));
 
             return maxkarma;
         }

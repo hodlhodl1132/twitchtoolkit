@@ -15,6 +15,8 @@ namespace TwitchToolkit
     {
         public Timer timer = null;
 
+        public static long LastIRCPong = 0;
+
         public static Queue<FiringIncident> FiringIncidents = new Queue<FiringIncident>();
         public static Queue<VoteEvent> VoteEvents = new Queue<VoteEvent>();
         public static Queue<IncidentWorker> Incidents = new Queue<IncidentWorker>();
@@ -46,6 +48,7 @@ namespace TwitchToolkit
             _registerThread = new Thread(Register);
             _registerThread.Start();
             lastEvent = DateTime.Now;
+            LastIRCPong = DateTime.Now.ToFileTime();
         }
 
         void Register()

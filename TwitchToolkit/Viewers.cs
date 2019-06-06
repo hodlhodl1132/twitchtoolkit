@@ -35,7 +35,7 @@ namespace TwitchToolkit
                     else
                     {
                         int baseCoins = ToolkitSettings.CoinAmount;
-                        float baseMultiplier = viewer.GetViewerKarma() / 100;
+                        float baseMultiplier = (float)viewer.GetViewerKarma() / 100f;
 
                         if (viewer.IsSub)
                         {

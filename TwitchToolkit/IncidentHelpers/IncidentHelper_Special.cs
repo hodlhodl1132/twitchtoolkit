@@ -507,7 +507,7 @@ namespace TwitchToolkit.IncidentHelpers.Special
         private void TryExecuteAnimal(ThingDef animal, int count)
         {
             string letter = Helper.ReplacePlaceholder("TwitchStoriesDescription80".Translate(), from: viewer.username, amount: quantity.ToString(), item: item.abr.CapitalizeFirst());
-            IncidentWorker worker = new IncidentWorker_SpecificAnimalsWanderIn("TwitchToolkitCarePackage", PawnKindDef.Named(animal.defName), true, count, false, true);
+            IncidentWorker worker = new IncidentWorker_SpecificAnimalsWanderIn("AnimalsJoin", PawnKindDef.Named(animal.defName), true, count, false, true);
             worker.def = IncidentDef.Named("FarmAnimalsWanderIn");
             worker.TryExecute(StorytellerUtility.DefaultParmsNow(IncidentCategoryDefOf.Misc, Helper.AnyPlayerMap));
 
@@ -557,6 +557,9 @@ namespace TwitchToolkit.IncidentHelpers.Special
         public override void TryExecute()
         {
             worker.TryExecute(parms);
+
+            viewer.TakeViewerCoins(storeIncident.cost);
+            viewer.CalculateNewKarma(storeIncident.karmaType, storeIncident.cost);
         }
 
         private IncidentWorker worker;

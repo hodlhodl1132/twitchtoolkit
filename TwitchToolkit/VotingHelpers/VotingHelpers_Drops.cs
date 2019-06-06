@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using TwitchToolkit.Votes;
 using Verse;
@@ -75,7 +76,13 @@ namespace TwitchToolkit.VotingHelpers.VotingHelpers_Drops
     {
         public override bool IsPossible()
         {
-            worker = new IncidentWorker_ShipChunkDrop();
+            var innterType = typeof(IncidentWorker).Assembly.GetTypes()
+                    .Where(s => s.Name == "IncidentWorker_PoisonShipPartCrash").First();
+
+            var innerObject = Activator.CreateInstance(innterType);
+
+            worker = innerObject as IncidentWorker;
+
             worker.def = IncidentDef.Named("PoisonShipPartCrash");
 
             parms = StorytellerUtility.DefaultParmsNow(IncidentCategoryDefOf.ThreatBig, target);
@@ -96,7 +103,13 @@ namespace TwitchToolkit.VotingHelpers.VotingHelpers_Drops
     {
         public override bool IsPossible()
         {
-            worker = new IncidentWorker_ShipChunkDrop();
+            var innterType = typeof(IncidentWorker).Assembly.GetTypes()
+                .Where(s => s.Name == "IncidentWorker_PsychicEmanatorShipPartCrash").First();
+
+            var innerObject = Activator.CreateInstance(innterType);
+
+            worker = innerObject as IncidentWorker;
+
             worker.def = IncidentDef.Named("PsychicEmanatorShipPartCrash");
 
             parms = StorytellerUtility.DefaultParmsNow(IncidentCategoryDefOf.ThreatBig, target);

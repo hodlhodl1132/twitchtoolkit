@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using TwitchToolkit.Incidents;
+using TwitchToolkit.IRC;
 using TwitchToolkit.Settings;
 using TwitchToolkit.Store;
 using TwitchToolkit.Votes;
@@ -286,7 +287,7 @@ namespace TwitchToolkit
             
             Rect viewRect = new Rect(0, 0, rect.width - 125f, 430f);
 
-            if (currentTab == SettingsTab.Chat) viewRect.height += 150f;
+            if (currentTab == SettingsTab.Chat) viewRect.height += 400f;
             if (currentTab == SettingsTab.Storyteller) viewRect.height += 400f;
             if (currentTab == SettingsTab.Karma) viewRect.height += 250f;
             if (currentTab == SettingsTab.Viewers) viewRect.height += 80f;
@@ -486,11 +487,17 @@ namespace TwitchToolkit
                 incident.settings.ExposeData();
             }
 
-            if (Toolkit.client == null && OAuth != "") Toolkit.client = new IRC.ToolkitIRC();
-
             if (BannedViewers == null || BannedViewers.Count < 1)
             {
                 BannedViewers = new List<string>(PubliclyKnownBots);
+            }
+
+            if (AutoConnect)
+            {
+                if (Toolkit.client == null)
+                {
+                    ToolkitIRC.NewInstance();
+                }
             }
         }
 

@@ -56,11 +56,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Commands.cs" />
-    <Compile Include="GameConditions\GameCondition_VomitRain.cs">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Compile>
+    <Compile Include="GameConditions\GameCondition_VomitRain.cs" />
     <Compile Include="Harmony.cs" />
     <Compile Include="IncidentHelpers\IncidentHelper_Diseases.cs" />
+    <Compile Include="IncidentHelpers\IncidentHelper_Hazards.cs" />
     <Compile Include="IncidentHelpers\IncidentHelper_MilitaryAid.cs" />
     <Compile Include="IncidentHelpers\IncidentHelper_Misc.cs" />
     <Compile Include="IncidentHelpers\IncidentHelper_PointsHelper.cs" />
@@ -87,7 +86,6 @@
     <Compile Include="IRC\NotificationMessage.cs" />
     <Compile Include="IRC\Notifier.cs" />
     <Compile Include="IRC\Reconnecter.cs" />
-    <Compile Include="IRC\Socket.IO.Client.cs" />
     <Compile Include="IRC\ToolkitIRC.cs" />
     <Compile Include="IRC\TwitchBadges.cs" />
     <Compile Include="IRC\TwitchInterfaceBase.cs" />
@@ -116,6 +114,7 @@
     <Compile Include="Settings\Settings_Storyteller.cs" />
     <Compile Include="Settings\Settings_Viewers.cs" />
     <Compile Include="Settings\Settings_VoteWeights.cs" />
+    <Compile Include="SocketClient\Client.cs" />
     <Compile Include="Store\Purchase_Handler.cs" />
     <Compile Include="Store\StoreIncidents.cs" />
     <Compile Include="Store\Store_Component.cs" />
@@ -182,6 +181,7 @@
     </Compile>
     <Compile Include="Windows\Window_Loading.cs" />
     <Compile Include="Windows\Window_NewChat.cs" />
+    <Compile Include="Windows\Window_SocketClient.cs" />
     <Compile Include="Windows\Window_ViewerEditProp.cs" />
     <Compile Include="Windows\Window_Viewers.cs" />
     <Compile Include="Windows\Window_Warning.cs" />
@@ -247,6 +247,7 @@
     </Content>
     <Content Include="Defs\StorytellerDefs\TwitchToolkit.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </Content>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">

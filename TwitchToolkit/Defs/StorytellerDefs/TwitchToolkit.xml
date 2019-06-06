@@ -16,7 +16,7 @@
       <!-- Ally/neutral interaction -->
       <li Class="StorytellerCompProperties_FactionInteraction">
         <incident>RaidFriendly</incident>
-        <baseIncidentsPerYear>10</baseIncidentsPerYear>
+        <baseIncidentsPerYear>2</baseIncidentsPerYear>
         <minSpacingDays>0.4</minSpacingDays>
         <fullAlliesOnly>true</fullAlliesOnly>
         <minDanger>High</minDanger>

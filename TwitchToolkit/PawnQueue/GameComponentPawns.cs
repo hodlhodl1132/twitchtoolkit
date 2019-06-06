@@ -11,7 +11,6 @@ namespace TwitchToolkit.PawnQueue
     {
         public GameComponentPawns(Game game)
         {
-
         }
 
         public override void GameComponentTick()
@@ -32,9 +31,9 @@ namespace TwitchToolkit.PawnQueue
         public void AssignUserToPawn(string username, Pawn pawn)
         {
             pawnHistory.Add(username, pawn);
-            if (viewerNameQueue.Contains(username))
+            if (ViewerNameQueue.Contains(username))
             {
-                viewerNameQueue.Remove(username);
+                ViewerNameQueue.Remove(username);
             }
         }
 
@@ -65,38 +64,38 @@ namespace TwitchToolkit.PawnQueue
 
         public bool UserInViewerQueue(string username)
         {
-            return viewerNameQueue.Contains(username);
+            return ViewerNameQueue.Contains(username);
         }
 
         public void AddViewerToViewerQueue(string username)
         {
             if (!UserInViewerQueue(username))
             {
-                viewerNameQueue.Add(username);
+                ViewerNameQueue.Add(username);
             }
         }
 
         public string GetNextViewerFromQueue()
         {
-            if (viewerNameQueue.Count < 1)
+            if (ViewerNameQueue.Count < 1)
             {
                 return null;
             }
-            return viewerNameQueue[0];
+            return ViewerNameQueue[0];
         }
 
         public string GetRandomViewerFromQueue()
         {
-            if (viewerNameQueue.Count < 1)
+            if (ViewerNameQueue.Count < 1)
             {
                 return null;
             }
-            return viewerNameQueue[Verse.Rand.Range(0, viewerNameQueue.Count - 1)];
+            return ViewerNameQueue[Verse.Rand.Range(0, ViewerNameQueue.Count - 1)];
         }
 
         public int ViewersInQueue()
         {
-            return viewerNameQueue.Count;
+            return ViewerNameQueue.Count;
         }
 
         public override void ExposeData()
@@ -106,8 +105,22 @@ namespace TwitchToolkit.PawnQueue
             Scribe_Collections.Look(ref viewerNameQueue, "viewerNameQueue", LookMode.Value);
         }
 
+        public List<string> ViewerNameQueue
+        {
+            get
+            {
+                if (viewerNameQueue == null)
+                {
+                    viewerNameQueue = new List<string>();
+                }
+
+                return viewerNameQueue;
+            }
+        }
+
         public Dictionary<string, Pawn> pawnHistory = new Dictionary<string, Pawn>();
         public List<string> viewerNameQueue = new List<string>();
+        
         public List<Pawn> listPawns = new List<Pawn>();
         public List<string> pawnNames = new List<string>();
     }

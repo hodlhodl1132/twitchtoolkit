@@ -11,15 +11,55 @@ namespace TwitchToolkit.IRC
 {
     public class ToolkitIRC
     {
-        public ToolkitIRC()
+        static ToolkitIRC instance = null;
+
+        public static ToolkitIRC Instance
         {
-            if (ToolkitSettings.AutoConnect)
-                Connect();
+            get
+            {
+                if (instance == null)
+                {
+                    NewInstance();
+                }
+
+                return instance;
+            }
+
+            private set
+            {
+                instance = value;
+
+                Toolkit.client = instance;
+            }
         }
 
-        public void Connect()
+        public static void NewInstance()
+        {
+            if (!Helper.ModActive || Current.Game == null)
+            {
+                return;
+            }
+
+            if (instance != null)
+            {
+                Log.Warning("Previous instance exists, trying to destroy");
+                instance.Disconnect();
+                instance = null;
+            }
+
+            Instance = new ToolkitIRC();
+        }
+
+        public ToolkitIRC()
+        {
+            Connect();
+        }
+
+        private void Connect()
         {
             StripUsernameAndChannel();
+
+            Log.Warning("creating new connection");
 
             client = new IRCClient(_ircHost, _ircPort, ToolkitSettings.Username, ToolkitSettings.OAuth, ToolkitSettings.Channel.ToLower());
             client.OnPrivMsg += OnPrivMsg;
@@ -28,15 +68,16 @@ namespace TwitchToolkit.IRC
 
         public void Disconnect()
         {
-            Log.Warning("Disconnecting client");
             if (client != null)
+            {
+                Log.Warning("Disconnecting client");
                 client.Disconnect();
+            }     
         }
 
         public void Reconnect()
         {
-            if (client != null)
-                client.Reconnect();
+            client.Reconnect();
         }
 
         void OnPrivMsg(IRCMessage message)
@@ -79,8 +120,27 @@ namespace TwitchToolkit.IRC
         public void SendMessage(string message, bool v = false)
         {
             Helper.Log($"message: {message} bool: {v}");
-            if (client != null)
-                client.SendMessage(message, v);
+            
+            if (client == null)
+            {
+                Log.Error("Client null");
+                return;
+            }
+
+            if (!client.Connected)
+            {
+                Log.Error("Internal client is disconnected");
+            }
+
+            client.SendMessage(message, v);
+        }
+
+        public bool Connected
+        {
+            get
+            {
+                return client.Connected;
+            }
         }
 
         private void StripUsernameAndChannel()
@@ -95,7 +155,7 @@ namespace TwitchToolkit.IRC
         }
 
         public ChatWindow activeChatWindow = null;
-        public IRCClient client = null;
+        private IRCClient client = null;
 
         static string _ircHost = "irc.twitch.tv";
         static short _ircPort = 443;
