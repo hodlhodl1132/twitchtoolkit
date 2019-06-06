@@ -753,4 +753,26 @@
     <karmaType>Good</karmaType>
     <syntax>!buy prisoner</syntax>
   </TwitchToolkit.Incidents.StoreIncidentVariables>
+
+  <TwitchToolkit.Incidents.StoreIncidentVariables>
+    <defName>VisitColony</defName>
+    <label>visit colony</label>
+    <abbreviation>visitcolony</abbreviation>
+    <cost>1000</cost>
+    <eventCap>5</eventCap>
+    <incidentHelper>TwitchToolkit.IncidentHelpers.Special.VisitColony</incidentHelper>
+    <karmaType>Good</karmaType>
+    <syntax>!buy visitcolony</syntax>
+  </TwitchToolkit.Incidents.StoreIncidentVariables>
+
+  <TwitchToolkit.Incidents.StoreIncidentVariables>
+    <defName>BeRescued</defName>
+    <label>be rescued</label>
+    <abbreviation>berescued</abbreviation>
+    <cost>1000</cost>
+    <eventCap>1</eventCap>
+    <incidentHelper>TwitchToolkit.IncidentHelpers.Special.BeRescued</incidentHelper>
+    <karmaType>Good</karmaType>
+    <syntax>!buy berescued</syntax>
+  </TwitchToolkit.Incidents.StoreIncidentVariables>
 </Defs>

@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+  <IncidentDef>
+    <defName>VisitColony</defName>
+    <label>visit colony</label>
+    <category>Misc</category>
+    <targetTags>
+      <li>Map_PlayerHome</li>
+    </targetTags>
+    <workerClass>TwitchToolkit.Incidents.IncidentWorker_VisitColony</workerClass>
+    <baseChance>0</baseChance>
+  </IncidentDef>
+
+  <IncidentDef>
+    <defName>QuestViewerRescue</defName>
+    <label>rescue viewer</label>
+    <category>Misc</category>
+    <targetTags>
+      <li>World</li>
+    </targetTags>
+    <workerClass>TwitchToolkit.Incidents.IncidentWorker_QuestViewerRescue</workerClass>
+    <baseChance>0</baseChance>
+    <letterLabel>Prisoner rescue quest</letterLabel>
+    <letterText>A prisoner being held by {0} has managed to steal a radio and call you!\n\n{PAWN_nameDef} is being held at a camp nearby under armed guard. Rescue {PAWN_objective}, and {PAWN_pronoun} will join your colony. {PAWN_pronoun} is a {1}-year-old {2}. {PAWN_pronoun} says that {3}.</letterText>
+    <letterDef>PositiveEvent</letterDef>
+  </IncidentDef>
+</Defs>

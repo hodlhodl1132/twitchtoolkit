@@ -9,6 +9,11 @@ namespace TwitchToolkit.Incidents
 {
     public class IncidentWorker_PrisonerJoins : IncidentWorker_WandererJoin
     {
+        public IncidentWorker_PrisonerJoins(Viewer viewer)
+        {
+            this.viewer = viewer;
+        }
+
         protected override bool TryExecuteWorker(IncidentParms parms)
         {
             Map map = (Map)parms.target;
@@ -29,6 +34,9 @@ namespace TwitchToolkit.Incidents
             PawnGenerationRequest request = new PawnGenerationRequest(pawnKind, ofAncients, PawnGenerationContext.NonPlayer, -1, true, false, false, false, true, pawnMustBeCapableOfViolence, 20f, false, true, true, false, false, false, false, null, null, null, null, null, fixedGender, null, null);
             List<Pawn> prisoners = new List<Pawn>();
             Pawn pawn = PawnGenerator.GeneratePawn(request);
+            NameTriple oldName = pawn.Name as NameTriple;
+            NameTriple newName = new NameTriple(oldName.First, viewer.username.CapitalizeFirst(), oldName.Last);
+            pawn.Name = newName;
             pawn.guest.SetGuestStatus(Faction.OfPlayer, true);
             prisoners.Add(pawn);
             parms.raidArrivalMode = PawnsArrivalModeDefOf.CenterDrop;
@@ -38,8 +46,8 @@ namespace TwitchToolkit.Incidents
             }
             parms.raidArrivalMode.Worker.Arrive(prisoners, parms);
             //GenSpawn.Spawn(pawn, loc, map, WipeMode.Vanish);
-            string text = "A random prisoner has fallen from the sky. Hurry and catch them before they escape.";
-            string label = "Prisoner";
+            string text = $"A prisoner named {viewer.username.CapitalizeFirst()} has escaped from maximum security space prison. Will you capture or let them go?";
+            string label = "Prisoner: " + viewer.username.CapitalizeFirst();
             PawnRelationUtility.TryAppendRelationsWithColonistsInfo(ref text, ref label, pawn);
             Find.LetterStack.ReceiveLetter(label, text, LetterDefOf.NeutralEvent, pawn, null, null);
             return true;
@@ -49,5 +57,7 @@ namespace TwitchToolkit.Incidents
         {
             return CellFinder.TryFindRandomEdgeCellWith((IntVec3 c) => map.reachability.CanReachColony(c) && !c.Fogged(map), map, CellFinder.EdgeRoadChance_Neutral, out cell);
         }
+
+        private Viewer viewer;
     }
 }

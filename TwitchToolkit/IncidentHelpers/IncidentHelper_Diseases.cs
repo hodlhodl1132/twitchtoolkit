@@ -35,7 +35,7 @@ namespace TwitchToolkit.IncidentHelpers.Diseases
             }
 
             worker = new IncidentWorker_DiseaseHuman();
-            List<IncidentDef> allDiseases = DefDatabase<IncidentDef>.AllDefs.Where(s => s.diseaseIncident != null).ToList();
+            List<IncidentDef> allDiseases = DefDatabase<IncidentDef>.AllDefs.Where(s => s.workerClass == typeof(IncidentWorker_DiseaseHuman)).ToList();
             allDiseases.Shuffle();
             worker.def = allDiseases[0];
 

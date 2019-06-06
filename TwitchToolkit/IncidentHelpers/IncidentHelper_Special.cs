@@ -542,11 +542,11 @@ namespace TwitchToolkit.IncidentHelpers.Special
 
             if (gameComponent.HasUserBeenNamed(viewer.username))
             {
-                Toolkit.client.SendMessage($"@{viewer.username} you are already in the colony.", separateChannel);
+                Toolkit.client.SendMessage($"@{viewer.username} you are in colony and cannot be a prisoner.", separateChannel);
                 return false;
             }
 
-            worker = new IncidentWorker_PrisonerJoins();
+            worker = new IncidentWorker_PrisonerJoins(viewer);
             worker.def = IncidentDefOf.WandererJoin;
 
             parms = StorytellerUtility.DefaultParmsNow(IncidentCategoryDefOf.Misc, Helper.AnyPlayerMap);
@@ -560,9 +560,97 @@ namespace TwitchToolkit.IncidentHelpers.Special
 
             viewer.TakeViewerCoins(storeIncident.cost);
             viewer.CalculateNewKarma(storeIncident.karmaType, storeIncident.cost);
+
+            VariablesHelpers.SendPurchaseMessage($"@{viewer.username} has escaped from maximum security space prison.");
         }
 
-        private IncidentWorker worker;
+        private IncidentWorker_PrisonerJoins worker;
+        private IncidentParms parms;
+
+        private bool separateChannel;
+
+        public override Viewer viewer { get; set; }
+    }
+
+    public class VisitColony : IncidentHelperVariables
+    {
+        public override bool IsPossible(string message, Viewer viewer, bool separateChannel = false)
+        {
+            this.separateChannel = separateChannel;
+            this.viewer = viewer;
+            string[] command = message.Split(' ');
+
+
+            GameComponentPawns gameComponent = Current.Game.GetComponent<GameComponentPawns>();
+
+            if (gameComponent.HasUserBeenNamed(viewer.username))
+            {
+                Toolkit.client.SendMessage($"@{viewer.username} you are in the colony and cannot visit.", separateChannel);
+                return false;
+            }
+
+            worker = new IncidentWorker_VisitColony(viewer);
+            worker.def = IncidentDef.Named("VisitColony");
+
+            parms = StorytellerUtility.DefaultParmsNow(IncidentCategoryDefOf.Misc, Helper.AnyPlayerMap);
+
+            return true;
+        }
+
+        public override void TryExecute()
+        {
+            worker.TryExecute(parms);
+
+            viewer.TakeViewerCoins(storeIncident.cost);
+            viewer.CalculateNewKarma(storeIncident.karmaType, storeIncident.cost);
+
+            VariablesHelpers.SendPurchaseMessage($"@{viewer.username} is visiting the colony.");
+        }
+
+        private IncidentWorker_VisitColony worker;
+        private IncidentParms parms;
+
+        private bool separateChannel;
+
+        public override Viewer viewer { get; set; }
+    }
+
+    public class BeRescued : IncidentHelperVariables
+    {
+        public override bool IsPossible(string message, Viewer viewer, bool separateChannel = false)
+        {
+            this.separateChannel = separateChannel;
+            this.viewer = viewer;
+            string[] command = message.Split(' ');
+
+
+            GameComponentPawns gameComponent = Current.Game.GetComponent<GameComponentPawns>();
+
+            if (gameComponent.HasUserBeenNamed(viewer.username))
+            {
+                Toolkit.client.SendMessage($"@{viewer.username} you are in the colony and not in need of rescuing.", separateChannel);
+                return false;
+            }
+
+            worker = new IncidentWorker_QuestViewerRescue(viewer);
+            worker.def = IncidentDef.Named("QuestViewerRescue");
+
+            parms = StorytellerUtility.DefaultParmsNow(IncidentCategoryDefOf.Misc, Helper.AnyPlayerMap);
+
+            return true;
+        }
+
+        public override void TryExecute()
+        {
+            worker.TryExecute(parms);
+
+            viewer.TakeViewerCoins(storeIncident.cost);
+            viewer.CalculateNewKarma(storeIncident.karmaType, storeIncident.cost);
+
+            VariablesHelpers.SendPurchaseMessage($"@{viewer.username} is being held prisoner at another faction.");
+        }
+
+        private IncidentWorker_QuestViewerRescue worker;
         private IncidentParms parms;
 
         private bool separateChannel;

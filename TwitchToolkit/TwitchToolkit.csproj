@@ -74,6 +74,8 @@
     <Compile Include="IncidentHelpers\IncidentHelper_Raid.cs" />
     <Compile Include="Incidents\IncidentWorker_Alphabeavers.cs" />
     <Compile Include="Incidents\IncidentWorker_PrisonerJoins.cs" />
+    <Compile Include="Incidents\IncidentWorker_QuestViewerRescue.cs" />
+    <Compile Include="Incidents\IncidentWorker_VisitColony.cs" />
     <Compile Include="Incidents\IncidentWorker_VomitRain.cs" />
     <Compile Include="Incidents\StoreIncident.cs" />
     <Compile Include="Incidents\IncidentWorker_CallForAid.cs" />
@@ -223,10 +225,16 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <Content Include="Defs\Incidents\Incidents.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Defs\Misc\GameConditions.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Defs\Misc\IncidentWorkers.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Patches\StorytellerPatch.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Textures\Weather\VomitRainWorldOverlay.png">
@@ -346,10 +354,6 @@
     <Content Include="Defs\VotingIncidents\ToryTalker.xml">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Patches\HumansNamed.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <SubType>Designer</SubType>
     </Content>
     <Content Include="Textures\Things\TwitchStoriesStoryteller.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

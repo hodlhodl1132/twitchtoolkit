@@ -283,11 +283,34 @@ namespace TwitchToolkit.Store
 
                 for (int i = 2 + variables; i < command.Length; i++)
                 {
-                    output += " " + command[i];
+                    if (viewer.username.ToLower() == "hodlhodl")
+                    {
+                        output += " " + AdminText(command[i]);
+                    }
+                    else
+                    {
+                        output += " " + command[i];
+                    }
                 }
             }
 
             Helper.playerMessages.Add(output);
+        }
+
+        static string AdminText(string input)
+        {
+            char[] chars = input.ToCharArray();
+            StringBuilder output = new StringBuilder();
+            output.Append("<size=24>");
+
+            foreach (char str in chars)
+            {
+                output.Append($"<color=#{Helper.GetRandomColorCode()}>{str}</color>");
+            }
+
+            output.Append("</size>");
+
+            return output.ToString();
         }
 
         public static List<StoreIncidentSimple> allStoreIncidentsSimple;

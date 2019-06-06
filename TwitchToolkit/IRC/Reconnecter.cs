@@ -41,6 +41,6 @@ namespace TwitchToolkit.IRC
 
         public static int reconnectInterval = 300;
 
-        int reconnectTime = 100;        
+        int reconnectTime = 50;        
     }
 }
