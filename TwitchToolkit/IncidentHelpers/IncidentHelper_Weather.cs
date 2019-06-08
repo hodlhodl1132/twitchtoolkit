@@ -362,6 +362,39 @@ namespace TwitchToolkit.IncidentHelpers.Weather
             foreach (Map map in allMaps)
             {
                 parms.target = map;
+                parms.forced = true;
+                if (worker.CanFireNow(parms))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public override void TryExecute()
+        {
+            worker.TryExecute(parms);
+        }
+
+        private IncidentParms parms = null;
+        private IncidentWorker worker = null;
+    }
+
+    public class ShortCircuit : IncidentHelper
+    {
+        public override bool IsPossible()
+        {
+            worker = new RimWorld.IncidentWorker_ShortCircuit();
+            worker.def = IncidentDef.Named("ShortCircuit");
+
+            parms = new IncidentParms();
+
+            List<Map> allMaps = Current.Game.Maps;
+            allMaps.Shuffle();
+            foreach (Map map in allMaps)
+            {
+                parms.target = map;
+                parms.forced = true;
                 if (worker.CanFireNow(parms))
                 {
                     return true;

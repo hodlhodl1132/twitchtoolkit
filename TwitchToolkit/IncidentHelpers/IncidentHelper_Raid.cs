@@ -14,7 +14,7 @@ namespace TwitchToolkit.IncidentHelpers.Raids
         public override bool IsPossible(string message, Viewer viewer, bool separateChannel = false)
         {
             this.separateChannel = separateChannel;
-            this.viewer = viewer;
+            this.Viewer = viewer;
             string[] command = message.Split(' ');
             if (command.Length < 3)
             {
@@ -54,12 +54,12 @@ namespace TwitchToolkit.IncidentHelpers.Raids
         {
             if (worker.TryExecute(parms))
             {
-                viewer.TakeViewerCoins(pointsWager);
-                viewer.CalculateNewKarma(this.storeIncident.karmaType, pointsWager);
-                VariablesHelpers.SendPurchaseMessage($"Starting raid with {pointsWager} points wagered and {(int)parms.points} raid points purchased by {viewer.username}", separateChannel);
+                Viewer.TakeViewerCoins(pointsWager);
+                Viewer.CalculateNewKarma(this.storeIncident.karmaType, pointsWager);
+                VariablesHelpers.SendPurchaseMessage($"Starting raid with {pointsWager} points wagered and {(int)parms.points} raid points purchased by {Viewer.username}", separateChannel);
                 return;
             }
-            Toolkit.client.SendMessage($"@{viewer.username} could not generate parms for raid.", separateChannel);
+            Toolkit.client.SendMessage($"@{Viewer.username} could not generate parms for raid.", separateChannel);
         }
 
         public int pointsWager = 0;
@@ -68,7 +68,7 @@ namespace TwitchToolkit.IncidentHelpers.Raids
         public IncidentParms parms = null;
         private bool separateChannel = false;
 
-        public override Viewer viewer { get; set; }
+        public override Viewer Viewer { get; set; }
     }
 
     public class DropRaid : IncidentHelperVariables
@@ -76,7 +76,7 @@ namespace TwitchToolkit.IncidentHelpers.Raids
         public override bool IsPossible(string message, Viewer viewer, bool separateChannel = false)
         {
             this.separateChannel = separateChannel;
-            this.viewer = viewer;
+            this.Viewer = viewer;
             string[] command = message.Split(' ');
             if (command.Length < 3)
             {
@@ -119,15 +119,15 @@ namespace TwitchToolkit.IncidentHelpers.Raids
         {
             if (worker.TryExecute(parms))
             {
-                viewer.TakeViewerCoins(pointsWager);
-                viewer.CalculateNewKarma(this.storeIncident.karmaType, pointsWager);
+                Viewer.TakeViewerCoins(pointsWager);
+                Viewer.CalculateNewKarma(this.storeIncident.karmaType, pointsWager);
                 VariablesHelpers.SendPurchaseMessage(
-                    $"Starting drop raid with {pointsWager} points wagered and {(int)parms.points} raid points purchased by {viewer.username}", 
+                    $"Starting drop raid with {pointsWager} points wagered and {(int)parms.points} raid points purchased by {Viewer.username}", 
                 separateChannel);
                 return;
             }
 
-            Toolkit.client.SendMessage($"@{viewer.username} could not generate parms for drop raid.", separateChannel);
+            Toolkit.client.SendMessage($"@{Viewer.username} could not generate parms for drop raid.", separateChannel);
         }
 
         public int pointsWager = 0;
@@ -136,7 +136,7 @@ namespace TwitchToolkit.IncidentHelpers.Raids
         public IncidentParms parms = null;
         private bool separateChannel = false;
 
-        public override Viewer viewer { get; set; }
+        public override Viewer Viewer { get; set; }
     }
 
     public class SapperRaid : IncidentHelperVariables
@@ -144,7 +144,7 @@ namespace TwitchToolkit.IncidentHelpers.Raids
         public override bool IsPossible(string message, Viewer viewer, bool separateChannel = false)
         {
             this.separateChannel = separateChannel;
-            this.viewer = viewer;
+            this.Viewer = viewer;
             string[] command = message.Split(' ');
             if (command.Length < 3)
             {
@@ -185,12 +185,12 @@ namespace TwitchToolkit.IncidentHelpers.Raids
         {
             if (worker.TryExecute(parms))
             {
-                viewer.TakeViewerCoins(pointsWager);
-                viewer.CalculateNewKarma(this.storeIncident.karmaType, pointsWager);
-                VariablesHelpers.SendPurchaseMessage($"Starting sapper raid with {pointsWager} points wagered and {(int)parms.points} raid points purchased by {viewer.username}", separateChannel);
+                Viewer.TakeViewerCoins(pointsWager);
+                Viewer.CalculateNewKarma(this.storeIncident.karmaType, pointsWager);
+                VariablesHelpers.SendPurchaseMessage($"Starting sapper raid with {pointsWager} points wagered and {(int)parms.points} raid points purchased by {Viewer.username}", separateChannel);
                 return;
             }
-            Toolkit.client.SendMessage($"@{viewer.username} could not generate parms for sapper raid.", separateChannel);
+            Toolkit.client.SendMessage($"@{Viewer.username} could not generate parms for sapper raid.", separateChannel);
         }
 
         public int pointsWager = 0;
@@ -199,7 +199,7 @@ namespace TwitchToolkit.IncidentHelpers.Raids
         public IncidentParms parms = null;
         private bool separateChannel = false;
 
-        public override Viewer viewer { get; set; }
+        public override Viewer Viewer { get; set; }
     }
 
     public class SiegeRaid : IncidentHelperVariables
@@ -207,7 +207,7 @@ namespace TwitchToolkit.IncidentHelpers.Raids
         public override bool IsPossible(string message, Viewer viewer, bool separateChannel = false)
         {
             this.separateChannel = separateChannel;
-            this.viewer = viewer;
+            this.Viewer = viewer;
             string[] command = message.Split(' ');
             if (command.Length < 3)
             {
@@ -248,12 +248,12 @@ namespace TwitchToolkit.IncidentHelpers.Raids
         {
             if (worker.TryExecute(parms))
             {
-                viewer.TakeViewerCoins(pointsWager);
-                viewer.CalculateNewKarma(this.storeIncident.karmaType, pointsWager);
-                VariablesHelpers.SendPurchaseMessage($"Starting siege raid with {pointsWager} points wagered and {(int)parms.points} raid points purchased by {viewer.username}", separateChannel);
+                Viewer.TakeViewerCoins(pointsWager);
+                Viewer.CalculateNewKarma(this.storeIncident.karmaType, pointsWager);
+                VariablesHelpers.SendPurchaseMessage($"Starting siege raid with {pointsWager} points wagered and {(int)parms.points} raid points purchased by {Viewer.username}", separateChannel);
                 return;
             }
-            Toolkit.client.SendMessage($"@{viewer.username} could not generate parms for siege raid.", separateChannel);
+            Toolkit.client.SendMessage($"@{Viewer.username} could not generate parms for siege raid.", separateChannel);
         }
 
         public int pointsWager = 0;
@@ -262,7 +262,7 @@ namespace TwitchToolkit.IncidentHelpers.Raids
         public IncidentParms parms = null;
         private bool separateChannel = false;
 
-        public override Viewer viewer { get; set; }
+        public override Viewer Viewer { get; set; }
     }
 
     public class MechanoidRaid : IncidentHelperVariables
@@ -270,7 +270,7 @@ namespace TwitchToolkit.IncidentHelpers.Raids
         public override bool IsPossible(string message, Viewer viewer, bool separateChannel = false)
         {
             this.separateChannel = separateChannel;
-            this.viewer = viewer;
+            this.Viewer = viewer;
             string[] command = message.Split(' ');
             if (command.Length < 3)
             {
@@ -311,12 +311,12 @@ namespace TwitchToolkit.IncidentHelpers.Raids
         {
             if (worker.TryExecute(parms))
             {
-                viewer.TakeViewerCoins(pointsWager);
-                viewer.CalculateNewKarma(this.storeIncident.karmaType, pointsWager);
-                VariablesHelpers.SendPurchaseMessage($"Starting mechanoid raid with {pointsWager} points wagered and {(int)parms.points} raid points purchased by {viewer.username}", separateChannel);
+                Viewer.TakeViewerCoins(pointsWager);
+                Viewer.CalculateNewKarma(this.storeIncident.karmaType, pointsWager);
+                VariablesHelpers.SendPurchaseMessage($"Starting mechanoid raid with {pointsWager} points wagered and {(int)parms.points} raid points purchased by {Viewer.username}", separateChannel);
                 return;
             }
-            Toolkit.client.SendMessage($"@{viewer.username} could not generate parms for mechanoid raid.", separateChannel);
+            Toolkit.client.SendMessage($"@{Viewer.username} could not generate parms for mechanoid raid.", separateChannel);
         }
 
         public int pointsWager = 0;
@@ -325,7 +325,7 @@ namespace TwitchToolkit.IncidentHelpers.Raids
         public IncidentParms parms = null;
         private bool separateChannel = false;
 
-        public override Viewer viewer { get; set; }
+        public override Viewer Viewer { get; set; }
     }
 
     public class Infestation : IncidentHelperVariables
@@ -333,7 +333,7 @@ namespace TwitchToolkit.IncidentHelpers.Raids
         public override bool IsPossible(string message, Viewer viewer, bool separateChannel = false)
         {
             this.separateChannel = separateChannel;
-            this.viewer = viewer;
+            this.Viewer = viewer;
             string[] command = message.Split(' ');
             if (command.Length < 3)
             {
@@ -379,12 +379,12 @@ namespace TwitchToolkit.IncidentHelpers.Raids
         {
             if (worker.TryExecute(parms))
             {
-                viewer.TakeViewerCoins(pointsWager);
-                viewer.CalculateNewKarma(this.storeIncident.karmaType, pointsWager);
-                VariablesHelpers.SendPurchaseMessage($"Starting infestation raid with {pointsWager} points wagered and {(int)parms.points} raid points purchased by {viewer.username}", separateChannel);
+                Viewer.TakeViewerCoins(pointsWager);
+                Viewer.CalculateNewKarma(this.storeIncident.karmaType, pointsWager);
+                VariablesHelpers.SendPurchaseMessage($"Starting infestation raid with {pointsWager} points wagered and {(int)parms.points} raid points purchased by {Viewer.username}", separateChannel);
                 return;
             }
-            Toolkit.client.SendMessage($"@{viewer.username} could not generate parms for infestation.", separateChannel);
+            Toolkit.client.SendMessage($"@{Viewer.username} could not generate parms for infestation.", separateChannel);
         }
 
         public int pointsWager = 0;
@@ -393,7 +393,7 @@ namespace TwitchToolkit.IncidentHelpers.Raids
         public IncidentParms parms = null;
         private bool separateChannel = false;
 
-        public override Viewer viewer { get; set; }
+        public override Viewer Viewer { get; set; }
     }
 
     public class ManhunterPack : IncidentHelperVariables
@@ -401,7 +401,7 @@ namespace TwitchToolkit.IncidentHelpers.Raids
         public override bool IsPossible(string message, Viewer viewer, bool separateChannel = false)
         {
             this.separateChannel = separateChannel;
-            this.viewer = viewer;
+            this.Viewer = viewer;
             string[] command = message.Split(' ');
             if (command.Length < 3)
             {
@@ -439,12 +439,12 @@ namespace TwitchToolkit.IncidentHelpers.Raids
         {
             if (worker.TryExecute(parms))
             {
-                viewer.TakeViewerCoins(pointsWager);
-                viewer.CalculateNewKarma(this.storeIncident.karmaType, pointsWager);
-                VariablesHelpers.SendPurchaseMessage($"Starting manhunterpack with {pointsWager} points wagered and {(int)parms.points} raid points purchased by {viewer.username}", separateChannel);
+                Viewer.TakeViewerCoins(pointsWager);
+                Viewer.CalculateNewKarma(this.storeIncident.karmaType, pointsWager);
+                VariablesHelpers.SendPurchaseMessage($"Starting manhunterpack with {pointsWager} points wagered and {(int)parms.points} raid points purchased by {Viewer.username}", separateChannel);
                 return;
             }
-            Toolkit.client.SendMessage($"@{viewer.username} could not generate parms for manhunter pack.", separateChannel);
+            Toolkit.client.SendMessage($"@{Viewer.username} could not generate parms for manhunter pack.", separateChannel);
         }
 
         public int pointsWager = 0;
@@ -453,7 +453,7 @@ namespace TwitchToolkit.IncidentHelpers.Raids
         public IncidentParms parms = null;
         private bool separateChannel = false;
 
-        public override Viewer viewer { get; set; }
+        public override Viewer Viewer { get; set; }
     }
 
     public class Predators : IncidentHelperVariables
@@ -461,7 +461,7 @@ namespace TwitchToolkit.IncidentHelpers.Raids
         public override bool IsPossible(string message, Viewer viewer, bool separateChannel = false)
         {
             this.separateChannel = separateChannel;
-            this.viewer = viewer;
+            this.Viewer = viewer;
             string[] command = message.Split(' ');
             if (command.Length < 3)
             {
@@ -521,12 +521,12 @@ namespace TwitchToolkit.IncidentHelpers.Raids
         {
             if (worker.TryExecute(parms))
             {
-                viewer.TakeViewerCoins(pointsWager);
-                viewer.CalculateNewKarma(this.storeIncident.karmaType, pointsWager);
-                VariablesHelpers.SendPurchaseMessage($"Starting predator pack with {pointsWager} points wagered and {(int)parms.points} raid points purchased by {viewer.username}", separateChannel);
+                Viewer.TakeViewerCoins(pointsWager);
+                Viewer.CalculateNewKarma(this.storeIncident.karmaType, pointsWager);
+                VariablesHelpers.SendPurchaseMessage($"Starting predator pack with {pointsWager} points wagered and {(int)parms.points} raid points purchased by {Viewer.username}", separateChannel);
                 return;
             }
-            Toolkit.client.SendMessage($"@{viewer.username} could not generate parms for manhunter pack.", separateChannel);
+            Toolkit.client.SendMessage($"@{Viewer.username} could not generate parms for manhunter pack.", separateChannel);
         }
 
         public int pointsWager = 0;
@@ -535,6 +535,6 @@ namespace TwitchToolkit.IncidentHelpers.Raids
         public IncidentParms parms = null;
         private bool separateChannel = false;
 
-        public override Viewer viewer { get; set; }
+        public override Viewer Viewer { get; set; }
     }
 }

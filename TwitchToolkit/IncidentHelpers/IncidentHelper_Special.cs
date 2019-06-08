@@ -52,7 +52,7 @@ namespace TwitchToolkit.IncidentHelpers.Special
             }
 
             this.separateChannel = separateChannel;
-            this.viewer = viewer;
+            this.Viewer = viewer;
             IIncidentTarget target = Helper.AnyPlayerMap;
             parms = StorytellerUtility.DefaultParmsNow(IncidentCategoryDefOf.Misc, target);
             map = (Map)parms.target;
@@ -70,18 +70,18 @@ namespace TwitchToolkit.IncidentHelpers.Special
 			PawnGenerationRequest request = new PawnGenerationRequest(pawnKind, ofPlayer, PawnGenerationContext.NonPlayer, -1, true, false, false, false, true, pawnMustBeCapableOfViolence, 20f, false, true, true, false, false, false, false, null, null, null, null, null, null, null, null);
 			Pawn pawn = PawnGenerator.GeneratePawn(request);
             NameTriple old = pawn.Name as NameTriple;
-            pawn.Name = new NameTriple(old.First, viewer.username, old.Last);
+            pawn.Name = new NameTriple(old.First, Viewer.username, old.Last);
 			GenSpawn.Spawn(pawn, loc, map, WipeMode.Vanish);
 			string label = "Viewer Joins";
-			string text = $"A new pawn has been purchased by {viewer.username}, let's welcome them to the colony.";
+			string text = $"A new pawn has been purchased by {Viewer.username}, let's welcome them to the colony.";
 			PawnRelationUtility.TryAppendRelationsWithColonistsInfo(ref text, ref label, pawn);
 			Find.LetterStack.ReceiveLetter(label, text, LetterDefOf.PositiveEvent, pawn, null, null);
 
-            Current.Game.GetComponent<GameComponentPawns>().AssignUserToPawn(viewer.username, pawn);
-            viewer.TakeViewerCoins(this.storeIncident.cost);
-            viewer.CalculateNewKarma(this.storeIncident.karmaType, storeIncident.cost);
+            Current.Game.GetComponent<GameComponentPawns>().AssignUserToPawn(Viewer.username, pawn);
+            Viewer.TakeViewerCoins(this.storeIncident.cost);
+            Viewer.CalculateNewKarma(this.storeIncident.karmaType, storeIncident.cost);
 
-            VariablesHelpers.SendPurchaseMessage($"@{viewer.username} has purchased a pawn and is joining the colony.", separateChannel);
+            VariablesHelpers.SendPurchaseMessage($"@{Viewer.username} has purchased a pawn and is joining the colony.", separateChannel);
         }
 
         private IntVec3 loc;
@@ -89,7 +89,7 @@ namespace TwitchToolkit.IncidentHelpers.Special
         private IncidentParms parms = null;
         private bool separateChannel = false;
 
-        public override Viewer viewer { get; set; }
+        public override Viewer Viewer { get; set; }
     }
 
     public class SpawnAnimal : IncidentHelperVariables
@@ -97,7 +97,7 @@ namespace TwitchToolkit.IncidentHelpers.Special
         public override bool IsPossible(string message, Viewer viewer, bool separateChannel = false)
         {
             this.separateChannel = separateChannel;
-            this.viewer = viewer;
+            this.Viewer = viewer;
             string[] command = message.Split(' ');
             if (command.Length < 4)
             {
@@ -153,12 +153,12 @@ namespace TwitchToolkit.IncidentHelpers.Special
         {
             if (worker.TryExecute(parms))
             {
-                viewer.TakeViewerCoins(pointsWager);
-                viewer.CalculateNewKarma(this.storeIncident.karmaType, pointsWager);
-                VariablesHelpers.SendPurchaseMessage($"Spawning animal {pawnKind.LabelCap} with {pointsWager} coins wagered and {(int)parms.points} animal points purchased by {viewer.username}", separateChannel);
+                Viewer.TakeViewerCoins(pointsWager);
+                Viewer.CalculateNewKarma(this.storeIncident.karmaType, pointsWager);
+                VariablesHelpers.SendPurchaseMessage($"Spawning animal {pawnKind.LabelCap} with {pointsWager} coins wagered and {(int)parms.points} animal points purchased by {Viewer.username}", separateChannel);
                 return;
             }
-            Toolkit.client.SendMessage($"@{viewer.username} not enough points spent for diseases.", separateChannel);
+            Toolkit.client.SendMessage($"@{Viewer.username} not enough points spent for diseases.", separateChannel);
         }
 
         private int pointsWager = 0;
@@ -168,7 +168,7 @@ namespace TwitchToolkit.IncidentHelpers.Special
         private bool separateChannel = false;
         private PawnKindDef pawnKind = null;
 
-        public override Viewer viewer { get; set; }
+        public override Viewer Viewer { get; set; }
     }
 
     public class LevelPawn : IncidentHelperVariables
@@ -176,7 +176,7 @@ namespace TwitchToolkit.IncidentHelpers.Special
         public override bool IsPossible(string message, Viewer viewer, bool separateChannel = false)
         {
             this.separateChannel = separateChannel;
-            this.viewer = viewer;
+            this.Viewer = viewer;
             string[] command = message.Split(' ');
             if (command.Length < 4)
             {
@@ -240,8 +240,8 @@ namespace TwitchToolkit.IncidentHelpers.Special
             xpWon = IncidentHelper_PointsHelper.RollProportionalGamePoints(storeIncident, pointsWager, xpWon);
 
             pawn.skills.Learn(skill, xpWon, true);
-            viewer.TakeViewerCoins(pointsWager);
-            viewer.CalculateNewKarma(this.storeIncident.karmaType, pointsWager);
+            Viewer.TakeViewerCoins(pointsWager);
+            Viewer.CalculateNewKarma(this.storeIncident.karmaType, pointsWager);
 
             SkillRecord record = pawn.skills.GetSkill(skill);
             string increaseText = $" Level {record.levelInt}: {(int)record.xpSinceLastLevel} / {(int)record.XpRequiredForLevelUp}.";
@@ -260,7 +260,7 @@ namespace TwitchToolkit.IncidentHelpers.Special
                 passionPlus = "++";
             }
             
-            VariablesHelpers.SendPurchaseMessage($"Increasing skill {skill.LabelCap} for {pawn.LabelCap} with {pointsWager} coins wagered and ({(int)xpWon} * {percent}%){passionPlus} {(int)xpWon * (percent / 100f)} xp purchased by {viewer.username}. {increaseText}", separateChannel);
+            VariablesHelpers.SendPurchaseMessage($"Increasing skill {skill.LabelCap} for {pawn.LabelCap} with {pointsWager} coins wagered and ({(int)xpWon} * {percent}%){passionPlus} {(int)xpWon * (percent / 100f)} xp purchased by {Viewer.username}. {increaseText}", separateChannel);
             string text = Helper.ReplacePlaceholder("TwitchStoriesDescription55".Translate(), colonist: pawn.Name.ToString(), skill: skill.defName, first: Math.Round(xpWon).ToString());
             Current.Game.letterStack.ReceiveLetter("TwitchToolkitIncreaseSkill".Translate(), text, LetterDefOf.PositiveEvent, pawn);
         }
@@ -270,7 +270,7 @@ namespace TwitchToolkit.IncidentHelpers.Special
         private Pawn pawn = null;
         private SkillDef skill = null;
 
-        public override Viewer viewer { get; set; }
+        public override Viewer Viewer { get; set; }
     }
 
     public class ChangeGender : IncidentHelperVariables
@@ -278,7 +278,7 @@ namespace TwitchToolkit.IncidentHelpers.Special
         public override bool IsPossible(string message, Viewer viewer, bool separateChannel = false)
         {
             this.separateChannel = separateChannel;
-            this.viewer = viewer;
+            this.Viewer = viewer;
 
             GameComponentPawns gameComponent = Current.Game.GetComponent<GameComponentPawns>();
 
@@ -322,14 +322,14 @@ namespace TwitchToolkit.IncidentHelpers.Special
                 pawn.story.bodyType = ((pawn.gender != Gender.Female) ? BodyTypeDefOf.Male : BodyTypeDefOf.Female);
             }
 
-            viewer.TakeViewerCoins(storeIncident.cost);
-            viewer.CalculateNewKarma(storeIncident.karmaType, storeIncident.cost);
-            VariablesHelpers.SendPurchaseMessage($"@{viewer.username} has just swapped genders to " + pawn.gender.GetLabel() + ".", separateChannel);
-            string text = $"{viewer.username} has just swapped genders to " + pawn.gender.GetLabel() + ".";
+            Viewer.TakeViewerCoins(storeIncident.cost);
+            Viewer.CalculateNewKarma(storeIncident.karmaType, storeIncident.cost);
+            VariablesHelpers.SendPurchaseMessage($"@{Viewer.username} has just swapped genders to " + pawn.gender.GetLabel() + ".", separateChannel);
+            string text = $"{Viewer.username} has just swapped genders to " + pawn.gender.GetLabel() + ".";
             Current.Game.letterStack.ReceiveLetter("GenderSwap", text, LetterDefOf.PositiveEvent, pawn);
         }
 
-        public override Viewer viewer { get; set; }
+        public override Viewer Viewer { get; set; }
 
         private bool separateChannel = false;
         private Pawn pawn = null;
@@ -340,7 +340,7 @@ namespace TwitchToolkit.IncidentHelpers.Special
         public override bool IsPossible(string message, Viewer viewer, bool separateChannel = false)
         {
             this.separateChannel = separateChannel;
-            this.viewer = viewer;
+            this.Viewer = viewer;
             string[] command = message.Split(' ');
             if (command.Length < 4)
             {
@@ -481,7 +481,9 @@ namespace TwitchToolkit.IncidentHelpers.Special
                 ItemHelper.setItemQualityRandom(itemThing);
             }
 
-            IntVec3 vec;
+            Map map = Helper.AnyPlayerMap;
+            IntVec3 vec = DropCellFinder.TradeDropSpot(map);
+            
 
             if (itemThingDef.Minifiable)
             {
@@ -489,25 +491,27 @@ namespace TwitchToolkit.IncidentHelpers.Special
                 MinifiedThing minifiedThing = (MinifiedThing)ThingMaker.MakeThing(itemThingDef, null);
 			    minifiedThing.InnerThing = itemThing;
                 minifiedThing.stackCount = quantity;
-                vec = Helper.Rain(itemDef, minifiedThing);
+                TradeUtility.SpawnDropPod(vec, map, minifiedThing);
             }
             else
             {
                 itemThing.stackCount = quantity;
-                vec = Helper.Rain(itemDef, itemThing);
+                TradeUtility.SpawnDropPod(vec, map, itemThing);
             }
 
-            string letter = Helper.ReplacePlaceholder("TwitchStoriesDescription80".Translate(), from: viewer.username, amount: quantity.ToString(), item: item.abr.CapitalizeFirst());
+            string letter = Helper.ReplacePlaceholder("TwitchStoriesDescription80".Translate(), from: Viewer.username, amount: quantity.ToString(), item: item.abr.CapitalizeFirst());
 
-            Helper.CarePackage(letter, LetterDefOf.PositiveEvent, vec);
+            LetterDef letterDef = ItemHelper.GetLetterFromValue(price);
+
+            Find.LetterStack.ReceiveLetter(item.abr.Truncate(15, true).CapitalizeFirst(), letter, letterDef, new TargetInfo(vec, map, false));
 
             EndCarePackage();
         }
 
         private void TryExecuteAnimal(ThingDef animal, int count)
         {
-            string letter = Helper.ReplacePlaceholder("TwitchStoriesDescription80".Translate(), from: viewer.username, amount: quantity.ToString(), item: item.abr.CapitalizeFirst());
-            IncidentWorker worker = new IncidentWorker_SpecificAnimalsWanderIn("AnimalsJoin", PawnKindDef.Named(animal.defName), true, count, false, true);
+            string letter = Helper.ReplacePlaceholder("TwitchStoriesDescription80".Translate(), from: Viewer.username, amount: quantity.ToString(), item: item.abr.CapitalizeFirst());
+            IncidentWorker worker = new IncidentWorker_SpecificAnimalsWanderIn(animal.LabelCap + "'s join", PawnKindDef.Named(animal.defName), true, count, false, true);
             worker.def = IncidentDef.Named("FarmAnimalsWanderIn");
             worker.TryExecute(StorytellerUtility.DefaultParmsNow(IncidentCategoryDefOf.Misc, Helper.AnyPlayerMap));
 
@@ -516,9 +520,9 @@ namespace TwitchToolkit.IncidentHelpers.Special
 
         private void EndCarePackage()
         {
-            viewer.TakeViewerCoins(price);
-            viewer.CalculateNewKarma(storeIncident.karmaType, price);
-            VariablesHelpers.SendPurchaseMessage(Helper.ReplacePlaceholder("TwitchToolkitItemPurchaseConfirm".Translate(), amount: quantity.ToString(), item: item.abr, viewer: viewer.username), separateChannel);
+            Viewer.TakeViewerCoins(price);
+            Viewer.CalculateNewKarma(storeIncident.karmaType, price);
+            VariablesHelpers.SendPurchaseMessage(Helper.ReplacePlaceholder("TwitchToolkitItemPurchaseConfirm".Translate(), amount: quantity.ToString(), item: item.abr, viewer: Viewer.username), separateChannel);
         }
 
         private int price = 0;
@@ -526,7 +530,7 @@ namespace TwitchToolkit.IncidentHelpers.Special
         private Store.Item item = null;
         private bool separateChannel;
 
-        public override Viewer viewer { get; set; }
+        public override Viewer Viewer { get; set; }
     }
 
     public class BuyPrisoner : IncidentHelperVariables
@@ -534,7 +538,7 @@ namespace TwitchToolkit.IncidentHelpers.Special
         public override bool IsPossible(string message, Viewer viewer, bool separateChannel = false)
         {
             this.separateChannel = separateChannel;
-            this.viewer = viewer;
+            this.Viewer = viewer;
             string[] command = message.Split(' ');
 
 
@@ -558,10 +562,10 @@ namespace TwitchToolkit.IncidentHelpers.Special
         {
             worker.TryExecute(parms);
 
-            viewer.TakeViewerCoins(storeIncident.cost);
-            viewer.CalculateNewKarma(storeIncident.karmaType, storeIncident.cost);
+            Viewer.TakeViewerCoins(storeIncident.cost);
+            Viewer.CalculateNewKarma(storeIncident.karmaType, storeIncident.cost);
 
-            VariablesHelpers.SendPurchaseMessage($"@{viewer.username} has escaped from maximum security space prison.");
+            VariablesHelpers.SendPurchaseMessage($"@{Viewer.username} has escaped from maximum security space prison.");
         }
 
         private IncidentWorker_PrisonerJoins worker;
@@ -569,7 +573,7 @@ namespace TwitchToolkit.IncidentHelpers.Special
 
         private bool separateChannel;
 
-        public override Viewer viewer { get; set; }
+        public override Viewer Viewer { get; set; }
     }
 
     public class VisitColony : IncidentHelperVariables
@@ -577,7 +581,7 @@ namespace TwitchToolkit.IncidentHelpers.Special
         public override bool IsPossible(string message, Viewer viewer, bool separateChannel = false)
         {
             this.separateChannel = separateChannel;
-            this.viewer = viewer;
+            this.Viewer = viewer;
             string[] command = message.Split(' ');
 
 
@@ -601,10 +605,10 @@ namespace TwitchToolkit.IncidentHelpers.Special
         {
             worker.TryExecute(parms);
 
-            viewer.TakeViewerCoins(storeIncident.cost);
-            viewer.CalculateNewKarma(storeIncident.karmaType, storeIncident.cost);
+            Viewer.TakeViewerCoins(storeIncident.cost);
+            Viewer.CalculateNewKarma(storeIncident.karmaType, storeIncident.cost);
 
-            VariablesHelpers.SendPurchaseMessage($"@{viewer.username} is visiting the colony.");
+            VariablesHelpers.SendPurchaseMessage($"@{Viewer.username} is visiting the colony.");
         }
 
         private IncidentWorker_VisitColony worker;
@@ -612,7 +616,7 @@ namespace TwitchToolkit.IncidentHelpers.Special
 
         private bool separateChannel;
 
-        public override Viewer viewer { get; set; }
+        public override Viewer Viewer { get; set; }
     }
 
     public class BeRescued : IncidentHelperVariables
@@ -620,7 +624,7 @@ namespace TwitchToolkit.IncidentHelpers.Special
         public override bool IsPossible(string message, Viewer viewer, bool separateChannel = false)
         {
             this.separateChannel = separateChannel;
-            this.viewer = viewer;
+            this.Viewer = viewer;
             string[] command = message.Split(' ');
 
 
@@ -644,10 +648,10 @@ namespace TwitchToolkit.IncidentHelpers.Special
         {
             worker.TryExecute(parms);
 
-            viewer.TakeViewerCoins(storeIncident.cost);
-            viewer.CalculateNewKarma(storeIncident.karmaType, storeIncident.cost);
+            Viewer.TakeViewerCoins(storeIncident.cost);
+            Viewer.CalculateNewKarma(storeIncident.karmaType, storeIncident.cost);
 
-            VariablesHelpers.SendPurchaseMessage($"@{viewer.username} is being held prisoner at another faction.");
+            VariablesHelpers.SendPurchaseMessage($"@{Viewer.username} is being held prisoner at another faction.");
         }
 
         private IncidentWorker_QuestViewerRescue worker;
@@ -655,7 +659,7 @@ namespace TwitchToolkit.IncidentHelpers.Special
 
         private bool separateChannel;
 
-        public override Viewer viewer { get; set; }
+        public override Viewer Viewer { get; set; }
     }
 
     public static class PawnTracker
@@ -669,6 +673,24 @@ namespace TwitchToolkit.IncidentHelpers.Special
         {
             QualityCategory qual = QualityUtility.GenerateQualityTraderItem();
             thing.TryGetComp<CompQuality>().SetQuality(qual, ArtGenerationContext.Outsider);
+        }
+
+        public static LetterDef GetLetterFromValue(int value)
+        {
+            if (value <= 250)
+            {
+                return LetterDefOf.NeutralEvent;
+            } else if (value > 250 && value <= 750)
+            {
+                return DefDatabase<LetterDef>.GetNamed("BlueLetter");
+            } else if (value > 750 && value <= 1500)
+            {
+                return DefDatabase<LetterDef>.GetNamed("GreenLetter");
+            }
+            else
+            {
+                return DefDatabase<LetterDef>.GetNamed("GoldLetter");
+            }
         }
     }
 }

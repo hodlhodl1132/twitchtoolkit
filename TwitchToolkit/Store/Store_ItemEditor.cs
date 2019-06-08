@@ -107,7 +107,6 @@ namespace TwitchToolkit.Store
 
                 if (search == null || search.Count() < 1)
                 {
-                    finalCount--;
                     continue;
                 }
                 else
@@ -115,7 +114,11 @@ namespace TwitchToolkit.Store
                     thing = search.ElementAt(0);
                 }
 
-                string category = thing.FirstThingCategory != null ? thing.FirstThingCategory.LabelCap : "Uncategorized";
+                string category = thing.FirstThingCategory != null ? thing.FirstThingCategory.LabelCap : null;
+                if (category == null && thing.race != null)
+                {
+                    category = "Animal";
+                }
 
                 json.AppendLine("\t{");
                 json.AppendLine("\t\t\"abr\": \"" + allItems[i].abr + "\",");

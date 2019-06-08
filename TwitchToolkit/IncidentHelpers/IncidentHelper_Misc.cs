@@ -779,6 +779,7 @@ namespace TwitchToolkit.IncidentHelpers.Misc
             if (map != null)
             {
                 parms = StorytellerUtility.DefaultParmsNow(IncidentCategoryDefOf.Misc, map);
+                parms.forced = true;
 
                 return worker.CanFireNow(parms);
             }

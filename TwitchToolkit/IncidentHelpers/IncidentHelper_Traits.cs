@@ -164,7 +164,7 @@ namespace TwitchToolkit.IncidentHelpers.Traits
         public override bool IsPossible(string message, Viewer viewer, bool separateChannel = false)
         {
             this.separateChannel = separateChannel;
-            this.viewer = viewer;
+            this.Viewer = viewer;
             string[] command = message.Split(' ');
             if (command.Length < 3)
             {
@@ -244,14 +244,14 @@ namespace TwitchToolkit.IncidentHelpers.Traits
                 }
             }
 
-            viewer.TakeViewerCoins(storeIncident.cost);
-            viewer.CalculateNewKarma(storeIncident.karmaType, storeIncident.cost);
-            VariablesHelpers.SendPurchaseMessage($"@{viewer.username} just added the trait " + traitDef.LabelCap + " to " + pawn.Name + ".", separateChannel);
-            string text = $"{viewer.username} has purchased " + trait.LabelCap + " for " + pawn.Name + ".";
+            Viewer.TakeViewerCoins(storeIncident.cost);
+            Viewer.CalculateNewKarma(storeIncident.karmaType, storeIncident.cost);
+            VariablesHelpers.SendPurchaseMessage($"@{Viewer.username} just added the trait " + traitDef.LabelCap + " to " + pawn.Name + ".", separateChannel);
+            string text = $"{Viewer.username} has purchased " + trait.LabelCap + " for " + pawn.Name + ".";
             Current.Game.letterStack.ReceiveLetter("Trait", text, LetterDefOf.PositiveEvent, pawn);
         }
 
-        public override Viewer viewer { get; set; }
+        public override Viewer Viewer { get; set; }
 
         private bool separateChannel = false;
         private Pawn pawn = null;
@@ -265,7 +265,7 @@ namespace TwitchToolkit.IncidentHelpers.Traits
         public override bool IsPossible(string message, Viewer viewer, bool separateChannel = false)
         {
             this.separateChannel = separateChannel;
-            this.viewer = viewer;
+            this.Viewer = viewer;
             string[] command = message.Split(' ');
             if (command.Length < 3)
             {
@@ -329,14 +329,14 @@ namespace TwitchToolkit.IncidentHelpers.Traits
             {
                 return;
             }
-            viewer.TakeViewerCoins(storeIncident.cost);
-            viewer.CalculateNewKarma(storeIncident.karmaType, storeIncident.cost);
-            VariablesHelpers.SendPurchaseMessage($"@{viewer.username} just removed the trait " + buyableTrait.label.CapitalizeFirst() + " from " + pawn.Name + ".", separateChannel);
-            string text = $"{viewer.username} has purchased trait removal of " + buyableTrait.label.CapitalizeFirst() + " from " + pawn.Name + ".";
+            Viewer.TakeViewerCoins(storeIncident.cost);
+            Viewer.CalculateNewKarma(storeIncident.karmaType, storeIncident.cost);
+            VariablesHelpers.SendPurchaseMessage($"@{Viewer.username} just removed the trait " + buyableTrait.label.CapitalizeFirst() + " from " + pawn.Name + ".", separateChannel);
+            string text = $"{Viewer.username} has purchased trait removal of " + buyableTrait.label.CapitalizeFirst() + " from " + pawn.Name + ".";
             Current.Game.letterStack.ReceiveLetter("Trait", text, LetterDefOf.PositiveEvent, pawn);
         }
 
-        public override Viewer viewer { get; set; }
+        public override Viewer Viewer { get; set; }
 
         private bool separateChannel = false;
         private Pawn pawn = null;

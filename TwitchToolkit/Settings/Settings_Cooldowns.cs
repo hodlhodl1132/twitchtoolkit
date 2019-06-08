@@ -19,7 +19,6 @@ namespace TwitchToolkit.Settings
 
             optionsListing.Gap();
 
-            optionsListing.AddLabeledNumericalTextField("TwitchToolkitMaxEventsPeriod".Translate(), ref ToolkitSettings.MaxEventsPeriod, 0.8f);
             optionsListing.AddLabeledNumericalTextField("TwitchToolkitMaxBadEvents".Translate(), ref ToolkitSettings.MaxBadEventsPerInterval, 0.8f);
             optionsListing.AddLabeledNumericalTextField("TwitchToolkitMaxGoodEvents".Translate(), ref ToolkitSettings.MaxGoodEventsPerInterval, 0.8f);
             optionsListing.AddLabeledNumericalTextField("TwitchToolkitMaxNeutralEvents".Translate(), ref ToolkitSettings.MaxNeutralEventsPerInterval, 0.8f);

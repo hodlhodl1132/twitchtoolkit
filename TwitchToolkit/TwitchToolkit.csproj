@@ -234,6 +234,9 @@
     <Content Include="Defs\Misc\IncidentWorkers.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Defs\Misc\Letters.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Patches\StorytellerPatch.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

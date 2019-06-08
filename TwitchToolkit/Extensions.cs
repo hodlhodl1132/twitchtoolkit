@@ -105,5 +105,11 @@ namespace TwitchToolkit
 
             return formatted;
         }
+
+        public static string Truncate(this string value, int maxLength, bool dots = false)
+        {
+            if (string.IsNullOrEmpty(value)) return value;
+            return value.Length <= maxLength ? value : value.Substring(0, maxLength) + (dots ? "..." : "");
+        }
     }
 }

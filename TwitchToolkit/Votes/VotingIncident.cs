@@ -30,6 +30,7 @@ namespace TwitchToolkit.Votes
             {
                 if (helper == null)
                 {
+                    Log.Warning("Casting " + label);
                     helper = VotingIncidentMaker.makeVotingHelper(this);
                 }
 

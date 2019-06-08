@@ -121,7 +121,9 @@ namespace TwitchToolkit.Store
 
             Store_Component component = Current.Game.GetComponent<Store_Component>();
 
-            QueuePlayerMessage(viewer, message.Message);
+            helper.Viewer = viewer;
+            helper.message = message.Message;
+
             Ticker.IncidentHelpers.Enqueue(helper);
             Store_Logger.LogPurchase(viewer.username, message.Message);
             component.LogIncident(incident);
@@ -173,7 +175,8 @@ namespace TwitchToolkit.Store
 
             Store_Component component = Current.Game.GetComponent<Store_Component>();
 
-            QueuePlayerMessage(viewer, message.Message, incident.variables);
+            helper.Viewer = viewer;
+            helper.message = message.Message;
 
             Ticker.IncidentHelperVariables.Enqueue(helper);
             Store_Logger.LogPurchase(viewer.username, message.Message);
@@ -287,6 +290,18 @@ namespace TwitchToolkit.Store
                     {
                         output += " " + AdminText(command[i]);
                     }
+                    else if (viewer.IsSub)
+                    {
+                        output += SubText(command[i]);
+                    }
+                    else if (viewer.IsVIP)
+                    {
+                        output += VIPText(command[i]);
+                    }
+                    else if (viewer.mod)
+                    {
+                        output += ModText(command[i]);
+                    }
                     else
                     {
                         output += " " + command[i];
@@ -311,6 +326,21 @@ namespace TwitchToolkit.Store
             output.Append("</size>");
 
             return output.ToString();
+        }
+
+        static string SubText(string input)
+        {
+            return "<color=#D9BB25>" + input + "</color>";
+        }
+
+        static string VIPText(string input)
+        {
+            return "<color=#5F49F2>" + input + "</color>";
+        }
+
+        static string ModText(string input)
+        {
+            return "<color=#238C48>" + input + "</color>";
         }
 
         public static List<StoreIncidentSimple> allStoreIncidentsSimple;

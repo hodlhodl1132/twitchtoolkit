@@ -449,7 +449,7 @@ namespace TwitchToolkit.Store
 
         public static bool AllowCommand(IRCMessage msg)
         {
-            if (!ToolkitSettings.UseSeparateChatRoom && (msg.Whisper || ToolkitSettings.AllowBothChatRooms || msg.Channel == "#" + ToolkitSettings.Channel)) return true;
+            if (!ToolkitSettings.UseSeparateChatRoom && (msg.Whisper || ToolkitSettings.AllowBothChatRooms || msg.Channel == "#" + ToolkitSettings.Channel.ToLower())) return true;
             if (msg.Channel == "#chatrooms:" + ToolkitSettings.ChannelID + ":" + ToolkitSettings.ChatroomUUID) return true;
             if (ToolkitSettings.AllowBothChatRooms && ToolkitSettings.UseSeparateChatRoom || (msg.Whisper)) return true;
             return false;
@@ -466,7 +466,7 @@ namespace TwitchToolkit.Store
                 return false;
             }
 
-            if (msg.Channel == "#" + ToolkitSettings.Channel) return false;
+            if (msg.Channel == "#" + ToolkitSettings.Channel.ToLower()) return false;
             if (ToolkitSettings.UseSeparateChatRoom && !ToolkitSettings.AllowBothChatRooms) return true;
             if (msg.Channel == "#chatrooms:" + ToolkitSettings.ChannelID + ":" + ToolkitSettings.ChatroomUUID && ToolkitSettings.UseSeparateChatRoom) return true;
             return false;

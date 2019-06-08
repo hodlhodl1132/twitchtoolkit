@@ -47,6 +47,7 @@ namespace TwitchToolkit.Storytellers
                               where s.incident.eventCategory == category
                               select s).ToList();
                     str = "Which " + category.ToString() + " event should happen?";
+                    Log.Warning("rand cat picked " + category);
                     break;
                 }
                 case Vote_VotingIncident.VoteLabelType.Type:
@@ -56,6 +57,7 @@ namespace TwitchToolkit.Storytellers
                               where s.incident.eventType == randType
                               select s).ToList();
                     str = "Which " + randType + " event should happen?";
+                    Log.Warning("rand type picked " + randType);
                     break;
                 }
             }
@@ -95,8 +97,6 @@ namespace TwitchToolkit.Storytellers
 
         public EventType RandomType()
         {
-            Log.Warning("Trying random type", false);
-
             List<EventType> list = Enum.GetValues(typeof(EventType)).Cast<EventType>().ToList<EventType>();
 
             Dictionary<EventType, float> dictionary = new Dictionary<EventType, float>();
@@ -111,8 +111,6 @@ namespace TwitchToolkit.Storytellers
 
         public EventCategory RandomCategory()
         {
-            Log.Warning("Trying random category", false);
-
             List<EventCategory> list = Enum.GetValues(typeof(EventCategory)).Cast<EventCategory>().ToList<EventCategory>();
 
             Dictionary<EventCategory, float> dictionary = new Dictionary<EventCategory, float>();

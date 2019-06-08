@@ -21,6 +21,8 @@ namespace TwitchToolkit.Incidents
         public Type incidentHelper = typeof(IncidentHelper);
 
         public KarmaType karmaType;
+
+        public int variables = 0;
     }
 
     public class StoreIncidentSimple : StoreIncident
@@ -38,8 +40,6 @@ namespace TwitchToolkit.Incidents
         public int minPointsToFire = 0;
 
         public int maxWager = 0;
-
-        public int variables = 0;
 
         public string syntax = null;
 

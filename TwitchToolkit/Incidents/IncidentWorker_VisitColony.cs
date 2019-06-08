@@ -10,9 +10,24 @@ namespace TwitchToolkit.Incidents
 {
     public class IncidentWorker_VisitColony : IncidentWorker_NeutralGroup
     {
-        public IncidentWorker_VisitColony(Viewer viewer)
+        public IncidentWorker_VisitColony()
+        {
+
+        }
+
+        public IncidentWorker_VisitColony(Viewer viewer = null)
         {
             this.viewer = viewer;
+        }
+
+        protected override bool CanFireNowSub(IncidentParms parms)
+        {
+            if (viewer == null)
+            {
+                return false;
+            }
+
+            return base.CanFireNowSub(parms);
         }
 
         protected override bool TryExecuteWorker(IncidentParms parms)

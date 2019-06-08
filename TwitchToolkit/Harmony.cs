@@ -74,7 +74,10 @@ namespace TwitchToolkit
             if (Helper.playerMessages.Count > 0)
             {
                 string msg = Helper.playerMessages[0];
-                text += msg;
+                if (text != "")
+                {
+                    text += msg;
+                }
                 Helper.playerMessages.RemoveAt(0);
             }
         }
@@ -106,7 +109,4 @@ namespace TwitchToolkit
                 ToolkitIRC.NewInstance();
         }
     }
-
-
-
 }

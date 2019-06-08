@@ -1771,8 +1771,6 @@ namespace TwitchToolkit
                 return intVec;
             }
 
-            //SkyfallerMaker.SpawnSkyfaller(thingDef, new List<Thing> { thing }, intVec, Helper.AnyPlayerMap);
-            //DropPodUtility.DropThingsNear(intVec, Helper.AnyPlayerMap, new List<Thing> { thing }, 110, false, true, true);
             Map any = Helper.AnyPlayerMap;
             intVec = DropCellFinder.TradeDropSpot(any);
             TradeUtility.SpawnDropPod(intVec, any, thing);

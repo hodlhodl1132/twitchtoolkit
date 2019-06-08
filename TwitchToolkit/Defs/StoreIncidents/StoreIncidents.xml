@@ -46,7 +46,7 @@
     <defName>VomitRain</defName>
     <label>vomit rain</label>
     <abbreviation>vomitrain</abbreviation>
-    <cost>1600</cost>
+    <cost>650</cost>
     <eventCap>1</eventCap>
     <incidentHelper>TwitchToolkit.IncidentHelpers.Weather.VomitRain</incidentHelper>
     <karmaType>Neutral</karmaType>
@@ -153,10 +153,20 @@
   </TwitchToolkit.Incidents.StoreIncidentSimple>
 
   <TwitchToolkit.Incidents.StoreIncidentSimple>
+    <defName>ShortCircuit</defName>
+    <label>short circuit</label>
+    <abbreviation>shortcircuit</abbreviation>
+    <cost>500</cost>
+    <eventCap>2</eventCap>
+    <incidentHelper>TwitchToolkit.IncidentHelpers.Weather.ShortCircuit</incidentHelper>
+    <karmaType>Bad</karmaType>
+  </TwitchToolkit.Incidents.StoreIncidentSimple>
+
+  <TwitchToolkit.Incidents.StoreIncidentSimple>
     <defName>ToxicFallout</defName>
     <label>toxic fallout</label>
     <abbreviation>toxicfallout</abbreviation>
-    <cost>4200</cost>
+    <cost>6500</cost>
     <eventCap>1</eventCap>
     <incidentHelper>TwitchToolkit.IncidentHelpers.Weather.ToxicFallout</incidentHelper>
     <karmaType>Doom</karmaType>
@@ -166,7 +176,7 @@
     <defName>VolcanicWinter</defName>
     <label>volcanic winter</label>
     <abbreviation>volcanicwinter</abbreviation>
-    <cost>2600</cost>
+    <cost>3200</cost>
     <eventCap>1</eventCap>
     <incidentHelper>TwitchToolkit.IncidentHelpers.Weather.VolcanicWinter</incidentHelper>
     <karmaType>Doom</karmaType>
@@ -317,7 +327,7 @@
     <defName>MadAnimal</defName>
     <label>mad animal</label>
     <abbreviation>madanimal</abbreviation>
-    <cost>600</cost>
+    <cost>200</cost>
     <eventCap>2</eventCap>
     <incidentHelper>TwitchToolkit.IncidentHelpers.Misc.MadAnimal</incidentHelper>
     <karmaType>Bad</karmaType>
@@ -357,7 +367,7 @@
     <defName>HerdMigration</defName>
     <label>herd migration</label>
     <abbreviation>herdmigration</abbreviation>
-    <cost>400</cost>
+    <cost>200</cost>
     <eventCap>1</eventCap>
     <incidentHelper>TwitchToolkit.IncidentHelpers.Misc.HerdMigration</incidentHelper>
     <karmaType>Good</karmaType>
@@ -367,7 +377,7 @@
     <defName>FarmAnimalsWanderIn</defName>
     <label>farm animals wander in</label>
     <abbreviation>farmanimals</abbreviation>
-    <cost>200</cost>
+    <cost>400</cost>
     <eventCap>3</eventCap>
     <incidentHelper>TwitchToolkit.IncidentHelpers.Misc.FarmAnimalsWanderIn</incidentHelper>
     <karmaType>Good</karmaType>
@@ -407,7 +417,7 @@
     <defName>TravelerGroup</defName>
     <label>traveler group</label>
     <abbreviation>travelergroup</abbreviation>
-    <cost>350</cost>
+    <cost>80</cost>
     <eventCap>3</eventCap>
     <incidentHelper>TwitchToolkit.IncidentHelpers.Misc.TravelerGroup</incidentHelper>
     <karmaType>Good</karmaType>
@@ -433,7 +443,7 @@
     <karmaType>Good</karmaType>
   </TwitchToolkit.Incidents.StoreIncidentSimple>
 
-  <TwitchToolkit.Incidents.StoreIncidentSimple>
+  <!--<TwitchToolkit.Incidents.StoreIncidentSimple>
     <defName>YorkshireTerriers</defName>
     <label>yorkshire terriers</label>
     <abbreviation>yorkshireterriers</abbreviation>
@@ -441,7 +451,7 @@
     <eventCap>3</eventCap>
     <incidentHelper>TwitchToolkit.IncidentHelpers.Misc.YorkshireTerriers</incidentHelper>
     <karmaType>Good</karmaType>
-  </TwitchToolkit.Incidents.StoreIncidentSimple>
+  </TwitchToolkit.Incidents.StoreIncidentSimple>-->
 
   <TwitchToolkit.Incidents.StoreIncidentSimple>
     <defName>Party</defName>
@@ -747,7 +757,7 @@
     <defName>BuyPrisoner</defName>
     <label>prisoner</label>
     <abbreviation>prisoner</abbreviation>
-    <cost>1000</cost>
+    <cost>800</cost>
     <eventCap>5</eventCap>
     <incidentHelper>TwitchToolkit.IncidentHelpers.Special.BuyPrisoner</incidentHelper>
     <karmaType>Good</karmaType>
@@ -758,7 +768,7 @@
     <defName>VisitColony</defName>
     <label>visit colony</label>
     <abbreviation>visitcolony</abbreviation>
-    <cost>1000</cost>
+    <cost>300</cost>
     <eventCap>5</eventCap>
     <incidentHelper>TwitchToolkit.IncidentHelpers.Special.VisitColony</incidentHelper>
     <karmaType>Good</karmaType>
@@ -769,7 +779,7 @@
     <defName>BeRescued</defName>
     <label>be rescued</label>
     <abbreviation>berescued</abbreviation>
-    <cost>1000</cost>
+    <cost>900</cost>
     <eventCap>1</eventCap>
     <incidentHelper>TwitchToolkit.IncidentHelpers.Special.BeRescued</incidentHelper>
     <karmaType>Good</karmaType>

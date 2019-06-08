@@ -15,7 +15,7 @@ namespace TwitchToolkit.IncidentHelpers.Diseases
         public override bool IsPossible(string message, Viewer viewer, bool separateChannel = false)
         {
             this.separateChannel = separateChannel;
-            this.viewer = viewer;
+            this.Viewer = viewer;
             string[] command = message.Split(' ');
             if (command.Length < 3)
             {
@@ -56,12 +56,12 @@ namespace TwitchToolkit.IncidentHelpers.Diseases
         {
             if (worker.TryExecute(parms))
             {
-                viewer.TakeViewerCoins(pointsWager);
-                viewer.CalculateNewKarma(this.storeIncident.karmaType, pointsWager);
-                VariablesHelpers.SendPurchaseMessage($"Starting {worker.def.LabelCap} with {pointsWager} points wagered and {(int)parms.points} disease points purchased by {viewer.username}", separateChannel);
+                Viewer.TakeViewerCoins(pointsWager);
+                Viewer.CalculateNewKarma(this.storeIncident.karmaType, pointsWager);
+                VariablesHelpers.SendPurchaseMessage($"Starting {worker.def.LabelCap} with {pointsWager} points wagered and {(int)parms.points} disease points purchased by {Viewer.username}", separateChannel);
                 return;
             }
-            Toolkit.client.SendMessage($"@{viewer.username} not enough points spent for diseases.", separateChannel);
+            Toolkit.client.SendMessage($"@{Viewer.username} not enough points spent for diseases.", separateChannel);
         }
 
         private int pointsWager = 0;
@@ -70,7 +70,7 @@ namespace TwitchToolkit.IncidentHelpers.Diseases
         private IIncidentTarget target = null;
         private bool separateChannel = false;
 
-        public override Viewer viewer { get; set; }
+        public override Viewer Viewer { get; set; }
     }
 
     public class SpecificDisease : IncidentHelperVariables
@@ -78,7 +78,7 @@ namespace TwitchToolkit.IncidentHelpers.Diseases
         public override bool IsPossible(string message, Viewer viewer, bool separateChannel = false)
         {
             this.separateChannel = separateChannel;
-            this.viewer = viewer;
+            this.Viewer = viewer;
             string[] command = message.Split(' ');
             if (command.Length < 4)
             {
@@ -131,12 +131,12 @@ namespace TwitchToolkit.IncidentHelpers.Diseases
         {
             if (worker.TryExecute(parms))
             {
-                viewer.TakeViewerCoins(pointsWager);
-                viewer.CalculateNewKarma(this.storeIncident.karmaType, pointsWager);
-                VariablesHelpers.SendPurchaseMessage($"Starting {worker.def.LabelCap} with {pointsWager} points wagered and {(int)parms.points} disease points purchased by {viewer.username}", separateChannel);
+                Viewer.TakeViewerCoins(pointsWager);
+                Viewer.CalculateNewKarma(this.storeIncident.karmaType, pointsWager);
+                VariablesHelpers.SendPurchaseMessage($"Starting {worker.def.LabelCap} with {pointsWager} points wagered and {(int)parms.points} disease points purchased by {Viewer.username}", separateChannel);
                 return;
             }
-            Toolkit.client.SendMessage($"@{viewer.username} not enough points spent for diseases.", separateChannel);
+            Toolkit.client.SendMessage($"@{Viewer.username} not enough points spent for diseases.", separateChannel);
         }
 
         private int pointsWager = 0;
@@ -145,7 +145,7 @@ namespace TwitchToolkit.IncidentHelpers.Diseases
         private IIncidentTarget target = null;
         private bool separateChannel = false;
 
-        public override Viewer viewer { get; set; }
+        public override Viewer Viewer { get; set; }
     }
 
 }

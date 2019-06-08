@@ -13,6 +13,8 @@ namespace TwitchToolkit.Store
         public abstract bool IsPossible();
         public abstract void TryExecute();
         public StoreIncident storeIncident = null;
+        public Viewer Viewer { get; set; } = null;
+        public string message;
     }
 
     public abstract class IncidentHelperVariables
@@ -20,6 +22,7 @@ namespace TwitchToolkit.Store
         public abstract bool IsPossible(string message, Viewer viewer, bool separateChannel = false);
         public abstract void TryExecute();
         public StoreIncidentVariables storeIncident = null;
-        public abstract Viewer viewer { get; set; }
+        public abstract Viewer Viewer { get; set; }
+        public string message;
     }
 }
