@@ -171,6 +171,10 @@
     <Compile Include="VotingHelpers\VotingHelpers_Raids.cs" />
     <Compile Include="VotingHelpers\VotingHelpers_Weather.cs" />
     <Compile Include="VotingHelpers\VotingHelper_GameCondition.cs" />
+    <Compile Include="Windows\Installation\ChatSettingsOne.cs" />
+    <Compile Include="Windows\Installation\ChatSettingsTest.cs" />
+    <Compile Include="Windows\Installation\InstallStep.cs" />
+    <Compile Include="Windows\Installation\Window_Install.cs" />
     <Compile Include="Windows\SettingsWindow.cs" />
     <Compile Include="Windows\StoreIncidentEditor.cs" />
     <Compile Include="Windows\StoreIncidentsWindow.cs" />
@@ -184,6 +188,7 @@
     <Compile Include="Windows\Window_Loading.cs" />
     <Compile Include="Windows\Window_NewChat.cs" />
     <Compile Include="Windows\Window_SocketClient.cs" />
+    <Compile Include="Windows\Window_Trackers.cs" />
     <Compile Include="Windows\Window_ViewerEditProp.cs" />
     <Compile Include="Windows\Window_Viewers.cs" />
     <Compile Include="Windows\Window_Warning.cs" />
@@ -233,6 +238,10 @@
     </Content>
     <Content Include="Defs\Misc\IncidentWorkers.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Defs\Misc\InstallSteps.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="Defs\Misc\Letters.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

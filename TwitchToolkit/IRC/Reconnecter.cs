@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using TwitchToolkit.Utilities;
+using TwitchToolkit.Windows.Installation;
 using Verse;
 
 namespace TwitchToolkit.IRC
@@ -11,7 +12,12 @@ namespace TwitchToolkit.IRC
     {
         public Reconnecter(Game game)
         {
-
+            if (ToolkitSettings.FirstTimeInstallation)
+            {
+                Window_Install window = new Window_Install();
+                Find.WindowStack.TryRemove(window.GetType());
+                Find.WindowStack.Add(window);
+            }
         }
 
         public override void GameComponentTick()

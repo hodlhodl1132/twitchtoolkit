@@ -84,7 +84,7 @@ namespace TwitchToolkit
 
         public static void DrawCustomStorytellerInterface(Rect rect, ref StorytellerDef chosenStoryteller, ref DifficultyDef difficulty, Listing_Standard infoListing)
         {
-            if (chosenStoryteller.defName != "StorytellerPacks") return;
+            //if (chosenStoryteller.defName != "StorytellerPacks") return;
 
             Rect storytellerPacksButton = new Rect(140f, rect.height - 50f, 190f, 38f);
 

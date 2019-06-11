@@ -138,6 +138,14 @@ namespace TwitchToolkit
                 Purchase_Handler.viewerNamesDoingVariableCommands = new List<string>();
             }
 
+            rectBtn.x += btnWidth + padding;
+            if (Widgets.ButtonText(rectBtn, "Tracker"))
+            {
+                Window_Trackers window = new Window_Trackers();
+                Find.WindowStack.TryRemove(window.GetType());
+                Find.WindowStack.Add(window);
+            }
+
             //rectBtn.x += btnWidth + padding;
             //if (Widgets.ButtonText(rectBtn, "Socket"))
             //{

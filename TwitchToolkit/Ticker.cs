@@ -130,14 +130,17 @@ namespace TwitchToolkit
                 if (IncidentHelpers.Count > 0)
                 {
                     var incidentHelper = IncidentHelpers.Dequeue();
-                    Purchase_Handler.QueuePlayerMessage(incidentHelper.Viewer, incidentHelper.message);
+                    if (!(incidentHelper is VotingHelper))
+                    {
+                        Purchase_Handler.QueuePlayerMessage(incidentHelper.Viewer, incidentHelper.message);
+                    }
                     incidentHelper.TryExecute();
                 }
 
                 if (IncidentHelperVariables.Count > 0)
                 {
                     var incidentHelper = IncidentHelperVariables.Dequeue();
-                    Purchase_Handler.QueuePlayerMessage(incidentHelper.Viewer, incidentHelper.message, incidentHelper.storeIncident.variables);
+                        Purchase_Handler.QueuePlayerMessage(incidentHelper.Viewer, incidentHelper.message, incidentHelper.storeIncident.variables);
                     incidentHelper.TryExecute();
                     if (Purchase_Handler.viewerNamesDoingVariableCommands.Contains(incidentHelper.Viewer.username))
                         Purchase_Handler.viewerNamesDoingVariableCommands.Remove(incidentHelper.Viewer.username);

@@ -55,6 +55,86 @@ namespace TwitchToolkit.Store
             return karmaHistory.Where(pair => pair.Value == karmaType.ToString()).Count();
         }
 
+        public float DaysTillIncidentIsPurchaseable(StoreIncident incident)
+        {
+            Store_Component component = Current.Game.GetComponent<Store_Component>();
+
+            List<int> associateLogIDS = new List<int>();
+
+            bool onCooldownByKarmaType;
+            bool onCooldownByIncidentCap;
+
+            float ticksTillExpires = -1;
+            float daysTillCooldownExpires = -1;
+
+            if (incident.defName == "Item")
+            {
+                if (ToolkitSettings.MaxEvents)
+                {
+                    int logged = component.IncidentsInLogOf(incident.abbreviation);
+                    onCooldownByKarmaType = logged >= ToolkitSettings.MaxCarePackagesPerInterval;
+                }
+
+                if (ToolkitSettings.EventsHaveCooldowns)
+                {
+                    int logged = component.IncidentsInLogOf(incident.abbreviation);
+                    onCooldownByIncidentCap = logged >= incident.eventCap;
+                }
+
+                foreach (KeyValuePair<int, string> pair in abbreviationHistory)
+                {
+                    if (pair.Value == incident.abbreviation)
+                    {
+                        associateLogIDS.Add(pair.Key);
+                    }
+                }
+            }
+            else
+            {
+                if (ToolkitSettings.MaxEvents)
+                {
+                    int logged = component.KarmaTypesInLogOf(incident.karmaType);
+                    onCooldownByKarmaType = Purchase_Handler.CheckTimesKarmaTypeHasBeenUsedRecently(incident);
+                }
+
+                if (ToolkitSettings.EventsHaveCooldowns)
+                {
+                    int logged = component.IncidentsInLogOf(incident.abbreviation);
+                    onCooldownByIncidentCap = logged >= incident.eventCap;
+                }
+
+                foreach (KeyValuePair<int, string> pair in abbreviationHistory)
+                {
+                    if (pair.Value == incident.abbreviation)
+                    {
+                        associateLogIDS.Add(pair.Key);
+                    }
+                }
+
+                foreach (KeyValuePair<int, string> pair in karmaHistory)
+                {
+                    if (pair.Value == incident.karmaType.ToString())
+                    {
+                        associateLogIDS.Add(pair.Key);
+                    }
+                }
+            }
+
+            foreach (int id in associateLogIDS)
+            {
+                float ticksAgo = Find.TickManager.TicksGame - tickHistory[id];
+                float daysAgo = ticksAgo / GenDate.TicksPerDay;
+                float ticksTillExpiration = (ToolkitSettings.EventCooldownInterval * GenDate.TicksPerDay) - ticksAgo;
+                if (ticksTillExpires == -1 || ticksAgo < ticksTillExpiration)
+                {
+                    ticksTillExpires = ticksAgo;
+                    daysTillCooldownExpires = ticksTillExpiration / GenDate.TicksPerDay;
+                }
+            }
+
+            return (float) Math.Round(daysTillCooldownExpires, 1);
+        }
+
         public void LogIncident(StoreIncident incident)
         {
             int currentTick = Find.TickManager.TicksGame;

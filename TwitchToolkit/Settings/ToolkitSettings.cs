@@ -14,6 +14,8 @@ namespace TwitchToolkit
 {
     public class ToolkitSettings : ModSettings
     {
+        public static bool FirstTimeInstallation = true;
+
         #region IRCAuthentication
         public static string Channel = "";
         public static string Username = "";
@@ -343,6 +345,8 @@ namespace TwitchToolkit
 
         public override void ExposeData()
         {
+            Scribe_Values.Look(ref FirstTimeInstallation, "FirstTimeInstallation", true);
+
             Scribe_Values.Look(ref Channel, "Channel", "");
             Scribe_Values.Look(ref Username, "Username", "");
             Scribe_Values.Look(ref OAuth, "OAuth", "");
@@ -501,9 +505,9 @@ namespace TwitchToolkit
             }
         }
 
-        static SettingsTab currentTab = SettingsTab.Chat;
+        public static SettingsTab currentTab = SettingsTab.Chat;
 
-        enum SettingsTab
+        public enum SettingsTab
         {
             Chat,
             Coins,

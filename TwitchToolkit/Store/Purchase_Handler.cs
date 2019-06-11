@@ -96,7 +96,7 @@ namespace TwitchToolkit.Store
 
             if (!CheckIfViewerHasEnoughCoins(viewer, cost, separateChannel)) return;
 
-            if (CheckIfKarmaTypeIsMaxed(incident.karmaType, viewer.username, separateChannel)) return;
+            if (CheckIfKarmaTypeIsMaxed(incident, viewer.username, separateChannel)) return;
 
             if (CheckIfIncidentIsOnCooldown(incident, viewer.username, separateChannel)) return;
 
@@ -152,7 +152,14 @@ namespace TwitchToolkit.Store
 
             if (!CheckIfViewerHasEnoughCoins(viewer, cost, separateChannel)) return;
 
-            if (CheckIfKarmaTypeIsMaxed(incident.karmaType, viewer.username, separateChannel)) return;
+            if (incident != DefDatabase<StoreIncidentVariables>.GetNamed("Item"))
+            {
+                if (CheckIfKarmaTypeIsMaxed(incident, viewer.username, separateChannel)) return;
+            }
+            else
+            {
+                if (CheckIfCarePackageIsOnCooldown(viewer.username, separateChannel)) return;
+            }
 
             if (CheckIfIncidentIsOnCooldown(incident, viewer.username, separateChannel)) return;
 
@@ -211,20 +218,20 @@ namespace TwitchToolkit.Store
             return true;
         }
 
-        public static bool CheckIfKarmaTypeIsMaxed(KarmaType karmaType, string username, bool separateChannel = false)
+        public static bool CheckIfKarmaTypeIsMaxed(StoreIncident incident, string username, bool separateChannel = false)
         {
-                bool maxed = CheckTimesKarmaTypeHasBeenUsedRecently(karmaType);        
+                bool maxed = CheckTimesKarmaTypeHasBeenUsedRecently(incident);        
 
                 if (maxed)
                 {
-                    Log.Message("KarmaType " + karmaType + " event cap has been reached");
-                    Toolkit.client.SendMessage($"@{username} " + "TwitchToolkitMaxEvents".Translate(), separateChannel);
+                    Store_Component component = Current.Game.GetComponent<Store_Component>();
+                    Toolkit.client.SendMessage($"@{username} is maxed from karmatype, wait " + component.DaysTillIncidentIsPurchaseable(incident) + " days to purchase.", separateChannel);
                 }
 
                 return maxed;
         }
 
-        public static bool CheckTimesKarmaTypeHasBeenUsedRecently(KarmaType karmaType)
+        public static bool CheckTimesKarmaTypeHasBeenUsedRecently(StoreIncident incident)
         {
             // if they have max event setting off always return false
             if (!ToolkitSettings.MaxEvents)
@@ -234,16 +241,29 @@ namespace TwitchToolkit.Store
 
             Store_Component component = Current.Game.GetComponent<Store_Component>();
 
-            switch (karmaType)
+            switch (incident.karmaType)
             {
                 case KarmaType.Bad:
-                    return component.KarmaTypesInLogOf(karmaType) >= ToolkitSettings.MaxBadEventsPerInterval;
+                    return component.KarmaTypesInLogOf(incident.karmaType) >= ToolkitSettings.MaxBadEventsPerInterval;
                 case KarmaType.Good:
-                    return component.KarmaTypesInLogOf(karmaType) >= ToolkitSettings.MaxGoodEventsPerInterval;
+                    return component.KarmaTypesInLogOf(incident.karmaType) >= ToolkitSettings.MaxGoodEventsPerInterval;
                 case KarmaType.Neutral:
-                    return component.KarmaTypesInLogOf(karmaType) >= ToolkitSettings.MaxNeutralEventsPerInterval;
+                    return component.KarmaTypesInLogOf(incident.karmaType) >= ToolkitSettings.MaxNeutralEventsPerInterval;
                 case KarmaType.Doom:
-                    return component.KarmaTypesInLogOf(karmaType) >= ToolkitSettings.MaxBadEventsPerInterval;
+                    return component.KarmaTypesInLogOf(incident.karmaType) >= ToolkitSettings.MaxBadEventsPerInterval;
+            }
+
+            return false;
+        }
+
+        public static bool CheckIfCarePackageIsOnCooldown(string username, bool separateChannel = false)
+        {
+            Store_Component component = Current.Game.GetComponent<Store_Component>();
+
+            if (component.IncidentsInLogOf(DefDatabase<StoreIncidentVariables>.GetNamed("Item").abbreviation) >= ToolkitSettings.MaxCarePackagesPerInterval)
+            {
+                Toolkit.client.SendMessage($"@{username} care packages are on cooldown.", separateChannel);
+                return true;
             }
 
             return false;
@@ -262,8 +282,8 @@ namespace TwitchToolkit.Store
 
             if (maxed)
             {
-                Log.Message("StoreIncident max per day reached for " + incident.label);
-                Toolkit.client.SendMessage($"@{username} " + "TwitchToolkitEventOnCooldown".Translate(), separateChannel);
+                float days = component.DaysTillIncidentIsPurchaseable(incident);
+                Toolkit.client.SendMessage($"@{username} is maxed, wait " + days + $" day{(days != 1 ? "s" : "")} to purchase.", separateChannel);
             }
 
             return maxed;
