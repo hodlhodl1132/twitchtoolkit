@@ -20,7 +20,7 @@ namespace TwitchToolkit.Settings
                     return;
                 }
 
-                Log.Warning("Loading brand new vote weights");
+                Helper.Log("Loading brand new vote weights");
 
                 ToolkitSettings.VoteWeights = new Dictionary<string, int>();
 
@@ -31,7 +31,7 @@ namespace TwitchToolkit.Settings
             }
             else
             {
-                Log.Warning("Loading vote weights not saved");
+                Helper.Log("Loading vote weights not saved");
 
                 List<VotingIncident> incidentsNotLoaded = DefDatabase<VotingIncident>.AllDefs.Where(s =>
                     !ToolkitSettings.VoteWeights.ContainsKey(s.defName)
@@ -45,7 +45,7 @@ namespace TwitchToolkit.Settings
 
             if (ToolkitSettings.VoteWeights != null && ToolkitSettings.VoteWeights.Count > 0)
             {
-                Log.Warning("Loading vote weights from player settings");
+                Helper.Log("Loading vote weights from player settings");
 
                 foreach (KeyValuePair<string, int> pair in ToolkitSettings.VoteWeights)
                 {

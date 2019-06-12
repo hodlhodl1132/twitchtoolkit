@@ -41,11 +41,11 @@ namespace TwitchToolkit.Storytellers
             if (Find.TickManager.TicksGame > lastFiredTick + (ToolkitSettings.ToryTalkerMTBDays * GenDate.TicksPerDay))
                 {
                 if (Prefs.DevMode)
-                    Log.Warning($"Checking last voting tick {Find.TickManager.TicksGame} > {lastFiredTick} + ({ToolkitSettings.ToryTalkerMTBDays * GenDate.TicksPerDay}) : true");
+                    Helper.Log($"Checking last voting tick {Find.TickManager.TicksGame} > {lastFiredTick} + ({ToolkitSettings.ToryTalkerMTBDays * GenDate.TicksPerDay}) : true");
                 return true;
             }
             if (Prefs.DevMode)
-                Log.Warning($"Checking last voting tick {Find.TickManager.TicksGame} > {lastFiredTick} + ({ToolkitSettings.ToryTalkerMTBDays * GenDate.TicksPerDay}) : false");
+                Helper.Log($"Checking last voting tick {Find.TickManager.TicksGame} > {lastFiredTick} + ({ToolkitSettings.ToryTalkerMTBDays * GenDate.TicksPerDay}) : false");
             return false;
         }
 
@@ -130,6 +130,11 @@ namespace TwitchToolkit.Storytellers
 
                 case "UristBot":
                     daysBetweenEvents = ToolkitSettings.UristBotMTBDays;
+                    break;
+
+                case "Milasandra":
+                    // has built in MTB day calculator
+                    daysBetweenEvents = 0;
                     break;
 
                 default:

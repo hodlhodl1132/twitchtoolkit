@@ -145,11 +145,16 @@ namespace TwitchToolkit.VotingHelpers.VotingHelpers_Hazards
 
         internal IntVec3 loc;
         internal CellRect cellRect;
-        internal readonly Map map;
+        internal Map map;
     }
 
     public class Tornados : Tornado
     {
+        public Tornados()
+        {
+            map = Helper.AnyPlayerMap;
+        }
+
         public override void TryExecute()
         {
             int count = 0;

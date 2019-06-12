@@ -28,7 +28,7 @@ namespace TwitchToolkit.Storytellers
                     Log.Error(e.Message);
                 }
 
-                Log.Warning("storyteller comp loaded " + storytellerComp.GetType());
+                Helper.Log("storyteller comp loaded " + storytellerComp.GetType());
 
                 return storytellerComp;
             }

@@ -66,6 +66,7 @@
     <Compile Include="IncidentHelpers\IncidentHelper_Settings.cs" />
     <Compile Include="IncidentHelpers\IncidentHelper_Special.cs" />
     <Compile Include="IncidentHelpers\IncidentHelper_Traits.cs" />
+    <Compile Include="IncidentHelpers\IncidentHelper_Votes.cs" />
     <Compile Include="IncidentHelpers\SettingsWindows\Window_BuyItem.cs" />
     <Compile Include="IncidentHelpers\SettingsWindows\Window_AddTrait.cs" />
     <Compile Include="IncidentHelpers\SettingsWindows\Window_LevelPawn.cs" />
@@ -134,17 +135,20 @@
     <Compile Include="Storytellers\StorytellerCompProperties_CustomRandomStoryTeller.cs" />
     <Compile Include="Storytellers\StorytellerCompProperties_HodlBot.cs" />
     <Compile Include="Storytellers\StorytellerCompProperties_Random.cs" />
+    <Compile Include="Storytellers\StorytellerCompProperties_ToolkitOnOffCycle.cs" />
     <Compile Include="Storytellers\StorytellerCompProperties_TwitchToolkit.cs" />
     <Compile Include="Storytellers\StorytellerCompProperties_ToryTalker.cs" />
     <Compile Include="Storytellers\StorytellerCompProperties_UristBot.cs" />
     <Compile Include="Storytellers\StorytellerComp_HodlBot.cs" />
     <Compile Include="Storytellers\StorytellerComp_Random.cs" />
+    <Compile Include="Storytellers\StorytellerComp_ToolkitOnOffCycle.cs" />
     <Compile Include="Storytellers\StorytellerComp_TwitchToolkit.cs" />
     <Compile Include="Storytellers\StorytellerComp_ToryTalker.cs" />
     <Compile Include="Storytellers\StorytellerComp_UristBot.cs" />
     <Compile Include="Storytellers\StorytellerPack.cs" />
     <Compile Include="Storytellers\StorytellerPackWindows\Window_GlobalVoteWeights.cs" />
     <Compile Include="Storytellers\StorytellerPackWindows\Window_HodlBotSettings.cs" />
+    <Compile Include="Storytellers\StorytellerPackWindows\Window_Milasandra.cs" />
     <Compile Include="Storytellers\StorytellerPackWindows\Window_StorytellerPacks.cs" />
     <Compile Include="Storytellers\StorytellerPackWindows\Window_ToryTalkerSettings.cs" />
     <Compile Include="Storytellers\StoryTellerVoteTracker.cs" />
@@ -156,6 +160,7 @@
     <Compile Include="Votes\Vote_ExoticItems.cs" />
     <Compile Include="Votes\Vote_HodlBot.cs" />
     <Compile Include="Votes\Vote_MentalBreak.cs" />
+    <Compile Include="Votes\Vote_Milasandra.cs" />
     <Compile Include="Votes\Vote_RaidStrategy.cs" />
     <Compile Include="Votes\Vote_ToryTalker.cs" />
     <Compile Include="Votes\Vote_VotingIncident.cs" />
@@ -248,6 +253,7 @@
     </Content>
     <Content Include="Patches\StorytellerPatch.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="Textures\Weather\VomitRainWorldOverlay.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

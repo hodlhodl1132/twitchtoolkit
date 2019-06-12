@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Collections.Generic;
 using System.Threading;
+using Verse;
 
 namespace TwitchToolkit
 {
@@ -110,6 +111,57 @@ namespace TwitchToolkit
         {
             if (string.IsNullOrEmpty(value)) return value;
             return value.Length <= maxLength ? value : value.Substring(0, maxLength) + (dots ? "..." : "");
+        }
+
+        public static bool TryChooseRandomElementByWeight<T>(this IEnumerable<T> source, Func<T, float> weightSelector, out T result)
+        {
+            IList<T> list = source.ToList();
+
+            if (list == null || list.Count() == 0)
+            {
+                Helper.Log("list is null");
+                result = default(T);
+                return false;
+            }
+
+            float totalWeight = 0;
+            for (int i = 0; i < list.Count(); i++)
+            {
+                float weight = weightSelector(list[i]);
+                if (weight < 0f)
+                {
+                    Verse.Log.Error("Negative weight in selector: " + weight + " from " + list[i]);
+                    weight = 0;
+                }
+                totalWeight += weight;
+            }
+
+            float choice = Rand.Range(0, totalWeight);
+            float sum = 0;
+
+            int iterator = 0;
+            foreach (var obj in list)
+            {
+                float weight = weightSelector(list[iterator]);
+                for (int i = (int) sum; i < weight + sum; i++)
+                {
+                    if (i >= choice)
+                    {
+                        result = obj;
+                        return true;
+                    }
+                }
+                iterator++;
+                sum += weight;
+            }
+
+            result = list.ElementAt(0);
+            return true;
+        }
+
+        public interface IWeighted
+        {
+            int Weight { get; set; }
         }
     }
 }

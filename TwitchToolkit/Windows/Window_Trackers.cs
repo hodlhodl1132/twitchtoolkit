@@ -120,8 +120,11 @@ namespace TwitchToolkit.Windows
                     Find.WindowStack.Add(window);
                 }
 
-                sideTwo.width = sideOne.x + sideOne.width + 40f;
-                sideTwo.y += sideTwo.height;
+                sideOne = new Rect(eventBox.x, sideOne.y, 250f, 28f);
+                sideTwo = new Rect(sideOne)
+                {
+                    x = sideOne.x + sideOne.width + 40f
+                };
             }
 
             cachedFramesCount++;
@@ -137,7 +140,7 @@ namespace TwitchToolkit.Windows
 
         void UpdateTrackerStats()
         {
-            viewerCount = Viewers.jsonallviewers == null ? 0 : Viewers.jsonallviewers.Count();
+            viewerCount = Viewers.jsonallviewers == null ? 0 : Viewers.ParseViewersFromJsonAndFindActiveViewers().Count;
 
             cooldownsByTypeEnabled = ToolkitSettings.MaxEvents;
 

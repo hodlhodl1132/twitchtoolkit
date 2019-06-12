@@ -33,12 +33,12 @@ namespace TwitchToolkit.IRC
             }
             else if (Toolkit.client != null && !Toolkit.client.Connected)
             {
-                Log.Warning("Disconnect detected, attempting reconnect");
+                Helper.Log("Disconnect detected, attempting reconnect");
                 ToolkitIRC.NewInstance();
             }
             else if (Ticker.LastIRCPong != 0 && TimeHelper.SecondsElapsed(DateTime.FromFileTime(Ticker.LastIRCPong)) > reconnectInterval )
             {
-                Log.Warning($"Has been over {reconnectInterval} seconds since last message from server, reconnecting");
+                Helper.Log($"Has been over {reconnectInterval} seconds since last message from server, reconnecting");
                 ToolkitIRC.NewInstance();
             }
         }

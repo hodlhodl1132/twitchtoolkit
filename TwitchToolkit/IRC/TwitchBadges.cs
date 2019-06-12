@@ -56,7 +56,7 @@ namespace TwitchToolkit.IRC
                 }
             }
 
-            Log.Warning("badge count " + subBadges.Count);
+            Helper.Log("badge count " + subBadges.Count);
 
             CreateWebClient();
 
@@ -87,7 +87,7 @@ namespace TwitchToolkit.IRC
 
             KeyValuePair<int, string> badge = subBadges.First();
 
-            Log.Warning("Downloading badge for " + badge.Key);
+            Helper.Log("Downloading badge for " + badge.Key);
             client.DownloadFileAsync( new Uri(badge.Value), Path.Combine( dataPath , badge.Key.ToString() + badgeExt ));
         }
 

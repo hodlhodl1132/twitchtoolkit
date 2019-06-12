@@ -8,26 +8,27 @@ using Verse;
 
 namespace TwitchToolkit.Votes
 {
-    public class Vote_HodlBot : Vote_VotingIncident
+    public class Vote_Milasandra : VoteIncidentDef
     {
-        public Vote_HodlBot(Dictionary<int, VotingIncident> incidents, StorytellerPack pack, string title = null) : base(incidents, title)
+        public Vote_Milasandra(Dictionary<int, IncidentDef> incidents, StorytellerComp source, IncidentParms parms = null, string title = null) : base(incidents, source, parms)
         {
-            this.pack = pack;
+            this.pack = DefDatabase<StorytellerPack>.GetNamed("Milasandra");
             this.title = title;
         }
 
         public override void StartVote()
         {
+            // if streamers has both voting chat messagse and voting window off, create the window still
             if (ToolkitSettings.VotingWindow || (!ToolkitSettings.VotingWindow && !ToolkitSettings.VotingChatMsgs))
             {
-                VoteWindow window = new VoteWindow(this, "<color=#4BB543>" + title + "</color>");
+                VoteWindow window = new VoteWindow(this, "<color=#1482CB>" + title + "</color>");
                 Find.WindowStack.Add(window);
             }
 
             if (ToolkitSettings.VotingChatMsgs)
             {
                 Toolkit.client.SendMessage(title ?? "TwitchStoriesChatMessageNewVote".Translate() + ": " + "TwitchToolKitVoteInstructions".Translate());
-                foreach (KeyValuePair<int, VotingIncident> pair in incidents)
+                foreach (KeyValuePair<int, IncidentDef> pair in incidents)
                 {
                     Toolkit.client.SendMessage($"[{pair.Key + 1}]  {VoteKeyLabel(pair.Key)}");
                 }
@@ -40,6 +41,6 @@ namespace TwitchToolkit.Votes
             base.EndVote();
         }
 
-        readonly StorytellerPack pack = null;
+        StorytellerPack pack;
     }
 }

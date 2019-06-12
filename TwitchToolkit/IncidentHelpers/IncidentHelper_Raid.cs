@@ -95,7 +95,7 @@ namespace TwitchToolkit.IncidentHelpers.Raids
                 return false;
             }
 
-            Log.Warning("Finding target");
+            Helper.Log("Finding target");
 
             target = Current.Game.AnyPlayerHomeMap;
             if (target == null)

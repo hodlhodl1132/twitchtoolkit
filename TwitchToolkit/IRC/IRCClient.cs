@@ -110,15 +110,15 @@ namespace TwitchToolkit.IRC
         {
             if (_socket != null)
             {
-                Log.Warning("Can't connect, socket is not empty");
+                Helper.Log("Can't connect, socket is not empty");
                 Disconnect();
             }
-            Log.Warning("Preparing socket");
+            Helper.Log("Preparing socket");
             _ping = true;
             _socketReady = false;
             _socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             _socket.BeginConnect(_host, _port, new AsyncCallback(ConnectCallback), null);
-            Log.Warning("finished socket connection");
+            Helper.Log("finished socket connection");
         }
 
         public bool Connected
@@ -147,9 +147,9 @@ namespace TwitchToolkit.IRC
             {
                 try
                 {
-                    Log.Warning("closing socket");
+                    Helper.Log("closing socket");
                     _socket.Close();
-                    Log.Warning("socket should be closed");
+                    Helper.Log("socket should be closed");
                 }
                 catch (Exception e)
                 {

@@ -16,7 +16,7 @@ namespace TwitchToolkit.Store
             allStoreIncidentsSimple = DefDatabase<StoreIncidentSimple>.AllDefs.ToList();
             allStoreIncidentsVariables = DefDatabase<StoreIncidentVariables>.AllDefs.ToList();
 
-            Log.Warning("trying to load vars after def database loaded");
+            Helper.Log("trying to load vars after def database loaded");
 
             Toolkit.Mod.GetSettings<ToolkitSettings>();
 
@@ -61,7 +61,7 @@ namespace TwitchToolkit.Store
 
             Item item = StoreInventory.items.Find(s => s.abr == productKey);
 
-            Log.Warning($"abr: {productKey} ");
+            Helper.Log($"abr: {productKey} ");
 
             if (item != null)
             {
@@ -104,7 +104,7 @@ namespace TwitchToolkit.Store
             
             if (helper == null)
             {
-                Log.Warning("Missing helper for incident " + incident.defName);
+                Helper.Log("Missing helper for incident " + incident.defName);
                 return;
             }
 
@@ -169,7 +169,7 @@ namespace TwitchToolkit.Store
             
             if (helper == null)
             {
-                Log.Warning("Missing helper for incident " + incident.defName);
+                Helper.Log("Missing helper for incident " + incident.defName);
                 return;
             }
 
@@ -258,11 +258,18 @@ namespace TwitchToolkit.Store
 
         public static bool CheckIfCarePackageIsOnCooldown(string username, bool separateChannel = false)
         {
-            Store_Component component = Current.Game.GetComponent<Store_Component>();
-
-            if (component.IncidentsInLogOf(DefDatabase<StoreIncidentVariables>.GetNamed("Item").abbreviation) >= ToolkitSettings.MaxCarePackagesPerInterval)
+            if (!ToolkitSettings.MaxEvents)
             {
-                Toolkit.client.SendMessage($"@{username} care packages are on cooldown.", separateChannel);
+                return false;
+            }
+
+            Store_Component component = Current.Game.GetComponent<Store_Component>();
+            StoreIncidentVariables incident = DefDatabase<StoreIncidentVariables>.GetNamed("Item");
+
+            if (component.IncidentsInLogOf(incident.abbreviation) >= ToolkitSettings.MaxCarePackagesPerInterval)
+            {
+                float daysTill = component.DaysTillIncidentIsPurchaseable(incident);
+                Toolkit.client.SendMessage($"@{username} care packages are on cooldown, wait " + daysTill + $" day{(daysTill != 1 ? "s" : "")}.", separateChannel);
                 return true;
             }
 

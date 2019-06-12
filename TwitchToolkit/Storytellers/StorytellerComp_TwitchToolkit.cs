@@ -31,7 +31,6 @@ namespace TwitchToolkit.Storytellers
 
             if (allPacks == null || allPacks.Count < 1)
             {
-                Log.Warning("No story teller packs found");
                 yield break;
             }
 
@@ -66,6 +65,10 @@ namespace TwitchToolkit.Storytellers
                 else if (pack.defName == "UristBot")
                 {
                     pack.enabled = ToolkitSettings.UristBotEnabled;
+                }
+                else if (pack.defName == "Milasandra")
+                {
+                    pack.enabled = ToolkitSettings.MilasandraEnabled;
                 }
             }
         }

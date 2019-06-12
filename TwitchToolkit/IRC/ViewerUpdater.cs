@@ -22,7 +22,7 @@ namespace TwitchToolkit.IRC
 
             foreach (KeyValuePair<string, string> pair in msg.Parameters)
             {
-                //Log.Warning(pair.Key + " : " + pair.Value);
+                //Helper.Log(pair.Key + " : " + pair.Value);
                 switch (pair.Key)
                 {
                     case "color":
@@ -86,7 +86,7 @@ namespace TwitchToolkit.IRC
         {
             if (hex.Length != 6)
             {
-                Log.Warning("Invalid RGB color generated from hex: " + hex);
+                Helper.Log("Invalid RGB color generated from hex: " + hex);
                 return new Color();
             }
 

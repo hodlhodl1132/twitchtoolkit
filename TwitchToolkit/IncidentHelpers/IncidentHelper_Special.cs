@@ -25,6 +25,7 @@ namespace TwitchToolkit.IncidentHelpers.Special
             allCorpses.Shuffle();
 
             pawn = allCorpses[0];
+
             PawnTracker.pawnsToRevive.Add(pawn);
 
             return true;
@@ -32,9 +33,17 @@ namespace TwitchToolkit.IncidentHelpers.Special
 
         public override void TryExecute()
         {
-            ResurrectionUtility.ResurrectWithSideEffects(pawn);
-            PawnTracker.pawnsToRevive.Remove(pawn);
-            Find.LetterStack.ReceiveLetter("Pawn Revived", $"{pawn.Name} has been revived but is experiencing some side effects.", LetterDefOf.PositiveEvent, pawn);
+            try
+            {
+                pawn.ClearAllReservations();
+                ResurrectionUtility.ResurrectWithSideEffects(pawn);
+                PawnTracker.pawnsToRevive.Remove(pawn);
+                Find.LetterStack.ReceiveLetter("Pawn Revived", $"{pawn.Name} has been revived but is experiencing some side effects.", LetterDefOf.PositiveEvent, pawn);
+            }
+            catch (Exception e)
+            {
+                Log.Error("Submit this bug to TwitchToolkit Discord: " + e.Message);
+            }
         }
 
         private Pawn pawn = null;
@@ -290,7 +299,7 @@ namespace TwitchToolkit.IncidentHelpers.Special
 
             pawn = gameComponent.PawnAssignedToUser(viewer.username);
 
-            Log.Warning("changing gneder");
+            Helper.Log("changing gneder");
             return true;
         }
 
@@ -378,18 +387,18 @@ namespace TwitchToolkit.IncidentHelpers.Special
             bool isResearched = true;
             ResearchProjectDef researchProject = null;
 
-            Log.Warning("Checking researched");
+            Helper.Log("Checking researched");
             if (itemThingDef.recipeMaker != null &&
                 itemThingDef.recipeMaker.researchPrerequisite != null &&
                 !itemThingDef.recipeMaker.researchPrerequisite.IsFinished)
             {
-                Log.Warning("Recipe not researched");
+                Helper.Log("Recipe not researched");
                 isResearched = false;
                 researchProject = itemThingDef.recipeMaker.researchPrerequisite;
             }
             else if (!itemThingDef.IsResearchFinished)
             {
-                Log.Warning("Building not researched");
+                Helper.Log("Building not researched");
                 isResearched = false;
                 researchProject = itemThingDef.researchPrerequisites.ElementAt(0);
             }
@@ -422,7 +431,7 @@ namespace TwitchToolkit.IncidentHelpers.Special
             }
             catch (OverflowException e)
             {
-                Log.Warning(e.Message);
+                Helper.Log(e.Message);
                 return false;
             }
 

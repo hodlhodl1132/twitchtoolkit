@@ -125,7 +125,7 @@ namespace TwitchToolkit.PawnQueue
                     }
                     break;
                 case PawnQueueSelector.FirstDefault:
-                    Log.Warning("first or default");
+                    Helper.Log("first or default");
                     allColonists = Find.ColonistBar.GetColonistsInOrder();
                     unnamedColonists = GetUnamedColonists();
                     selectedUsername = "";

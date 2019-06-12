@@ -42,7 +42,7 @@ namespace TwitchToolkit.Store
                 backup.incidentHelper = inc.incidentHelper;
                 backup.minPointsToFire = inc.minPointsToFire;
                 backup.variables = inc.variables;
-                backup.minPointsToFire = inc.minPointsToFire;
+                backup.maxWager = inc.maxWager;
                 backup.syntax = inc.syntax;
                 variableIncidentsBackup.Add(backup);
             }
@@ -95,7 +95,7 @@ namespace TwitchToolkit.Store
                 streamWriter.Write(json.ToString());
             }
 
-            Log.Warning("Backup created");
+            Helper.Log("Backup created");
         }
 
         public static void SaveCopy(StoreIncidentVariables incident)
@@ -124,14 +124,14 @@ namespace TwitchToolkit.Store
                 streamWriter.Write(json.ToString());
             }
 
-            Log.Warning("Backup created");
+            Helper.Log("Backup created");
         }
 
         public static void LoadCopies()
         {
             if (!EditorPathExists())
             {
-                Log.Warning("Path for custom store incidents does not exist, creating");
+                Helper.Log("Path for custom store incidents does not exist, creating");
                 return;
             }
 
@@ -168,32 +168,32 @@ namespace TwitchToolkit.Store
 
                     if (node["abbreviation"] == null)
                     {
-                        Log.Warning("Copy of store incident file is missing critical info, delete file " + editorPath + filePath);
+                        Helper.Log("Copy of store incident file is missing critical info, delete file " + editorPath + filePath);
                     }
                     incident.abbreviation = node["abbreviation"];
 
                     if (node["cost"] == null)
                     {
-                        Log.Warning("Copy of store incident file is missing critical info, delete file " + editorPath + filePath);
+                        Helper.Log("Copy of store incident file is missing critical info, delete file " + editorPath + filePath);
                     }
                     incident.cost = node["cost"].AsInt;
 
                     if (node["eventCap"] == null)
                     {
-                    Log.Warning("Copy of store incident file is missing critical info, delete file " + editorPath + filePath);
+                    Helper.Log("Copy of store incident file is missing critical info, delete file " + editorPath + filePath);
                     }
                     incident.eventCap = node["eventCap"].AsInt;
 
                     if (node["karmaType"] == null)
                     {
-                    Log.Warning("Copy of store incident file is missing critical info, delete file " + editorPath + filePath);
+                    Helper.Log("Copy of store incident file is missing critical info, delete file " + editorPath + filePath);
                     }
                     incident.karmaType = (KarmaType) Enum.Parse(typeof(KarmaType), node["karmaType"], true);
                 }
             }
             catch (UnauthorizedAccessException e)
             {
-                Log.Warning(e.Message);
+                Helper.Log(e.Message);
             }
 
         }
@@ -218,20 +218,20 @@ namespace TwitchToolkit.Store
 
                     if (node["minPointsToFire"] == null)
                     {
-                        Log.Warning("Copy of store incident file is missing critical info, delete file " + editorPath + filePath);
+                        Helper.Log("Copy of store incident file is missing critical info, delete file " + editorPath + filePath);
                     }
                     incident.minPointsToFire = node["baseCost"].AsInt; 
 
                     if (node["maxWager"] == null)
                     {
-                        Log.Warning("Copy of store incident file is missing critical info, delete file " + editorPath + filePath);
+                        Helper.Log("Copy of store incident file is missing critical info, delete file " + editorPath + filePath);
                     }
                     incident.maxWager = node["maxWager"].AsInt;
                 }
             }
             catch (UnauthorizedAccessException e)
             {
-                Log.Warning(e.Message);
+                Helper.Log(e.Message);
             }
         }
 
@@ -262,7 +262,7 @@ namespace TwitchToolkit.Store
             
             if (incidentSimple != null)
             {
-                LoadBackup(incidentSimple);
+                LoadBackupSimple(ref incidentSimple);
                 return;
             }
 
@@ -270,24 +270,26 @@ namespace TwitchToolkit.Store
 
             if (incidentVariables != null)
             {
-                LoadBackup(incidentVariables);
+                LoadBackupVariables(ref incidentVariables);
                 return;
             }
         }
 
-        public static void LoadBackup(StoreIncidentSimple incident)
+        public static void LoadBackupSimple(ref StoreIncidentSimple incident)
         {
-            StoreIncidentSimple incNew = simpleIncidentsBackup.ToList().Find(s => incident.defName == s.defName);
+            string defName = incident.defName;
+            StoreIncidentSimple incNew = simpleIncidentsBackup.ToList().Find(s => defName == s.defName);
             incident.abbreviation = incNew.abbreviation;
             incident.cost = incNew.cost;
             incident.eventCap = incNew.eventCap;
             incident.karmaType = incNew.karmaType;
-            incident.incidentHelper = incNew.incidentHelper;
+            incident = incNew;
         }
 
-        public static void LoadBackup(StoreIncidentVariables incident)
+        public static void LoadBackupVariables(ref StoreIncidentVariables incident)
         {
-            StoreIncidentVariables incNew = variableIncidentsBackup.Find(s => incident.defName == s.defName);
+            string defName = incident.defName;
+            StoreIncidentVariables incNew = variableIncidentsBackup.Find(s => defName == s.defName);
             incident.abbreviation = incNew.abbreviation;
             incident.cost = incNew.cost;
             incident.eventCap = incNew.eventCap;
@@ -295,7 +297,7 @@ namespace TwitchToolkit.Store
             incident.incidentHelper = incNew.incidentHelper;
             incident.minPointsToFire = incNew.minPointsToFire;
             incident.variables = incNew.variables;
-            incident.minPointsToFire = incNew.minPointsToFire;
+            incident.maxWager = incNew.maxWager;
             incident.syntax = incNew.syntax;
         }
 

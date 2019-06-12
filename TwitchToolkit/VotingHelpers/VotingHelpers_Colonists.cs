@@ -136,11 +136,11 @@ namespace TwitchToolkit.VotingHelpers.VotingHelpers_Colonists
                 map = target as Map;
                 List<Pawn> candidates = map.mapPawns.FreeColonistsSpawned.ToList();
 
-                Log.Warning("finding candidates");
+                Helper.Log("finding candidates");
 
                 traitDef = DefDatabase<TraitDef>.GetNamed("Cannibal");
 
-                Log.Warning("finding specific candidate");
+                Helper.Log("finding specific candidate");
 
                 if (candidates != null && candidates.Count > 0)
                 {

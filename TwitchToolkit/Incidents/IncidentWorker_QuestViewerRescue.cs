@@ -17,7 +17,7 @@ namespace TwitchToolkit.Incidents
 
         protected override bool TryExecuteWorker(IncidentParms parms)
         {
-            Log.Warning("Executing viewer quest");
+            Helper.Log("Executing viewer quest");
             int tile;
             if (!this.TryFindTile(out tile))
             {
@@ -56,7 +56,7 @@ namespace TwitchToolkit.Incidents
             {
                 letter = letter + "\n\n" + "PawnWasFormerlyColonist".Translate(prisoner.LabelShort, prisoner);
             }
-            Log.Warning("Was Formally a colonist");
+            Helper.Log("Was Formally a colonist");
             string text;
             PawnRelationUtility.Notify_PawnsSeenByPlayer(Gen.YieldSingle<Pawn>(prisoner), out text, true, false);
             label = this.def.letterLabel;

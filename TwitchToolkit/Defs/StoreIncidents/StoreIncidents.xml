@@ -785,4 +785,27 @@
     <karmaType>Good</karmaType>
     <syntax>!buy berescued</syntax>
   </TwitchToolkit.Incidents.StoreIncidentVariables>
+  
+  <!-- Votes -->
+  <TwitchToolkit.Incidents.StoreIncidentVariables>
+    <defName>ToryTalkerVote</defName>
+    <label>tory talker vote</label>
+    <abbreviation>torytalkervote</abbreviation>
+    <cost>750</cost>
+    <eventCap>1</eventCap>
+    <incidentHelper>TwitchToolkit.IncidentHelpers.Votes.ToryTalkerVote</incidentHelper>
+    <karmaType>Neutral</karmaType>
+    <syntax>!buy torytalkervote</syntax>
+  </TwitchToolkit.Incidents.StoreIncidentVariables>
+
+  <TwitchToolkit.Incidents.StoreIncidentVariables>
+    <defName>HodlBotVote</defName>
+    <label>hodl bot vote</label>
+    <abbreviation>hodlbotvote</abbreviation>
+    <cost>600</cost>
+    <eventCap>1</eventCap>
+    <incidentHelper>TwitchToolkit.IncidentHelpers.Votes.HodlBotVote</incidentHelper>
+    <karmaType>Neutral</karmaType>
+    <syntax>!buy hodlbotvote</syntax>
+  </TwitchToolkit.Incidents.StoreIncidentVariables>
 </Defs>

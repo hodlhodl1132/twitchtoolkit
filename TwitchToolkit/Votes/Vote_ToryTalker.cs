@@ -13,7 +13,6 @@ namespace TwitchToolkit.Votes
         {
             this.title = title;
             this.pack = pack;
-            labelType = VoteLabelType.Label;
         }
 
         public override void StartVote()

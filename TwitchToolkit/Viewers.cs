@@ -239,7 +239,7 @@ namespace TwitchToolkit
             {
                 if (!usernames.Contains(viewer.username))
                 {
-                    Log.Warning("Viewer " + viewer.username + " added to active viewers through chat participation but not in chatter list.");
+                    Helper.Log("Viewer " + viewer.username + " added to active viewers through chat participation but not in chatter list.");
                     usernames.Add(viewer.username);
                 }
             }

@@ -47,29 +47,6 @@
       </li>
       <!-- World -->
       <li Class="StorytellerCompProperties_JourneyOffer"/>
-      <li Class="TwitchToolkit.StorytellerCompProperties_CustomOnOffCycle">
-        <category>WorldQuest</category>
-        <allowedTargetTags>
-          <li>World</li>
-        </allowedTargetTags>
-        <onDays>30</onDays>
-        <minSpacingDays>0.2</minSpacingDays>
-        <numIncidentsRange>4</numIncidentsRange>
-        <acceptFractionByDaysPassedCurve>
-          <points>
-            <li>(5, 0)</li>
-            <li>(30, 1)</li>
-          </points>
-        </acceptFractionByDaysPassedCurve>
-      </li>
-      <li Class="TwitchToolkit.StorytellerCompProperties_CustomCategoryMTB">
-        <category>Misc</category>
-        <allowedTargetTags>
-          <li>World</li>
-        </allowedTargetTags>
-        <minDaysPassed>1</minDaysPassed>
-        <mtbDays>15</mtbDays>
-      </li>
       <!-- Triggered -->
       <li Class="StorytellerCompProperties_Triggered">
         <incident>StrangerInBlackJoin</incident>

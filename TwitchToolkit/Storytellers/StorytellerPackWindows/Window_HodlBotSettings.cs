@@ -52,14 +52,20 @@ namespace TwitchToolkit.Storytellers.StorytellerPackWindows
             List<string> VoteCategoryList = ToolkitSettings.VoteCategoryWeights.Keys.ToList();
             List<float> VoteCategoryFloatList = ToolkitSettings.VoteCategoryWeights.Values.ToList();
 
+            int newWeights = 0;
+
             for (int i = 0; i < VoteCategoryList.Count(); i++)
             {
                 string buffer = VoteCategoryFloatList[i].ToString();
                 float newValue = VoteCategoryFloatList[i];
-                listing.TextFieldNumericLabeled<float>(VoteCategoryList[i] + " - ", ref newValue, ref buffer);
+                float percentage = (float) Math.Round((newValue / totalWeightsForCategories) * 100f, 2) ;
+                listing.TextFieldNumericLabeled<float>(VoteCategoryList[i] + " " + percentage + "% - ", ref newValue, ref buffer);
 
                 ToolkitSettings.VoteCategoryWeights[VoteCategoryList[i]] = newValue;
+                newWeights += (int)newValue;
             }
+
+            totalWeightsForCategories = newWeights;
 
             listing.Gap();
 
@@ -70,17 +76,26 @@ namespace TwitchToolkit.Storytellers.StorytellerPackWindows
             List<string> VoteTypeList = ToolkitSettings.VoteTypeWeights.Keys.ToList();
             List<float> VoteTypeFloatList = ToolkitSettings.VoteTypeWeights.Values.ToList();
 
+            newWeights = 0;
+
             for (int i = 0; i < VoteTypeList.Count(); i++)
             {
                 string buffer = VoteTypeFloatList[i].ToString();
                 float newValue = VoteTypeFloatList[i];
-                listing.TextFieldNumericLabeled<float>(VoteTypeList[i] + " - ", ref newValue, ref buffer);
+                float percentage = (float)Math.Round((newValue / totalWeightsForKarma) * 100f, 2);
+                listing.TextFieldNumericLabeled<float>(VoteTypeList[i] + " " + percentage + "% - ", ref newValue, ref buffer);
 
                 ToolkitSettings.VoteTypeWeights[VoteTypeList[i]] = newValue;
+                newWeights += (int)newValue;
             }
+
+            totalWeightsForKarma = newWeights;
 
             listing.End();
         }
+
+        int totalWeightsForCategories = 1;
+        int totalWeightsForKarma = 1;
 
         public override Vector2 InitialSize => new Vector2(500f, 700f);
     }

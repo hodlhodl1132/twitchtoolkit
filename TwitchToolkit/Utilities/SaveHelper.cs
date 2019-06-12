@@ -34,7 +34,7 @@ namespace TwitchToolkit.Utilities
 
         public static void SaveAllModData()
         {
-            Log.Warning("Saving data");
+            Helper.Log("Saving data");
 
             SaveListOfViewersAsJson();
         }
@@ -69,7 +69,7 @@ namespace TwitchToolkit.Utilities
             }
             viewerslisttemplate["total"] = newViewers.Count;
 
-            Log.Warning("Saving viewers file");
+            Helper.Log("Saving viewers file");
 
             SaveJsonToDataPath(viewerslisttemplate.ToString(), viewerDataPath);
         }

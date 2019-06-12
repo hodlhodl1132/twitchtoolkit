@@ -29,7 +29,7 @@ namespace TwitchToolkit.Store
                 }
                 catch (Exception e)
                 {
-                    Log.Warning(e.Message);
+                    Helper.Log(e.Message);
                 }
             }
 
@@ -42,7 +42,7 @@ namespace TwitchToolkit.Store
             }
             catch (Exception e)
             {
-                Log.Warning(e.Message);
+                Helper.Log(e.Message);
             }
         }
 

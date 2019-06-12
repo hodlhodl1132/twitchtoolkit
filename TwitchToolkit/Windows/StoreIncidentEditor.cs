@@ -76,8 +76,11 @@ namespace TwitchToolkit.Windows
                 if (variableIncident && storeIncidentVariables.maxWager > 0)
                 {
                     ls.Gap();
-
                     ls.SliderLabeled("Maximum coin wager", ref storeIncidentVariables.maxWager, storeIncidentVariables.cost.ToString(), storeIncident.cost, 20000f);
+                    if (storeIncidentVariables.maxWager < storeIncidentVariables.cost)
+                    {
+                        storeIncidentVariables.maxWager = storeIncidentVariables.cost * 2;
+                    }
                 }  
                 
 
@@ -120,6 +123,7 @@ namespace TwitchToolkit.Windows
             {
                 Store_IncidentEditor.LoadBackup(storeIncident);
                 if (storeIncident.cost < 1) storeIncident.cost = 50;
+                setKarmaType = storeIncident.karmaType.ToString();
                 MakeSureSaveExists(true);
             }
 
@@ -139,7 +143,7 @@ namespace TwitchToolkit.Windows
         {
             checkedForBackup = true;
 
-            Log.Warning("Checking if save exists");
+            Helper.Log("Checking if save exists");
 
             if (storeIncident == null)
                 Log.Error("incident is null");

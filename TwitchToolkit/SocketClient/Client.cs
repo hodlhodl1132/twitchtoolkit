@@ -43,7 +43,7 @@ namespace TwitchToolkit.SocketClient
                 Socket tempSocket =
                     new Socket(ipe.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
 
-                Log.Warning("Attempting socket connect");
+                Helper.Log("Attempting socket connect");
                 tempSocket.BeginConnect(ipe, new AsyncCallback(ProcessClient), tempSocket);
             }
         }
@@ -64,7 +64,7 @@ namespace TwitchToolkit.SocketClient
 
             try
             {
-                Log.Warning("attempting authentication");
+                Helper.Log("attempting authentication");
                 SslStream.AuthenticateAsClient(server);
 
                 SslStream.ReadTimeout = 5000;
@@ -110,7 +110,7 @@ namespace TwitchToolkit.SocketClient
             string message = ReadMessage(bytes);
             if (message.Length > -1)
             {
-                Log.Warning("message length: " + message.Length + " - " + message);
+                Helper.Log("message length: " + message.Length + " - " + message);
             }
             Read();
         }

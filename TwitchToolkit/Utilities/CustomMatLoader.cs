@@ -25,7 +25,7 @@ namespace TwitchToolkit.Utilities
                                     select mat).FirstOrDefault<Material>();
             if (material == null)
             {
-                Log.Warning("MatWithEnding: Dir " + dirPath + " lacks texture ending in " + ending);
+                Helper.Log("MatWithEnding: Dir " + dirPath + " lacks texture ending in " + ending);
                 return BaseContent.BadMat;
             }
             return material;
@@ -37,7 +37,7 @@ namespace TwitchToolkit.Utilities
         //    Material material = (Material)Resources.Load("Textures/" + matPath, typeof(Material));
         //    if (material == null)
         //    {
-        //        Log.Warning("Could not load material " + matPath, false);
+        //        Helper.Log("Could not load material " + matPath, false);
         //    }
         //    CustomMatLoader.Request key = new CustomMatLoader.Request
         //    {

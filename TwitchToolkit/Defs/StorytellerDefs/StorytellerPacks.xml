@@ -23,4 +23,12 @@
     <minDaysBetweenEvents>6</minDaysBetweenEvents>
     <storytellerCompPropertiesType>TwitchToolkit.Storytellers.StorytellerCompProperties_UristBot</storytellerCompPropertiesType>
   </TwitchToolkit.Storytellers.StorytellerPack>
+
+  <TwitchToolkit.Storytellers.StorytellerPack>
+    <defName>Milasandra</defName>
+    <label>milasandra</label>
+    <enabled>false</enabled>
+    <minDaysBetweenEvents>6</minDaysBetweenEvents>
+    <storytellerCompPropertiesType>TwitchToolkit.Storytellers.StorytellerCompProperties_ToolkitOnOffCycle</storytellerCompPropertiesType>
+  </TwitchToolkit.Storytellers.StorytellerPack>
 </Defs>

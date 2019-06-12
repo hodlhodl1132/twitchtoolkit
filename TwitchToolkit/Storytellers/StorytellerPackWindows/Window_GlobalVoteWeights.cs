@@ -35,21 +35,27 @@ namespace TwitchToolkit.Storytellers.StorytellerPackWindows
 
             if (ToolkitSettings.VoteWeights != null)
             {
-
+                int newWeights = 0;
                 foreach (VotingIncident vote in allVotes)
                 {
                     int index = vote.index;
-                    listing.SliderLabeled(vote.defName, ref vote.voteWeight, vote.voteWeight.ToString(), 0, 100);
+                    float percentage = (float)Math.Round(((float)vote.voteWeight / totalWeights) * 100f, 2);
+                    listing.SliderLabeled(vote.defName + " - " + percentage + "%", ref vote.voteWeight, vote.voteWeight.ToString(), 0, 100);
                     ToolkitSettings.VoteWeights[vote.defName] = vote.voteWeight;
+                    newWeights += vote.voteWeight;
 
                     listing.Gap(6);
                 }
+
+                totalWeights = newWeights;
             }
 
             listing.EndScrollView(ref viewRect);
             listing.End();
         }
 
-        public override Vector2 InitialSize => new Vector2(400f, 560f);
+        int totalWeights = 1;
+
+        public override Vector2 InitialSize => new Vector2(450f, 560f);
     }
 }

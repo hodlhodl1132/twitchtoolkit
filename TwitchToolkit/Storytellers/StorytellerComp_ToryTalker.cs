@@ -22,8 +22,8 @@ namespace TwitchToolkit.Storytellers
         {
             voteTracker = Current.Game.GetComponent<StoryTellerVoteTracker>();
 
-            if (!VoteHandler.voteActive &&
-                Rand.MTBEventOccurs(ToolkitSettings.ToryTalkerMTBDays, 60000f, 1000f))
+            if ((!VoteHandler.voteActive &&
+                Rand.MTBEventOccurs(ToolkitSettings.ToryTalkerMTBDays, 60000f, 1000f)) || forced)
             {
                 List<VotingIncidentEntry> entries = VotingIncidentsByWeight();
                 List<VotingIncidentEntry> winners = new List<VotingIncidentEntry>();
@@ -72,10 +72,10 @@ namespace TwitchToolkit.Storytellers
             if (voteTracker.VoteHistory.ContainsKey(voteTracker.lastID))
             {
                 List<KeyValuePair<int, int>> history = voteTracker.VoteHistory.ToList();
-                Log.Warning("History count " + history.Count);
+                Helper.Log("History count " + history.Count);
                 history.OrderBy(s => s.Value);
                 IEnumerable<VotingIncident> search = DefDatabase<VotingIncident>.AllDefs.Where(s => s.defName == voteTracker.VoteIDs[history[0].Key]);
-                Log.Warning("Search count " + search.Count());
+                Helper.Log("Search count " + search.Count());
                 if (search != null && search.Count() > 0)
                 {
                     previousVote = search.ElementAt(0);
@@ -88,7 +88,7 @@ namespace TwitchToolkit.Storytellers
                     s != previousVote
                     ));
 
-                Log.Warning($"Previous vote was {previousVote.defName}");
+                Helper.Log($"Previous vote was {previousVote.defName}");
             }
             else
             {
@@ -100,7 +100,7 @@ namespace TwitchToolkit.Storytellers
             foreach (VotingIncident incident in candidates)
             {
                 int weight = CalculateVotingIncidentWeight(incident);
-                Log.Warning($"Incident {incident.LabelCap} weighted at {weight}");
+                Helper.Log($"Incident {incident.LabelCap} weighted at {weight}");
                 voteEntries.Add(new VotingIncidentEntry(incident, weight));
             }
 
@@ -133,5 +133,7 @@ namespace TwitchToolkit.Storytellers
         private VotingIncident previousVote = null;
 
         public StoryTellerVoteTracker voteTracker;
+
+        public bool forced = false;
     }
 }

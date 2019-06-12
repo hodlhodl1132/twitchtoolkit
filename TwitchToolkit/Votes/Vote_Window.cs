@@ -70,7 +70,25 @@ namespace TwitchToolkit
         {
             get
             {
-                return ToolkitSettings.LargeVotingWindow ? new Vector2(400, 80 + (optionsKeys.Count * 60f) + Text.CalcHeight(title, 400)) : new Vector2(300, 50 + (optionsKeys.Count * 30f) + Text.CalcHeight(title, 300));
+                // return ToolkitSettings.LargeVotingWindow ? new Vector2(400, 80 + (optionsKeys.Count * 60f) + Text.CalcHeight(title, 400)) : new Vector2(300, 50 + (optionsKeys.Count * 30f) + Text.CalcHeight(title, 300));
+
+                GameFont old = Text.Font;
+                float titleHeight;
+                if (ToolkitSettings.LargeVotingWindow)
+                {
+                    Text.Font = GameFont.Medium;
+                    titleHeight = Text.CalcHeight(title, 400f) * 3 + 3;
+                    Text.Font = old;
+
+                    return new Vector2(400, titleHeight + (optionsKeys.Count * 48f) + 36f);
+                }
+                else
+                {
+                    Text.Font = GameFont.Small;
+                    titleHeight = Text.CalcHeight(title, 300f) * 3;
+                    Text.Font = old;
+                    return new Vector2(300, titleHeight + (optionsKeys.Count * 28f) + 32f);
+                }
             }
         }
 

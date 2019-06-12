@@ -198,6 +198,10 @@ namespace TwitchToolkit
         public static float UristBotMTBDays = 6;
         #endregion
 
+        #region Milasandra
+        public static bool MilasandraEnabled = false;
+        #endregion
+
         #endregion
 
         private static Vector2 scrollVector2;
@@ -482,6 +486,10 @@ namespace TwitchToolkit
 
             Scribe_Values.Look(ref UristBotEnabled, "UristBotEnabled", false);
             Scribe_Values.Look(ref UristBotMTBDays, "UristBotMTBDays", 6);
+
+            Scribe_Values.Look(ref MilasandraEnabled, "MilasandraEnabled", false);
+
+            Scribe_Values.Look(ref CommandsModsEnabled, "CommandsModsEnabled", true);
 
             List<StoreIncidentVariables> variableIncidents = DefDatabase<StoreIncidentVariables>.AllDefs.Where(s => s.customSettings).ToList();
             

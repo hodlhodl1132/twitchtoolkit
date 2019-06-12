@@ -25,6 +25,10 @@ namespace TwitchToolkit.Storytellers.StorytellerPackWindows
 
             listing.GapLine();
 
+            listing.Label("StorytellerPacks are packs of different types of votes. They each have their own settings, can be activated at the same time, and can be activated alongside normal storytellers.");
+
+            listing.GapLine();
+
             listing.Label("All storyteller packs will consider the global weights when choosing which votes to use. A weight of 0 would never be picked, meaning it is disabled.");
 
             listing.Gap();
@@ -48,7 +52,7 @@ namespace TwitchToolkit.Storytellers.StorytellerPackWindows
 
             listing.Gap();
 
-            if (listing.ButtonTextLabeled("Edit ToryTalker Settings", "Settings"))
+            if (listing.ButtonTextLabeled("ToryTalker Pack", "View"))
             {
                 Window_ToryTalkerSettings window = new Window_ToryTalkerSettings();
                 Find.WindowStack.TryRemove(window.GetType());
@@ -61,7 +65,7 @@ namespace TwitchToolkit.Storytellers.StorytellerPackWindows
 
             listing.Gap();
 
-            if (listing.ButtonTextLabeled("Edit HodlBot Settings", "Settings"))
+            if (listing.ButtonTextLabeled("HodlBot Pack", "View"))
             {
                 Window_HodlBotSettings window = new Window_HodlBotSettings();
                 Find.WindowStack.TryRemove(window.GetType());
@@ -74,9 +78,22 @@ namespace TwitchToolkit.Storytellers.StorytellerPackWindows
 
             listing.Gap();
 
-            if (listing.ButtonTextLabeled("Edit UristBot Settings", "Settings"))
+            if (listing.ButtonTextLabeled("UristBot Pack", "View"))
             {
                 Window_UristBotSettings window = new Window_UristBotSettings();
+                Find.WindowStack.TryRemove(window.GetType());
+                Find.WindowStack.Add(window);
+            }
+
+            listing.Gap(24);
+
+            listing.CheckboxLabeled("<color=#1482CB>Milasandra</color> - Threats OnOffCycle", ref ToolkitSettings.MilasandraEnabled);
+
+            listing.Gap();
+
+            if (listing.ButtonTextLabeled("Milasandra Pack", "View"))
+            {
+                Window_Milasandra window = new Window_Milasandra();
                 Find.WindowStack.TryRemove(window.GetType());
                 Find.WindowStack.Add(window);
             }
@@ -84,6 +101,6 @@ namespace TwitchToolkit.Storytellers.StorytellerPackWindows
             listing.End();
         }
 
-        public override Vector2 InitialSize => new Vector2(500f, 560f);
+        public override Vector2 InitialSize => new Vector2(520f, 800f);
     }
 }

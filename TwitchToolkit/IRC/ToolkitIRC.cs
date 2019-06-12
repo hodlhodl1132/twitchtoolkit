@@ -42,7 +42,7 @@ namespace TwitchToolkit.IRC
 
             if (instance != null)
             {
-                Log.Warning("Previous instance exists, trying to destroy");
+                Helper.Log("Previous instance exists, trying to destroy");
                 instance.Disconnect();
                 instance = null;
             }
@@ -59,7 +59,7 @@ namespace TwitchToolkit.IRC
         {
             StripUsernameAndChannel();
 
-            Log.Warning("creating new connection");
+            Helper.Log("creating new connection");
 
             client = new IRCClient(_ircHost, _ircPort, ToolkitSettings.Username, ToolkitSettings.OAuth, ToolkitSettings.Channel.ToLower());
             client.OnPrivMsg += OnPrivMsg;
@@ -70,7 +70,7 @@ namespace TwitchToolkit.IRC
         {
             if (client != null)
             {
-                Log.Warning("Disconnecting client");
+                Helper.Log("Disconnecting client");
                 client.Disconnect();
             }     
         }

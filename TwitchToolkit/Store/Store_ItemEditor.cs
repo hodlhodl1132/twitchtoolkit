@@ -174,7 +174,7 @@ namespace TwitchToolkit.Store
             }
             catch (UnauthorizedAccessException e)
             {
-                Log.Warning(e.Message);
+                Helper.Log(e.Message);
             }
 
             FindItemsNotInList();

@@ -25,7 +25,10 @@ namespace TwitchToolkit.Storytellers
         {
             if (VoteHandler.voteActive || !Rand.MTBEventOccurs(ToolkitSettings.HodlBotMTBDays, 60000f, 1000f))
             {
-                yield break;
+                if (!forced)
+                {
+                    yield break;
+                }
             }
 
             if (Rand.Range(0, 1) == 1)
@@ -47,7 +50,7 @@ namespace TwitchToolkit.Storytellers
                               where s.incident.eventCategory == category
                               select s).ToList();
                     str = "Which " + category.ToString() + " event should happen?";
-                    Log.Warning("rand cat picked " + category);
+                    Helper.Log("rand cat picked " + category);
                     break;
                 }
                 case Vote_VotingIncident.VoteLabelType.Type:
@@ -57,7 +60,7 @@ namespace TwitchToolkit.Storytellers
                               where s.incident.eventType == randType
                               select s).ToList();
                     str = "Which " + randType + " event should happen?";
-                    Log.Warning("rand type picked " + randType);
+                    Helper.Log("rand type picked " + randType);
                     break;
                 }
             }

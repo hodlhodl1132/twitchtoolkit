@@ -1,19 +1,15 @@
-﻿using System;
+﻿using RimWorld;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using RimWorld;
 using Verse;
 
-namespace TwitchToolkit
+namespace TwitchToolkit.Storytellers
 {
-    public class StorytellerCompProperties_CustomOnOffCycle : StorytellerCompProperties
+    public class StorytellerCompProperties_ToolkitOnOffCycle : StorytellerCompProperties
     {
-        public StorytellerCompProperties_CustomOnOffCycle()
-        {
-            compClass = typeof(StorytellerComp_CustomOnOffCycle);
-            this.minDaysPassed = 11f;
-        }
+        public StorytellerCompProperties_ToolkitOnOffCycle() => compClass = typeof(StorytellerComp_ToolkitOnOffCycle);
 
         public IncidentCategoryDef IncidentCategory
         {
@@ -48,13 +44,13 @@ namespace TwitchToolkit
             yield break;
         }
 
-        public float onDays;
+        public float onDays = 4.6f;
 
-        public float offDays;
+        public float offDays = 6f;
 
-        public float minSpacingDays;
+        public float minSpacingDays = 1.9f;
 
-        public FloatRange numIncidentsRange = FloatRange.Zero;
+        public FloatRange numIncidentsRange = new FloatRange(1, 2);
 
         public SimpleCurve acceptFractionByDaysPassedCurve;
 
@@ -62,7 +58,7 @@ namespace TwitchToolkit
 
         public IncidentDef incident;
 
-        private IncidentCategoryDef category;
+        private IncidentCategoryDef category = IncidentCategoryDefOf.ThreatBig;
 
         public bool applyRaidBeaconThreatMtbFactor;
 

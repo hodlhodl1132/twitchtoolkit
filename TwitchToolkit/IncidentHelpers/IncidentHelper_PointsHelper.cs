@@ -79,7 +79,7 @@ namespace TwitchToolkit.IncidentHelpers
 
             float finalPoints = pointsPurchased * ((float) highestRoll / 100f);
 
-            Log.Warning($"wager: {pointsWager} gamePoints: {gamePoints} pointsPurchased: {pointsPurchased} totalRolls: {totalRolls} highestRoll: {highestRoll} finalPoints: {finalPoints}");
+            Helper.Log($"wager: {pointsWager} gamePoints: {gamePoints} pointsPurchased: {pointsPurchased} totalRolls: {totalRolls} highestRoll: {highestRoll} finalPoints: {finalPoints}");
             Store_Logger.LogString($"wager: {pointsWager} gamePoints: {gamePoints} pointsPurchased: {pointsPurchased} totalRolls: {totalRolls} highestRoll: {highestRoll} finalPoints: {finalPoints}");
 
             return Math.Max(finalPoints, 35);
