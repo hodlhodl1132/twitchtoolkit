@@ -42,7 +42,13 @@ namespace TwitchToolkit
         }
 
         public override void DoWindowContents(Rect inRect)
-        {   
+        {
+            Rect exitVote = new Rect(inRect.width - 25f, 0f, 20f, 20f);
+            if (Widgets.ButtonTextSubtle(exitVote, "X"))
+            {
+                VoteHandler.ForceEnd();
+            }
+
             GameFont old = Text.Font;
             Text.Font = ToolkitSettings.LargeVotingWindow ? GameFont.Medium : GameFont.Small;
             float lineheight = ToolkitSettings.LargeVotingWindow ? 50 : 30;

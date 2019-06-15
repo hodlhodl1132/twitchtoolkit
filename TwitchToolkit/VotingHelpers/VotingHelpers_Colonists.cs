@@ -151,7 +151,7 @@ namespace TwitchToolkit.VotingHelpers.VotingHelpers_Colonists
 
                         if (pawn.story.traits.allTraits.Count <= 3)
                         {
-                            if (pawn.story.traits.allTraits.Where(s => s.def == traitDef).Count() < 1)
+                            if (!pawn.story.traits.allTraits.Any(s => s.def == traitDef))
                             {
                                 pawn = candidate;
                                 return true;
@@ -172,7 +172,6 @@ namespace TwitchToolkit.VotingHelpers.VotingHelpers_Colonists
             Find.LetterStack.ReceiveLetter("Cannibal", text, LetterDefOf.NeutralEvent, pawn);
         }
 
-        private Map map;
         private Pawn pawn;
         private TraitDef traitDef;
     }

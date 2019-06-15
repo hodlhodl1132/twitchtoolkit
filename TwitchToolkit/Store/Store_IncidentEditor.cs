@@ -345,11 +345,11 @@ namespace TwitchToolkit.Store
 
         }
 
-        public static string dataPath = SaveHelper.dataPath;
-
         public static readonly List<StoreIncidentSimple> simpleIncidentsBackup = new List<StoreIncidentSimple>();
 
         public static readonly List<StoreIncidentVariables> variableIncidentsBackup = new List<StoreIncidentVariables>();
+
+        public static string dataPath = SaveHelper.dataPath;
 
         public static string editorPath = dataPath + "Editor/StoreIncidents/";
     }

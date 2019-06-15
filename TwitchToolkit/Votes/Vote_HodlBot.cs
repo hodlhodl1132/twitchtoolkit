@@ -10,8 +10,11 @@ namespace TwitchToolkit.Votes
 {
     public class Vote_HodlBot : Vote_VotingIncident
     {
-        public Vote_HodlBot(Dictionary<int, VotingIncident> incidents, StorytellerPack pack, string title = null) : base(incidents, title)
+        public Vote_HodlBot(Dictionary<int, VotingIncident> incidents, StorytellerPack pack, VoteLabelType labelType, string title = null) : base(incidents, title)
         {
+
+            PickVoteLabelType(labelType);
+
             this.pack = pack;
             this.title = title;
         }
@@ -39,6 +42,32 @@ namespace TwitchToolkit.Votes
             Current.Game.GetComponent<StoryTellerVoteTracker>().LogStorytellerCompVote(pack);
             base.EndVote();
         }
+
+        void PickVoteLabelType(VoteLabelType labelType)
+        {
+            switch (labelType)
+            {
+                case VoteLabelType.Category:
+                    if (categoriesThatCanBeMystery.Any(s => s == incidents.ElementAt(0).Value.eventCategory) && Rand.Bool)
+                    {
+                        this.labelType = VoteLabelType.Type;
+                    }
+                    else
+                    {
+                        this.labelType = VoteLabelType.Label;
+                    }
+                    break;
+            }
+        }
+
+        static readonly List<EventCategory> categoriesThatCanBeMystery = new List<EventCategory> {
+            EventCategory.Animal,
+            EventCategory.Colonist,
+            EventCategory.Drop,
+            EventCategory.Enviroment,
+            EventCategory.Foreigner,
+            EventCategory.Weather
+        };
 
         readonly StorytellerPack pack = null;
     }

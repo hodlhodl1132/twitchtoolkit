@@ -55,7 +55,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Commands.cs" />
+    <Compile Include="Commands\Command.cs" />
+    <Compile Include="Commands\CommandEditor.cs" />
+    <Compile Include="Commands\Commands.cs" />
+    <Compile Include="Commands\ModCommands.cs" />
+    <Compile Include="Commands\ViewerCommands.cs" />
     <Compile Include="GameConditions\GameCondition_VomitRain.cs" />
     <Compile Include="Harmony.cs" />
     <Compile Include="IncidentHelpers\IncidentHelper_Diseases.cs" />
@@ -190,8 +194,11 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
+    <Compile Include="Windows\Window_CommandEditor.cs" />
+    <Compile Include="Windows\Window_Commands.cs" />
     <Compile Include="Windows\Window_Loading.cs" />
     <Compile Include="Windows\Window_NewChat.cs" />
+    <Compile Include="Windows\Window_NewCustomCommand.cs" />
     <Compile Include="Windows\Window_SocketClient.cs" />
     <Compile Include="Windows\Window_Trackers.cs" />
     <Compile Include="Windows\Window_ViewerEditProp.cs" />
@@ -236,6 +243,9 @@
   <ItemGroup />
   <ItemGroup>
     <Content Include="Defs\Incidents\Incidents.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Defs\Misc\Commands.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Defs\Misc\GameConditions.xml">

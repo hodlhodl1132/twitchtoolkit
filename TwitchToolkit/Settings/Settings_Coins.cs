@@ -19,7 +19,6 @@ namespace TwitchToolkit.Settings
             optionsListing.Gap();
 
             optionsListing.CheckboxLabeled("TwitchToolkitUnlimitedCoins".Translate(), ref ToolkitSettings.UnlimitedCoins);
-            optionsListing.CheckboxLabeled("TwitchToolkitGiftingCoins".Translate(), ref ToolkitSettings.GiftingCoins);
 
             optionsListing.GapLine();
             optionsListing.Gap();

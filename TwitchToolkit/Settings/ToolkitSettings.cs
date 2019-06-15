@@ -53,12 +53,10 @@ namespace TwitchToolkit
         public static int CoinAmount = 30;
         public static int MinimumPurchasePrice = 60;
         public static bool UnlimitedCoins = false;
-        public static bool GiftingCoins = false;
         #endregion
 
         #region StoreSettings
         public static bool EarningCoins = true;
-        public static bool StoreOpen = false;
         public static string CustomPricingSheetLink = "https://twitchtoolkit.github.io/item-list/";
         #endregion
 
@@ -78,19 +76,6 @@ namespace TwitchToolkit
 
         #region StreamLabs
         public static bool SyncStreamLabs = false;
-        #endregion
-
-        #region CommandStrings
-        public static string BalanceCmd = "!bal";
-        public static string BuyeventCmd = "!buyevent";
-        public static string BuyitemCmd = "!buyitem";
-        public static string InstructionsCmd = "!instructions";
-        public static string PurchaselistCmd = "!purchaselist";
-        public static string ModinfoCmd = "!modinfo";
-        public static string ModsettingsCmd = "!modsettings";
-        public static string KarmaCmd = "!whatiskarma";
-        public static string GiftCmd = "!giftcoins";
-        public static string CommandHelpCmd = "!toolkitcmds";
         #endregion
 
         #region KarmaSettings
@@ -252,8 +237,8 @@ namespace TwitchToolkit
             if (options.ButtonText("TwitchToolkitKarma".Translate()))
                 currentTab = SettingsTab.Karma;
 
-            if (options.ButtonText("TwitchToolkitCommands".Translate()))
-                currentTab = SettingsTab.Commands;
+            if (options.ButtonText(""))
+                currentTab = SettingsTab.Chat;
 
             if (options.ButtonText("TwitchToolkitCooldowns".Translate()))
                 currentTab = SettingsTab.Cooldowns;
@@ -320,9 +305,9 @@ namespace TwitchToolkit
                 case SettingsTab.Karma:
                     Settings_Karma.DoWindowContents(viewRect, optionsListing);
                     break;
-                case SettingsTab.Commands:
-                    Settings_Commands.DoWindowContents(viewRect, optionsListing);
-                    break;
+                //case SettingsTab.Commands:
+                //    Settings_Commands.DoWindowContents(viewRect, optionsListing);
+                //    break;
                 case SettingsTab.Cooldowns:
                     Settings_Cooldowns.DoWindowContents(viewRect, optionsListing);
                     break;
@@ -377,10 +362,8 @@ namespace TwitchToolkit
             Scribe_Values.Look(ref CoinAmount, "CoinAmount", 30);
             Scribe_Values.Look(ref MinimumPurchasePrice, "MinimumPurchasePrice", 60);
             Scribe_Values.Look(ref UnlimitedCoins, "UnlimitedCoins", false);
-            Scribe_Values.Look(ref GiftingCoins, "GiftingCoins", false);
 
             Scribe_Values.Look(ref EarningCoins, "EarningCoins", true);
-            Scribe_Values.Look(ref StoreOpen, "StoreOpen", false);
             Scribe_Values.Look(ref CustomPricingSheetLink, "CustomPricingSheetLink", "https://twitchtoolkit.github.io/item-list/");
 
             Scribe_Values.Look(ref WhisperCmdsAllowed, "WhisperCmdsAllowed", true);
@@ -394,17 +377,6 @@ namespace TwitchToolkit
             Scribe_Values.Look(ref JWTToken, "JWTToken", "");
 
             Scribe_Values.Look(ref SyncStreamLabs, "SyncStreamLabs", false);
-
-            Scribe_Values.Look(ref BalanceCmd, "BalanceCmd", "!bal", true);
-            Scribe_Values.Look(ref BuyeventCmd, "BuyeventCmd", "!buyevent", true);
-            Scribe_Values.Look(ref BuyitemCmd, "BuyitemCmd", "!buyitem", true);
-            Scribe_Values.Look(ref InstructionsCmd, "InstructionsCmd", "!instructions", true);
-            Scribe_Values.Look(ref PurchaselistCmd, "PurchaselistCmd", "!purchaselist", true);
-            Scribe_Values.Look(ref ModinfoCmd, "ModinfoCmd", "!modinfo", true);
-            Scribe_Values.Look(ref ModsettingsCmd, "ModsettingsCmd", "!modsettings", true);
-            Scribe_Values.Look(ref KarmaCmd, "KarmaCmd", "!whatiskarma", true);
-            Scribe_Values.Look(ref GiftCmd, "GiftCmd", "!giftcoins", true);
-            Scribe_Values.Look(ref CommandHelpCmd, "CommandHelpCmd", "!toolkitcmds", true);
 
             Scribe_Values.Look(ref StartingKarma, "StartingKarma", 100);
             Scribe_Values.Look(ref KarmaCap, "KarmaCap", 140);
@@ -475,6 +447,8 @@ namespace TwitchToolkit
 
             Scribe_Collections.Look(ref VoteWeights, "VoteWeights", LookMode.Value, LookMode.Value);
 
+            Helper.Log("exposing vote weights");
+
             Scribe_Values.Look(ref ToryTalkerEnabled, "ToryTalkerEnabled", false);
             Scribe_Values.Look(ref ToryTalkerMTBDays, "ToryTalkerMTBDays", 2);
 
@@ -510,6 +484,20 @@ namespace TwitchToolkit
                 {
                     ToolkitIRC.NewInstance();
                 }
+            }
+
+            if (VoteWeights == null || VoteWeights.Count < 1)
+            {
+                ToolkitSettings.VoteWeights = new Dictionary<string, int>();
+
+                foreach (VotingIncident vote in DefDatabase<VotingIncident>.AllDefs)
+                {
+                    ToolkitSettings.VoteWeights.Add(vote.defName, 100);
+                }
+            }
+            else
+            {
+                Settings_VoteWeights.Load_Votewieghts();
             }
         }
 

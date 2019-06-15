@@ -146,6 +146,14 @@ namespace TwitchToolkit
                 Find.WindowStack.Add(window);
             }
 
+            rectBtn.x += btnWidth + padding;
+            if (Widgets.ButtonText(rectBtn, "Commands"))
+            {
+                Window_Commands window = new Window_Commands();
+                Find.WindowStack.TryRemove(window.GetType());
+                Find.WindowStack.Add(window);
+            }
+
             //rectBtn.x += btnWidth + padding;
             //if (Widgets.ButtonText(rectBtn, "Socket"))
             //{
@@ -165,9 +173,6 @@ namespace TwitchToolkit
 
             btnWidth = inRect.width - (padding / 2);
             rectBtn = new Rect(padding, rectMessages.y + rectMessages.height, btnWidth, btnHeight);
-            Widgets.CheckboxLabeled(rectBtn, "TwitchToolkitStoreOpen".Translate(), ref ToolkitSettings.StoreOpen);
-
-            rectBtn.y += btnHeight + padding;
             Widgets.CheckboxLabeled(rectBtn, "TwitchToolkitEarningCoins".Translate(), ref ToolkitSettings.EarningCoins);
         }
 

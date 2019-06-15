@@ -32,9 +32,9 @@ namespace TwitchToolkit.Store
                 return;
             }
 
-            if (command[0] == "!gambleskill")
+            if (command[0] == "!levelskill")
             {
-                command[0] = "gambleskill";
+                command[0] = "levelskill";
                 command.Insert(0, "!buy");
             }
 
@@ -225,7 +225,7 @@ namespace TwitchToolkit.Store
                 if (maxed)
                 {
                     Store_Component component = Current.Game.GetComponent<Store_Component>();
-                    Toolkit.client.SendMessage($"@{username} is maxed from karmatype, wait " + component.DaysTillIncidentIsPurchaseable(incident) + " days to purchase.", separateChannel);
+                    Toolkit.client.SendMessage($"@{username} {incident.label.CapitalizeFirst()} is maxed from karmatype, wait " + component.DaysTillIncidentIsPurchaseable(incident) + " days to purchase.", separateChannel);
                 }
 
                 return maxed;
@@ -290,7 +290,7 @@ namespace TwitchToolkit.Store
             if (maxed)
             {
                 float days = component.DaysTillIncidentIsPurchaseable(incident);
-                Toolkit.client.SendMessage($"@{username} is maxed, wait " + days + $" day{(days != 1 ? "s" : "")} to purchase.", separateChannel);
+                Toolkit.client.SendMessage($"@{username} {incident.label.CapitalizeFirst()} is maxed, wait " + days + $" day{(days != 1 ? "s" : "")} to purchase.", separateChannel);
             }
 
             return maxed;
@@ -319,15 +319,15 @@ namespace TwitchToolkit.Store
                     }
                     else if (viewer.IsSub)
                     {
-                        output += SubText(command[i]);
+                        output += " " + SubText(command[i]);
                     }
                     else if (viewer.IsVIP)
                     {
-                        output += VIPText(command[i]);
+                        output += " " + VIPText(command[i]);
                     }
                     else if (viewer.mod)
                     {
-                        output += ModText(command[i]);
+                        output += " " + ModText(command[i]);
                     }
                     else
                     {

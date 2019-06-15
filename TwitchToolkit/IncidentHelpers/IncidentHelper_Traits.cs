@@ -204,13 +204,15 @@ namespace TwitchToolkit.IncidentHelpers.Traits
             buyableTrait = search;
             traitDef = buyableTrait.def;
 
-            if (!pawn.story.traits.allTraits.Any((Trait tr) =>
-                traitDef.ConflictsWith(tr)) &&
-                (traitDef.conflictingTraits == null ||
-                !traitDef.conflictingTraits.Any((TraitDef tr) => pawn.story.traits.HasTrait(tr))))
-            {
-                return true;
-            }
+            //if (!pawn.story.traits.allTraits.Any((Trait tr) =>
+            //    traitDef.ConflictsWith(tr)) &&
+            //    (traitDef.conflictingTraits == null ||
+            //    !traitDef.conflictingTraits.Any((TraitDef tr) => pawn.story.traits.HasTrait(tr))))
+            //{
+            //    return true;
+            //}
+
+            trait = new Trait(traitDef, buyableTrait.degree);
 
             foreach (Trait tr in pawn.story.traits.allTraits)
             {
@@ -221,12 +223,17 @@ namespace TwitchToolkit.IncidentHelpers.Traits
                 }
             }
 
+            if (pawn.story.traits.allTraits != null && pawn.story.traits.allTraits.Find(s => s.def.defName == search.def.defName) != null)
+            {
+                Toolkit.client.SendMessage($"@{viewer.username} you already have this trait of this type.");
+                return false;
+            }
+
             return true;
         }
 
         public override void TryExecute()
         {
-            trait = new Trait(traitDef, buyableTrait.degree);
             pawn.story.traits.GainTrait(trait);
 
             TraitDegreeData traitDegreeData = traitDef.DataAtDegree(buyableTrait.degree);
@@ -246,7 +253,7 @@ namespace TwitchToolkit.IncidentHelpers.Traits
 
             Viewer.TakeViewerCoins(storeIncident.cost);
             Viewer.CalculateNewKarma(storeIncident.karmaType, storeIncident.cost);
-            VariablesHelpers.SendPurchaseMessage($"@{Viewer.username} just added the trait " + traitDef.LabelCap + " to " + pawn.Name + ".", separateChannel);
+            VariablesHelpers.SendPurchaseMessage($"@{Viewer.username} just added the trait " + trait.Label + " to " + pawn.Name + ".", separateChannel);
             string text = $"{Viewer.username} has purchased " + trait.LabelCap + " for " + pawn.Name + ".";
             Current.Game.letterStack.ReceiveLetter("Trait", text, LetterDefOf.PositiveEvent, pawn);
         }

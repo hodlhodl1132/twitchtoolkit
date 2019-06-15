@@ -100,7 +100,7 @@ namespace TwitchToolkit.IRC
 
             Store_Logger.LogString("Checking command");
 
-            if (Helper.ModActive) Commands.CheckCommand(message);
+            if (Helper.ModActive) CommandsHandler.CheckCommand(message);
 
             Store_Logger.LogString("Checking if is vote");
 

@@ -109,15 +109,41 @@ namespace TwitchToolkit
                 double getTime = (double)Time.time / 60f;
                 int time = Convert.ToInt32(Math.Truncate(getTime));
 
+                if (IncidentHelpers.Count > 0)
+                {
+                    for (int i = 0; i < IncidentHelpers.Count; i++)
+                    {
+                        var incidentHelper = IncidentHelpers.Dequeue();
+                        if (!(incidentHelper is VotingHelper))
+                        {
+                            Purchase_Handler.QueuePlayerMessage(incidentHelper.Viewer, incidentHelper.message);
+                        }
+                        incidentHelper.TryExecute();
+                    }
+
+                    Helper.playerMessages = new List<string>();
+                }
+
+                if (IncidentHelperVariables.Count > 0)
+                {
+                    for (int i = 0; i < IncidentHelperVariables.Count; i++)
+                    {
+                        var incidentHelper = IncidentHelperVariables.Dequeue();
+                        Purchase_Handler.QueuePlayerMessage(incidentHelper.Viewer, incidentHelper.message, incidentHelper.storeIncident.variables);
+                        incidentHelper.TryExecute();
+                        if (Purchase_Handler.viewerNamesDoingVariableCommands.Contains(incidentHelper.Viewer.username))
+                            Purchase_Handler.viewerNamesDoingVariableCommands.Remove(incidentHelper.Viewer.username);
+                    }
+
+                    Helper.playerMessages = new List<string>();
+                }
+
                 if (Incidents.Count > 0)
                 {
                     var incident = Incidents.Dequeue();
 			        IncidentParms incidentParms = new IncidentParms();
 			        incidentParms.target = Helper.AnyPlayerMap;
-                    if (!incident.TryExecute(incidentParms))
-                    {
-                        Helper.playerMessages.RemoveAt(0);
-                    }
+                    incident.TryExecute(incidentParms);
                 }
 
                 if (FiringIncidents.Count > 0)
@@ -125,25 +151,6 @@ namespace TwitchToolkit
                     Helper.Log("Firing " + FiringIncidents.First().def.defName);
                     var incident = FiringIncidents.Dequeue();
                     incident.def.Worker.TryExecute(incident.parms);
-                }
-
-                if (IncidentHelpers.Count > 0)
-                {
-                    var incidentHelper = IncidentHelpers.Dequeue();
-                    if (!(incidentHelper is VotingHelper))
-                    {
-                        Purchase_Handler.QueuePlayerMessage(incidentHelper.Viewer, incidentHelper.message);
-                    }
-                    incidentHelper.TryExecute();
-                }
-
-                if (IncidentHelperVariables.Count > 0)
-                {
-                    var incidentHelper = IncidentHelperVariables.Dequeue();
-                        Purchase_Handler.QueuePlayerMessage(incidentHelper.Viewer, incidentHelper.message, incidentHelper.storeIncident.variables);
-                    incidentHelper.TryExecute();
-                    if (Purchase_Handler.viewerNamesDoingVariableCommands.Contains(incidentHelper.Viewer.username))
-                        Purchase_Handler.viewerNamesDoingVariableCommands.Remove(incidentHelper.Viewer.username);
                 }
 
                 VoteHandler.CheckForQueuedVotes();

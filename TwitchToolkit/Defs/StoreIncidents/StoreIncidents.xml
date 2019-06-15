@@ -293,7 +293,7 @@
     <karmaType>Neutral</karmaType>
   </TwitchToolkit.Incidents.StoreIncidentSimple>-->
 
-  <TwitchToolkit.Incidents.StoreIncidentSimple>
+  <!--<TwitchToolkit.Incidents.StoreIncidentSimple>
     <defName>Inspiration</defName>
     <label>inspiration</label>
     <abbreviation>inspiration</abbreviation>
@@ -301,7 +301,7 @@
     <eventCap>2</eventCap>
     <incidentHelper>TwitchToolkit.IncidentHelpers.Misc.Inspiration</incidentHelper>
     <karmaType>Good</karmaType>
-  </TwitchToolkit.Incidents.StoreIncidentSimple>
+  </TwitchToolkit.Incidents.StoreIncidentSimple>-->
 
   <TwitchToolkit.Incidents.StoreIncidentSimple>
     <defName>Meteorite</defName>
@@ -689,14 +689,14 @@
   <TwitchToolkit.Incidents.StoreIncidentVariables>
     <defName>LevelPawn</defName>
     <label>level pawn</label>
-    <abbreviation>gambleskill</abbreviation>
+    <abbreviation>levelskill</abbreviation>
     <cost>1500</cost>
     <eventCap>2</eventCap>
     <incidentHelper>TwitchToolkit.IncidentHelpers.Special.LevelPawn</incidentHelper>
     <karmaType>Good</karmaType>
     <minPointsToFire>1500</minPointsToFire>
     <maxWager>10000</maxWager>
-    <syntax>!gambleskill skill 1500</syntax>
+    <syntax>!levelskill skillname 1500</syntax>
     <variables>2</variables>
     <customSettings>true</customSettings>
     <customSettingsHelper>TwitchToolkit.IncidentHelpers.IncidentHelper_Settings.LevelPawnSettings</customSettingsHelper>
@@ -784,6 +784,17 @@
     <incidentHelper>TwitchToolkit.IncidentHelpers.Special.BeRescued</incidentHelper>
     <karmaType>Good</karmaType>
     <syntax>!buy berescued</syntax>
+  </TwitchToolkit.Incidents.StoreIncidentVariables>
+
+  <TwitchToolkit.Incidents.StoreIncidentVariables>
+    <defName>RandomInspire</defName>
+    <label>random inspiration</label>
+    <abbreviation>randominspire</abbreviation>
+    <cost>450</cost>
+    <eventCap>2</eventCap>
+    <incidentHelper>TwitchToolkit.IncidentHelpers.Special.Inspiration</incidentHelper>
+    <karmaType>Good</karmaType>
+    <syntax>!buy randominspire</syntax>
   </TwitchToolkit.Incidents.StoreIncidentVariables>
   
   <!-- Votes -->

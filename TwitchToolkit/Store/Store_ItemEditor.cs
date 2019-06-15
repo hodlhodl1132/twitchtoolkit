@@ -21,12 +21,21 @@ namespace TwitchToolkit.Store
 
         public static IEnumerable<ThingDef> GetDefaultItems()
         {
+
             return from t in DefDatabase<ThingDef>.AllDefs
-                where (t.tradeability.TraderCanSell() || ThingSetMakerUtility.CanGenerate(t)) &&
-                (t.building == null || t.Minifiable || ToolkitSettings.MinifiableBuildings) &&
-                (t.BaseMarketValue > 0)
-                orderby t.LabelCap
-                select t;
+                   where (t.tradeability.TraderCanSell() || ThingSetMakerUtility.CanGenerate(t)) &&
+                   (t.building == null || t.Minifiable || ToolkitSettings.MinifiableBuildings) &&
+                   (t.FirstThingCategory != null || t.race != null) &&
+                   (t.BaseMarketValue > 0)
+                   orderby t.LabelCap
+                   select t;
+
+            //return from t in DefDatabase<ThingDef>.AllDefs
+            //    where (t.tradeability.TraderCanSell() || ThingSetMakerUtility.CanGenerate(t)) &&
+            //    (t.building == null || t.Minifiable || ToolkitSettings.MinifiableBuildings) &&
+            //    (t.BaseMarketValue > 0)
+            //    orderby t.LabelCap
+            //    select t;
         }
 
         public static void ResetItemsToDefault()

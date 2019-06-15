@@ -17,7 +17,7 @@ namespace TwitchToolkit.Store
 
         public override void ParseCommand(IRCMessage msg)
         {
-            if (msg.Message.StartsWith("!lookup") && Commands.AllowCommand(msg))
+            if (msg.Message.StartsWith("!lookup") && CommandsHandler.AllowCommand(msg))
             {
 
                 string[] command = msg.Message.Split(' ');
@@ -162,7 +162,7 @@ namespace TwitchToolkit.Store
                     output += ", ";
             }
 
-            Toolkit.client.SendMessage(output, Commands.SendToChatroom(msg));
+            Toolkit.client.SendMessage(output, CommandsHandler.SendToChatroom(msg));
         }
     }
 }

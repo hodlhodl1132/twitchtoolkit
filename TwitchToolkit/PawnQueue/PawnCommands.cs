@@ -22,12 +22,12 @@ namespace TwitchToolkit.PawnQueue
 
             GameComponentPawns component = Current.Game.GetComponent<GameComponentPawns>();
             
-            if (msg.Message.StartsWith("!mypawnskills") && Commands.AllowCommand(msg))
+            if (msg.Message.StartsWith("!mypawnskills") && CommandsHandler.AllowCommand(msg))
             {
                 
                 if (!component.HasUserBeenNamed(viewer.username))
                 {
-                    Toolkit.client.SendMessage($"@{viewer.username} you are not in the colony.", Commands.SendToChatroom(msg));
+                    Toolkit.client.SendMessage($"@{viewer.username} you are not in the colony.", CommandsHandler.SendToChatroom(msg));
                     return;
                 }
 
@@ -56,14 +56,14 @@ namespace TwitchToolkit.PawnQueue
                     }
                 }
 
-                Toolkit.client.SendMessage(output, Commands.SendToChatroom(msg));
+                Toolkit.client.SendMessage(output, CommandsHandler.SendToChatroom(msg));
             }
 
-            if (msg.Message.StartsWith("!mypawnstory") && Commands.AllowCommand(msg))
+            if (msg.Message.StartsWith("!mypawnstory") && CommandsHandler.AllowCommand(msg))
             {
                 if (!component.HasUserBeenNamed(viewer.username))
                 {
-                    Toolkit.client.SendMessage($"@{viewer.username} you are not in the colony.", Commands.SendToChatroom(msg));
+                    Toolkit.client.SendMessage($"@{viewer.username} you are not in the colony.", CommandsHandler.SendToChatroom(msg));
                     return;
                 }
 
@@ -126,10 +126,10 @@ namespace TwitchToolkit.PawnQueue
                     }
                 }
 
-                Toolkit.client.SendMessage(output, Commands.SendToChatroom(msg));
+                Toolkit.client.SendMessage(output, CommandsHandler.SendToChatroom(msg));
             }
 
-            if (msg.Message.StartsWith("!changepawnname") && Commands.AllowCommand(msg))
+            if (msg.Message.StartsWith("!changepawnname") && CommandsHandler.AllowCommand(msg))
             {
                 string[] command = msg.Message.Split(' ');
 
@@ -139,13 +139,13 @@ namespace TwitchToolkit.PawnQueue
 
                 if (newName == null || newName == "" || newName.Length > 16)
                 {
-                    Toolkit.client.SendMessage($"@{viewer.username} your name can be up to 16 characters.", Commands.SendToChatroom(msg));
+                    Toolkit.client.SendMessage($"@{viewer.username} your name can be up to 16 characters.", CommandsHandler.SendToChatroom(msg));
                     return;
                 }
 
                 if (!component.HasUserBeenNamed(viewer.username))
                 {
-                    Toolkit.client.SendMessage($"@{viewer.username} you are not in the colony.", Commands.SendToChatroom(msg));
+                    Toolkit.client.SendMessage($"@{viewer.username} you are not in the colony.", CommandsHandler.SendToChatroom(msg));
                     return;
                 }
 
@@ -174,7 +174,7 @@ namespace TwitchToolkit.PawnQueue
 
                     if (username == null || username == "" || !nameRequests.ContainsKey(username))
                     {
-                        Toolkit.client.SendMessage($"@{viewer.username} invalid username", Commands.SendToChatroom(msg));
+                        Toolkit.client.SendMessage($"@{viewer.username} invalid username", CommandsHandler.SendToChatroom(msg));
                         return;
                     }
 
@@ -197,7 +197,7 @@ namespace TwitchToolkit.PawnQueue
 
                     if (username == null || username == "" || !nameRequests.ContainsKey(username))
                     {
-                        Toolkit.client.SendMessage($"@{viewer.username} invalid username", Commands.SendToChatroom(msg));
+                        Toolkit.client.SendMessage($"@{viewer.username} invalid username", CommandsHandler.SendToChatroom(msg));
                         return;
                     }
 

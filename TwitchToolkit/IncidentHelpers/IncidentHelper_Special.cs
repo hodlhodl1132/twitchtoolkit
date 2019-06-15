@@ -671,6 +671,73 @@ namespace TwitchToolkit.IncidentHelpers.Special
         public override Viewer Viewer { get; set; }
     }
 
+    public class Inspiration : IncidentHelperVariables
+    {
+        public override bool IsPossible(string message, Viewer viewer, bool separateChannel = false)
+        {
+            this.separateChannel = separateChannel;
+            string[] command = message.Split(' ');
+
+            // check if command has enough variables
+            if (command.Length - 2 < storeIncident.variables) // subtract 2 for the first part of the command (!buy item)
+            {
+                // let viewer know what correct way is
+                Toolkit.client.SendMessage($"@{viewer.username} syntax is {this.storeIncident.syntax}", separateChannel);
+                return false;
+            }
+
+            // other checks
+
+            return true;
+        }
+
+        public override void TryExecute()
+        {
+            // take actions for incident
+            List<Pawn> pawns = Helper.AnyPlayerMap.mapPawns.FreeColonistsSpawned.ToList();
+            pawns.Shuffle();
+
+            bool successfulInspiration = false;
+            InspirationDef randomAvailableInspirationDef;
+
+            foreach (Pawn pawn in pawns)
+            {
+                if (pawn.Inspired) continue;
+
+                randomAvailableInspirationDef = (
+                    from x in DefDatabase<InspirationDef>.AllDefsListForReading
+                    where true
+                    select x).RandomElementByWeightWithFallback((InspirationDef x) => x.Worker.CommonalityFor(pawn), null
+                );
+
+                if (randomAvailableInspirationDef != null)
+                {
+                    successfulInspiration = pawn.mindState.inspirationHandler.TryStartInspiration(randomAvailableInspirationDef);
+                    if (successfulInspiration) break;
+                }
+            }
+
+            if (successfulInspiration)
+            {
+                Viewer.TakeViewerCoins(storeIncident.cost);
+
+                // calculate new karma if needed
+                Viewer.CalculateNewKarma(storeIncident.karmaType, storeIncident.cost);
+
+                // send a purchase confirmation message
+                VariablesHelpers.SendPurchaseMessage($"@{Viewer.username} purchased a random inspiration.", separateChannel);
+            }
+            else
+            {
+                VariablesHelpers.SendPurchaseMessage($"@{Viewer.username} attempted to inspired a pawn, but none were successful.");
+            }
+
+        }
+
+        public bool separateChannel = false;
+        public override Viewer Viewer { get; set; }
+    }
+
     public static class PawnTracker
     {
         public static List<Pawn> pawnsToRevive = new List<Pawn>();

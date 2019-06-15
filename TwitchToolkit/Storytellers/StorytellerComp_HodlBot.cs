@@ -65,25 +65,25 @@ namespace TwitchToolkit.Storytellers
                 }
             }
 
-            int num = 0;
-
-            while (winners.Count < ToolkitSettings.VoteOptions && num < 12)
+            for (int i = 0; i < ToolkitSettings.VoteOptions; i++)
             {
-                VotingIncidentEntry votingIncidentEntry = GenCollection.RandomElementByWeight<VotingIncidentEntry>(from s in source
-                                                                                                                   where !winners.Contains(s)
-                                                                                                                   select s, (Func<VotingIncidentEntry, float>)((VotingIncidentEntry vi) => vi.weight));
-                votingIncidentEntry.incident.Helper.target = target;
-
-                if (votingIncidentEntry.incident.Helper.IsPossible())
+                if (GenCollection.TryRandomElementByWeight<VotingIncidentEntry>
+                    (from s in source
+                     where !winners.Contains(s)
+                     select s, (Func<VotingIncidentEntry, float>)((VotingIncidentEntry vi) => vi.weight), out VotingIncidentEntry votingIncidentEntry))
                 {
-                    winners.Add(votingIncidentEntry);
-                }
+                    votingIncidentEntry.incident.Helper.target = target;
 
-                num++;
+                    if (votingIncidentEntry.incident.Helper.IsPossible())
+                    {
+                        winners.Add(votingIncidentEntry);
+                    }
+                }
             }
 
             if (winners.Count < 3)
             {
+                Helper.Log("Less than 3 possible votes were found");
                 yield break;
             }
 
@@ -95,7 +95,7 @@ namespace TwitchToolkit.Storytellers
             }
 
             StorytellerPack named = DefDatabase<StorytellerPack>.GetNamed("HodlBot", true);
-            VoteHandler.QueueVote(new Vote_HodlBot(dictionary, named, str));
+            VoteHandler.QueueVote(new Vote_HodlBot(dictionary, named, voteType, str));
         }
 
         public EventType RandomType()

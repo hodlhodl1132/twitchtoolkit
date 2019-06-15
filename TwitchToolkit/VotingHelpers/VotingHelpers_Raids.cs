@@ -165,7 +165,10 @@ namespace TwitchToolkit.VotingHelpers.VotingHelpers_Raids
     {
         public override bool IsPossible()
         {
+            worker = new IncidentWorker_Infestation();
+            worker.def = IncidentDef.Named("Infestation");
             parms = StorytellerUtility.DefaultParmsNow(IncidentCategoryDefOf.ThreatBig, target);
+            parms.forced = true;
             points = parms.points;
 
             return worker.CanFireNow(parms);
@@ -173,12 +176,11 @@ namespace TwitchToolkit.VotingHelpers.VotingHelpers_Raids
 
         public override void TryExecute()
         {
-            worker.def = IncidentDef.Named("Infestation");
             worker.TryExecute(parms);
         }
 
         private float points;
-        private IncidentWorker worker = new IncidentWorker_Infestation();
+        private IncidentWorker worker;
         private IncidentParms parms;
     }
 }
