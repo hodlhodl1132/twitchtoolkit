@@ -42,6 +42,13 @@ namespace TwitchToolkit.Windows
 
         void TrySubmitNewCommand()
         {
+            if (defName == "")
+            {
+                NewOutputMessage("Name must be longer than 0 chars.");
+
+                return;
+            }
+
             string sanitizedDefName = string.Join("", defName.Split(' ')).ToLower();
 
             if (DefDatabase<Command>.AllDefs.Any(s => s.defName.ToLower() == sanitizedDefName))
@@ -51,9 +58,19 @@ namespace TwitchToolkit.Windows
             }
 
             Command newCommand = new Command();
+            newCommand.defName = sanitizedDefName.CapitalizeFirst();
             newCommand.isCustomMessage = true;
             newCommand.label = sanitizedDefName;
             DefDatabase<Command>.Add(newCommand);
+
+            if (ToolkitSettings.CustomCommandDefs == null)
+            {
+                ToolkitSettings.CustomCommandDefs = new List<string>();
+            }
+
+            ToolkitSettings.CustomCommandDefs.Add(newCommand.defName);
+
+            Toolkit.Mod.WriteSettings();
 
             Window_CommandEditor window = new Window_CommandEditor(newCommand);
             Find.WindowStack.TryRemove(window.GetType());

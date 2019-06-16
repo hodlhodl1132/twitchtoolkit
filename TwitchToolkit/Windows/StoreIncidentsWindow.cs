@@ -29,12 +29,20 @@ namespace TwitchToolkit.Windows
 			Widgets.Label(rect, "Store Incidents");
 			Text.Font = GameFont.Small;
 			Text.Anchor = TextAnchor.UpperLeft;
-            Rect search = new Rect(inRect.width / 5, rect.height, inRect.width / 2, 26f);
+            Rect search = new Rect(0, rect.height, inRect.width - 20f, 26f);
             searchQuery = Widgets.TextEntryLabeled(search, "Search:", searchQuery);
-            Rect resetButton = new Rect(search.x, search.y + 28f, search.width, 26f);
+            Rect resetButton = new Rect(search.x, search.y + 28f, (inRect.width / 2f) - 20f, 26f);
             if (Widgets.ButtonText(resetButton, "Reset all Incidents"))
             {
                 Store_IncidentEditor.LoadBackups();
+            }
+            resetButton.x += resetButton.width + 10f;
+            if (Widgets.ButtonText(resetButton, "Disable All"))
+            {
+                foreach (StoreIncident incident in DefDatabase<StoreIncident>.AllDefs)
+                {
+                    incident.cost = -10;
+                }
             }
 			inRect.yMin += 120f;
 			Widgets.DrawMenuSection(inRect);

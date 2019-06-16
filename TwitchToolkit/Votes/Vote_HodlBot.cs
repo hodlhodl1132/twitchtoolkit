@@ -65,8 +65,7 @@ namespace TwitchToolkit.Votes
             EventCategory.Colonist,
             EventCategory.Drop,
             EventCategory.Enviroment,
-            EventCategory.Foreigner,
-            EventCategory.Weather
+            EventCategory.Foreigner
         };
 
         readonly StorytellerPack pack = null;

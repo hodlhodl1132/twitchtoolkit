@@ -61,6 +61,15 @@ namespace TwitchToolkit
                         parameters: new[] { typeof(string) }),
                     postfix: new HarmonyMethod(type: patchType, name: nameof(NewTwitchConnection))
                 );
+
+            //StringBuilder json = new StringBuilder();
+
+            //foreach (ModMetaData modMeta in ModsConfig.ActiveModsInLoadOrder)
+            //{
+            //    json.Append(modMeta.GetPublishedFileId() + ", ");
+            //}
+
+            //Helper.Log(json.ToString());
         }
 
         public static void SaveGame_Postfix()

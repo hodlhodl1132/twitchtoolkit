@@ -57,7 +57,7 @@ namespace TwitchToolkit
 
         #region StoreSettings
         public static bool EarningCoins = true;
-        public static string CustomPricingSheetLink = "https://twitchtoolkit.github.io/item-list/";
+        public static string CustomPricingSheetLink = "bit.ly/toolkit-list";
         #endregion
 
         #region Options
@@ -186,6 +186,16 @@ namespace TwitchToolkit
         #region Milasandra
         public static bool MilasandraEnabled = false;
         #endregion
+
+        #region Mercurius
+        public static bool MercuriusEnabled = false;
+        #endregion
+
+        #endregion
+
+        #region CustomDefs
+
+        public static List<string> CustomCommandDefs = new List<string>();
 
         #endregion
 
@@ -364,7 +374,7 @@ namespace TwitchToolkit
             Scribe_Values.Look(ref UnlimitedCoins, "UnlimitedCoins", false);
 
             Scribe_Values.Look(ref EarningCoins, "EarningCoins", true);
-            Scribe_Values.Look(ref CustomPricingSheetLink, "CustomPricingSheetLink", "https://twitchtoolkit.github.io/item-list/");
+            Scribe_Values.Look(ref CustomPricingSheetLink, "CustomPricingSheetLink", "bit.ly/toolkit-list");
 
             Scribe_Values.Look(ref WhisperCmdsAllowed, "WhisperCmdsAllowed", true);
             Scribe_Values.Look(ref WhisperCmdsOnly, "WhisperCmdsOnly", false);
@@ -463,7 +473,11 @@ namespace TwitchToolkit
 
             Scribe_Values.Look(ref MilasandraEnabled, "MilasandraEnabled", false);
 
+            Scribe_Values.Look(ref MercuriusEnabled, "MercuriusEnabled", false);
+
             Scribe_Values.Look(ref CommandsModsEnabled, "CommandsModsEnabled", true);
+
+            Scribe_Collections.Look(ref CustomCommandDefs, "CustomCommandDefs", LookMode.Value);
 
             List<StoreIncidentVariables> variableIncidents = DefDatabase<StoreIncidentVariables>.AllDefs.Where(s => s.customSettings).ToList();
             

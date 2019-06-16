@@ -25,6 +25,11 @@ namespace TwitchToolkit.Storytellers
                 yield break;
             }
 
+            if (GenDate.DaysPassed <= Props.minDaysPassed)
+            {
+                yield break;
+            }
+
             float difficultyFactor = (!this.Props.applyRaidBeaconThreatMtbFactor) ? 1f : Find.Storyteller.difficulty.raidBeaconThreatCountFactor;
             float acceptFraction = 1f;
             if (this.Props.acceptFractionByDaysPassedCurve != null)
@@ -70,7 +75,6 @@ namespace TwitchToolkit.Storytellers
 
         private void GenerateForcedIncidents(IIncidentTarget target, IncidentParms parms)
         {
-            Helper.Log("forcing incident");
             List<IncidentDef> defs = (from def in base.UsableIncidentsInCategory(this.Props.IncidentCategory, parms)
                                              where parms.points >= def.minThreatPoints
                                              select def).ToList();
@@ -80,11 +84,8 @@ namespace TwitchToolkit.Storytellers
 
         private void GenerateIncidentsByWeight(IIncidentTarget target, IncidentParms parms)
         {
-            Helper.Log("incident by weights");
             List<IncidentDef> defs = new List<IncidentDef>();
             
-            stopwatch = new Stopwatch();
-            stopwatch.Start();
             for (int i = 0; i < 3; i ++)
             {
                 if ((from def in base.UsableIncidentsInCategory(this.Props.IncidentCategory, parms)
@@ -92,14 +93,6 @@ namespace TwitchToolkit.Storytellers
                      select def).TryChooseRandomElementByWeight(new Func<IncidentDef, float>(base.IncidentChanceFinal), out IncidentDef def2))
                 {
                     defs.Add(def2);
-                }
-                stopwatch.Stop();
-                Log.Message("Generating event from milasandra elapsed for " + stopwatch.ElapsedMilliseconds + "ms");
-
-                if (i < 2)
-                {
-                    stopwatch.Reset();
-                    stopwatch.Start();
                 }
             }
 

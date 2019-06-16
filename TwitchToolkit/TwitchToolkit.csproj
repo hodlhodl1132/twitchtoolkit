@@ -40,6 +40,13 @@
     <Reference Include="0Harmony">
       <HintPath>..\..\..\..\Downloads\Release\Release\net35\0Harmony.dll</HintPath>
     </Reference>
+    <Reference Include="Assembly-CSharp-firstpass">
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\RimWorld\RimWorldWin64_Data\Managed\Assembly-CSharp-firstpass.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="MoonSharp.Interpreter, Version=2.0.0.0, Culture=neutral, PublicKeyToken=921e73ce94aa17f8, processorArchitecture=MSIL">
+      <HintPath>..\packages\MoonSharp.2.0.0.0\lib\net35-client\MoonSharp.Interpreter.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Net" />
     <Reference Include="System.Runtime.Serialization" />
@@ -139,12 +146,14 @@
     <Compile Include="Storytellers\StorytellerCompProperties_CustomRandomStoryTeller.cs" />
     <Compile Include="Storytellers\StorytellerCompProperties_HodlBot.cs" />
     <Compile Include="Storytellers\StorytellerCompProperties_Random.cs" />
+    <Compile Include="Storytellers\StorytellerCompProperties_ToolkitCategoryMTB.cs" />
     <Compile Include="Storytellers\StorytellerCompProperties_ToolkitOnOffCycle.cs" />
     <Compile Include="Storytellers\StorytellerCompProperties_TwitchToolkit.cs" />
     <Compile Include="Storytellers\StorytellerCompProperties_ToryTalker.cs" />
     <Compile Include="Storytellers\StorytellerCompProperties_UristBot.cs" />
     <Compile Include="Storytellers\StorytellerComp_HodlBot.cs" />
     <Compile Include="Storytellers\StorytellerComp_Random.cs" />
+    <Compile Include="Storytellers\StorytellerComp_ToolkitCategoryMTB.cs" />
     <Compile Include="Storytellers\StorytellerComp_ToolkitOnOffCycle.cs" />
     <Compile Include="Storytellers\StorytellerComp_TwitchToolkit.cs" />
     <Compile Include="Storytellers\StorytellerComp_ToryTalker.cs" />
@@ -157,6 +166,7 @@
     <Compile Include="Storytellers\StorytellerPackWindows\Window_ToryTalkerSettings.cs" />
     <Compile Include="Storytellers\StoryTellerVoteTracker.cs" />
     <Compile Include="Storytellers\VotingIncidentEntry.cs" />
+    <Compile Include="Storytellers\Window_Mercurius.cs" />
     <Compile Include="Storytellers\Window_UristBotSettings.cs" />
     <Compile Include="StreamLabs.cs" />
     <Compile Include="Utilities\CustomMatLoader.cs" />
@@ -164,6 +174,7 @@
     <Compile Include="Votes\Vote_ExoticItems.cs" />
     <Compile Include="Votes\Vote_HodlBot.cs" />
     <Compile Include="Votes\Vote_MentalBreak.cs" />
+    <Compile Include="Votes\Vote_Mercurius.cs" />
     <Compile Include="Votes\Vote_Milasandra.cs" />
     <Compile Include="Votes\Vote_RaidStrategy.cs" />
     <Compile Include="Votes\Vote_ToryTalker.cs" />

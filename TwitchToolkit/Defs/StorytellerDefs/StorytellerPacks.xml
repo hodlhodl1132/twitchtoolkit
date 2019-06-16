@@ -31,4 +31,12 @@
     <minDaysBetweenEvents>6</minDaysBetweenEvents>
     <storytellerCompPropertiesType>TwitchToolkit.Storytellers.StorytellerCompProperties_ToolkitOnOffCycle</storytellerCompPropertiesType>
   </TwitchToolkit.Storytellers.StorytellerPack>
+
+  <TwitchToolkit.Storytellers.StorytellerPack>
+    <defName>Mercurius</defName>
+    <label>mercurius</label>
+    <enabled>false</enabled>
+    <minDaysBetweenEvents>6</minDaysBetweenEvents>
+    <storytellerCompPropertiesType>TwitchToolkit.Storytellers.StorytellerCompProperties_ToolkitCategoryMTB</storytellerCompPropertiesType>
+  </TwitchToolkit.Storytellers.StorytellerPack>
 </Defs>

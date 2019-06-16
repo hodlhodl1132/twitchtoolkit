@@ -21,6 +21,7 @@ namespace TwitchToolkit.Commands
                 Command backup = new Command() {
                     defName = cmd.defName,
                     command = cmd.command,
+                    label = cmd.label,
                     enabled = cmd.enabled,
                     shouldBeInSeparateRoom = cmd.shouldBeInSeparateRoom,
                     requiresMod = cmd.requiresMod,
@@ -50,6 +51,30 @@ namespace TwitchToolkit.Commands
                 if (CopyExists(cmd))
                 {
                     LoadCopy(cmd);
+                }
+            }
+
+            if (ToolkitSettings.CustomCommandDefs == null)
+            {
+                return;
+            }
+            
+            foreach (string custom in ToolkitSettings.CustomCommandDefs)
+            {
+                Helper.Log("Loading custom command with defName " + custom);
+
+                Command newCustom = new Command
+                {
+                    defName = custom
+                };
+
+                if (CopyExists(newCustom))
+                {
+                    LoadCopy(newCustom);
+
+                    newCustom.defName = custom;
+
+                    DefDatabase<Command>.Add(newCustom);
                 }
             }
         }

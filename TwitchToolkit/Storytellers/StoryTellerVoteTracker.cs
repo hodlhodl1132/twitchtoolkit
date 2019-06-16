@@ -133,8 +133,11 @@ namespace TwitchToolkit.Storytellers
                     break;
 
                 case "Milasandra":
-                    // has built in MTB day calculator
-                    daysBetweenEvents = 0;
+                    daysBetweenEvents = ((StorytellerCompProperties_ToolkitOnOffCycle)(DefDatabase<StorytellerPack>.GetNamed("Milasandra").StorytellerComp).props).minSpacingDays;
+                    break;
+
+                case "Mercurius":
+                    daysBetweenEvents = ((StorytellerCompProperties_ToolkitCategoryMTB)(DefDatabase<StorytellerPack>.GetNamed("Mercurius").StorytellerComp).props).mtbDays;
                     break;
 
                 default:

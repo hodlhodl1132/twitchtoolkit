@@ -50,6 +50,8 @@ namespace TwitchToolkit.Storytellers
 
         public float minSpacingDays = 1.9f;
 
+        public new float minDaysPassed = 11.0f;
+
         public FloatRange numIncidentsRange = new FloatRange(1, 2);
 
         public SimpleCurve acceptFractionByDaysPassedCurve;
@@ -62,6 +64,6 @@ namespace TwitchToolkit.Storytellers
 
         public bool applyRaidBeaconThreatMtbFactor;
 
-        public float forceRaidEnemyBeforeDaysPassed;
+        public float forceRaidEnemyBeforeDaysPassed = 20f;
     }
 }

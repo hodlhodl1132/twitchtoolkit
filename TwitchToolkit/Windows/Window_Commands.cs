@@ -91,7 +91,7 @@ namespace TwitchToolkit.Windows
             //    GUI.color = Color.grey;
             //}
 
-            Widgets.Label(rect3, command.label.CapitalizeFirst());
+            Widgets.Label(rect3, command.Label.CapitalizeFirst());
             Rect rect4 = new Rect(rect3.width, rect3.y, 60, rect3.height);
             if (Widgets.ButtonText(rect4, "Edit"))
             {

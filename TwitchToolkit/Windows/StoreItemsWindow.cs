@@ -36,10 +36,21 @@ namespace TwitchToolkit.Windows
             Rect searchBar = new Rect(0f, 30f, 300f, 26f);
             searchQuery = Widgets.TextEntryLabeled(searchBar, "Search:", searchQuery);
 
-            Rect resetButton = new Rect(inRect.width - 150f, 0f, 100f, 26f);
+            Rect resetButton = new Rect(inRect.width - 270f, 0f, 100f, 26f);
             if (Widgets.ButtonText(resetButton, "Reset Items"))
             {
                 Store_ItemEditor.ResetItemsToDefault();
+                GetTradeables(false);
+            }
+
+            resetButton.x += resetButton.width + 20f;
+            if (Widgets.ButtonText(resetButton, "Disable All"))
+            {
+                foreach (Item item in StoreInventory.items)
+                {
+                    item.price = -10;
+                }
+
                 GetTradeables(false);
             }
 

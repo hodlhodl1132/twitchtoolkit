@@ -10,13 +10,33 @@ namespace TwitchToolkit.Incidents
 {
     public class IncidentWorker_QuestViewerRescue : IncidentWorker_QuestPrisonerRescue
     {
+        public IncidentWorker_QuestViewerRescue()
+        {
+
+        }
+
         public IncidentWorker_QuestViewerRescue(Viewer viewer)
         {
             this.viewer = viewer;
         }
 
+        protected override bool CanFireNowSub(IncidentParms parms)
+        {
+            if (viewer == null)
+            {
+                return false;
+            }
+
+            return base.CanFireNowSub(parms);
+        }
+
         protected override bool TryExecuteWorker(IncidentParms parms)
         {
+            if (viewer == null)
+            {
+                return false;
+            }
+
             Helper.Log("Executing viewer quest");
             int tile;
             if (!this.TryFindTile(out tile))

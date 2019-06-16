@@ -70,6 +70,10 @@ namespace TwitchToolkit.Storytellers
                 {
                     pack.enabled = ToolkitSettings.MilasandraEnabled;
                 }
+                else if (pack.defName == "Mercurius")
+                {
+                    pack.enabled = ToolkitSettings.MercuriusEnabled;
+                }
             }
         }
     }

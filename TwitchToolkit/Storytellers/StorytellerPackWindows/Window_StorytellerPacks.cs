@@ -47,6 +47,8 @@ namespace TwitchToolkit.Storytellers.StorytellerPackWindows
             listing.Label("Enabled Storyteller Packs");
 
             listing.Gap(24);
+
+            listing.ColumnWidth = (inRect.width / 2f) - 20f;
             
             listing.CheckboxLabeled("<color=#6441A4>Torytalker</color> - Classic / Most Balanced", ref ToolkitSettings.ToryTalkerEnabled);
 
@@ -98,9 +100,23 @@ namespace TwitchToolkit.Storytellers.StorytellerPackWindows
                 Find.WindowStack.Add(window);
             }
 
+            listing.NewColumn();
+            listing.Gap(200f);
+
+            listing.CheckboxLabeled("<color=#BF0030>Mercurius</color> - Misc Events Cycle", ref ToolkitSettings.MercuriusEnabled);
+
+            listing.Gap();
+
+            if (listing.ButtonTextLabeled("Mercurius Pack", "View"))
+            {
+                Window_Mercurius window = new Window_Mercurius();
+                Find.WindowStack.TryRemove(window.GetType());
+                Find.WindowStack.Add(window);
+            }
+
             listing.End();
         }
 
-        public override Vector2 InitialSize => new Vector2(520f, 800f);
+        public override Vector2 InitialSize => new Vector2(800f, 800f);
     }
 }
