@@ -111,7 +111,7 @@ namespace TwitchToolkit
 
                 if (IncidentHelpers.Count > 0)
                 {
-                    for (int i = 0; i < IncidentHelpers.Count; i++)
+                    while (IncidentHelpers.Count > 0)
                     {
                         var incidentHelper = IncidentHelpers.Dequeue();
                         if (!(incidentHelper is VotingHelper))
@@ -126,7 +126,7 @@ namespace TwitchToolkit
 
                 if (IncidentHelperVariables.Count > 0)
                 {
-                    for (int i = 0; i < IncidentHelperVariables.Count; i++)
+                    while (IncidentHelperVariables.Count > 0)
                     {
                         var incidentHelper = IncidentHelperVariables.Dequeue();
                         Purchase_Handler.QueuePlayerMessage(incidentHelper.Viewer, incidentHelper.message, incidentHelper.storeIncident.variables);
