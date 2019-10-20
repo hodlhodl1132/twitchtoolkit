@@ -3,8 +3,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using TwitchToolkit.Chat;
 using TwitchToolkit.Incidents;
 using TwitchToolkit.IRC;
+using TwitchToolkit.Viewers;
 using TwitchToolkit.PawnQueue;
 using TwitchToolkit.Store;
 using TwitchToolkit.Utilities;
@@ -14,7 +16,7 @@ namespace TwitchToolkit
 {
     public static class CommandsHandler
     {
-        public static void CheckCommand(IRCMessage msg)
+        public static void CheckCommand(TwitchIRCMessage msg)
         {
 
             if (msg == null)
@@ -27,22 +29,19 @@ namespace TwitchToolkit
                 return;
             }
 
-            string message = msg.Message;
-            string user = msg.User;
-            if (message.Split(' ')[0] == "/w")
-            {
-                List<string> messagewhisper = message.Split(' ').ToList();
-                messagewhisper.RemoveAt(0);
-                message = string.Join(" ", messagewhisper.ToArray());
-                Helper.Log(message);
-            }
+            Viewer viewer = msg.Viewer;
 
-            Viewer viewer = Viewers.GetViewer(user);
-            viewer.last_seen = DateTime.Now;
+            viewer.WasSeen();
+
 
             if (viewer.IsBanned)
             {
                 return;
+            }
+
+            if (!msg.Message.StartsWith("!"))
+            {
+                IRCMessageLog.AddNewMessage(msg);
             }
 
             Command commandDef = DefDatabase<Command>.AllDefs.ToList().Find(s => msg.Message.StartsWith("!" + s.command));
@@ -51,7 +50,7 @@ namespace TwitchToolkit
             {
                 bool runCommand = true;
 
-                if (commandDef.requiresMod && (!viewer.mod && viewer.username.ToLower() != ToolkitSettings.Channel.ToLower()))
+                if (commandDef.requiresMod && (!viewer.Mod && viewer.UsernameLower != ToolkitSettings.Channel.ToLower()))
                 {
                     runCommand = false;
                 }
@@ -91,7 +90,7 @@ namespace TwitchToolkit
             }
         }
 
-        public static bool AllowCommand(IRCMessage msg)
+        public static bool AllowCommand(TwitchIRCMessage msg)
         {
             if (!ToolkitSettings.UseSeparateChatRoom && (msg.Whisper || ToolkitSettings.AllowBothChatRooms || msg.Channel == "#" + ToolkitSettings.Channel.ToLower())) return true;
             if (msg.Channel == "#chatrooms:" + ToolkitSettings.ChannelID + ":" + ToolkitSettings.ChatroomUUID) return true;
@@ -99,7 +98,7 @@ namespace TwitchToolkit
             return false;
         }
 
-        public static bool SendToChatroom(IRCMessage msg)
+        public static bool SendToChatroom(TwitchIRCMessage msg)
         {
             if (msg.Whisper && ToolkitSettings.WhispersGoToChatRoom)
             {

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.Security;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 
 namespace TwitchToolkit.Utilities
@@ -10,88 +12,54 @@ namespace TwitchToolkit.Utilities
 
     public class WebClientHelper
     {
-        public static string UploadString(string[] args, string method = "POST", string[] headers = null)
+        public void Get(string url, DownloadStringCompletedEventHandler callback, Dictionary<string, string> headers = null)
         {
-            if (args == null || args.Length == 0)
-            {
-                throw new ApplicationException ("Specify the URI of the resource to retrieve.");
-            }
-            
-            string urlParams = "";
-            for (int i = 1; i < args.Length; i++)
-            {
-                urlParams += args[i];
-            }
+            ServicePointManager.ServerCertificateValidationCallback = MyRemoteCertificateValidationCallback;
 
-            WebClient client = new WebClient ();
+            Uri uri = new Uri(url);
 
-            // Add a user agent header in case the 
-            // requested URI contains a query.
-            client.Headers.Add ("user-agent", "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.2; .NET CLR 1.0.3705;)");
+            WebClient wc = new WebClient();
+            wc.Headers[HttpRequestHeader.ContentType] = "application/vnd.twitchtv.v5+json";
 
             if (headers != null)
             {
-                for (int i = 0; i < headers.Count(); i += 2)
+                foreach (KeyValuePair<string, string> pair in headers)
                 {
-                    if (headers[i] != null && headers[i + 1] != null)
-                        client.Headers.Add(headers[i], headers[i+1]);
+                    wc.Headers[pair.Key] = pair.Value;
                 }
             }
 
-            Helper.Log(client.Headers.ToString());
+            wc.DownloadStringCompleted += callback;
 
-            Helper.Log(args[0] + "?" + urlParams);
-            using (WebClient wc = new WebClient())
-            {
-                wc.Headers[HttpRequestHeader.ContentType] = "application/json";
-                Uri uri = new Uri(args[0]);
-                string HtmlResult = wc.UploadString(uri, method, urlParams);
-                return HtmlResult;
-            }
-            
+            wc.DownloadStringAsync(uri, callback);
         }
 
-        public static string UploadData(string[] args, string method = "POST", string[] headers = null)
+        public bool MyRemoteCertificateValidationCallback(System.Object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors)
         {
-            if (args == null || args.Length == 0)
+            bool isOk = true;
+            // If there are errors in the certificate chain,
+            // look at each error to determine the cause.
+            if (sslPolicyErrors != SslPolicyErrors.None)
             {
-                throw new ApplicationException ("Specify the URI of the resource to retrieve.");
-            }
-            
-            string urlParams = "";
-            for (int i = 1; i < args.Length; i++)
-            {
-                urlParams += args[i];
-            }
-            byte[] urlParamBytes = Helper.LanguageEncoding().GetBytes(urlParams);
-
-            WebClient client = new WebClient ();
-
-            // Add a user agent header in case the 
-            // requested URI contains a query.
-            client.Headers.Add ("user-agent", "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.2; .NET CLR 1.0.3705;)");
-            
-            if (headers != null)
-            {
-                for (int i = 0; i < headers.Count(); i += 2)
+                for (int i = 0; i < chain.ChainStatus.Length; i++)
                 {
-                    if (headers[i] != null && headers[i + 1] != null)
-                        client.Headers.Add(headers[i], headers[i+1]);
+                    if (chain.ChainStatus[i].Status == X509ChainStatusFlags.RevocationStatusUnknown)
+                    {
+                        continue;
+                    }
+                    chain.ChainPolicy.RevocationFlag = X509RevocationFlag.EntireChain;
+                    chain.ChainPolicy.RevocationMode = X509RevocationMode.Online;
+                    chain.ChainPolicy.UrlRetrievalTimeout = new TimeSpan(0, 1, 0);
+                    chain.ChainPolicy.VerificationFlags = X509VerificationFlags.AllFlags;
+                    bool chainIsValid = chain.Build((X509Certificate2)certificate);
+                    if (!chainIsValid)
+                    {
+                        isOk = false;
+                        break;
+                    }
                 }
             }
-
-            Helper.Log(client.Headers.ToString());
-
-            Helper.Log(args[0] + "?" + urlParams);
-            using (WebClient wc = new WebClient())
-            {
-                wc.Headers[HttpRequestHeader.ContentType] = "application/json";
-                Uri uri = new Uri(args[0]);
-                byte[] HtmlResult = wc.UploadData(args[0], method, urlParamBytes);
-                string result = Helper.LanguageEncoding().GetString(HtmlResult);
-                return result;
-            }
-            
+            return isOk;
         }
     }
 }

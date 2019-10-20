@@ -55,6 +55,8 @@ namespace TwitchToolkit.Storytellers
 
         private FiringIncident GenerateIncident(IIncidentTarget target)
         {
+            Helper.Log("Milasandra is generating events");
+
             IncidentParms parms = this.GenerateParms(this.Props.IncidentCategory, target);
 
             if ((float)GenDate.DaysPassed < this.Props.forceRaidEnemyBeforeDaysPassed)

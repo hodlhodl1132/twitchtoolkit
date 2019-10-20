@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using TwitchToolkit.Viewers;
 using Verse;
 
 namespace TwitchToolkit.PawnQueue
@@ -25,6 +26,12 @@ namespace TwitchToolkit.PawnQueue
                 {
                     pawnHistory.Remove(pair.Key);
                 }
+            }
+
+            if (ViewerModel.All != null && viewerNameQueue != null)
+            {
+                List<Viewer> bannedViewers = ViewerModel.All.Where(s => s.IsBanned).ToList();
+                viewerNameQueue = viewerNameQueue.Where(s => !ViewerModel.GetViewer(s).IsBanned).ToList();
             }
         }
 

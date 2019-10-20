@@ -15,7 +15,7 @@ namespace TwitchToolkit.Store
 
         }
 
-        public override void ParseCommand(IRCMessage msg)
+        public override void ParseCommand(TwitchIRCMessage msg)
         {
             if (msg.Message.StartsWith("!lookup") && CommandsHandler.AllowCommand(msg))
             {
@@ -51,7 +51,7 @@ namespace TwitchToolkit.Store
             Store_Logger.LogString("Finished lookup parse");
         }
 
-        public void FindLookup(IRCMessage msg, string searchObject, string searchQuery)
+        public void FindLookup(TwitchIRCMessage msg, string searchObject, string searchQuery)
         {
             List<string> results = new List<string>();
             switch(searchObject)
@@ -149,7 +149,7 @@ namespace TwitchToolkit.Store
             }
         }
 
-        public void SendTenResults(IRCMessage msg, string searchObject, string searchQuery, string[] results)
+        public void SendTenResults(TwitchIRCMessage msg, string searchObject, string searchQuery, string[] results)
         {
             if (results.Count() < 1) return;
 

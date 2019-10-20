@@ -137,7 +137,7 @@ namespace TwitchToolkit.Storytellers
                     break;
 
                 case "Mercurius":
-                    daysBetweenEvents = ((StorytellerCompProperties_ToolkitCategoryMTB)(DefDatabase<StorytellerPack>.GetNamed("Mercurius").StorytellerComp).props).mtbDays;
+                    daysBetweenEvents = ((StorytellerCompProperties_ToolkitCategoryMTB)(DefDatabase<StorytellerPack>.GetNamed("Mercurius").StorytellerComp).props).minDaysPassed;
                     break;
 
                 default:

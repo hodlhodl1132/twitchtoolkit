@@ -92,7 +92,7 @@ namespace TwitchToolkit.Utilities
                         Viewer viewer = new Viewer(node["viewers"][i]["username"]);
                         if (ToolkitSettings.SyncStreamLabs)
                         {
-                            viewer.SetViewerCoins(StreamLabs.GetViewerPoints(viewer));
+                            //viewer.SetViewerCoins(StreamLabs.GetViewerPoints(viewer));
                         }
                         else
                         {

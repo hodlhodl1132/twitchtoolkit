@@ -4,15 +4,17 @@ using System.Linq;
 using System.Text;
 using TwitchToolkit.IRC;
 using TwitchToolkit.Store;
+using TwitchToolkit.Viewers;
 using Verse;
 
 namespace TwitchToolkit.Commands.ModCommands
 {
     public class RefreshViewers : CommandDriver
     {
-        public override void RunCommand(IRCMessage message)
+        public override void RunCommand(TwitchIRCMessage message)
         {
-            TwitchToolkitDev.WebRequest_BeginGetResponse.Main("https://tmi.twitch.tv/group/user/" + ToolkitSettings.Channel.ToLower() + "/chatters", new Func<TwitchToolkitDev.RequestState, bool>(Viewers.SaveUsernamesFromJsonResponse));
+            // TODO fix refresh viewers
+            //TwitchToolkitDev.WebRequest_BeginGetResponse.Main("https://tmi.twitch.tv/group/user/" + ToolkitSettings.Channel.ToLower() + "/chatters", new Func<TwitchToolkitDev.RequestState, bool>(Viewers.SaveUsernamesFromJsonResponse));
 
             Toolkit.client.SendMessage($"@{message.User} viewers have been refreshed.");
         }
@@ -20,9 +22,10 @@ namespace TwitchToolkit.Commands.ModCommands
 
     public class KarmaRound : CommandDriver
     {
-        public override void RunCommand(IRCMessage message)
+        public override void RunCommand(TwitchIRCMessage message)
         {
-            Viewers.AwardViewersCoins();
+            // TODO fix award viewer coins
+            //Viewers.AwardViewersCoins();
 
             Toolkit.client.SendMessage($"@{message.User} rewarding all active viewers coins.");
         }
@@ -30,7 +33,7 @@ namespace TwitchToolkit.Commands.ModCommands
 
     public class GiveAllCoins : CommandDriver
     {
-        public override void RunCommand(IRCMessage message)
+        public override void RunCommand(TwitchIRCMessage message)
         {
             try
             {
@@ -45,9 +48,9 @@ namespace TwitchToolkit.Commands.ModCommands
 
                 if (isNumeric)
                 {
-                    foreach (Viewer vwr in Viewers.All)
+                    foreach (Viewer vwr in ViewerModel.All)
                     {
-                        vwr.GiveViewerCoins(amount);
+                        vwr.GiveCoins(amount);
                     }
 
                     Toolkit.client.SendMessage($"@{message.User} " + Helper.ReplacePlaceholder("TwitchToolkitGiveAllCoins".Translate(), amount: amount.ToString()), CommandsHandler.SendToChatroom(message));
@@ -62,7 +65,7 @@ namespace TwitchToolkit.Commands.ModCommands
 
     public class GiveCoins : CommandDriver
     {
-        public override void RunCommand(IRCMessage message)
+        public override void RunCommand(TwitchIRCMessage message)
         {
             try
             {
@@ -85,12 +88,12 @@ namespace TwitchToolkit.Commands.ModCommands
                 bool isNumeric = int.TryParse(command[2], out amount);
                 if (isNumeric)
                 {
-                    Viewer giftee = Viewers.GetViewer(receiver);
+                    Viewer giftee = ViewerModel.GetViewerByTypeAndUsername(receiver, message.Viewer.ViewerType);
 
-                    Helper.Log($"Giving viewer {giftee.username} {amount} coins");
-                    giftee.GiveViewerCoins(amount);
-                    Toolkit.client.SendMessage($"@{message.User} " + Helper.ReplacePlaceholder("TwitchToolkitGivingCoins".Translate(), viewer: giftee.username, amount: amount.ToString(), newbalance: giftee.coins.ToString()), CommandsHandler.SendToChatroom(message));
-                    Store_Logger.LogGiveCoins(message.User, giftee.username, amount);
+                    Helper.Log($"Giving viewer {giftee.Username} {amount} coins");
+                    giftee.GiveCoins(amount);
+                    Toolkit.client.SendMessage($"@{message.User} " + Helper.ReplacePlaceholder("TwitchToolkitGivingCoins".Translate(), viewer: giftee.Username, amount: amount.ToString(), newbalance: giftee.Coins.ToString()), CommandsHandler.SendToChatroom(message));
+                    Store_Logger.LogGiveCoins(message.User, giftee.Username, amount);
                 }
             }
             catch (InvalidCastException e)
@@ -102,7 +105,7 @@ namespace TwitchToolkit.Commands.ModCommands
 
     public class CheckUser : CommandDriver
     {
-        public override void RunCommand(IRCMessage message)
+        public override void RunCommand(TwitchIRCMessage message)
         {
             try
             {
@@ -115,8 +118,8 @@ namespace TwitchToolkit.Commands.ModCommands
 
                 string target = command[1].Replace("@", "");
 
-                Viewer targeted = Viewers.GetViewer(target);
-                Toolkit.client.SendMessage($"@{message.User} " + Helper.ReplacePlaceholder("TwitchToolkitCheckUser".Translate(), viewer: targeted.username, amount: targeted.coins.ToString(), karma: targeted.GetViewerKarma().ToString()), CommandsHandler.SendToChatroom(message));
+                Viewer targeted = ViewerModel.GetViewerByTypeAndUsername(target, message.Viewer.ViewerType);
+                Toolkit.client.SendMessage($"@{message.User} " + Helper.ReplacePlaceholder("TwitchToolkitCheckUser".Translate(), viewer: targeted.Username, amount: targeted.Coins.ToString(), karma: targeted.Karma.ToString()), CommandsHandler.SendToChatroom(message));
 
             }
             catch (InvalidCastException e)
@@ -128,7 +131,7 @@ namespace TwitchToolkit.Commands.ModCommands
 
     public class SetKarma : CommandDriver
     {
-        public override void RunCommand(IRCMessage message)
+        public override void RunCommand(TwitchIRCMessage message)
         {
             try
             {
@@ -144,9 +147,9 @@ namespace TwitchToolkit.Commands.ModCommands
                 bool isNumeric = int.TryParse(command[2], out amount);
                 if (isNumeric)
                 {
-                    Viewer targeted = Viewers.GetViewer(target);
-                    targeted.SetViewerKarma(amount);
-                    Toolkit.client.SendMessage($"@{message.User}" + Helper.ReplacePlaceholder("TwitchToolkitSetKarma".Translate(), viewer: targeted.username, karma: amount.ToString()), CommandsHandler.SendToChatroom(message));
+                    Viewer targeted = ViewerModel.GetViewerByTypeAndUsername(target, message.Viewer.ViewerType);
+                    targeted.Karma = amount;
+                    Toolkit.client.SendMessage($"@{message.User}" + Helper.ReplacePlaceholder("TwitchToolkitSetKarma".Translate(), viewer: targeted.Username, karma: amount.ToString()), CommandsHandler.SendToChatroom(message));
                 }
             }
             catch (InvalidCastException e)
@@ -158,7 +161,7 @@ namespace TwitchToolkit.Commands.ModCommands
 
     public class ToggleCoins : CommandDriver
     {
-        public override void RunCommand(IRCMessage message)
+        public override void RunCommand(TwitchIRCMessage message)
         {
             if (ToolkitSettings.EarningCoins)
             {

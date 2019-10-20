@@ -65,11 +65,13 @@ namespace TwitchToolkit.Storytellers
                 }
             }
 
-            for (int i = 0; i < ToolkitSettings.VoteOptions; i++)
+            List<VotingIncidentEntry> losers = new List<VotingIncidentEntry>();
+
+            for (int i = 0; i < ToolkitSettings.VoteOptions * 2; i++)
             {
                 if (GenCollection.TryRandomElementByWeight<VotingIncidentEntry>
                     (from s in source
-                     where !winners.Contains(s)
+                     where !winners.Contains(s) && !losers.Contains(s)
                      select s, (Func<VotingIncidentEntry, float>)((VotingIncidentEntry vi) => vi.weight), out VotingIncidentEntry votingIncidentEntry))
                 {
                     votingIncidentEntry.incident.Helper.target = target;
@@ -78,8 +80,15 @@ namespace TwitchToolkit.Storytellers
                     {
                         winners.Add(votingIncidentEntry);
                     }
+                    else
+                    {
+                        losers.Add(votingIncidentEntry);
+                    }
                 }
             }
+
+            winners.Shuffle();
+            winners = winners.Take(ToolkitSettings.VoteOptions).ToList();
 
             if (winners.Count < 3)
             {

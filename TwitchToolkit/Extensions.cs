@@ -3,6 +3,7 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Threading;
 using Verse;
+using System.Net;
 
 namespace TwitchToolkit
 {

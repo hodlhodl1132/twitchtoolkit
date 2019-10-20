@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using TwitchToolkit.Incidents;
+using TwitchToolkit.Viewers;
 using TwitchToolkit.Store;
 using Verse;
 

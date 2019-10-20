@@ -26,7 +26,7 @@ namespace TwitchToolkit.IRC
         };
 
         IRCParserState _state;
-        IRCMessage _message;
+        TwitchIRCMessage _message;
         string _key;
         string _value;
 
@@ -54,7 +54,7 @@ namespace TwitchToolkit.IRC
                         //Helper.Log($"{_state} starts at {i} {b}");
                         string msg = "";
                         foreach(char c in chars) msg += c;
-                        _message = new IRCMessage();
+                        _message = new TwitchIRCMessage();
                         _key = "";
                         _value = "";
                         switch (b)

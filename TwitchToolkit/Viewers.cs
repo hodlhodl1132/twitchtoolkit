@@ -6,10 +6,11 @@ using System.Text;
 using Verse;
 using TwitchToolkit.Utilities;
 using TwitchToolkit.Store;
+using TwitchToolkit.Viewers;
 
 namespace TwitchToolkit
 {
-    public static class Viewers
+    public static class Viewerss
     {
         public static string jsonallviewers;
         public static List<Viewer> All = new List<Viewer>();

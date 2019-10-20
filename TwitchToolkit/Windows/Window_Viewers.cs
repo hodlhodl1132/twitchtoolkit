@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using TwitchToolkit.Viewers;
 using TwitchToolkit.PawnQueue;
 using UnityEngine;
 using Verse;
@@ -12,7 +13,7 @@ namespace TwitchToolkit.Windows
     {
         public Window_Viewers()
         {
-            Viewers.RefreshViewers();
+            ViewerModel.RefreshActiveViewers();
             if (Current.Game != null)
             {
                 this.component = Current.Game.GetComponent<GameComponentPawns>();
@@ -55,16 +56,16 @@ namespace TwitchToolkit.Windows
                     return;
                 }
 
-                List<Viewer> searchViewers = Viewers.All.Where(s =>
-                        s.username.Contains(searchQuery.ToLower()) ||
-                        s.username == searchQuery.ToLower()
+                List<Viewer> searchViewers = ViewerModel.All.Where(s =>
+                        s.Username.Contains(searchQuery.ToLower()) ||
+                        s.Username == searchQuery.ToLower()
                     ).Take(6).ToList();
 
                 Rect viewerButton = new Rect(0, searchBar.y + cellHeight, 200f, cellHeight);
 
                 foreach (Viewer viewer in searchViewers)
                 {
-                    if (Widgets.ButtonText(viewerButton, viewer.username))
+                    if (Widgets.ButtonText(viewerButton, viewer.Username))
                     {
                         SelectViewer(viewer);
                     }
@@ -144,7 +145,7 @@ namespace TwitchToolkit.Windows
 
                 if (Widgets.ButtonText(smallButton, "Karma round"))
                 {
-                    Viewers.AwardViewersCoins();
+                    ViewerModel.AwardViewersCoins();
                 }
 
                 smallButton.y += cellHeight;
@@ -162,7 +163,7 @@ namespace TwitchToolkit.Windows
                 {
                     if (resetAllWarning)
                     {
-                        Viewers.ResetViewers();
+                        ViewerModel.ResetAllViewers();
                         resetAllWarning = false;
                     }
                     else
@@ -177,7 +178,7 @@ namespace TwitchToolkit.Windows
                 {
                     if (resetCoinWarning)
                     {
-                        Viewers.ResetViewersCoins();
+                        ViewerModel.ResetAllViewersCoins();
                         resetCoinWarning = false;
                     }
                     else
@@ -192,7 +193,7 @@ namespace TwitchToolkit.Windows
                 {
                     if (resetKarmaWarning)
                     {
-                        Viewers.ResetViewersKarma();
+                        ViewerModel.ResetAllViewersKarma();
                         resetKarmaWarning = false;
                     }
                     else

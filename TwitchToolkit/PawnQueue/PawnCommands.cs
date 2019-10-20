@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using TwitchToolkit.IRC;
 using TwitchToolkit.Store;
+using TwitchToolkit.Viewers;
 using Verse;
 
 namespace TwitchToolkit.PawnQueue
@@ -16,23 +17,21 @@ namespace TwitchToolkit.PawnQueue
 
         }
 
-        public override void ParseCommand(IRCMessage msg)
+        public override void ParseCommand(TwitchIRCMessage msg)
         {
-            Viewer viewer = Viewers.GetViewer(msg.User);
-
             GameComponentPawns component = Current.Game.GetComponent<GameComponentPawns>();
             
             if (msg.Message.StartsWith("!mypawnskills") && CommandsHandler.AllowCommand(msg))
             {
                 
-                if (!component.HasUserBeenNamed(viewer.username))
+                if (!component.HasUserBeenNamed(msg.Viewer.Username))
                 {
-                    Toolkit.client.SendMessage($"@{viewer.username} you are not in the colony.", CommandsHandler.SendToChatroom(msg));
+                    Toolkit.client.SendMessage($"@{msg.Viewer.Username} you are not in the colony.", CommandsHandler.SendToChatroom(msg));
                     return;
                 }
 
-                Pawn pawn = component.PawnAssignedToUser(viewer.username);
-                string output = $"@{viewer.username} {pawn.Name.ToStringShort.CapitalizeFirst()}'s skill levels are ";
+                Pawn pawn = component.PawnAssignedToUser(msg.Viewer.Username);
+                string output = $"@{msg.Viewer.Username} {pawn.Name.ToStringShort.CapitalizeFirst()}'s skill levels are ";
 
                 List<SkillRecord> skills = pawn.skills.skills;
 
@@ -61,15 +60,15 @@ namespace TwitchToolkit.PawnQueue
 
             if (msg.Message.StartsWith("!mypawnstory") && CommandsHandler.AllowCommand(msg))
             {
-                if (!component.HasUserBeenNamed(viewer.username))
+                if (!component.HasUserBeenNamed(msg.Viewer.Username))
                 {
-                    Toolkit.client.SendMessage($"@{viewer.username} you are not in the colony.", CommandsHandler.SendToChatroom(msg));
+                    Toolkit.client.SendMessage($"@{msg.Viewer.Username} you are not in the colony.", CommandsHandler.SendToChatroom(msg));
                     return;
                 }
 
-                Pawn pawn = component.PawnAssignedToUser(viewer.username);
+                Pawn pawn = component.PawnAssignedToUser(msg.Viewer.Username);
 
-                string output = $"@{viewer.username} About {pawn.Name.ToStringShort.CapitalizeFirst()}: ";
+                string output = $"@{msg.Viewer.Username} About {pawn.Name.ToStringShort.CapitalizeFirst()}: ";
 
                 List<Backstory> backstories = pawn.story.AllBackstories.ToList();
 
@@ -139,24 +138,24 @@ namespace TwitchToolkit.PawnQueue
 
                 if (newName == null || newName == "" || newName.Length > 16)
                 {
-                    Toolkit.client.SendMessage($"@{viewer.username} your name can be up to 16 characters.", CommandsHandler.SendToChatroom(msg));
+                    Toolkit.client.SendMessage($"@{msg.Viewer.Username} your name can be up to 16 characters.", CommandsHandler.SendToChatroom(msg));
                     return;
                 }
 
-                if (!component.HasUserBeenNamed(viewer.username))
+                if (!component.HasUserBeenNamed(msg.Viewer.Username))
                 {
-                    Toolkit.client.SendMessage($"@{viewer.username} you are not in the colony.", CommandsHandler.SendToChatroom(msg));
+                    Toolkit.client.SendMessage($"@{msg.Viewer.Username} you are not in the colony.", CommandsHandler.SendToChatroom(msg));
                     return;
                 }
 
-                if (!Purchase_Handler.CheckIfViewerHasEnoughCoins(viewer, 500, true)) return;
+                if (!Purchase_Handler.CheckIfViewerHasEnoughCoins(msg.Viewer, 500, true)) return;
 
-                viewer.TakeViewerCoins(500);
-                nameRequests.Add(viewer.username, newName);
-                Toolkit.client.SendMessage($"@{ToolkitSettings.Channel} {viewer.username} has requested to be named {newName}, use !approvename @{viewer.username} or !declinename @{viewer.username}", false);
+                msg.Viewer.TakeCoins(500);
+                nameRequests.Add(msg.Viewer.Username, newName);
+                Toolkit.client.SendMessage($"@{ToolkitSettings.Channel} {msg.Viewer.Username} has requested to be named {newName}, use !approvename @{msg.Viewer.Username} or !declinename @{msg.Viewer.Username}", false);
             }
 
-            if (Viewer.IsModerator(viewer.username) || viewer.username == ToolkitSettings.Channel)
+            if (msg.Viewer.Mod || msg.Viewer.Username == ToolkitSettings.Channel)
             {
                 if (msg.Message.StartsWith("!unstickpeople"))
                 {
@@ -174,7 +173,7 @@ namespace TwitchToolkit.PawnQueue
 
                     if (username == null || username == "" || !nameRequests.ContainsKey(username))
                     {
-                        Toolkit.client.SendMessage($"@{viewer.username} invalid username", CommandsHandler.SendToChatroom(msg));
+                        Toolkit.client.SendMessage($"@{msg.Viewer.Username} invalid username", CommandsHandler.SendToChatroom(msg));
                         return;
                     }
 
@@ -183,7 +182,7 @@ namespace TwitchToolkit.PawnQueue
                     Pawn pawn = component.PawnAssignedToUser(username);
                     NameTriple old = pawn.Name as NameTriple;
                     pawn.Name = new NameTriple(old.First, nameRequests[username], old.Last);
-                    Toolkit.client.SendMessage($"@{viewer.username} approved request for name change from {old} to {pawn.Name}");
+                    Toolkit.client.SendMessage($"@{msg.Viewer.Username} approved request for name change from {old} to {pawn.Name}");
                 }
 
                 if (msg.Message.StartsWith("!declinename"))
@@ -197,14 +196,14 @@ namespace TwitchToolkit.PawnQueue
 
                     if (username == null || username == "" || !nameRequests.ContainsKey(username))
                     {
-                        Toolkit.client.SendMessage($"@{viewer.username} invalid username", CommandsHandler.SendToChatroom(msg));
+                        Toolkit.client.SendMessage($"@{msg.Viewer.Username} invalid username", CommandsHandler.SendToChatroom(msg));
                         return;
                     }
 
                     if (!component.HasUserBeenNamed(username)) return;
 
                     nameRequests.Remove(username);
-                    Toolkit.client.SendMessage($"@{viewer.username} declined name change request from {username}");
+                    Toolkit.client.SendMessage($"@{msg.Viewer.Username} declined name change request from {username}");
                 }
             }
 

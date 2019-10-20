@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using TwitchToolkit.Viewers;
 using TwitchToolkit.Store;
 using TwitchToolkit.Utilities;
 using TwitchToolkit.Votes;
@@ -9,9 +10,10 @@ using Verse;
 
 namespace TwitchToolkit.IRC
 {
-    public class ToolkitIRC
+    public sealed class ToolkitIRC
     {
-        static ToolkitIRC instance = null;
+        private static ToolkitIRC instance = null;
+        private static readonly object padlock = new object();
 
         public static ToolkitIRC Instance
         {
@@ -19,35 +21,24 @@ namespace TwitchToolkit.IRC
             {
                 if (instance == null)
                 {
-                    NewInstance();
+                    lock (padlock)
+                    {
+                        if (instance == null)
+                        {
+                            instance = new ToolkitIRC();
+                        }
+                    }
                 }
 
                 return instance;
             }
-
-            private set
-            {
-                instance = value;
-
-                Toolkit.client = instance;
-            }
         }
 
-        public static void NewInstance()
+        public static void Reset()
         {
-            if (!Helper.ModActive || Current.Game == null)
-            {
-                return;
-            }
+            instance = null;
 
-            if (instance != null)
-            {
-                Helper.Log("Previous instance exists, trying to destroy");
-                instance.Disconnect();
-                instance = null;
-            }
-
-            Instance = new ToolkitIRC();
+            Toolkit.client = Instance;
         }
 
         public ToolkitIRC()
@@ -80,11 +71,8 @@ namespace TwitchToolkit.IRC
             client.Reconnect();
         }
 
-        void OnPrivMsg(IRCMessage message)
+        void OnPrivMsg(TwitchIRCMessage message)
         {
-            Store_Logger.LogString(message.Message);
-            Store_Logger.LogString($"connected: {Toolkit.client.client.Connected} - {DateTime.Now.ToShortTimeString()}");
-
             //if (activeChatWindow != null && !message.Message.StartsWith("!") && message.User != ToolkitSettings.Username)
             //{
             //    if ((_voteActive && !int.TryParse(message.Message[0].ToString(), out int result)) || !_voteActive)
@@ -98,11 +86,15 @@ namespace TwitchToolkit.IRC
 
             //}
 
-            Store_Logger.LogString("Checking command");
+            message.Viewer = TwitchViewer.GetTwitchViewer(message.User);
+
+            if (message.Viewer == null)
+            {
+                Helper.Log(message.User.CapitalizeFirst() + " tried to run a command but is not registed.");
+                return;
+            }
 
             if (Helper.ModActive) CommandsHandler.CheckCommand(message);
-
-            Store_Logger.LogString("Checking if is vote");
 
             if (VoteHandler.voteActive && int.TryParse(message.Message[0].ToString(), out int voteKey)) VoteHandler.currentVote.RecordVote(Viewers.GetViewer(message.User).id, voteKey - 1);
         }
@@ -154,7 +146,7 @@ namespace TwitchToolkit.IRC
             ToolkitSettings.Username = ToolkitSettings.Username.Replace("twitch.tv/", "");
         }
 
-        public ChatWindow activeChatWindow = null;
+        public Window_ChatBoxSetup activeChatWindow = null;
         private IRCClient client = null;
 
         static string _ircHost = "irc.twitch.tv";

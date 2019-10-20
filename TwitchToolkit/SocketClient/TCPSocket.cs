@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Net;
 using System.Net.Security;
 using System.Net.Sockets;
@@ -9,11 +12,11 @@ using Verse;
 
 namespace TwitchToolkit.SocketClient
 {
-    public abstract class Client
+    public abstract class TCPSocket
     {
-        private Socket Socket { get; set; } = null;
+        private TcpClient TcpClient { get; set; } = null;
 
-        private SslStream SslStream { get; set;  } = null;
+        private SslStream SslStream { get; set; } = null;
 
         private readonly string server;
 
@@ -21,35 +24,28 @@ namespace TwitchToolkit.SocketClient
 
         private ConcurrentCircularBuffer<string> socketMessages = new ConcurrentCircularBuffer<string>(10);
 
-        public Client(string server, int port)
+        public TCPSocket(string server, int port)
         {
             this.server = server;
-            this.port = port;           
+            this.port = port;
+
+            ConnectClient();
         }
 
-        public void Connect()
+        void ConnectClient()
         {
-            if (Connected) return;
 
-            ConnectSocket();
-        }
-
-        void ConnectSocket()
-        {
             IPHostEntry hostEntry = null;
 
-            // get host related information
             hostEntry = Dns.GetHostEntry(server);
 
             foreach (IPAddress address in hostEntry.AddressList)
             {
                 IPEndPoint ipe = new IPEndPoint(address, port);
-                Socket tempSocket =
-                    new Socket(ipe.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
 
-                tempSocket.BeginConnect(ipe, new AsyncCallback(ProcessClient), tempSocket);
+                TcpClient tempClient = new TcpClient(ipe);
 
-                break;
+                tempClient.BeginConnect(address, port, new AsyncCallback(ProcessClient), tempClient);
             }
         }
 
@@ -57,30 +53,28 @@ namespace TwitchToolkit.SocketClient
         {
             try
             {
-                Socket tempSocket = result.AsyncState as Socket;
-                if (tempSocket.Connected)
+                TcpClient tempClient = result.AsyncState as TcpClient;
+                if (TcpClient == null && tempClient.Connected)
                 {
-                    Socket = tempSocket;
+                    TcpClient = tempClient;
                 }
                 else
                 {
                     return;
                 }
-            
+
                 ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls;
 
-                SslStream = new SslStream(new NetworkStream(Socket), false, (object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyError) => { return true; });
+                SslStream = new SslStream(TcpClient.GetStream(), false, (object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyError) => { return true; });
 
                 Helper.Log("Attemping authentication " + server);
 
-                SslStream.AuthenticateAsClient(server, null, SslProtocols.Tls, false);
+                SslStream.AuthenticateAsClient(server, null, SslProtocols.Tls, true);
 
                 PostAuthenticate();
 
                 SslStream.ReadTimeout = 5000;
                 SslStream.WriteTimeout = 5000;
-
-                Helper.Log("Reading message");
 
                 Read();
             }
@@ -93,7 +87,7 @@ namespace TwitchToolkit.SocketClient
                 }
 
                 SslStream.Close();
-                Socket.Close();
+                TcpClient.Close();
             }
 
             return;
@@ -106,6 +100,11 @@ namespace TwitchToolkit.SocketClient
 
         public bool Send(string message)
         {
+            if (!SslStream.CanWrite)
+                throw new Exception("Stream Write Failure");
+
+            Helper.Log("attemping stream write");
+
             try
             {
                 var data = Encoding.UTF8.GetBytes(message);
@@ -159,7 +158,7 @@ namespace TwitchToolkit.SocketClient
             do
             {
                 Decoder decoder = Helper.LanguageEncoding().GetDecoder();
-                char [] chars = new char[decoder.GetCharCount(buffer, 0, bytes)];
+                char[] chars = new char[decoder.GetCharCount(buffer, 0, bytes)];
                 decoder.GetChars(buffer, 0, bytes, chars, 0);
                 messageData.Append(chars);
 
@@ -194,8 +193,7 @@ namespace TwitchToolkit.SocketClient
         {
             get
             {
-                if (Socket == null) return false;
-                return Socket.Connected;
+                return TcpClient.Connected;
             }
         }
 
@@ -210,9 +208,9 @@ namespace TwitchToolkit.SocketClient
                 SslStream.Close();
             }
 
-            if (Socket != null)
+            if (TcpClient != null)
             {
-                Socket.Close();
+                TcpClient.Close();
             }
         }
 

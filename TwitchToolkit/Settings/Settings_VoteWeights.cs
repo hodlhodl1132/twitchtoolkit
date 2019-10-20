@@ -10,7 +10,7 @@ namespace TwitchToolkit.Settings
 {
     public static class Settings_VoteWeights
     {
-        public static void Load_Votewieghts()
+        public static void Load_VoteWeights()
         {
             if (ToolkitSettings.VoteWeights != null && ToolkitSettings.VoteWeights.Count < 1)
             {
