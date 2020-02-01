@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using TwitchToolkit.Chat;
 using TwitchToolkit.Incidents;
 using TwitchToolkit.IRC;
 using TwitchToolkit.Store;
@@ -63,13 +62,6 @@ namespace TwitchToolkit
                     postfix: new HarmonyMethod(type: patchType, name: nameof(NewTwitchConnection))
                 );
 
-            harmony.Patch(
-                original: AccessTools.Method(
-                    type: typeof(MapInterface),
-                    name: "MapInterfaceOnGUI_BeforeMainTabs"),
-                postfix: new HarmonyMethod(type: patchType, name: nameof(ChatMessageReadout))
-            );
-
             //StringBuilder json = new StringBuilder();
 
             //foreach (ModMetaData modMeta in ModsConfig.ActiveModsInLoadOrder)
@@ -123,12 +115,7 @@ namespace TwitchToolkit
             Log.Message("<color=#6441A4>== TWITCH TOOLKIT ==</color> Creating new chat client connection");
 
             if (ToolkitSettings.AutoConnect)
-                ToolkitIRC.Reset();
-        }
-
-        static void ChatMessageReadout()
-        {
-            IRCMessageLog.IRCMessageReadoutOnGUI();
+                ToolkitIRC.NewInstance();
         }
     }
 }

@@ -10,12 +10,20 @@ using Verse;
 
 namespace TwitchToolkit.Settings
 {
+    [StaticConstructorOnStartup]
     public static class Settings_Storyteller
     {
-        public static void ResetVoteWeights()
+        static Settings_Storyteller()
         {
-            NewVoteTypeWeightsHodlBot();
-            NewVoteCategoryWeightsHodlBot();
+            if (ToolkitSettings.VoteTypeWeights.Count < 1)
+            {
+                NewVoteTypeWeightsHodlBot();
+            }
+
+            if (ToolkitSettings.VoteCategoryWeights.Count < 1)
+            {
+                NewVoteCategoryWeightsHodlBot();
+            }
         }
 
         public static void NewVoteCategoryWeightsHodlBot()

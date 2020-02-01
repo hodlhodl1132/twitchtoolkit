@@ -12,7 +12,7 @@ namespace TwitchToolkit
     public class Command : Def
     {
 
-        public void RunCommand(TwitchIRCMessage message)
+        public void RunCommand(IRCMessage message)
         {
             if (command == null)
             {
@@ -58,7 +58,7 @@ namespace TwitchToolkit
     {
         public Command command = null;
 
-        public virtual void RunCommand(TwitchIRCMessage message)
+        public virtual void RunCommand(IRCMessage message)
         {
             Helper.Log("filtering command");
 
@@ -69,14 +69,16 @@ namespace TwitchToolkit
             Toolkit.client.SendMessage(output);
         }
 
-        public string FilterTags(TwitchIRCMessage message, string input)
+        public string FilterTags(IRCMessage message, string input)
         {
             Helper.Log("starting filter");
 
+            Viewer viewer = Viewers.GetViewer(message.User);
+
             StringBuilder output = new StringBuilder(input);
-            output.Replace("{username}", message.Viewer.UsernameCap);
-            output.Replace("{balance}", message.Viewer.Coins.ToString());
-            output.Replace("{karma}", message.Viewer.Karma.ToString());
+            output.Replace("{username}", viewer.username);
+            output.Replace("{balance}", viewer.GetViewerCoins().ToString());
+            output.Replace("{karma}", viewer.GetViewerKarma().ToString());
             output.Replace("{purchaselist}", ToolkitSettings.CustomPricingSheetLink);
             output.Replace("{coin-reward}", ToolkitSettings.CoinAmount.ToString());
 

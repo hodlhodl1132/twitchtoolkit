@@ -48,7 +48,6 @@
       <HintPath>..\packages\MoonSharp.2.0.0.0\lib\net35-client\MoonSharp.Interpreter.dll</HintPath>
     </Reference>
     <Reference Include="System" />
-    <Reference Include="System.Configuration" />
     <Reference Include="System.Net" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel.Web" />
@@ -63,14 +62,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Chat\IRCMessageLog.cs" />
     <Compile Include="Commands\Command.cs" />
     <Compile Include="Commands\CommandEditor.cs" />
     <Compile Include="Commands\Commands.cs" />
     <Compile Include="Commands\ModCommands.cs" />
     <Compile Include="Commands\ViewerCommands.cs" />
     <Compile Include="GameConditions\GameCondition_VomitRain.cs" />
-    <Compile Include="HarmonyPatches.cs" />
+    <Compile Include="Harmony.cs" />
     <Compile Include="IncidentHelpers\IncidentHelper_Diseases.cs" />
     <Compile Include="IncidentHelpers\IncidentHelper_Hazards.cs" />
     <Compile Include="IncidentHelpers\IncidentHelper_MilitaryAid.cs" />
@@ -106,15 +104,12 @@
     <Compile Include="IRC\TwitchBadges.cs" />
     <Compile Include="IRC\TwitchInterfaceBase.cs" />
     <Compile Include="IRC\ViewerUpdater.cs" />
-    <Compile Include="NewViewers\NewViewer.cs" />
-    <Compile Include="NewViewers\NewViewers.cs" />
     <Compile Include="PawnQueue\Alert_UnnamedColonist.cs" />
     <Compile Include="PawnQueue\CompPawnNamed.cs" />
     <Compile Include="PawnQueue\CompProperties_PawnNamed.cs" />
     <Compile Include="PawnQueue\GameComponentPawns.cs" />
     <Compile Include="PawnQueue\PawnCommands.cs" />
     <Compile Include="PawnQueue\QueueWindow.cs" />
-    <Compile Include="PawnQueue\WorldPawnTrackerComponent.cs" />
     <Compile Include="Settings\ColorPresets.cs" />
     <Compile Include="Settings\ColourPicker\ColourWrapper.cs" />
     <Compile Include="Settings\ColourPicker\Dialog_ColourPicker.cs" />
@@ -134,11 +129,6 @@
     <Compile Include="Settings\Settings_Viewers.cs" />
     <Compile Include="Settings\Settings_VoteWeights.cs" />
     <Compile Include="SocketClient\Client.cs" />
-    <Compile Include="SocketClient\MessageLog.cs" />
-    <Compile Include="SocketClient\SocketTest.cs" />
-    <Compile Include="SocketClient\TwitchClient.cs" />
-    <Compile Include="SocketClient\TwitchExtensionClient.cs" />
-    <Compile Include="SocketClient\TCPSocket.cs" />
     <Compile Include="Store\Purchase_Handler.cs" />
     <Compile Include="Store\StoreIncidents.cs" />
     <Compile Include="Store\Store_Component.cs" />
@@ -181,7 +171,6 @@
     <Compile Include="StreamLabs.cs" />
     <Compile Include="Utilities\CustomMatLoader.cs" />
     <Compile Include="Utilities\WeatherOverlay_VomitRain.cs" />
-    <Compile Include="NewViewers\TwitchViewer.cs" />
     <Compile Include="Votes\Vote_ExoticItems.cs" />
     <Compile Include="Votes\Vote_HodlBot.cs" />
     <Compile Include="Votes\Vote_MentalBreak.cs" />
@@ -210,7 +199,7 @@
     <Compile Include="Windows\StoreIncidentEditor.cs" />
     <Compile Include="Windows\StoreIncidentsWindow.cs" />
     <Compile Include="Windows\StoreItemsWindow.cs" />
-    <Compile Include="Windows\Window_ChatBoxSetup.cs" />
+    <Compile Include="Windows\Window_Chat.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
@@ -219,9 +208,10 @@
     <Compile Include="Windows\Window_CommandEditor.cs" />
     <Compile Include="Windows\Window_Commands.cs" />
     <Compile Include="Windows\Window_Loading.cs" />
+    <Compile Include="Windows\Window_NewChat.cs" />
     <Compile Include="Windows\Window_NewCustomCommand.cs" />
     <Compile Include="Windows\Window_SocketClient.cs" />
-    <Compile Include="Windows\Window_Cooldowns.cs" />
+    <Compile Include="Windows\Window_Trackers.cs" />
     <Compile Include="Windows\Window_ViewerEditProp.cs" />
     <Compile Include="Windows\Window_Viewers.cs" />
     <Compile Include="Windows\Window_Warning.cs" />

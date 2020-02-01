@@ -131,15 +131,13 @@ namespace TwitchToolkit
         public static int MaxCarePackagesPerInterval = 10;
 
         public static bool EventsHaveCooldowns = true;
-        public static int EventCooldownInterval = 5;
+        public static int EventCooldownInterval = 15;
         #endregion
 
         #region ViewerData
         public static Dictionary<string, string> ViewerColorCodes = new Dictionary<string, string>();
         public static Dictionary<string, bool> ViewerModerators = new Dictionary<string, bool>();
         public static List<string> BannedViewers = new List<string>();
-        public static List<string> GloballyBannedViewers = new List<string>();
-        public static List<string> GlobalToolkitMods = new List<string>();
         #endregion
 
         #region ViewerSettings
@@ -201,17 +199,6 @@ namespace TwitchToolkit
 
         #endregion
 
-        #region ChatBox
-
-        public static bool ChatBoxEnabled = false;
-        public static float ChatBoxPositionX = 100;
-        public static float ChatBoxPositionY = 100;
-
-        public static float ChatBoxMaxWidth = 400;
-        public static int ChatBoxMessageCount = 10;
-
-        #endregion
-
         private static Vector2 scrollVector2;
 
         public void DoWindowContents(Rect rect)
@@ -260,16 +247,11 @@ namespace TwitchToolkit
             if (options.ButtonText("TwitchToolkitKarma".Translate()))
                 currentTab = SettingsTab.Karma;
 
-            if (options.ButtonText("TwitchToolkitViewers".Translate()))
-                currentTab = SettingsTab.Viewers;
-
             if (options.ButtonText(""))
                 currentTab = SettingsTab.Chat;
 
-            options.Gap();
-
-            if (options.ButtonText("Discord"))
-                Application.OpenURL("https://discord.gg/qrtg224");
+            if (options.ButtonText("TwitchToolkitCooldowns".Translate()))
+                currentTab = SettingsTab.Cooldowns;
 
             // Right Column
             options.NewColumn();
@@ -278,19 +260,14 @@ namespace TwitchToolkit
             if (options.ButtonText(""))
                 currentTab = SettingsTab.Options;
 
-            if (options.ButtonText(""))
-                currentTab = SettingsTab.Chat;
-
+            if (options.ButtonText("TwitchToolkitViewers".Translate()))
+                currentTab = SettingsTab.Viewers;
+            
             if (options.ButtonText(""))
                 currentTab = SettingsTab.Integrations;
 
             if (options.ButtonText(""))
                 currentTab = SettingsTab.Votes;
-
-            options.Gap();
-
-            if (options.ButtonText("Bug Reports"))
-                Application.OpenURL("https://github.com/hodldeeznuts/twitchtoolkit/issues/new/choose");
 
             options.End();
 
@@ -311,7 +288,10 @@ namespace TwitchToolkit
             
             Rect viewRect = new Rect(0, 0, rect.width - 125f, 430f);
 
+            if (currentTab == SettingsTab.Chat) viewRect.height += 400f;
+            if (currentTab == SettingsTab.Storyteller) viewRect.height += 400f;
             if (currentTab == SettingsTab.Karma) viewRect.height += 250f;
+            if (currentTab == SettingsTab.Viewers) viewRect.height += 80f;
             
             Listing_Standard optionsListing = new Listing_Standard();
 
@@ -338,9 +318,9 @@ namespace TwitchToolkit
                 //case SettingsTab.Commands:
                 //    Settings_Commands.DoWindowContents(viewRect, optionsListing);
                 //    break;
-                //case SettingsTab.Cooldowns:
-                //    Settings_Cooldowns.DoWindowContents(viewRect, optionsListing);
-                //    break;
+                case SettingsTab.Cooldowns:
+                    Settings_Cooldowns.DoWindowContents(viewRect, optionsListing);
+                    break;
                 //case SettingsTab.Options:
                 //    Settings_Options.DoWindowContents(viewRect, optionsListing);
                 //    break;
@@ -452,13 +432,11 @@ namespace TwitchToolkit
             Scribe_Values.Look(ref MaxCarePackagesPerInterval, "MaxCarePackagesPerInterval", 10);
 
             Scribe_Values.Look(ref EventsHaveCooldowns, "EventsHaveCooldowns", true);
-            Scribe_Values.Look(ref EventCooldownInterval, "EventCooldownInterval", 5);
+            Scribe_Values.Look(ref EventCooldownInterval, "EventCooldownInterval", 15);
 
             Scribe_Collections.Look(ref ViewerColorCodes, "ViewerColorCodes", LookMode.Value, LookMode.Value);
             Scribe_Collections.Look(ref ViewerModerators, "ViewerModerators", LookMode.Value, LookMode.Value);
             Scribe_Collections.Look(ref BannedViewers, "BannedViewers", LookMode.Value);
-            Scribe_Collections.Look(ref GloballyBannedViewers, "GloballyBannedViewers", LookMode.Value);
-            Scribe_Collections.Look(ref GlobalToolkitMods, "GlobalToolkitMods", LookMode.Value);
 
             Scribe_Values.Look(ref EnableViewerQueue, "EnableViewerQueue", true);
             Scribe_Values.Look(ref ViewerNamedColonistQueue, "ViewerNamedColonistQueue", true);
@@ -478,6 +456,8 @@ namespace TwitchToolkit
             Scribe_Values.Look(ref ModExtraVotes, "ModExtraVotes", 0);
 
             Scribe_Collections.Look(ref VoteWeights, "VoteWeights", LookMode.Value, LookMode.Value);
+
+            Helper.Log("exposing vote weights");
 
             Scribe_Values.Look(ref ToryTalkerEnabled, "ToryTalkerEnabled", false);
             Scribe_Values.Look(ref ToryTalkerMTBDays, "ToryTalkerMTBDays", 2);
@@ -499,14 +479,7 @@ namespace TwitchToolkit
 
             Scribe_Collections.Look(ref CustomCommandDefs, "CustomCommandDefs", LookMode.Value);
 
-            Scribe_Values.Look(ref ChatBoxEnabled, "ChatBoxEnabled", false);
-            Scribe_Values.Look(ref ChatBoxPositionX, "ChatBoxPositionX", 100);
-            Scribe_Values.Look(ref ChatBoxPositionY, "ChatBoxPositionY", 100);
-
-            Scribe_Values.Look(ref ChatBoxMaxWidth, "ChatBoxMaxWidth", 400);
-            Scribe_Values.Look(ref ChatBoxMessageCount, "ChatBoxMessageCount", 10);
-
-            List <StoreIncidentVariables> variableIncidents = DefDatabase<StoreIncidentVariables>.AllDefs.Where(s => s.customSettings).ToList();
+            List<StoreIncidentVariables> variableIncidents = DefDatabase<StoreIncidentVariables>.AllDefs.Where(s => s.customSettings).ToList();
             
             foreach (StoreIncidentVariables incident in variableIncidents)
             {
@@ -523,7 +496,7 @@ namespace TwitchToolkit
             {
                 if (Toolkit.client == null)
                 {
-                    ToolkitIRC.Reset();
+                    ToolkitIRC.NewInstance();
                 }
             }
 
@@ -538,12 +511,7 @@ namespace TwitchToolkit
             }
             else
             {
-                Settings_VoteWeights.Load_VoteWeights();
-            }
-
-            if ((VoteTypeWeights == null || VoteTypeWeights.Count < 1) || (VoteCategoryWeights == null || VoteCategoryWeights.Count < 1))
-            {
-                Settings_Storyteller.ResetVoteWeights();
+                Settings_VoteWeights.Load_Votewieghts();
             }
         }
 

@@ -36,37 +36,14 @@ namespace TwitchToolkit.PawnQueue
             Rect rightSide = new Rect(130, 60, 300, 26);
             selectedUsername = Widgets.TextEntryLabeled(rightSide, "Username:", selectedUsername);
 
+            rightSide.width = 120;
+            rightSide.y += 26;
             rightSide.x += 150;
-            rightSide.y += 32;
-            rightSide.width = 150;
-
-            if (Widgets.ButtonText(rightSide, "Assign Viewer"))
+            if (Widgets.ButtonText(rightSide, "Assign"))
             {
-                if  (selectedUsername == "")
-                {
-                    return;
-                }
-
                 NameColonist(selectedUsername, selectedPawn);
-            }
-
-            if (pawnComponent.HasPawnBeenNamed(selectedPawn))
-            {
-                rightSide.y += 32;
-
-                if (Widgets.ButtonText(rightSide, "Rename Colonist"))
-                {
-                    Dialog_NamePawn dialog = new Dialog_NamePawn(selectedPawn);
-                    Find.WindowStack.Add(dialog);
-                }
-            }
-
-            rightSide.x -= 70;
-            rightSide.y += 40;
-            rightSide.width = 250;
-
-            Widgets.CheckboxLabeled(rightSide, "Rename pawn on assignment", ref renamePawn);
-
+            }         
+            
             Rect pawnSelectors = new Rect(26, 210, 40, 26);
 
             if (Widgets.ButtonText(pawnSelectors, "<"))
@@ -95,24 +72,24 @@ namespace TwitchToolkit.PawnQueue
                     )
                 );
 
-            Rect queueButtons = new Rect(0, 300, 200, 28);
+            Rect queueButtons = new Rect(0, 300, 200, 26);
 
             Widgets.Label(queueButtons, "Viewers in Queue: " + pawnComponent.ViewersInQueue());
 
-            queueButtons.y += 32;
-            if (Widgets.ButtonText(queueButtons, "Next Viewer"))
+            queueButtons.y += 26;
+            if (Widgets.ButtonText(queueButtons, "Next Viewer from Queue"))
             {
                 selectedUsername = pawnComponent.GetNextViewerFromQueue();
             }
 
-            queueButtons.y += 32;
-            if (Widgets.ButtonText(queueButtons, "Random Viewer"))
+            queueButtons.y += 26;
+            if (Widgets.ButtonText(queueButtons, "Random Viewer from Queue"))
             {
                 selectedUsername = pawnComponent.GetRandomViewerFromQueue();
             }
 
-            queueButtons.y += 32;
-            if (Widgets.ButtonText(queueButtons, "Ban Viewer"))
+            queueButtons.y += 26;
+            if (Widgets.ButtonText(queueButtons, "Ban Viewer from Queue"))
             {
                 Viewer viewer = Viewers.GetViewer(selectedUsername);
                 viewer.BanViewer();
@@ -224,12 +201,8 @@ namespace TwitchToolkit.PawnQueue
                 }
             }
 
-            if (renamePawn)
-            {
-                NameTriple currentName = pawn.Name as NameTriple;
-                pawn.Name = new NameTriple(currentName.First, username, currentName.Last);
-            }
-
+            NameTriple currentName = pawn.Name as NameTriple;
+            pawn.Name = new NameTriple(currentName.First, username, currentName.Last);
             pawnComponent.AssignUserToPawn(selectedUsername.ToLower(), selectedPawn);
             GetPawn(PawnQueueSelector.FirstDefault);
         }
@@ -239,9 +212,7 @@ namespace TwitchToolkit.PawnQueue
         public int pawnIndex = -1;
         public List<Pawn> allColonists = new List<Pawn>();
         public List<Pawn> unnamedColonists = new List<Pawn>();
-        public override Vector2 InitialSize => new Vector2(520f, 600f);
-
-        public static bool renamePawn = true;
+        public override Vector2 InitialSize => new Vector2(500f, 500f);
     }
 
     public enum PawnQueueSelector

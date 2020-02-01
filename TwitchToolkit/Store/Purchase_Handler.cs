@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using TwitchToolkit.Incidents;
 using TwitchToolkit.IRC;
-using TwitchToolkit.Viewers;
 using Verse;
 
 namespace TwitchToolkit.Store
@@ -24,7 +23,7 @@ namespace TwitchToolkit.Store
             viewerNamesDoingVariableCommands = new List<string>();
         }
 
-        public static void ResolvePurchase(Viewer viewer, TwitchIRCMessage message, bool separateChannel = false)
+        public static void ResolvePurchase(Viewer viewer, IRCMessage message, bool separateChannel = false)
         {
             List<string> command = message.Message.Split(' ').ToList();
 
@@ -87,7 +86,7 @@ namespace TwitchToolkit.Store
             return;
         }
 
-        public static void ResolvePurchaseSimple(Viewer viewer, TwitchIRCMessage message, StoreIncidentSimple incident, bool separateChannel = false)
+        public static void ResolvePurchaseSimple(Viewer viewer, IRCMessage message, StoreIncidentSimple incident, bool separateChannel = false)
         {
             int cost = incident.cost;
 
@@ -143,7 +142,7 @@ namespace TwitchToolkit.Store
             }
         }
 
-        public static void ResolvePurchaseVariables(Viewer viewer, TwitchIRCMessage message, StoreIncidentVariables incident, bool separateChannel = false)
+        public static void ResolvePurchaseVariables(Viewer viewer, IRCMessage message, StoreIncidentVariables incident, bool separateChannel = false)
         {
             int cost = incident.cost;
 

@@ -13,8 +13,6 @@ namespace TwitchToolkit.Settings
     {
         public static void DoWindowContents(Rect rect, Listing_Standard optionsListing)
         {
-            optionsListing.Label("Toolkit Patches / Extensions with settings will appear here");
-
             foreach (ToolkitExtension extension in Settings_ToolkitExtensions.GetExtensions)
             {
                 if (optionsListing.ButtonTextLabeled(extension.mod.SettingsCategory(), "Settings"))

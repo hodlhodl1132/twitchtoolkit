@@ -52,13 +52,11 @@ namespace TwitchToolkit
             float btnHeight = 30f;
 
             var rectBtn = new Rect(padding, 0, btnWidth, btnHeight);
-            if (Widgets.ButtonText(rectBtn, "Chat Box"))
+            if (Widgets.ButtonText(rectBtn, "Chat Window") && !Find.WindowStack.TryRemove(typeof(ChatWindow), true))
             {
-                Window_ChatBoxSetup window = new Window_ChatBoxSetup();
-                if (!Find.WindowStack.TryRemove(window.GetType()))
-                {
-                    Find.WindowStack.Add(window);
-                }
+                ChatWindow chatwnd = new ChatWindow();
+                Toolkit.client.activeChatWindow = chatwnd;
+                Find.WindowStack.Add(chatwnd);
             }
 
             rectBtn.x += btnWidth + padding;
@@ -106,7 +104,7 @@ namespace TwitchToolkit
             {
                 if (Widgets.ButtonText(rectBtn, "TwitchToolkitConnect".Translate()))
                 {
-                    ToolkitIRC.Reset();
+                    ToolkitIRC.NewInstance();
                 }
             }
 
@@ -134,9 +132,16 @@ namespace TwitchToolkit
             }
 
             rectBtn.x += btnWidth + padding;
-            if (Widgets.ButtonText(rectBtn, "Cooldowns"))
+            if (Widgets.ButtonText(rectBtn, "Debug Fix"))
             {
-                Window_Cooldowns window = new Window_Cooldowns();
+                Helper.playerMessages = new List<string>();
+                Purchase_Handler.viewerNamesDoingVariableCommands = new List<string>();
+            }
+
+            rectBtn.x += btnWidth + padding;
+            if (Widgets.ButtonText(rectBtn, "Tracker"))
+            {
+                Window_Trackers window = new Window_Trackers();
                 Find.WindowStack.TryRemove(window.GetType());
                 Find.WindowStack.Add(window);
             }
@@ -149,13 +154,13 @@ namespace TwitchToolkit
                 Find.WindowStack.Add(window);
             }
 
-            rectBtn.x += btnWidth + padding;
-            if (Widgets.ButtonText(rectBtn, "Socket"))
-            {
-                Window_SocketClient window = new Window_SocketClient();
-                Find.WindowStack.TryRemove(window.GetType());
-                Find.WindowStack.Add(window);
-            }
+            //rectBtn.x += btnWidth + padding;
+            //if (Widgets.ButtonText(rectBtn, "Socket"))
+            //{
+            //    Window_SocketClient window = new Window_SocketClient();
+            //    Find.WindowStack.TryRemove(window.GetType());
+            //    Find.WindowStack.Add(window);
+            //}
 
             //rectBtn.x += btnWidth + padding;
             //if (Widgets.ButtonText(rectBtn, "Badges"))

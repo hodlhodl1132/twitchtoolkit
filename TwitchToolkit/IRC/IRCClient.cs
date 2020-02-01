@@ -9,7 +9,7 @@ using TwitchToolkit.Store;
 
 namespace TwitchToolkit.IRC
 {
-    public delegate void OnPrivMsg(TwitchIRCMessage message);
+    public delegate void OnPrivMsg(IRCMessage message);
     
 
     public class IRCClient
@@ -160,7 +160,7 @@ namespace TwitchToolkit.IRC
 
         public void Reconnect()
         {
-            ToolkitIRC.Reset();
+            ToolkitIRC.NewInstance();
         }
 
         void ConnectCallback(IAsyncResult asyncResult)
@@ -203,7 +203,7 @@ namespace TwitchToolkit.IRC
             Read();
         }
 
-        void OnCommand(TwitchIRCMessage message)
+        void OnCommand(IRCMessage message)
         {
             Ticker.LastIRCPong = DateTime.Now.ToFileTime();
 

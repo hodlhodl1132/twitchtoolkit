@@ -5,7 +5,6 @@ using System.Linq;
 using System.Text;
 using TwitchToolkit.IncidentHelpers.IncidentHelper_Settings;
 using TwitchToolkit.Incidents;
-using TwitchToolkit.Viewers;
 using TwitchToolkit.PawnQueue;
 using TwitchToolkit.Settings;
 using TwitchToolkit.Store;

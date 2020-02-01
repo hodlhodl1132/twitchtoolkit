@@ -9,9 +9,9 @@ using Verse;
 
 namespace TwitchToolkit.Windows
 {
-    public class Window_Cooldowns : Window
+    public class Window_Trackers : Window
     {
-        public Window_Cooldowns()
+        public Window_Trackers()
         {
             this.doCloseButton = true;
             UpdateTrackerStats();
@@ -19,92 +19,69 @@ namespace TwitchToolkit.Windows
 
         public override void DoWindowContents(Rect inRect)
         {
-            Rect topBox = new Rect(0, 0, 400f, 28f);
+            Rect topBox = new Rect(0, 0, 300f, 28f);
 
             Widgets.Label(topBox, "Viewers: " + viewerCount);
             topBox.y += topBox.height;
 
-
-            string cooldownBuffer = ToolkitSettings.EventCooldownInterval.ToString();
-            Widgets.TextFieldNumericLabeled(topBox, "Days per cooldown period ", ref ToolkitSettings.EventCooldownInterval, ref cooldownBuffer, 1);
-
-            topBox.y = 0;
-            topBox.x += topBox.width + 20f;
-
-            Widgets.Label(topBox, "Tracker is Cached and will refresh in " + (800 - cachedFramesCount));
+            Widgets.Label(topBox, "Days per cooldown period: " + ToolkitSettings.EventCooldownInterval + " days");
 
             topBox.y += topBox.height;
 
-            if (Widgets.ButtonText(topBox, "Refresh"))
+            if (Widgets.ButtonText(topBox, "Cooldown Settings"))
             {
-                UpdateTrackerStats();
+                SettingsWindow window = new SettingsWindow(Toolkit.Mod);
+                Find.WindowStack.TryRemove(window.GetType());
+                Find.WindowStack.Add(window);
+                ToolkitSettings.currentTab = ToolkitSettings.SettingsTab.Cooldowns;
             }
 
             Rect karmaBox = new Rect(0, 120f, inRect.width / 2f, 28f);
 
             Widgets.Label(karmaBox, "Limit Events By Type:");
-            Widgets.Checkbox(new Vector2(200f, karmaBox.y), ref ToolkitSettings.MaxEvents);
+            Widgets.Checkbox(new Vector2(180f, karmaBox.y), ref ToolkitSettings.MaxEvents);
             karmaBox.y += karmaBox.height;
 
             // side one
 
 
-            Rect sideOne = new Rect(0, karmaBox.y + 32f, 100f, 32f);
+            Rect sideOne = new Rect(0, karmaBox.y + 32f, 100f, 28f);
             Rect sideTwo = new Rect(sideOne)
             {
                 x = 140f
-            };
-            Rect sideThree = new Rect(sideTwo)
-            {
-                x = 160,
-                y = sideTwo.y - 2,
-                width = 30,
-                height = 26
             };
 
             Widgets.Label(sideOne, "Good");
             sideOne.y += sideOne.height;
 
-            Widgets.Label(sideTwo, goodEventsInLog + " /");
-            string goodBuffer = ToolkitSettings.MaxGoodEventsPerInterval.ToString();
-            Widgets.TextFieldNumeric(sideThree, ref ToolkitSettings.MaxGoodEventsPerInterval, ref goodBuffer, 0);
+            Widgets.Label(sideTwo, goodEventsInLog + "/" + goodEventsMax);
             bool goodBool = goodEventsMaxed;
-            Widgets.Checkbox(new Vector2(sideTwo.x + 60f, sideTwo.y), ref goodBool);
+            Widgets.Checkbox(new Vector2(sideTwo.x + 40f, sideTwo.y), ref goodBool);
             sideTwo.y += sideTwo.height;
-            sideThree.y += sideTwo.height;
 
             Widgets.Label(sideOne, "Bad");
             sideOne.y += sideOne.height;
 
-            Widgets.Label(sideTwo, badEventsInLog + " /");
-            string badBuffer = ToolkitSettings.MaxBadEventsPerInterval.ToString();
-            Widgets.TextFieldNumeric(sideThree, ref ToolkitSettings.MaxBadEventsPerInterval, ref badBuffer, 0);
+            Widgets.Label(sideTwo, badEventsInLog + "/" + badEventsMax);
             bool badBool = badEventsMaxed;
-            Widgets.Checkbox(new Vector2(sideTwo.x + 60f, sideTwo.y), ref badBool);
+            Widgets.Checkbox(new Vector2(sideTwo.x + 40f, sideTwo.y), ref badBool);
             sideTwo.y += sideTwo.height;
-            sideThree.y += sideTwo.height;
 
             Widgets.Label(sideOne, "Neutral");
             sideOne.y += sideOne.height;
 
-            Widgets.Label(sideTwo, neutralEventsInLog + " /");
-            string neutralBuffer = ToolkitSettings.MaxNeutralEventsPerInterval.ToString();
-            Widgets.TextFieldNumeric(sideThree, ref ToolkitSettings.MaxNeutralEventsPerInterval, ref neutralBuffer, 0);
+            Widgets.Label(sideTwo, neutralEventsInLog + "/" + neutralEventsMax);
             bool neutralBool = neutralEventsMaxed;
-            Widgets.Checkbox(new Vector2(sideTwo.x + 60f, sideTwo.y), ref neutralBool);
+            Widgets.Checkbox(new Vector2(sideTwo.x + 40f, sideTwo.y), ref neutralBool);
             sideTwo.y += sideTwo.height;
-            sideThree.y += sideTwo.height;
 
             Widgets.Label(sideOne, "Care Packages");
             sideOne.y += sideOne.height;
 
-            Widgets.Label(sideTwo, carePackagesInLog + " /");
-            string carePackageBuffer = ToolkitSettings.MaxCarePackagesPerInterval.ToString();
-            Widgets.TextFieldNumeric(sideThree, ref ToolkitSettings.MaxCarePackagesPerInterval, ref carePackageBuffer, 0);
+            Widgets.Label(sideTwo, carePackagesInLog + "/" + carePackagesMax);
             bool careBool = carePackagesMaxed;
-            Widgets.Checkbox(new Vector2(sideTwo.x + 60f, sideTwo.y), ref careBool);
+            Widgets.Checkbox(new Vector2(sideTwo.x + 40f, sideTwo.y), ref careBool);
             sideTwo.y += sideTwo.height;
-            sideThree.y += sideTwo.height;
 
 
             // SIDE TWO
@@ -155,6 +132,7 @@ namespace TwitchToolkit.Windows
             if (cachedFramesCount >= 800)
             {
                 UpdateTrackerStats();
+                cachedFramesCount = 0;
             }
         }
 
@@ -162,7 +140,6 @@ namespace TwitchToolkit.Windows
 
         void UpdateTrackerStats()
         {
-            cachedFramesCount = 0;
             viewerCount = Viewers.jsonallviewers == null ? 0 : Viewers.ParseViewersFromJsonAndFindActiveViewers().Count;
 
             cooldownsByTypeEnabled = ToolkitSettings.MaxEvents;

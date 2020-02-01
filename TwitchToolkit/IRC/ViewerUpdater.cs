@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using TwitchToolkit.PawnQueue;
 using TwitchToolkit.Store;
-using TwitchToolkit.Viewers;
 using UnityEngine;
 using Verse;
 
@@ -17,8 +16,10 @@ namespace TwitchToolkit.IRC
 
         }
 
-        public override void ParseCommand(TwitchIRCMessage msg)
+        public override void ParseCommand(IRCMessage msg)
         {
+            Viewer viewer = Viewers.GetViewer(msg.User);
+
             foreach (KeyValuePair<string, string> pair in msg.Parameters)
             {
                 //Helper.Log(pair.Key + " : " + pair.Value);
@@ -47,11 +48,11 @@ namespace TwitchToolkit.IRC
 
                         break;
                     case "mod":
-                        if (msg.Viewer.Mod || pair.Value == null) break;
+                        if (viewer.mod || pair.Value == null) break;
                         bool modValue = int.TryParse(pair.Value, out int modStatus);
-                        if (!msg.Viewer.Mod && modValue && modStatus == 1)
+                        if (modValue && modStatus == 1)
                         {
-                            msg.Viewer.ToggleMod();
+                            viewer.mod = true;
                         }
                         break;
                     case "subscriber":
@@ -59,11 +60,7 @@ namespace TwitchToolkit.IRC
                         bool subValue = int.TryParse(pair.Value, out int subStatus);
                         if (subValue && subStatus == 1)
                         {
-                            msg.Viewer.Subscriber = true;
-                        }
-                        else
-                        {
-                            msg.Viewer.Subscriber = false;
+                            viewer.subscriber = true;
                         }
                         break;
 
@@ -74,11 +71,10 @@ namespace TwitchToolkit.IRC
                         {
                             if (badge == "vip/1")
                             {
-                                msg.Viewer.VIP = true;
+                                viewer.vip = true;
                                 break;
                             }
                         }
-                        msg.Viewer.VIP = false;
                         break;
                 }
             }

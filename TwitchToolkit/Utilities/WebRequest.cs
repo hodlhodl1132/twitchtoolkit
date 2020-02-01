@@ -176,8 +176,11 @@ namespace TwitchToolkitDev
                         stringContent = myRequestState.requestData.ToString();
                         myRequestState.jsonString = stringContent;
                         Helper.Log(stringContent);
-
-                        myRequestState.Callback?.Invoke(myRequestState);
+                        
+                        if (myRequestState.Callback != null)
+                        {
+                            myRequestState.Callback(myRequestState);
+                        }
 
                     }
                     responseStream.Close();

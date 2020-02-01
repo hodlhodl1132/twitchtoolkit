@@ -95,11 +95,6 @@ namespace TwitchToolkit
 
         private static string[] defaultColors = { "FF0000", "0000FF", "008000", "008000", "FF7F50", "9ACD32", "FF4500", "2E8B57", "DAA520", "D2691E", "5F9EA0", "1E90FF", "FF69B4", "8A2BE2", "8A2BE2"};
 
-        internal static string ReplacePlaceholder(string v, string viewer, string amount, object newbalance)
-        {
-            throw new NotImplementedException();
-        }
-
         public static string GetRandomColorCode()
         {
             return defaultColors[Verse.Rand.Range(0, defaultColors.Length - 1)];

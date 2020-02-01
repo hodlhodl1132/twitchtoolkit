@@ -37,15 +37,12 @@ namespace TwitchToolkit.Storytellers
             // randomize
             allPacks.Shuffle();
 
-            foreach (StorytellerPack chosen in allPacks)
-            {
-                Helper.Log("trying storytellerpack " + chosen.LabelCap);
+            StorytellerPack chosen = allPacks[0];
 
-                // let the comp do the work
-                foreach (FiringIncident incident in chosen.StorytellerComp.MakeIntervalIncidents(target))
-                {
-                    yield return incident;
-                }
+            // let the comp do the work
+            foreach (FiringIncident incident in chosen.StorytellerComp.MakeIntervalIncidents(target))
+            {
+                yield return incident;
             }
 
             yield break;

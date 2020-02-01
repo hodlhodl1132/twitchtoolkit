@@ -25,7 +25,7 @@ namespace TwitchToolkit.Windows.Installation
                 {
                     if (listing.CenteredButton("TwitchToolkitConnect".Translate()))
                     {
-                        ToolkitIRC.Reset();
+                        ToolkitIRC.NewInstance();
                     }
                 }
             }
@@ -34,15 +34,8 @@ namespace TwitchToolkit.Windows.Installation
                 listing.Label("Need new connection");
                 if (listing.CenteredButton("TwitchToolkitNewConnection".Translate()))
                 {
-                    ToolkitIRC.Reset();
+                    ToolkitIRC.NewInstance();
                 }
-            }
-
-            listing.Gap();
-
-            if (!Helper.ModActive)
-            {
-                listing.Label("<b>Commands will not be responded to till you are ingame</b>");
             }
 
             listing.Gap();

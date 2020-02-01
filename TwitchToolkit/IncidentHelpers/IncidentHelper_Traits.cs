@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using TwitchToolkit.IncidentHelpers.IncidentHelper_Settings;
-using TwitchToolkit.Viewers;
 using TwitchToolkit.PawnQueue;
 using TwitchToolkit.Settings;
 using TwitchToolkit.Store;
@@ -169,7 +168,7 @@ namespace TwitchToolkit.IncidentHelpers.Traits
             string[] command = message.Split(' ');
             if (command.Length < 3)
             {
-                Toolkit.client.SendMessage($"@{viewer.Username} syntax is {this.storeIncident.syntax}", separateChannel);
+                Toolkit.client.SendMessage($"@{viewer.username} syntax is {this.storeIncident.syntax}", separateChannel);
                 return false;
             }
 

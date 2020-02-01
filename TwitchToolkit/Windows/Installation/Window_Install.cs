@@ -60,7 +60,7 @@ namespace TwitchToolkit.Windows.Installation
 
                 listing.GapLine();
 
-                if (listing.CenteredButton("Save Settings"))
+                if (listing.CenteredButton("Complete Setup"))
                 {
                     InstallationComplete();
                 }
