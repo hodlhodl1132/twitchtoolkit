@@ -114,7 +114,7 @@
 
   <TwitchToolkit.Incidents.StoreIncidentSimple>
     <defName>HeatWave</defName>
-    <label>head wave</label>
+    <label>heat wave</label>
     <abbreviation>heatwave</abbreviation>
     <cost>750</cost>
     <eventCap>2</eventCap>
