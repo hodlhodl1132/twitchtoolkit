@@ -12,7 +12,7 @@ namespace TwitchToolkit.Settings
     {
         public static void DoWindowContents(Rect rect, Listing_Standard optionsListing)
         {
-            optionsListing.CheckboxLabeled("Allow viewers to !buy ticket to join name queue?", ref ToolkitSettings.EnableViewerQueue);
+            optionsListing.CheckboxLabeled("Allow viewers to !joinqueue to join name queue?", ref ToolkitSettings.EnableViewerQueue);
             optionsListing.CheckboxLabeled("TwitchToolkitViewerColonistQueue".Translate(), ref ToolkitSettings.ViewerNamedColonistQueue);
             optionsListing.CheckboxLabeled("Charge viewers to join queue?", ref ToolkitSettings.ChargeViewersForQueue);
             optionsListing.AddLabeledNumericalTextField("Cost to join queue:", ref ToolkitSettings.CostToJoinQueue, 0.8f);
