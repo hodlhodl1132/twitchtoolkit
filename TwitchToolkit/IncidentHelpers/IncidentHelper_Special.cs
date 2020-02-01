@@ -16,7 +16,7 @@ namespace TwitchToolkit.IncidentHelpers.Special
     {
         public override bool IsPossible()
         {
-            List<Pawn> allCorpses = Find.ColonistBar.GetColonistsInOrder().Where(s => s.Dead && !PawnTracker.pawnsToRevive.Contains(s)).ToList();
+            List<Pawn> allCorpses = Find.ColonistBar.GetColonistsInOrder().Where(s => s.Dead && s.SpawnedOrAnyParentSpawned && !PawnTracker.pawnsToRevive.Contains(s)).ToList();
             if (allCorpses == null || allCorpses.Count < 1)
             {
                 return false;
@@ -35,6 +35,19 @@ namespace TwitchToolkit.IncidentHelpers.Special
         {
             try
             {
+				if (pawn.SpawnedParentOrMe != pawn.Corpse)
+				{
+					// Someone is holding the corpse, try to drop it
+					if (pawn.SpawnedParentOrMe is Pawn carryingPawn)
+					{
+						if(!carryingPawn.carryTracker.TryDropCarriedThing(carryingPawn.Position, ThingPlaceMode.Near, out Thing droppedThing))
+						{
+							// Failed to drop carried thing.
+							Log.Error($"Submit this bug to TwitchToolkit Discord: Could not drop {pawn} at {carryingPawn.Position} from {carryingPawn}");
+                            return;
+						}
+					}
+				}
                 pawn.ClearAllReservations();
                 ResurrectionUtility.ResurrectWithSideEffects(pawn);
                 PawnTracker.pawnsToRevive.Remove(pawn);
