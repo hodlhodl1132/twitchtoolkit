@@ -830,7 +830,7 @@
     <votingHelper>TwitchToolkit.VotingHelpers.VotingHelpers_Foreigners.ManInBlack</votingHelper>
   </TwitchToolkit.Votes.VotingIncident>
 
-  <TwitchToolkit.Votes.VotingIncident>
+  <!--<TwitchToolkit.Votes.VotingIncident>
     <defName>RefugeeChased</defName>
     <label>refugee chased</label>
     <weight>2</weight>
@@ -838,7 +838,7 @@
     <eventType>Neutral</eventType>
     <eventCategory>Foreigner</eventCategory>
     <votingHelper>TwitchToolkit.VotingHelpers.VotingHelpers_Foreigners.RefugeeChased</votingHelper>
-  </TwitchToolkit.Votes.VotingIncident>
+  </TwitchToolkit.Votes.VotingIncident>-->
 
   <TwitchToolkit.Votes.VotingIncident>
     <defName>Traveler</defName>

@@ -1,4 +1,4 @@
-﻿using Harmony;
+﻿using HarmonyLib;
 using RimWorld;
 using System;
 using System.Collections.Generic;
@@ -40,33 +40,35 @@ namespace TwitchToolkit.IncidentHelpers.Misc
         private IncidentWorker worker = null;
     }
 
-    public class RefugeeChased : IncidentHelper
-    {
-        public override bool IsPossible()
-        {
-            worker = new RimWorld.IncidentWorker_RefugeeChased();
-            worker.def = IncidentDef.Named("RefugeeChased");
+    // Find 1.1 equivalent
 
-            Map map = Helper.AnyPlayerMap;
+    //public class RefugeeChased : IncidentHelper
+    //{
+    //    public override bool IsPossible()
+    //    {
+    //        worker = new RimWorld.IncidentWorker_RefugeeChased();
+    //        worker.def = IncidentDef.Named("RefugeeChased");
 
-            if (map != null)
-            {
-                parms = StorytellerUtility.DefaultParmsNow(IncidentCategoryDefOf.Misc, map);
+    //        Map map = Helper.AnyPlayerMap;
 
-                return worker.CanFireNow(parms);
-            }
+    //        if (map != null)
+    //        {
+    //            parms = StorytellerUtility.DefaultParmsNow(IncidentCategoryDefOf.Misc, map);
 
-            return false;
-        }
+    //            return worker.CanFireNow(parms);
+    //        }
 
-        public override void TryExecute()
-        {
-            worker.TryExecute(parms);
-        }
+    //        return false;
+    //    }
 
-        private IncidentParms parms = null;
-        private IncidentWorker worker = null;
-    }
+    //    public override void TryExecute()
+    //    {
+    //        worker.TryExecute(parms);
+    //    }
+
+    //    private IncidentParms parms = null;
+    //    private IncidentWorker worker = null;
+    //}
 
     public class AnimalTame : IncidentHelper
     {
@@ -741,13 +743,13 @@ namespace TwitchToolkit.IncidentHelpers.Misc
     {
         public override bool IsPossible()
         {
-            pawn = PartyUtility.FindRandomPartyOrganizer(Faction.OfPlayer, Helper.AnyPlayerMap);
+            pawn = GatheringsUtility.FindRandomGatheringOrganizer(Faction.OfPlayer, Helper.AnyPlayerMap, GatheringDefOf.Party);
             if (pawn == null)
             {
                 return false;
             }
 
-            if (!RCellFinder.TryFindPartySpot(pawn, out intVec))
+            if (!RCellFinder.TryFindGatheringSpot(pawn, GatheringDefOf.Party, out IntVec3 intVec))
             {
                 return false;
             }
@@ -757,7 +759,7 @@ namespace TwitchToolkit.IncidentHelpers.Misc
 
         public override void TryExecute()
         {
-            Verse.AI.Group.LordMaker.MakeNewLord(pawn.Faction, new LordJob_Joinable_Party(intVec, pawn), Helper.AnyPlayerMap, null);
+            Verse.AI.Group.LordMaker.MakeNewLord(pawn.Faction, new LordJob_Joinable_Party(intVec, pawn, GatheringDefOf.Party), Helper.AnyPlayerMap, null);
             string text = "LetterNewParty".Translate(pawn.LabelShort, pawn);
 
             Find.LetterStack.ReceiveLetter("LetterLabelNewParty".Translate(), text, LetterDefOf.PositiveEvent, new TargetInfo(intVec, Helper.AnyPlayerMap, false), null, null);

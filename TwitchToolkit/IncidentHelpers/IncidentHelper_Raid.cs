@@ -39,7 +39,7 @@ namespace TwitchToolkit.IncidentHelpers.Raids
                 return false;
             }
 
-            parms = StorytellerUtility.DefaultParmsNow(IncidentCategoryDefOf.RaidBeacon, target);
+            parms = StorytellerUtility.DefaultParmsNow(IncidentCategoryDefOf.ThreatSmall, target);
             parms.points = IncidentHelper_PointsHelper.RollProportionalGamePoints(storeIncident, pointsWager, parms.points);
             parms.raidStrategy = RaidStrategyDefOf.ImmediateAttack;
             parms.raidArrivalMode = PawnsArrivalModeDefOf.EdgeWalkIn;
@@ -103,7 +103,7 @@ namespace TwitchToolkit.IncidentHelpers.Raids
                 return false;
             }
 
-            parms = StorytellerUtility.DefaultParmsNow(IncidentCategoryDefOf.RaidBeacon, target);
+            parms = StorytellerUtility.DefaultParmsNow(IncidentCategoryDefOf.ThreatSmall, target);
             parms.points = IncidentHelper_PointsHelper.RollProportionalGamePoints(storeIncident, pointsWager, parms.points);
             parms.raidStrategy = RaidStrategyDefOf.ImmediateAttack;
             parms.raidArrivalMode = PawnsArrivalModeDefOf.CenterDrop;
@@ -169,7 +169,7 @@ namespace TwitchToolkit.IncidentHelpers.Raids
                 return false;
             }
 
-            parms = StorytellerUtility.DefaultParmsNow(IncidentCategoryDefOf.RaidBeacon, target);
+            parms = StorytellerUtility.DefaultParmsNow(IncidentCategoryDefOf.ThreatSmall, target);
             parms.points = IncidentHelper_PointsHelper.RollProportionalGamePoints(storeIncident, pointsWager, parms.points);
             parms.raidStrategy = DefDatabase<RaidStrategyDef>.GetNamed("ImmediateAttackSappers");
             //parms.raidArrivalMode = PawnsArrivalModeDefOf.EdgeDrop;
@@ -232,7 +232,7 @@ namespace TwitchToolkit.IncidentHelpers.Raids
                 return false;
             }
 
-            parms = StorytellerUtility.DefaultParmsNow(IncidentCategoryDefOf.RaidBeacon, target);
+            parms = StorytellerUtility.DefaultParmsNow(IncidentCategoryDefOf.ThreatSmall, target);
             parms.points = IncidentHelper_PointsHelper.RollProportionalGamePoints(storeIncident, pointsWager, parms.points);
             parms.raidStrategy = DefDatabase<RaidStrategyDef>.GetNamed("Siege");
             //parms.raidArrivalMode = PawnsArrivalModeDefOf.EdgeDrop;
@@ -295,7 +295,7 @@ namespace TwitchToolkit.IncidentHelpers.Raids
                 return false;
             }
 
-            parms = StorytellerUtility.DefaultParmsNow(IncidentCategoryDefOf.RaidBeacon, target);
+            parms = StorytellerUtility.DefaultParmsNow(IncidentCategoryDefOf.ThreatSmall, target);
             parms.points = IncidentHelper_PointsHelper.RollProportionalGamePoints(storeIncident, pointsWager, parms.points);
             parms.raidStrategy = RaidStrategyDefOf.ImmediateAttack;
             parms.raidArrivalMode = PawnsArrivalModeDefOf.EdgeDrop;
@@ -426,7 +426,7 @@ namespace TwitchToolkit.IncidentHelpers.Raids
                 return false;
             }
 
-            parms = StorytellerUtility.DefaultParmsNow(IncidentCategoryDefOf.RaidBeacon, target);
+            parms = StorytellerUtility.DefaultParmsNow(IncidentCategoryDefOf.ThreatSmall, target);
             parms.points = IncidentHelper_PointsHelper.RollProportionalGamePoints(storeIncident, pointsWager, parms.points);
 
             worker = new IncidentWorker_ManhunterPack();
@@ -486,7 +486,7 @@ namespace TwitchToolkit.IncidentHelpers.Raids
                 return false;
             }
 
-            parms = StorytellerUtility.DefaultParmsNow(IncidentCategoryDefOf.RaidBeacon, target);
+            parms = StorytellerUtility.DefaultParmsNow(IncidentCategoryDefOf.ThreatSmall, target);
             parms.points = IncidentHelper_PointsHelper.RollProportionalGamePoints(storeIncident, pointsWager, parms.points);
 
             List<string> animals = new List<string>()

@@ -9,6 +9,7 @@ using System.Text;
 using TwitchToolkit.Store;
 using TwitchToolkit.Incidents;
 using TwitchToolkit.IRC;
+using Verse.AI.Group;
 
 namespace TwitchToolkit
 {
@@ -752,30 +753,30 @@ namespace TwitchToolkit
             });
         }
 
-        public static bool RefugeeChasedPossible()
-        {
-            var incident = new RimWorld.IncidentWorker_RefugeeChased();
-            incident.def = IncidentDef.Named("RefugeeChased");
-            return incident.CanFireNow(new IncidentParms
-            {
-                target = Helper.AnyPlayerMap
-            });
-        }
+        //public static bool RefugeeChasedPossible()
+        //{
+        //    var incident = new RimWorld.IncidentWorker_RefugeeChased();
+        //    incident.def = IncidentDef.Named("RefugeeChased");
+        //    return incident.CanFireNow(new IncidentParms
+        //    {
+        //        target = Helper.AnyPlayerMap
+        //    });
+        //}
 
-        public static void RefugeeChased(string quote)
-        {
-            var incident = new RimWorld.IncidentWorker_RefugeeChased();
-            incident.def = IncidentDef.Named("RefugeeChased");
-            if (quote != null)
-            {
-                _state = quote;
-                Helper.Log("state set to " + _state);
-            }
-            incident.TryExecute(new IncidentParms
-            {
-                target = Helper.AnyPlayerMap
-            });
-        }
+        //public static void RefugeeChased(string quote)
+        //{
+        //    var incident = new RimWorld.IncidentWorker_RefugeeChased();
+        //    incident.def = IncidentDef.Named("RefugeeChased");
+        //    if (quote != null)
+        //    {
+        //        _state = quote;
+        //        Helper.Log("state set to " + _state);
+        //    }
+        //    incident.TryExecute(new IncidentParms
+        //    {
+        //        target = Helper.AnyPlayerMap
+        //    });
+        //}
 
         public static bool AnimalTamePossible()
         {           
@@ -1227,49 +1228,49 @@ namespace TwitchToolkit
             });
         }
 
-        public static bool ShipPartPsychicPossible()
-        {
-            var incident = new IncidentWorker_PsychicEmanatorShipPartCrash(null);
-            incident.def = IncidentDef.Named("PsychicEmanatorShipPartCrash");
-            return incident.CanFireNow(new IncidentParms
-            {
-                target = Helper.AnyPlayerMap,
-                points = StorytellerUtility.DefaultSiteThreatPointsNow()
-            });
-        }
+        //public static bool ShipPartPsychicPossible()
+        //{
+        //    var incident = new IncidentWorker_PsychicEmanatorShipPartCrash(null);
+        //    incident.def = IncidentDef.Named("PsychicEmanatorShipPartCrash");
+        //    return incident.CanFireNow(new IncidentParms
+        //    {
+        //        target = Helper.AnyPlayerMap,
+        //        points = StorytellerUtility.DefaultSiteThreatPointsNow()
+        //    });
+        //}
 
-        public static void ShipPartPsychic(string quote)
-        {
-            var incident = new IncidentWorker_PsychicEmanatorShipPartCrash(quote);
-            incident.def = IncidentDef.Named("PsychicEmanatorShipPartCrash");
-            incident.TryExecute(new IncidentParms
-            {
-                target = Helper.AnyPlayerMap,
-                points = StorytellerUtility.DefaultSiteThreatPointsNow()
-            });
-        }
+        //public static void ShipPartPsychic(string quote)
+        //{
+        //    var incident = new IncidentWorker_PsychicEmanatorShipPartCrash(quote);
+        //    incident.def = IncidentDef.Named("PsychicEmanatorShipPartCrash");
+        //    incident.TryExecute(new IncidentParms
+        //    {
+        //        target = Helper.AnyPlayerMap,
+        //        points = StorytellerUtility.DefaultSiteThreatPointsNow()
+        //    });
+        //}
 
-        public static bool ShipPartPoisonPossible()
-        {
-            var incident = new TSIncidents.IncidentWorker_PoisonShipPartCrash(null);
-            incident.def = IncidentDef.Named("PoisonShipPartCrash");
-            return incident.CanFireNow(new IncidentParms
-            {
-                target = Helper.AnyPlayerMap,
-                points = StorytellerUtility.DefaultSiteThreatPointsNow()
-            });
-        }
+        //public static bool ShipPartPoisonPossible()
+        //{
+        //    var incident = new TSIncidents.IncidentWorker_PoisonShipPartCrash(null);
+        //    incident.def = IncidentDef.Named("PoisonShipPartCrash");
+        //    return incident.CanFireNow(new IncidentParms
+        //    {
+        //        target = Helper.AnyPlayerMap,
+        //        points = StorytellerUtility.DefaultSiteThreatPointsNow()
+        //    });
+        //}
 
-        public static void ShipPartPoison(string quote)
-        {
-            var incident = new TSIncidents.IncidentWorker_PoisonShipPartCrash(quote);
-            incident.def = IncidentDef.Named("PoisonShipPartCrash");
-            incident.TryExecute(new IncidentParms
-            {
-                target = Helper.AnyPlayerMap,
-                points = StorytellerUtility.DefaultSiteThreatPointsNow()
-            });
-        }
+        //public static void ShipPartPoison(string quote)
+        //{
+        //    var incident = new TSIncidents.IncidentWorker_PoisonShipPartCrash(quote);
+        //    incident.def = IncidentDef.Named("PoisonShipPartCrash");
+        //    incident.TryExecute(new IncidentParms
+        //    {
+        //        target = Helper.AnyPlayerMap,
+        //        points = StorytellerUtility.DefaultSiteThreatPointsNow()
+        //    });
+        //}
 
         public static bool PsychicDronePossible()
         {
@@ -1636,14 +1637,8 @@ namespace TwitchToolkit
 
         public static bool PartyPossible()
         {
-            Pawn pawn = PartyUtility.FindRandomPartyOrganizer(Faction.OfPlayer, Helper.AnyPlayerMap);
-            if (pawn == null)
-            {
-                return false;
-            }
-
-            IntVec3 intVec;
-            if (!RCellFinder.TryFindPartySpot(pawn, out intVec))
+            GatheringWorker_Party party = new GatheringWorker_Party();
+            if (!party.CanExecute(Helper.AnyPlayerMap))
             {
                 return false;
             }
@@ -1653,17 +1648,37 @@ namespace TwitchToolkit
 
         public static void Party(string quote)
         {
-            Pawn pawn = PartyUtility.FindRandomPartyOrganizer(Faction.OfPlayer, Helper.AnyPlayerMap);
-            if (pawn == null)
+            Map map = Helper.AnyPlayerMap;
+            GatheringWorker_Party party = new GatheringWorker_Party();
+            Pawn organizer = GatheringsUtility.FindRandomGatheringOrganizer(Faction.OfPlayer, map, party.def);
+
+            if (organizer == null)
             {
                 return;
             }
-            IntVec3 intVec;
-            if (!RCellFinder.TryFindPartySpot(pawn, out intVec))
+
+            IntVec3 spot;
+            if (!RCellFinder.TryFindGatheringSpot(organizer, party.def, out spot))
             {
                 return;
             }
-            Verse.AI.Group.LordMaker.MakeNewLord(pawn.Faction, new LordJob_Joinable_Party(intVec, pawn), Helper.AnyPlayerMap, null);
+
+            LordJob lordJob = new LordJob_Joinable_Party(spot, organizer, party.def);
+            Faction faction = organizer.Faction;
+            LordJob lordJob2 = lordJob;
+            Map map2 = organizer.Map;
+            IEnumerable<Pawn> startingPawns;
+            if (!lordJob.OrganizerIsStartingPawn)
+            {
+                startingPawns = null;
+            }
+            else
+            {
+                startingPawns = new[] { organizer };
+            }
+
+            LordMaker.MakeNewLord(faction, lordJob2, map2, startingPawns);
+            Pawn pawn = startingPawns.First();
             var text = "LetterNewParty".Translate(pawn.LabelShort, pawn);
 
             if (quote != null)
@@ -1673,7 +1688,7 @@ namespace TwitchToolkit
                 text += quote;
             }
 
-            Find.LetterStack.ReceiveLetter("LetterLabelNewParty".Translate(), text, LetterDefOf.PositiveEvent, new TargetInfo(intVec, Helper.AnyPlayerMap, false), null, null);
+            Find.LetterStack.ReceiveLetter(Translator.Translate("LetterLabelNewParty"), text, LetterDefOf.PositiveEvent, new TargetInfo(spot, map, false), null, null);
         }
 
         public static bool MentalBreak(string quote, MentalBreakDef breakDef, float percentColony = 0)

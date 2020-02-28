@@ -73,12 +73,6 @@ namespace TwitchToolkit
                             Toolkit.Mod.RegisterTicker();
                         }   
                     }
-
-                    //if (_map != Helper.AnyPlayerMap)
-                    //{
-                    //    _map = Helper.AnyPlayerMap;
-                    //    _mod.Reset();
-                    //}
                 }
                 catch (Exception ex)
                 {

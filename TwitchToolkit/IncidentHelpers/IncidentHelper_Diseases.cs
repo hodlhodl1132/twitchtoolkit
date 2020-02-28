@@ -102,7 +102,7 @@ namespace TwitchToolkit.IncidentHelpers.Diseases
             worker = new IncidentWorker_DiseaseHuman();
             List<IncidentDef> allDiseases = DefDatabase<IncidentDef>.AllDefs.Where(s =>
                     s.category == IncidentCategoryDefOf.DiseaseHuman &&
-                    string.Join("", s.LabelCap.Split(' ')).ToLower() == diseaseLabel
+                    string.Join("", s.LabelCap.RawText.Split(' ')).ToLower() == diseaseLabel
                 ).ToList();
 
             if (allDiseases.Count < 1)

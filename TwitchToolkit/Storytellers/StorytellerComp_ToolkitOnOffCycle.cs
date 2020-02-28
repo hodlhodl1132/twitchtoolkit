@@ -30,7 +30,6 @@ namespace TwitchToolkit.Storytellers
                 yield break;
             }
 
-            float difficultyFactor = (!this.Props.applyRaidBeaconThreatMtbFactor) ? 1f : Find.Storyteller.difficulty.raidBeaconThreatCountFactor;
             float acceptFraction = 1f;
             if (this.Props.acceptFractionByDaysPassedCurve != null)
             {
@@ -42,7 +41,7 @@ namespace TwitchToolkit.Storytellers
             }
             int rand = Rand.Range(1, 25);
             //Helper.Log($"{rand} {this.Props.minDaysPassed} {this.Props.onDays} {this.Props.offDays} {this.Props.minSpacingDays}");
-            int incCount = IncidentCycleUtility.IncidentCountThisInterval(target, rand, this.Props.minDaysPassed, this.Props.onDays, this.Props.offDays, this.Props.minSpacingDays, this.Props.numIncidentsRange.min * difficultyFactor, this.Props.numIncidentsRange.max * difficultyFactor, acceptFraction);
+            int incCount = IncidentCycleUtility.IncidentCountThisInterval(target, rand, this.Props.minDaysPassed, this.Props.onDays, this.Props.offDays, this.Props.minSpacingDays, this.Props.numIncidentsRange.min, this.Props.numIncidentsRange.max, acceptFraction);
 
             for (int i = 0; i < incCount; i++)
             {

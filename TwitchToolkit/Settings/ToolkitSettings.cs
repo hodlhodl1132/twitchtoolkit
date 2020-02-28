@@ -291,7 +291,7 @@ namespace TwitchToolkit
             if (currentTab == SettingsTab.Chat) viewRect.height += 400f;
             if (currentTab == SettingsTab.Storyteller) viewRect.height += 400f;
             if (currentTab == SettingsTab.Karma) viewRect.height += 250f;
-            if (currentTab == SettingsTab.Viewers) viewRect.height += 80f;
+            if (currentTab == SettingsTab.Viewers) viewRect.height += 120f;
             
             Listing_Standard optionsListing = new Listing_Standard();
 

@@ -213,7 +213,7 @@
     <karmaType>Bad</karmaType>
   </TwitchToolkit.Incidents.StoreIncidentSimple>
 
-  <TwitchToolkit.Incidents.StoreIncidentSimple>
+  <!--<TwitchToolkit.Incidents.StoreIncidentSimple>
     <defName>RefugeeChased</defName>
     <label>refugee chased</label>
     <abbreviation>refugeechased</abbreviation>
@@ -221,7 +221,7 @@
     <eventCap>1</eventCap>
     <incidentHelper>TwitchToolkit.IncidentHelpers.Misc.RefugeeChased</incidentHelper>
     <karmaType>Neutral</karmaType>
-  </TwitchToolkit.Incidents.StoreIncidentSimple>
+  </TwitchToolkit.Incidents.StoreIncidentSimple>-->
 
   <TwitchToolkit.Incidents.StoreIncidentSimple>
     <defName>AnimalTame</defName>
@@ -775,7 +775,7 @@
     <syntax>!buy visitcolony</syntax>
   </TwitchToolkit.Incidents.StoreIncidentVariables>
 
-  <TwitchToolkit.Incidents.StoreIncidentVariables>
+  <!--<TwitchToolkit.Incidents.StoreIncidentVariables>
     <defName>BeRescued</defName>
     <label>be rescued</label>
     <abbreviation>berescued</abbreviation>
@@ -784,7 +784,7 @@
     <incidentHelper>TwitchToolkit.IncidentHelpers.Special.BeRescued</incidentHelper>
     <karmaType>Good</karmaType>
     <syntax>!buy berescued</syntax>
-  </TwitchToolkit.Incidents.StoreIncidentVariables>
+  </TwitchToolkit.Incidents.StoreIncidentVariables>-->
 
   <TwitchToolkit.Incidents.StoreIncidentVariables>
     <defName>RandomInspire</defName>

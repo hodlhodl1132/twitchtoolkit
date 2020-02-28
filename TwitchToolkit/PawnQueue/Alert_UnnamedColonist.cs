@@ -29,13 +29,13 @@ namespace TwitchToolkit.PawnQueue
                 IEnumerable<Pawn> newPawns = freeColonists.Where(k => !pawnHistory.Values.Contains(k));
                 if (newPawns.Count() > 0)
                 {
-                    return AlertReport.CulpritsAre(newPawns);
+                    return AlertReport.CulpritsAre(newPawns.Cast<Thing>().ToList());
                 }
             }
             return false;
         }
 
-        public override string GetExplanation()
+        public override TaggedString GetExplanation()
         {
             return "These colonists need names";
         }

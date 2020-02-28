@@ -74,35 +74,6 @@ namespace TwitchToolkit.Windows.Installation
 
                 listing.Gap();
 
-                listing.CheckboxLabeled("Will you be using a separate chatroom for commands?", ref ToolkitSettings.UseSeparateChatRoom, "Using a separate chatroom allows you to connect to a separate chatroom in your channel for performing viewer commands");
-
-                listing.Gap();
-
-                if (ToolkitSettings.UseSeparateChatRoom)
-                {
-                    listing.Label("Before you can connect, you will need to create a separate chat room in you channel.");
-
-                    if (listing.ButtonTextLabeled("Learn how to make Chatroom", "Open Browser"))
-                    {
-                        Application.OpenURL("https://cdn-images-1.medium.com/max/1600/1*jLwK45n0SEh7pcQi_Ed4sg.gif");
-                    }
-
-                    listing.Gap();
-
-                    listing.Label("You will need to fetch the channel id and chatroom uuid for your chatroom.");
-
-                    if (listing.ButtonTextLabeled("Channel ID and Chatroom UUID", "Open Browser"))
-                    {
-                        Application.OpenURL("https://twitch.honest.chat/list-chat-rooms/?get_room_ids=true&username=" + ToolkitSettings.Channel);
-                    }
-
-                    listing.Gap();
-
-                    listing.AddLabeledTextField("Channel ID:", ref ToolkitSettings.ChannelID);
-                    listing.AddLabeledTextField("Chatroom UUID:", ref ToolkitSettings.ChatroomUUID);
-
-                    listing.CheckboxLabeled("Will viewers be able to use store commands in both the separate chatroom and the main channel?", ref ToolkitSettings.AllowBothChatRooms);
-                }
             }
         }
 

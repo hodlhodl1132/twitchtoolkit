@@ -28,26 +28,26 @@ namespace TwitchToolkit.VotingHelpers.VotingHelpers_Foreigners
         private IncidentParms parms;
     }
 
-    public class RefugeeChased : VotingHelper
-    {
-        public override bool IsPossible()
-        {
-            worker = new IncidentWorker_RefugeeChased();
-            worker.def = IncidentDef.Named("RefugeeChased");
+    //public class RefugeeChased : VotingHelper
+    //{
+    //    public override bool IsPossible()
+    //    {
+    //        worker = new IncidentWorker_RefugeeChased();
+    //        worker.def = IncidentDef.Named("RefugeeChased");
 
-            parms = StorytellerUtility.DefaultParmsNow(IncidentCategoryDefOf.Misc, target);
+    //        parms = StorytellerUtility.DefaultParmsNow(IncidentCategoryDefOf.Misc, target);
 
-            return worker.CanFireNow(parms);
-        }
+    //        return worker.CanFireNow(parms);
+    //    }
 
-        public override void TryExecute()
-        {
-            worker.TryExecute(parms);
-        }
+    //    public override void TryExecute()
+    //    {
+    //        worker.TryExecute(parms);
+    //    }
 
-        private IncidentWorker worker;
-        private IncidentParms parms;
-    }
+    //    private IncidentWorker worker;
+    //    private IncidentParms parms;
+    //}
 
     public class Traveler : VotingHelper
     {

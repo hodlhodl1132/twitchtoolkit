@@ -54,6 +54,19 @@ namespace TwitchToolkit
         public bool isCustomMessage = false;
     }
 
+    public class Functions
+    {
+        public Viewer GetViewer(string username)
+        {
+            return Viewers.GetViewer(username);
+        }
+
+        public string ReturnString()
+        {
+            return "Hello World!";
+        }
+    }
+
     public class CommandDriver
     {
         public Command command = null;
@@ -66,7 +79,27 @@ namespace TwitchToolkit
 
             Helper.Log("command filtered");
 
-            Toolkit.client.SendMessage(output);
+            
+
+            if (!UserData.IsTypeRegistered<Functions>())
+            {
+                UserData.RegisterType<Functions>();
+                UserData.RegisterType<Viewer>();
+            }
+            
+            Helper.Log("creating script");
+
+            Script script = new Script();
+            script.DebuggerEnabled = true;
+            DynValue functions = UserData.Create(new Functions());
+            script.Globals.Set("functions", functions);
+
+            Helper.Log("Parsing Script " + output);
+
+            DynValue res = script.DoString(output);
+            Toolkit.client.SendMessage(res.CastToString());
+
+            Log.Message(res.CastToString());            
         }
 
         public string FilterTags(IRCMessage message, string input)
@@ -134,6 +167,13 @@ namespace TwitchToolkit
 
             DynValue res = Script.RunString(script);
             return res.Number;
+        }
+
+        static string TokenizeObjects()
+        {
+
+
+            return "";
         }
     }
 

@@ -1,4 +1,4 @@
-﻿using Harmony;
+﻿using HarmonyLib;
 using RimWorld;
 using System;
 using System.Collections.Generic;
@@ -29,7 +29,7 @@ namespace TwitchToolkit
 
             SaveHelper.LoadListOfViewers();
 
-            HarmonyInstance harmony = HarmonyInstance.Create("com.github.harmony.rimworld.mod.twitchtoolkit");
+            Harmony harmony = new Harmony("com.github.harmony.rimworld.mod.twitchtoolkit");
 
             harmony.Patch(
                     original: AccessTools.Method(
@@ -42,15 +42,15 @@ namespace TwitchToolkit
                     original: AccessTools.Method(
                         type: typeof(LetterMaker), 
                         name: "MakeLetter", 
-                        parameters: new[] { typeof(string), typeof(string), typeof(LetterDef) }), 
-                    prefix: new HarmonyMethod(type: patchType, name: nameof(AddLastPlayerMessagePrefix))
+                        parameters: new[] { typeof(TaggedString), typeof(TaggedString), typeof(LetterDef), typeof(Faction), typeof(Quest) }), 
+                    prefix: new HarmonyMethod(patchType, nameof(AddLastPlayerMessagePrefix))
                 );
 
             harmony.Patch(
                 original: AccessTools.Method(
                         type: typeof(StorytellerUI),
                         name: "DrawStorytellerSelectionInterface"),
-                    postfix: new HarmonyMethod(type: patchType, name: nameof(DrawCustomStorytellerInterface)
+                    postfix: new HarmonyMethod(patchType, nameof(DrawCustomStorytellerInterface)
                 )
             );
 
@@ -59,7 +59,7 @@ namespace TwitchToolkit
                         type: typeof(GameDataSaveLoader),
                         name: "LoadGame",
                         parameters: new[] { typeof(string) }),
-                    postfix: new HarmonyMethod(type: patchType, name: nameof(NewTwitchConnection))
+                    postfix: new HarmonyMethod(patchType, nameof(NewTwitchConnection))
                 );
 
             //StringBuilder json = new StringBuilder();
@@ -78,7 +78,7 @@ namespace TwitchToolkit
             SaveHelper.SaveAllModData();
         }
 
-        public static void AddLastPlayerMessagePrefix(string label, ref string text, LetterDef def)
+        public static void AddLastPlayerMessagePrefix(TaggedString label, ref TaggedString text, LetterDef def)
         {
             if (Helper.playerMessages.Count > 0)
             {

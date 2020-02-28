@@ -27,7 +27,7 @@ namespace TwitchToolkit.Store
                    (t.building == null || t.Minifiable || ToolkitSettings.MinifiableBuildings) &&
                    (t.FirstThingCategory != null || t.race != null) &&
                    (t.BaseMarketValue > 0)
-                   orderby t.LabelCap
+                   orderby t.LabelCap.RawText
                    select t;
 
             //return from t in DefDatabase<ThingDef>.AllDefs
@@ -81,7 +81,7 @@ namespace TwitchToolkit.Store
                 }
                 else
                 {
-                    StoreInventory.items.Add(new Item( itemPrices[i], string.Join("", allItems[i].LabelCap.ToLower().Split(' ')), allItems[i].defName ));
+                    StoreInventory.items.Add(new Item( itemPrices[i], string.Join("", allItems[i].LabelCap.ToLower().RawText.Split(' ')), allItems[i].defName ));
                 }
             }
 

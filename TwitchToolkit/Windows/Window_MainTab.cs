@@ -52,14 +52,14 @@ namespace TwitchToolkit
             float btnHeight = 30f;
 
             var rectBtn = new Rect(padding, 0, btnWidth, btnHeight);
-            if (Widgets.ButtonText(rectBtn, "Chat Window") && !Find.WindowStack.TryRemove(typeof(ChatWindow), true))
-            {
-                ChatWindow chatwnd = new ChatWindow();
-                Toolkit.client.activeChatWindow = chatwnd;
-                Find.WindowStack.Add(chatwnd);
-            }
+            //if (Widgets.ButtonText(rectBtn, "Chat Window") && !Find.WindowStack.TryRemove(typeof(ChatWindow), true))
+            //{
+            //    ChatWindow chatwnd = new ChatWindow();
+            //    Toolkit.client.activeChatWindow = chatwnd;
+            //    Find.WindowStack.Add(chatwnd);
+            //}
 
-            rectBtn.x += btnWidth + padding;
+            //rectBtn.x += btnWidth + padding;
             if (Widgets.ButtonText(rectBtn, "Events"))
             {
                 Type type = typeof(StoreIncidentsWindow);

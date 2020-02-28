@@ -1,36 +1,10 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <ModMetaData>
-   <name>TwitchToolkit</name>
-   <author>hodlhodl</author>
-   <url />
-   <supportedVersions>
-      <li>1.0</li>
-   </supportedVersions>
-   <description>Twitch integration for RimWorld.
-
-==Storyteller Voting==
-This mod adds 3 new storytellers based on vanilla storytellers. They will take incidents they would normally create in game but give those options to the chat to vote on. This also supports incidents created by other mods. I haven't tested this with all mods but the few I have it worked fine.
-
-==Coin Store==
-Your viewers earn coins every 2 minutes that can be spent on items/events ingame. For example, the command "!buyevent skillincrease" will give one of your pawns a random skill increase.
-
-==Karma System==
-As much as we'd all love to send 50 raids to our favorite twitch streamers, we need to balance things out. To do this a karma system is in use that rewards users for good events and items while punishing users for bad events. Your karma rate will decide how many coins you earn per interval up to 300% the base rate. You can change coins per interval in ToolkitSettings.
-
-  Special thanks to:
-  -stream testers
-   zenfrox
-   spartanstu23
-   suwey
-   kruffles
-   and the viewers of their streams
-
-  -help
-   Codingale
-
-  -base mod
-    finally
-    rachey
-    swenee
-    Xenon</description>
+  <name>Twitch Toolkit</name>
+  <author>hodlhodl</author>
+  <supportedVersions>
+    <li>1.1</li>
+  </supportedVersions>
+  <packageId>hodl.twitchtoolkit</packageId>
+  <description>...</description>
 </ModMetaData>

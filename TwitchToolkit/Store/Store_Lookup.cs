@@ -77,18 +77,18 @@ namespace TwitchToolkit.Store
                 case "diseases":
                     IncidentDef[] allDiseases = DefDatabase<IncidentDef>.AllDefs.Where(s => 
                         s.category == IncidentCategoryDefOf.DiseaseHuman &&
-                        (string.Join("", s.LabelCap.Split(' ')).ToLower().Contains(searchQuery) ||
-                        string.Join("", s.LabelCap.Split(' ')).ToLower() == searchQuery)
+                        (string.Join("", s.LabelCap.RawText.Split(' ')).ToLower().Contains(searchQuery) ||
+                        string.Join("", s.LabelCap.RawText.Split(' ')).ToLower() == searchQuery)
                     ).Take(10).ToArray();
 
                     foreach (IncidentDef disease in allDiseases)
-                        results.Add(string.Join("", disease.LabelCap.Split(' ')).ToLower());
+                        results.Add(string.Join("", disease.LabelCap.RawText.Split(' ')).ToLower());
                     SendTenResults(msg, searchObject.CapitalizeFirst(), searchQuery, results.ToArray());
                     break;
                 case "skills":
                     SkillDef[] allSkills = DefDatabase<SkillDef>.AllDefs.Where(s => 
-                        (string.Join("", s.LabelCap.Split(' ')).ToLower().Contains(searchQuery) ||
-                        string.Join("", s.LabelCap.Split(' ')).ToLower() == searchQuery)
+                        (string.Join("", s.LabelCap.RawText.Split(' ')).ToLower().Contains(searchQuery) ||
+                        string.Join("", s.LabelCap.RawText.Split(' ')).ToLower() == searchQuery)
                     ).Take(10).ToArray();
 
                     foreach (SkillDef skill in allSkills)
@@ -124,8 +124,8 @@ namespace TwitchToolkit.Store
                 case "animals":
                     PawnKindDef[] allAnimals = DefDatabase<PawnKindDef>.AllDefs.Where(s =>
                         s.RaceProps.Animal &&
-                        (string.Join("", s.LabelCap.Split(' ')).ToLower().Contains(searchQuery) ||
-                        string.Join("", s.LabelCap.Split(' ')).ToLower() == searchQuery ||
+                        (string.Join("", s.LabelCap.RawText.Split(' ')).ToLower().Contains(searchQuery) ||
+                        string.Join("", s.LabelCap.RawText.Split(' ')).ToLower() == searchQuery ||
                         s.defName.ToLower().Contains(searchQuery) ||
                         s.defName.ToLower() == searchQuery)
                     ).Take(10).ToArray();

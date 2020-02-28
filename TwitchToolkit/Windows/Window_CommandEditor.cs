@@ -1,4 +1,4 @@
-﻿using Harmony;
+﻿using HarmonyLib;
 using JetBrains.Annotations;
 using System;
 using System.Collections.Generic;
@@ -68,7 +68,7 @@ namespace TwitchToolkit.Windows
                         ToolkitSettings.CustomCommandDefs = ToolkitSettings.CustomCommandDefs.Where(s => s != command.defName).ToList();
 
                         IEnumerable<Command> toRemove = Enumerable.Empty<Command>();
-                        toRemove.Add(command);
+                        toRemove = toRemove.Concat(new[] { command });
 
                         RemoveStuffFromDatabase(command.GetType(), toRemove.Cast<Def>());
                     }

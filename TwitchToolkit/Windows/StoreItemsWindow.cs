@@ -67,12 +67,12 @@ namespace TwitchToolkit.Windows
                 if (ascending)
                 {
                     ascending = false;
-                    cachedTradeables = cachedTradeables.OrderBy(s => s.FirstThingCategory != null ? s.FirstThingCategory.LabelCap : "Animal").ToList();
+                    cachedTradeables = cachedTradeables.OrderBy(s => s.FirstThingCategory != null ? s.FirstThingCategory.LabelCap.RawText : "Animal").ToList();
                 }
                 else
                 {
                     ascending = true;
-                    cachedTradeables = cachedTradeables.OrderByDescending(s => s.FirstThingCategory != null ? s.FirstThingCategory.LabelCap : "Animal").ToList();
+                    cachedTradeables = cachedTradeables.OrderByDescending(s => s.FirstThingCategory != null ? s.FirstThingCategory.LabelCap.RawText : "Animal").ToList();
                 }
                 
                 GetTradeablesPrices();
@@ -103,12 +103,12 @@ namespace TwitchToolkit.Windows
                 if (ascending)
                 {
                     ascending = false;
-                    cachedTradeables = cachedTradeables.OrderBy(s => s.LabelCap).ToList();
+                    cachedTradeables = cachedTradeables.OrderBy(s => s.LabelCap.RawText).ToList();
                 }
                 else
                 {
                     ascending = true;
-                    cachedTradeables = cachedTradeables.OrderByDescending(s => s.LabelCap).ToList();
+                    cachedTradeables = cachedTradeables.OrderByDescending(s => s.LabelCap.RawText).ToList();
                 }
                 
                 GetTradeablesPrices();
@@ -208,7 +208,7 @@ namespace TwitchToolkit.Windows
             }
 
             Rect categoryLabel = new Rect(num - 300, 0f, 200f, rect.height);
-            Widgets.Label(categoryLabel, thing.FirstThingCategory != null ? thing.FirstThingCategory.LabelCap : "Animal");
+            Widgets.Label(categoryLabel, thing.FirstThingCategory != null ? thing.FirstThingCategory.LabelCap : (TaggedString)"Animal");
 
             Rect rect3 = new Rect(0f, 0f, 27f, 27f);
             Widgets.ThingIcon(rect3, thing);
@@ -232,7 +232,7 @@ namespace TwitchToolkit.Windows
 			rect.width = 42f;
 			if (Widgets.ButtonText(rect, "-" + countChange, true, false, true))
 			{
-				SoundDefOf.AmountDecrement.PlayOneShotOnCamera(null);
+				SoundDefOf.Click.PlayOneShotOnCamera(null);
 				val -= countChange * GenUI.CurrentAdjustmentMultiplier();
 				if (val < min)
 				{
@@ -242,7 +242,7 @@ namespace TwitchToolkit.Windows
 			rect.x += rect.width + 2f;
 			if (Widgets.ButtonText(rect, "+" + countChange, true, false, true))
 			{
-				SoundDefOf.AmountIncrement.PlayOneShotOnCamera(null);
+				SoundDefOf.Click.PlayOneShotOnCamera(null);
 				val += countChange * GenUI.CurrentAdjustmentMultiplier();
 				if (val < min)
 				{
@@ -263,6 +263,8 @@ namespace TwitchToolkit.Windows
             cachedTradeables = new List<ThingDef>();
             
             string searchShort = string.Join("", searchQuery.Split(' ')).ToLower();
+
+            Helper.Log("Finding tradeables");
 
             IEnumerable<ThingDef> tradeableitems = from t in DefDatabase<ThingDef>.AllDefs
                     where (t.tradeability.TraderCanSell() || ThingSetMakerUtility.CanGenerate(t) ) &&
@@ -286,13 +288,13 @@ namespace TwitchToolkit.Windows
                                 ||
                                 (t.race == null &&
                                     (t.FirstThingCategory == null ||
-                                    string.Join("", t.FirstThingCategory.LabelCap.Split(' ')).ToLower().Contains(searchShort) ||
-                                    t.FirstThingCategory.LabelCap.ToLower() == searchShort)
+                                    string.Join("", t.FirstThingCategory.LabelCap.RawText.Split(' ')).ToLower().Contains(searchShort) ||
+                                    t.FirstThingCategory.LabelCap.RawText.ToLower() == searchShort)
                                 )
                             )
                         )
                     )
-                    orderby t.LabelCap
+                    orderby t.LabelCap.RawText
                     select t;
 
             foreach(ThingDef item in tradeableitems)

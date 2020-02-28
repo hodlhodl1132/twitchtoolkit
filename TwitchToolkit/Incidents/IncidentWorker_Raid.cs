@@ -100,13 +100,13 @@ namespace TwitchToolkit.Incidents
             parms.raidArrivalMode.Worker.Arrive(list, parms);
             StringBuilder stringBuilder = new StringBuilder();
             stringBuilder.AppendLine("Points = " + parms.points.ToString("F0"));
-            foreach (Pawn current in list)
-            {
-                string str = (current.equipment == null || current.equipment.Primary == null) ? "unarmed" : current.equipment.Primary.LabelCap;
-                stringBuilder.AppendLine(current.KindLabel + " - " + str);
-            }
-            string letterLabel = this.GetLetterLabel(parms);
-            string letterText = this.GetLetterText(parms, list);
+			foreach (Pawn pawn in list)
+			{
+				string str = (pawn.equipment != null && pawn.equipment.Primary != null) ? pawn.equipment.Primary.LabelCap : "unarmed";
+				stringBuilder.AppendLine(pawn.KindLabel + " - " + str);
+			}
+            TaggedString letterLabel = this.GetLetterLabel(parms);
+            TaggedString letterText = this.GetLetterText(parms, list);
             PawnRelationUtility.Notify_PawnsSeenByPlayer_Letter(list, ref letterLabel, ref letterText, this.GetRelatedPawnsInfoLetterText(parms), true, true);
             List<TargetInfo> list2 = new List<TargetInfo>();
             if (parms.pawnGroups != null)
@@ -133,7 +133,7 @@ namespace TwitchToolkit.Incidents
                 list2.Add(list[0]);
             }
 
-            Find.LetterStack.ReceiveLetter(letterLabel, letterText, this.GetLetterDef(), list2, parms.faction, stringBuilder.ToString());
+            base.SendStandardLetter(letterLabel, letterText, this.GetLetterDef(), parms, list2, Array.Empty<NamedArgument>());
             parms.raidStrategy.Worker.MakeLords(parms, list);
             return true;
         }
@@ -158,7 +158,7 @@ namespace TwitchToolkit.Incidents
             Find.TickManager.DebugSetTicksGame(36000000);
             List<TableDataGetter<Faction>> list = new List<TableDataGetter<Faction>>();
             list.Add(new TableDataGetter<Faction>("name", (Faction f) => f.Name));
-            foreach (float points in Dialog_DebugActionsMenu.PointsOptions(false))
+            foreach (float points in DebugActionsUtility.PointsOptions(false))
             {
                 Dictionary<Faction, int> factionCount = new Dictionary<Faction, int>();
                 foreach (Faction current in Find.FactionManager.AllFactions)
@@ -193,7 +193,7 @@ namespace TwitchToolkit.Incidents
             Find.TickManager.DebugSetTicksGame(36000000);
             List<TableDataGetter<RaidStrategyDef>> list = new List<TableDataGetter<RaidStrategyDef>>();
             list.Add(new TableDataGetter<RaidStrategyDef>("defName", (RaidStrategyDef d) => d.defName));
-            foreach (float points in Dialog_DebugActionsMenu.PointsOptions(false))
+            foreach (float points in DebugActionsUtility.PointsOptions(false))
             {
                 Dictionary<RaidStrategyDef, int> strats = new Dictionary<RaidStrategyDef, int>();
                 foreach (RaidStrategyDef current in DefDatabase<RaidStrategyDef>.AllDefs)
@@ -233,7 +233,7 @@ namespace TwitchToolkit.Incidents
             Find.TickManager.DebugSetTicksGame(36000000);
             List<TableDataGetter<PawnsArrivalModeDef>> list = new List<TableDataGetter<PawnsArrivalModeDef>>();
             list.Add(new TableDataGetter<PawnsArrivalModeDef>("mode", (PawnsArrivalModeDef f) => f.defName));
-            foreach (float points in Dialog_DebugActionsMenu.PointsOptions(false))
+            foreach (float points in DebugActionsUtility.PointsOptions(false))
             {
                 Dictionary<PawnsArrivalModeDef, int> modeCount = new Dictionary<PawnsArrivalModeDef, int>();
                 foreach (PawnsArrivalModeDef current in DefDatabase<PawnsArrivalModeDef>.AllDefs)

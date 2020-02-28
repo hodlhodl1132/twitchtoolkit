@@ -47,6 +47,7 @@ namespace TwitchToolkit.Commands.ViewerCommands
 
             if (command.Count() < 3)
             {
+                Log.Message("command not long enough");
                 return;
             }
 

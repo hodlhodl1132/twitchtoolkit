@@ -96,14 +96,14 @@ namespace TwitchToolkit.VotingHelpers.VotingHelpers_Colonists
                 return false;
             }
 
-            pawn = PartyUtility.FindRandomPartyOrganizer(Faction.OfPlayer, Helper.AnyPlayerMap);
+            pawn = GatheringsUtility.FindRandomGatheringOrganizer(Faction.OfPlayer, Helper.AnyPlayerMap, GatheringDefOf.Party);
             if (pawn == null)
             {
                 return false;
             }
 
             IntVec3 intVec;
-            if (!RCellFinder.TryFindPartySpot(pawn, out intVec))
+            if (!RCellFinder.TryFindGatheringSpot(pawn, GatheringDefOf.Party, out intVec))
             {
                 return false;
             }
@@ -113,11 +113,11 @@ namespace TwitchToolkit.VotingHelpers.VotingHelpers_Colonists
 
         public override void TryExecute()
         {
-            if (!RCellFinder.TryFindPartySpot(pawn, out IntVec3 intVec))
+            if (!RCellFinder.TryFindGatheringSpot(pawn, GatheringDefOf.Party, out IntVec3 intVec))
             {
                 return;
             }
-            Verse.AI.Group.LordMaker.MakeNewLord(pawn.Faction, new LordJob_Joinable_Party(intVec, pawn), Helper.AnyPlayerMap, null);
+            Verse.AI.Group.LordMaker.MakeNewLord(pawn.Faction, new LordJob_Joinable_Party(intVec, pawn, GatheringDefOf.Party), Helper.AnyPlayerMap, null);
             string text = "LetterNewParty".Translate(pawn.LabelShort, pawn);
 
             Find.LetterStack.ReceiveLetter("LetterLabelNewParty".Translate(), text, LetterDefOf.PositiveEvent, new TargetInfo(intVec, Helper.AnyPlayerMap, false), null, null);

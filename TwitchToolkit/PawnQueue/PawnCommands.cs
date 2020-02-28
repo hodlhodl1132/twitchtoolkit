@@ -85,7 +85,7 @@ namespace TwitchToolkit.PawnQueue
                 output += " | " + pawn.gender;
 
                 StringBuilder stringBuilder = new StringBuilder();
-                WorkTags combinedDisabledWorkTags = pawn.story.CombinedDisabledWorkTags;
+                WorkTags combinedDisabledWorkTags = pawn.story.DisabledWorkTagsBackstoryAndTraits;
                 if (combinedDisabledWorkTags == WorkTags.None)
                 {
                     stringBuilder.Append("(" + "NoneLower".Translate() + "), ");

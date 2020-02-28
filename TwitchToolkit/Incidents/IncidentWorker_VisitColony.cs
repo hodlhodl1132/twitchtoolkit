@@ -56,19 +56,19 @@ namespace TwitchToolkit.Incidents
             NameTriple oldName = viewerPawn.Name as NameTriple;
             NameTriple newName = new NameTriple(oldName.First, viewer.username.CapitalizeFirst(), oldName.Last);
             viewerPawn.Name = newName;
-            string label;
-            string text;
+            TaggedString label;
+            TaggedString text;
             if (list.Count == 1)
             {
-                string value = (!flag) ? string.Empty : ("\n\n" + "SingleVisitorArrivesTraderInfo".Translate(list[0].Named("PAWN")).AdjustedFor(list[0], "PAWN"));
-                string value2 = (pawn == null) ? string.Empty : ("\n\n" + "SingleVisitorArrivesLeaderInfo".Translate(list[0].Named("PAWN")).AdjustedFor(list[0], "PAWN"));
+                string value = (!flag) ? string.Empty : "\n\n" + "SingleVisitorArrivesTraderInfo".Translate(list[0].Named("PAWN")).AdjustedFor(list[0], "PAWN").ToString();
+                string value2 = (pawn == null) ? string.Empty : ("\n\n" + "SingleVisitorArrivesLeaderInfo".Translate(list[0].Named("PAWN")).AdjustedFor(list[0], "PAWN")).ToString();
                 label = "LetterLabelSingleVisitorArrives".Translate();
                 text = "SingleVisitorArrives".Translate(list[0].story.Title, parms.faction.Name, list[0].Name.ToStringFull, value, value2, list[0].Named("PAWN")).AdjustedFor(list[0], "PAWN");
             }
             else
             {
-                string value3 = (!flag) ? string.Empty : ("\n\n" + "GroupVisitorsArriveTraderInfo".Translate());
-                string value4 = (pawn == null) ? string.Empty : ("\n\n" + "GroupVisitorsArriveLeaderInfo".Translate(pawn.LabelShort, pawn));
+                string value3 = (!flag) ? string.Empty : ("\n\n" + "GroupVisitorsArriveTraderInfo".Translate()).ToString();
+                string value4 = (pawn == null) ? string.Empty : ("\n\n" + "GroupVisitorsArriveLeaderInfo".Translate(pawn.LabelShort, pawn)).ToString();
                 label = "LetterLabelGroupVisitorsArrive".Translate();
                 text = "GroupVisitorsArrive".Translate(parms.faction.Name, value3, value4);
             }
@@ -93,7 +93,7 @@ namespace TwitchToolkit.Incidents
             ThingSetMakerParams parms = default(ThingSetMakerParams);
             parms.traderDef = traderKindDef;
             parms.tile = new int?(map.Tile);
-            parms.traderFaction = faction;
+            parms.makingFaction = faction;
             foreach (Thing thing in ThingSetMakerDefOf.TraderStock.root.Generate(parms))
             {
                 Pawn pawn2 = thing as Pawn;

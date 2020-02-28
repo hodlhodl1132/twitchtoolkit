@@ -83,7 +83,7 @@ namespace TwitchToolkit.Incidents
                 }
             }
 
-            var text = DefaultText ? "LetterFarmAnimalsWanderIn".Translate(PawnKindDef.GetLabelPlural(-1)) : "";
+            TaggedString text = "LetterFarmAnimalsWanderIn".Translate(PawnKindDef.GetLabelPlural(-1));
 
             Find.LetterStack.ReceiveLetter(Label ?? "LetterLabelFarmAnimalsWanderIn", text, Manhunter ? LetterDefOf.NegativeEvent : LetterDefOf.PositiveEvent, new TargetInfo(intVec, map, false), null, null);
             return true;

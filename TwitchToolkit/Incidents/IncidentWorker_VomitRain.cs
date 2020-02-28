@@ -22,9 +22,9 @@ namespace TwitchToolkit.Incidents
             Map map = (Map)parms.target;
             map.weatherManager.TransitionTo(WeatherDef.Named("VomitRain"));
             int duration = Mathf.RoundToInt(this.def.durationDays.RandomInRange * 60000f);
-            GameCondition_VomitRain gameCondition_VomitRain = (GameCondition_VomitRain)GameConditionMaker.MakeCondition(GameConditionDef.Named("VomitRain"), duration, 0);
+            GameCondition_VomitRain gameCondition_VomitRain = (GameCondition_VomitRain)GameConditionMaker.MakeCondition(GameConditionDef.Named("VomitRain"), duration);
             map.gameConditionManager.RegisterCondition(gameCondition_VomitRain);
-            base.SendStandardLetter(new TargetInfo(gameCondition_VomitRain.centerLocation.ToIntVec3, map, false), null, new string[0]);
+            base.SendStandardLetter(parms, new TargetInfo(gameCondition_VomitRain.centerLocation.ToIntVec3, map, false));
             if (map.weatherManager.curWeather.rainRate > 0.1f)
             {
                 map.weatherDecider.StartNextWeather();

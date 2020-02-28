@@ -10,6 +10,7 @@ using System.Reflection;
 using System.Text.RegularExpressions;
 using TwitchToolkit.Utilities;
 using TwitchToolkit.Store;
+using MoonSharp.Interpreter;
 
 namespace TwitchToolkit
 {

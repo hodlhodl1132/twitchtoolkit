@@ -89,13 +89,13 @@ namespace TwitchToolkit.IncidentHelpers.Special
             PawnKindDef pawnKind = PawnKindDefOf.Colonist;
 			Faction ofPlayer = Faction.OfPlayer;
 			bool pawnMustBeCapableOfViolence = true;
-			PawnGenerationRequest request = new PawnGenerationRequest(pawnKind, ofPlayer, PawnGenerationContext.NonPlayer, -1, true, false, false, false, true, pawnMustBeCapableOfViolence, 20f, false, true, true, false, false, false, false, null, null, null, null, null, null, null, null);
-			Pawn pawn = PawnGenerator.GeneratePawn(request);
+			PawnGenerationRequest request = new PawnGenerationRequest(pawnKind, ofPlayer, PawnGenerationContext.NonPlayer, map.Tile, false, false, false, false, true, pawnMustBeCapableOfViolence, 1f, false, true, true, true, false, false, false, false, 0f, null, 1f, null, null, null, null, null, null, null, null, null, null, null, null);
+            Pawn pawn = PawnGenerator.GeneratePawn(request);
             NameTriple old = pawn.Name as NameTriple;
             pawn.Name = new NameTriple(old.First, Viewer.username, old.Last);
 			GenSpawn.Spawn(pawn, loc, map, WipeMode.Vanish);
-			string label = "Viewer Joins";
-			string text = $"A new pawn has been purchased by {Viewer.username}, let's welcome them to the colony.";
+			TaggedString label = "Viewer Joins";
+			TaggedString text = $"A new pawn has been purchased by {Viewer.username}, let's welcome them to the colony.";
 			PawnRelationUtility.TryAppendRelationsWithColonistsInfo(ref text, ref label, pawn);
 			Find.LetterStack.ReceiveLetter(label, text, LetterDefOf.PositiveEvent, pawn, null, null);
 
@@ -634,49 +634,6 @@ namespace TwitchToolkit.IncidentHelpers.Special
         }
 
         private IncidentWorker_VisitColony worker;
-        private IncidentParms parms;
-
-        private bool separateChannel;
-
-        public override Viewer Viewer { get; set; }
-    }
-
-    public class BeRescued : IncidentHelperVariables
-    {
-        public override bool IsPossible(string message, Viewer viewer, bool separateChannel = false)
-        {
-            this.separateChannel = separateChannel;
-            this.Viewer = viewer;
-            string[] command = message.Split(' ');
-
-
-            GameComponentPawns gameComponent = Current.Game.GetComponent<GameComponentPawns>();
-
-            if (gameComponent.HasUserBeenNamed(viewer.username))
-            {
-                Toolkit.client.SendMessage($"@{viewer.username} you are in the colony and not in need of rescuing.", separateChannel);
-                return false;
-            }
-
-            worker = new IncidentWorker_QuestViewerRescue(viewer);
-            worker.def = IncidentDef.Named("QuestViewerRescue");
-
-            parms = StorytellerUtility.DefaultParmsNow(IncidentCategoryDefOf.Misc, Helper.AnyPlayerMap);
-
-            return true;
-        }
-
-        public override void TryExecute()
-        {
-            worker.TryExecute(parms);
-
-            Viewer.TakeViewerCoins(storeIncident.cost);
-            Viewer.CalculateNewKarma(storeIncident.karmaType, storeIncident.cost);
-
-            VariablesHelpers.SendPurchaseMessage($"@{Viewer.username} is being held prisoner at another faction.");
-        }
-
-        private IncidentWorker_QuestViewerRescue worker;
         private IncidentParms parms;
 
         private bool separateChannel;

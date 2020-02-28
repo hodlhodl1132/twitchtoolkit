@@ -21,7 +21,7 @@ namespace TwitchToolkit.GameConditions
             base.GameConditionTick();
 
             IntVec3 newFilthLoc = CellFinderLoose.RandomCellWith((IntVec3 sq) => sq.Standable(AffectedMaps[0]) && !AffectedMaps[0].roofGrid.Roofed(sq), AffectedMaps[0], 1000);
-            FilthMaker.MakeFilth(newFilthLoc, AffectedMaps[0], ThingDefOf.Filth_Vomit);
+            FilthMaker.TryMakeFilth(newFilthLoc, AffectedMaps[0], ThingDefOf.Filth_Vomit);
         }
 
         public override void End()

@@ -31,7 +31,7 @@ namespace TwitchToolkit.Incidents
             Faction ofAncients = Faction.OfAncients;
             bool pawnMustBeCapableOfViolence = this.def.pawnMustBeCapableOfViolence;
             Gender? fixedGender = gender;
-            PawnGenerationRequest request = new PawnGenerationRequest(pawnKind, ofAncients, PawnGenerationContext.NonPlayer, -1, true, false, false, false, true, pawnMustBeCapableOfViolence, 20f, false, true, true, false, false, false, false, null, null, null, null, null, fixedGender, null, null);
+            PawnGenerationRequest request = new PawnGenerationRequest(pawnKind, ofAncients, PawnGenerationContext.NonPlayer, map.Tile, false, false, false, false, true, false, 1f, false, true, true, true, false, false, false, false, 0f, null, 1f, null, null, null, null, null, null, null, fixedGender, null, null, null, null);
             List<Pawn> prisoners = new List<Pawn>();
             Pawn pawn = PawnGenerator.GeneratePawn(request);
             NameTriple oldName = pawn.Name as NameTriple;
@@ -46,8 +46,8 @@ namespace TwitchToolkit.Incidents
             }
             parms.raidArrivalMode.Worker.Arrive(prisoners, parms);
             //GenSpawn.Spawn(pawn, loc, map, WipeMode.Vanish);
-            string text = $"A prisoner named {viewer.username.CapitalizeFirst()} has escaped from maximum security space prison. Will you capture or let them go?";
-            string label = "Prisoner: " + viewer.username.CapitalizeFirst();
+            TaggedString text = $"A prisoner named {viewer.username.CapitalizeFirst()} has escaped from maximum security space prison. Will you capture or let them go?";
+            TaggedString label = "Prisoner: " + viewer.username.CapitalizeFirst();
             PawnRelationUtility.TryAppendRelationsWithColonistsInfo(ref text, ref label, pawn);
             Find.LetterStack.ReceiveLetter(label, text, LetterDefOf.NeutralEvent, pawn, null, null);
             return true;
