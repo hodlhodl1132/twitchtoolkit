@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using TwitchLib.Client.Models;
 using TwitchToolkit.Incidents;
 using TwitchToolkit.IRC;
 using Verse;
@@ -23,7 +24,7 @@ namespace TwitchToolkit.Store
             viewerNamesDoingVariableCommands = new List<string>();
         }
 
-        public static void ResolvePurchase(Viewer viewer, IRCMessage message, bool separateChannel = false)
+        public static void ResolvePurchase(Viewer viewer, ChatMessage message, bool separateChannel = false)
         {
             List<string> command = message.Message.Split(' ').ToList();
 
@@ -41,13 +42,13 @@ namespace TwitchToolkit.Store
             string productKey = command[1].ToLower();
 
             Helper.Log(productKey);
-            message.Message = string.Join(" ", command.ToArray());
+            string formattedMessage = string.Join(" ", command.ToArray());
 
             StoreIncidentSimple incident = allStoreIncidentsSimple.Find(s => productKey.ToLower() == s.abbreviation);
             
             if (incident != null)
             {
-                ResolvePurchaseSimple(viewer, message, incident, separateChannel);
+                ResolvePurchaseSimple(viewer, message, incident, formattedMessage);
                 return;
             }
 
@@ -55,7 +56,7 @@ namespace TwitchToolkit.Store
 
             if (incidentVariables != null)
             {
-                ResolvePurchaseVariables(viewer, message, incidentVariables, separateChannel);
+                ResolvePurchaseVariables(viewer, message, incidentVariables, formattedMessage);
                 return;
             }
 
@@ -78,15 +79,15 @@ namespace TwitchToolkit.Store
                     commandSplit.Insert(3, "1");
                 }
 
-                message.Message = string.Join(" ", commandSplit.ToArray());
+                formattedMessage = string.Join(" ", commandSplit.ToArray());
 
-                ResolvePurchaseVariables(viewer, message, StoreIncidentDefOf.Item, separateChannel);
+                ResolvePurchaseVariables(viewer, message, StoreIncidentDefOf.Item, formattedMessage, separateChannel);
             }
 
             return;
         }
 
-        public static void ResolvePurchaseSimple(Viewer viewer, IRCMessage message, StoreIncidentSimple incident, bool separateChannel = false)
+        public static void ResolvePurchaseSimple(Viewer viewer, ChatMessage message, StoreIncidentSimple incident, string formattedMessage, bool separateChannel = false)
         {
             int cost = incident.cost;
 
@@ -122,10 +123,10 @@ namespace TwitchToolkit.Store
             Store_Component component = Current.Game.GetComponent<Store_Component>();
 
             helper.Viewer = viewer;
-            helper.message = message.Message;
+            helper.message = formattedMessage;
 
             Ticker.IncidentHelpers.Enqueue(helper);
-            Store_Logger.LogPurchase(viewer.username, message.Message);
+            Store_Logger.LogPurchase(viewer.username, formattedMessage);
             component.LogIncident(incident);
             viewer.CalculateNewKarma(incident.karmaType, cost);    
 
@@ -142,7 +143,7 @@ namespace TwitchToolkit.Store
             }
         }
 
-        public static void ResolvePurchaseVariables(Viewer viewer, IRCMessage message, StoreIncidentVariables incident, bool separateChannel = false)
+        public static void ResolvePurchaseVariables(Viewer viewer, ChatMessage message, StoreIncidentVariables incident, string formattedMessage, bool separateChannel = false)
         {
             int cost = incident.cost;
 
@@ -173,7 +174,7 @@ namespace TwitchToolkit.Store
                 return;
             }
 
-            if (!helper.IsPossible(message.Message, viewer, separateChannel))
+            if (!helper.IsPossible(formattedMessage, viewer, separateChannel))
             {
                 if (viewerNamesDoingVariableCommands.Contains(viewer.username))
                     viewerNamesDoingVariableCommands.Remove(viewer.username);
@@ -183,7 +184,7 @@ namespace TwitchToolkit.Store
             Store_Component component = Current.Game.GetComponent<Store_Component>();
 
             helper.Viewer = viewer;
-            helper.message = message.Message;
+            helper.message = formattedMessage;
 
             Ticker.IncidentHelperVariables.Enqueue(helper);
             Store_Logger.LogPurchase(viewer.username, message.Message);

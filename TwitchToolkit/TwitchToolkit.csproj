@@ -51,12 +51,19 @@
       <HintPath>..\packages\MoonSharp.2.0.0.0\lib\net35-client\MoonSharp.Interpreter.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="rim-twitch">
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\RimTwitch\Assemblies\rim-twitch.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Net" />
     <Reference Include="System.Runtime.InteropServices.RuntimeInformation" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel.Web" />
     <Reference Include="System.Xml" />
+    <Reference Include="TwitchLib.Client.Models, Version=3.1.4.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Mods\TwitchLib.Client\TwitchLib.Client\bin\Release\net472\TwitchLib.Client.Models.dll</HintPath>
+    </Reference>
     <Reference Include="UnityEngine">
       <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\RimWorld\RimWorldWin64_Data\Managed\UnityEngine.dll</HintPath>
       <Private>False</Private>
@@ -115,7 +122,7 @@
     <Compile Include="IRC\ToolkitIRC.cs" />
     <Compile Include="IRC\TwitchBadges.cs" />
     <Compile Include="IRC\TwitchInterfaceBase.cs" />
-    <Compile Include="IRC\ViewerUpdater.cs" />
+    <Compile Include="Twitch\ViewerUpdater.cs" />
     <Compile Include="PawnQueue\Alert_UnnamedColonist.cs" />
     <Compile Include="PawnQueue\CompPawnNamed.cs" />
     <Compile Include="PawnQueue\CompProperties_PawnNamed.cs" />
@@ -137,7 +144,6 @@
     <Compile Include="Settings\Settings_Storyteller.cs" />
     <Compile Include="Settings\Settings_Viewers.cs" />
     <Compile Include="Settings\Settings_VoteWeights.cs" />
-    <Compile Include="SocketClient\Client.cs" />
     <Compile Include="Store\Purchase_Handler.cs" />
     <Compile Include="Store\StoreIncidents.cs" />
     <Compile Include="Store\Store_Component.cs" />
@@ -178,6 +184,7 @@
     <Compile Include="Storytellers\Window_Mercurius.cs" />
     <Compile Include="Storytellers\Window_UristBotSettings.cs" />
     <Compile Include="StreamLabs.cs" />
+    <Compile Include="Twitch\MessageInterface.cs" />
     <Compile Include="Utilities\CustomMatLoader.cs" />
     <Compile Include="Utilities\WeatherOverlay_VomitRain.cs" />
     <Compile Include="Votes\Vote_ExoticItems.cs" />
@@ -219,7 +226,6 @@
     <Compile Include="Windows\Window_Loading.cs" />
     <Compile Include="Windows\Window_NewChat.cs" />
     <Compile Include="Windows\Window_NewCustomCommand.cs" />
-    <Compile Include="Windows\Window_SocketClient.cs" />
     <Compile Include="Windows\Window_Trackers.cs" />
     <Compile Include="Windows\Window_ViewerEditProp.cs" />
     <Compile Include="Windows\Window_Viewers.cs" />

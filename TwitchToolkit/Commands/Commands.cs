@@ -3,18 +3,18 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using TwitchLib.Client.Models;
 using TwitchToolkit.Incidents;
 using TwitchToolkit.IRC;
 using TwitchToolkit.PawnQueue;
 using TwitchToolkit.Store;
-using TwitchToolkit.Utilities;
 using Verse;
 
 namespace TwitchToolkit
 {
     public static class CommandsHandler
     {
-        public static void CheckCommand(IRCMessage msg)
+        public static void CheckCommand(ChatMessage msg)
         {
 
             if (msg == null)
@@ -28,7 +28,7 @@ namespace TwitchToolkit
             }
 
             string message = msg.Message;
-            string user = msg.User;
+            string user = msg.Username;
             if (message.Split(' ')[0] == "/w")
             {
                 List<string> messagewhisper = message.Split(' ').ToList();
@@ -56,7 +56,7 @@ namespace TwitchToolkit
                     runCommand = false;
                 }
 
-                if (commandDef.requiresAdmin && msg.User.ToLower() != ToolkitSettings.Channel.ToLower())
+                if (commandDef.requiresAdmin && msg.Username.ToLower() != ToolkitSettings.Channel.ToLower())
                 {
                     runCommand = false;
                 }
@@ -78,25 +78,27 @@ namespace TwitchToolkit
                 
             }
 
-            List<TwitchInterfaceBase> modExtensions = Current.Game.components.OfType<TwitchInterfaceBase>().ToList();
+            //Deprecated,  Use RimTwitch Library instead
 
-            if (modExtensions == null)
-            {
-                return;
-            }
+            //List<TwitchInterfaceBase> modExtensions = Current.Game.components.OfType<TwitchInterfaceBase>().ToList();
 
-            foreach(TwitchInterfaceBase parser in modExtensions)
-            {
-                parser.ParseCommand(msg);
-            }
+            //if (modExtensions == null)
+            //{
+            //    return;
+            //}
+
+            //foreach(TwitchInterfaceBase parser in modExtensions)
+            //{
+            //    parser.ParseCommand(msg);
+            //}
         }
 
-        public static bool AllowCommand(IRCMessage msg)
+        public static bool AllowCommand(ChatMessage msg)
         {
-            if (!ToolkitSettings.UseSeparateChatRoom && (msg.Whisper || ToolkitSettings.AllowBothChatRooms || msg.Channel == "#" + ToolkitSettings.Channel.ToLower())) return true;
-            if (msg.Channel == "#chatrooms:" + ToolkitSettings.ChannelID + ":" + ToolkitSettings.ChatroomUUID) return true;
-            if (ToolkitSettings.AllowBothChatRooms && ToolkitSettings.UseSeparateChatRoom || (msg.Whisper)) return true;
-            return false;
+            //if (!ToolkitSettings.UseSeparateChatRoom && (msg.Whisper || ToolkitSettings.AllowBothChatRooms || msg.Channel == "#" + ToolkitSettings.Channel.ToLower())) return true;
+            //if (msg.Channel == "#chatrooms:" + ToolkitSettings.ChannelID + ":" + ToolkitSettings.ChatroomUUID) return true;
+            //if (ToolkitSettings.AllowBothChatRooms && ToolkitSettings.UseSeparateChatRoom || (msg.Whisper)) return true;
+            return true;
         }
 
         public static bool SendToChatroom(IRCMessage msg)

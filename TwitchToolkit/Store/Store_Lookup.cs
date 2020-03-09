@@ -1,9 +1,10 @@
-﻿using RimWorld;
+﻿using rim_twitch;
+using RimWorld;
 using System.Collections.Generic;
 using System.Linq;
+using TwitchLib.Client.Models;
 using TwitchToolkit.IncidentHelpers.Traits;
 using TwitchToolkit.Incidents;
-using TwitchToolkit.IRC;
 using Verse;
 
 namespace TwitchToolkit.Store
@@ -15,7 +16,7 @@ namespace TwitchToolkit.Store
 
         }
 
-        public override void ParseCommand(IRCMessage msg)
+        public override void ParseCommand(ChatMessage msg)
         {
             if (msg.Message.StartsWith("!lookup") && CommandsHandler.AllowCommand(msg))
             {
@@ -51,7 +52,7 @@ namespace TwitchToolkit.Store
             Store_Logger.LogString("Finished lookup parse");
         }
 
-        public void FindLookup(IRCMessage msg, string searchObject, string searchQuery)
+        public void FindLookup(ChatMessage msg, string searchObject, string searchQuery)
         {
             List<string> results = new List<string>();
             switch(searchObject)
@@ -149,7 +150,7 @@ namespace TwitchToolkit.Store
             }
         }
 
-        public void SendTenResults(IRCMessage msg, string searchObject, string searchQuery, string[] results)
+        public void SendTenResults(ChatMessage msg, string searchObject, string searchQuery, string[] results)
         {
             if (results.Count() < 1) return;
 
@@ -162,7 +163,7 @@ namespace TwitchToolkit.Store
                     output += ", ";
             }
 
-            Toolkit.client.SendMessage(output, CommandsHandler.SendToChatroom(msg));
+            Toolkit.client.SendMessage(output);
         }
     }
 }

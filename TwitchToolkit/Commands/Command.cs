@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
-using TwitchToolkit.IRC;
+using TwitchLib.Client.Models;
 using Verse;
 
 namespace TwitchToolkit
@@ -12,7 +12,7 @@ namespace TwitchToolkit
     public class Command : Def
     {
 
-        public void RunCommand(IRCMessage message)
+        public void RunCommand(ChatMessage message)
         {
             if (command == null)
             {
@@ -71,7 +71,7 @@ namespace TwitchToolkit
     {
         public Command command = null;
 
-        public virtual void RunCommand(IRCMessage message)
+        public virtual void RunCommand(ChatMessage message)
         {
             Helper.Log("filtering command");
 
@@ -102,11 +102,11 @@ namespace TwitchToolkit
             Log.Message(res.CastToString());            
         }
 
-        public string FilterTags(IRCMessage message, string input)
+        public string FilterTags(ChatMessage message, string input)
         {
             Helper.Log("starting filter");
 
-            Viewer viewer = Viewers.GetViewer(message.User);
+            Viewer viewer = Viewers.GetViewer(message.Username);
 
             StringBuilder output = new StringBuilder(input);
             output.Replace("{username}", viewer.username);

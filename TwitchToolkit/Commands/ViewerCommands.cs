@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using TwitchLib.Client.Models;
 using TwitchToolkit.IRC;
 using TwitchToolkit.PawnQueue;
 using TwitchToolkit.Store;
@@ -11,37 +12,37 @@ namespace TwitchToolkit.Commands.ViewerCommands
 {
     public class CheckBalance : CommandDriver
     {
-        public override void RunCommand(IRCMessage message)
+        public override void RunCommand(ChatMessage message)
         {
-            Viewer viewer = Viewers.GetViewer(message.User);
+            Viewer viewer = Viewers.GetViewer(message.Username);
 
-            Toolkit.client.SendMessage($"@{viewer.username} " + Helper.ReplacePlaceholder("TwitchToolkitBalanceMessage".Translate(), amount: viewer.GetViewerCoins().ToString(), karma: viewer.GetViewerKarma().ToString()), CommandsHandler.SendToChatroom(message));
+            Toolkit.client.SendMessage($"@{viewer.username} " + Helper.ReplacePlaceholder("TwitchToolkitBalanceMessage".Translate(), amount: viewer.GetViewerCoins().ToString(), karma: viewer.GetViewerKarma().ToString()));
         }
     }
 
     public class WhatIsKarma : CommandDriver
     {
-        public override void RunCommand(IRCMessage message)
+        public override void RunCommand(ChatMessage message)
         {
-            Viewer viewer = Viewers.GetViewer(message.User);
+            Viewer viewer = Viewers.GetViewer(message.Username);
 
-            Toolkit.client.SendMessage($"@{viewer.username} " + "TwitchToolkitWhatIsKarma".Translate() + $" { viewer.GetViewerKarma()}%", CommandsHandler.SendToChatroom(message));
+            Toolkit.client.SendMessage($"@{viewer.username} " + "TwitchToolkitWhatIsKarma".Translate() + $" { viewer.GetViewerKarma()}%");
         }
     }
 
     public class PurchaseList : CommandDriver
     {
-        public override void RunCommand(IRCMessage message)
+        public override void RunCommand(ChatMessage message)
         {
-            Toolkit.client.SendMessage($"@{message.User} " + "TwitchToolkitPurchaseList".Translate() + $" {ToolkitSettings.CustomPricingSheetLink}", CommandsHandler.SendToChatroom(message));
+            Toolkit.client.SendMessage($"@{message.Username} " + "TwitchToolkitPurchaseList".Translate() + $" {ToolkitSettings.CustomPricingSheetLink}");
         }
     }
 
     public class GiftCoins : CommandDriver
     {
-        public override void RunCommand(IRCMessage message)
+        public override void RunCommand(ChatMessage message)
         {
-            Viewer viewer = Viewers.GetViewer(message.User);
+            Viewer viewer = Viewers.GetViewer(message.Username);
 
             string[] command = message.Message.Split(' ');
 
@@ -70,7 +71,7 @@ namespace TwitchToolkit.Commands.ViewerCommands
                 {
                     viewer.TakeViewerCoins(amount);
                     giftee.GiveViewerCoins(amount);
-                    Toolkit.client.SendMessage($"@{giftee.username} " + Helper.ReplacePlaceholder("TwitchToolkitGiftCoins".Translate(), amount: amount.ToString(), from: viewer.username), CommandsHandler.SendToChatroom(message));
+                    Toolkit.client.SendMessage($"@{giftee.username} " + Helper.ReplacePlaceholder("TwitchToolkitGiftCoins".Translate(), amount: amount.ToString(), from: viewer.username));
                     Store_Logger.LogGiftCoins(viewer.username, giftee.username, amount);
                 }
             }
@@ -79,13 +80,13 @@ namespace TwitchToolkit.Commands.ViewerCommands
 
     public class JoinQueue : CommandDriver
     {
-        public override void RunCommand(IRCMessage message)
+        public override void RunCommand(ChatMessage message)
         {
-            Viewer viewer = Viewers.GetViewer(message.User);
+            Viewer viewer = Viewers.GetViewer(message.Username);
 
             GameComponentPawns pawnComponent = Current.Game.GetComponent<GameComponentPawns>();
 
-            if (pawnComponent.HasUserBeenNamed(message.User) || pawnComponent.UserInViewerQueue(message.User))
+            if (pawnComponent.HasUserBeenNamed(message.Username) || pawnComponent.UserInViewerQueue(message.Username))
             {
                 return;
             }
@@ -94,40 +95,40 @@ namespace TwitchToolkit.Commands.ViewerCommands
             {
                 if (viewer.GetViewerCoins() < ToolkitSettings.CostToJoinQueue)
                 {
-                    Toolkit.client.SendMessage($"@{message.User} you do not have enough coins to purchase a ticket, it costs {ToolkitSettings.CostToJoinQueue} and you have {viewer.GetViewerCoins()}.", CommandsHandler.SendToChatroom(message));
+                    Toolkit.client.SendMessage($"@{message.Username} you do not have enough coins to purchase a ticket, it costs {ToolkitSettings.CostToJoinQueue} and you have {viewer.GetViewerCoins()}.");
                     return;
                 }
 
                 viewer.TakeViewerCoins(ToolkitSettings.CostToJoinQueue);
             }
 
-            pawnComponent.AddViewerToViewerQueue(message.User);
-            Toolkit.client.SendMessage($"@{message.User} you have purchased a ticket and are in the queue!", CommandsHandler.SendToChatroom(message));
+            pawnComponent.AddViewerToViewerQueue(message.Username);
+            Toolkit.client.SendMessage($"@{message.Username} you have purchased a ticket and are in the queue!");
         }
     }
 
     public class ModInfo : CommandDriver
     {
-        public override void RunCommand(IRCMessage message)
+        public override void RunCommand(ChatMessage message)
         {
-            Toolkit.client.SendMessage($"@{message.User} " + "TwitchToolkitModInfo".Translate() + " https://discord.gg/qrtg224 !", CommandsHandler.SendToChatroom(message));
+            Toolkit.client.SendMessage($"@{message.Username} " + "TwitchToolkitModInfo".Translate() + " https://discord.gg/qrtg224 !");
         }
     }
 
     public class Buy : CommandDriver
     {
-        public override void RunCommand(IRCMessage message)
+        public override void RunCommand(ChatMessage message)
         {
-            Viewer viewer = Viewers.GetViewer(message.User);
+            Viewer viewer = Viewers.GetViewer(message.Username);
 
             if (message.Message.Split(' ').Count() < 2) return;
-            Purchase_Handler.ResolvePurchase(viewer, message, CommandsHandler.SendToChatroom(message));
+            Purchase_Handler.ResolvePurchase(viewer, message);
         }
     }
 
     public class ModSettings : CommandDriver
     {
-        public override void RunCommand(IRCMessage message)
+        public override void RunCommand(ChatMessage message)
         {
             Command buyCommand = DefDatabase<Command>.GetNamed("Buy");
 
@@ -143,27 +144,27 @@ namespace TwitchToolkit.Commands.ViewerCommands
                 karma: ToolkitSettings.KarmaCap.ToString()
                 );
 
-            Toolkit.client.SendMessage(stats_message, CommandsHandler.SendToChatroom(message));
+            Toolkit.client.SendMessage(stats_message);
         }
     }
 
     public class Instructions : CommandDriver
     {
-        public override void RunCommand(IRCMessage message)
+        public override void RunCommand(ChatMessage message)
         {
             Command allCommandsCommand = DefDatabase<Command>.GetNamed("AvailableCommands");
 
-            Toolkit.client.SendMessage($"@{message.User} the toolkit is a mod where you earn coins while you watch. Check out the bit.ly/toolkit-guide  or use !" + allCommandsCommand.command + " for a short list. " + ToolkitSettings.Channel.CapitalizeFirst() + " has a list of items/events to purchase at " + ToolkitSettings.CustomPricingSheetLink, CommandsHandler.SendToChatroom(message));
+            Toolkit.client.SendMessage($"@{message.Username} the toolkit is a mod where you earn coins while you watch. Check out the bit.ly/toolkit-guide  or use !" + allCommandsCommand.command + " for a short list. " + ToolkitSettings.Channel.CapitalizeFirst() + " has a list of items/events to purchase at " + ToolkitSettings.CustomPricingSheetLink);
         }
     }
 
     public class AvailableCommands : CommandDriver
     {
-        public override void RunCommand(IRCMessage message)
+        public override void RunCommand(ChatMessage message)
         {
             List<Command> commands = DefDatabase<Command>.AllDefs.Where(s => !s.requiresAdmin && !s.requiresMod && s.enabled).ToList();
 
-            string output = "@" + message.User + " viewer commands: ";
+            string output = "@" + message.Username + " viewer commands: ";
 
 
             for (int i = 0; i < commands.Count; i++)
@@ -176,13 +177,13 @@ namespace TwitchToolkit.Commands.ViewerCommands
                 }
             }
 
-            Toolkit.client.SendMessage(output, CommandsHandler.SendToChatroom(message));
+            Toolkit.client.SendMessage(output);
         }
     }
 
     public class InstalledMods : CommandDriver
     {
-        public override void RunCommand(IRCMessage message)
+        public override void RunCommand(ChatMessage message)
         {
             if ((DateTime.Now - Cooldowns.modsCommandCooldown).TotalSeconds <= 15)
             {
@@ -200,7 +201,7 @@ namespace TwitchToolkit.Commands.ViewerCommands
                 if (i == (mods.Length - 1) || modmsg.Length > 256)
                 {
                     modmsg = modmsg.Substring(0, modmsg.Length - 2);
-                    Toolkit.client.SendMessage(modmsg, CommandsHandler.SendToChatroom(message));
+                    Toolkit.client.SendMessage(modmsg);
                     modmsg = "";
                 }
             }

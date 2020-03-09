@@ -144,6 +144,7 @@ namespace TwitchToolkit.VotingHelpers.VotingHelpers_Colonists
 
                 if (candidates != null && candidates.Count > 0)
                 {
+                    Helper.Log("Randomizing Candiates");
                     candidates.Shuffle();
                     foreach (Pawn candidate in candidates)
                     {
