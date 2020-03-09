@@ -1,4 +1,5 @@
 ﻿using MoonSharp.Interpreter;
+using rim_twitch;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -97,7 +98,7 @@ namespace TwitchToolkit
             Helper.Log("Parsing Script " + output);
 
             DynValue res = script.DoString(output);
-            Toolkit.client.SendMessage(res.CastToString());
+            MessageQueue.messageQueue.Enqueue(res.CastToString());
 
             Log.Message(res.CastToString());            
         }

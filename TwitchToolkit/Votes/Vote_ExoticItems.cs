@@ -1,4 +1,5 @@
 ﻿using RimWorld;
+using rim_twitch;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -41,10 +42,10 @@ namespace TwitchToolkit.Votes
 
             if (ToolkitSettings.VotingChatMsgs)
             {
-                Toolkit.client.SendMessage("Which exotic item should the colony receive?");
+                MessageQueue.messageQueue.Enqueue("Which exotic item should the colony receive?");
                 foreach (KeyValuePair<int, List<Thing>> pair in thingsOptions)
                 {
-                    Toolkit.client.SendMessage($"[{pair.Key + 1}]  {VoteKeyLabel(pair.Key)}");
+                    MessageQueue.messageQueue.Enqueue($"[{pair.Key + 1}]  {VoteKeyLabel(pair.Key)}");
                 }
             }
         }

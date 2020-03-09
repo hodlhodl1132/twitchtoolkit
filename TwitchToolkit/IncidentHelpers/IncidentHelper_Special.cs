@@ -1,4 +1,5 @@
-﻿using RimWorld;
+﻿using rim_twitch;
+using RimWorld;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -66,10 +67,10 @@ namespace TwitchToolkit.IncidentHelpers.Special
     {
         public override bool IsPossible(string message, Viewer viewer, bool separateChannel = false)
         {
-            if (!Purchase_Handler.CheckIfViewerHasEnoughCoins(viewer, this.storeIncident.cost, separateChannel)) return false;
+            if (!Purchase_Handler.CheckIfViewerHasEnoughCoins(viewer, this.storeIncident.cost)) return false;
             if(Current.Game.GetComponent<GameComponentPawns>().HasUserBeenNamed(viewer.username))
             {
-                Toolkit.client.SendMessage($"@{viewer.username} you are already in the colony.", separateChannel);
+                MessageQueue.messageQueue.Enqueue($"@{viewer.username} you are already in the colony.");
                 return false;
             }
 
@@ -103,7 +104,7 @@ namespace TwitchToolkit.IncidentHelpers.Special
             Viewer.TakeViewerCoins(this.storeIncident.cost);
             Viewer.CalculateNewKarma(this.storeIncident.karmaType, storeIncident.cost);
 
-            VariablesHelpers.SendPurchaseMessage($"@{Viewer.username} has purchased a pawn and is joining the colony.", separateChannel);
+            VariablesHelpers.SendPurchaseMessage($"@{Viewer.username} has purchased a pawn and is joining the colony.");
         }
 
         private IntVec3 loc;
@@ -123,7 +124,7 @@ namespace TwitchToolkit.IncidentHelpers.Special
             string[] command = message.Split(' ');
             if (command.Length < 4)
             {
-                Toolkit.client.SendMessage($"@{viewer.username} syntax is {this.storeIncident.syntax}", separateChannel);
+                MessageQueue.messageQueue.Enqueue($"@{viewer.username} syntax is {this.storeIncident.syntax}");
                 return false;
             }
 
@@ -148,7 +149,7 @@ namespace TwitchToolkit.IncidentHelpers.Special
 
             if (allAnimals.Count < 1)
             {
-                Toolkit.client.SendMessage($"@{viewer.username} no animal {animalKind} found.", separateChannel);
+                MessageQueue.messageQueue.Enqueue($"@{viewer.username} no animal {animalKind} found.");
                 return false;
             }
 
@@ -177,10 +178,10 @@ namespace TwitchToolkit.IncidentHelpers.Special
             {
                 Viewer.TakeViewerCoins(pointsWager);
                 Viewer.CalculateNewKarma(this.storeIncident.karmaType, pointsWager);
-                VariablesHelpers.SendPurchaseMessage($"Spawning animal {pawnKind.LabelCap} with {pointsWager} coins wagered and {(int)parms.points} animal points purchased by {Viewer.username}", separateChannel);
+                VariablesHelpers.SendPurchaseMessage($"Spawning animal {pawnKind.LabelCap} with {pointsWager} coins wagered and {(int)parms.points} animal points purchased by {Viewer.username}");
                 return;
             }
-            Toolkit.client.SendMessage($"@{Viewer.username} not enough points spent for diseases.", separateChannel);
+            MessageQueue.messageQueue.Enqueue($"@{Viewer.username} not enough points spent for diseases.");
         }
 
         private int pointsWager = 0;
@@ -202,7 +203,7 @@ namespace TwitchToolkit.IncidentHelpers.Special
             string[] command = message.Split(' ');
             if (command.Length < 4)
             {
-                Toolkit.client.SendMessage($"@{viewer.username} syntax is {this.storeIncident.syntax}", separateChannel);
+                MessageQueue.messageQueue.Enqueue($"@{viewer.username} syntax is {this.storeIncident.syntax}");
                 return false;
             }
 
@@ -210,7 +211,7 @@ namespace TwitchToolkit.IncidentHelpers.Special
 
             if (!gameComponent.HasUserBeenNamed(viewer.username))
             {
-                Toolkit.client.SendMessage($"@{viewer.username} you must be in the colony to use this command.", separateChannel);
+                MessageQueue.messageQueue.Enqueue($"@{viewer.username} you must be in the colony to use this command.");
                 return false;
             }
 
@@ -233,7 +234,7 @@ namespace TwitchToolkit.IncidentHelpers.Special
 
             if (allSkills.Count < 1)
             {
-                Toolkit.client.SendMessage($"@{viewer.username} skill {skillKind} not found.", separateChannel);
+                MessageQueue.messageQueue.Enqueue($"@{viewer.username} skill {skillKind} not found.");
                 return false;
             }
 
@@ -242,13 +243,13 @@ namespace TwitchToolkit.IncidentHelpers.Special
 
             if (pawn.skills.GetSkill(skill).TotallyDisabled)
             {
-                Toolkit.client.SendMessage($"@{viewer.username} skill {skillKind} disabled on your pawn.", separateChannel);
+                MessageQueue.messageQueue.Enqueue($"@{viewer.username} skill {skillKind} disabled on your pawn.");
                 return false;
             }
 
             if (pawn.skills.GetSkill(skill).levelInt >= 20)
             {
-                Toolkit.client.SendMessage($"@{viewer.username} skill {skillKind} disabled on your pawn.", separateChannel);
+                MessageQueue.messageQueue.Enqueue($"@{viewer.username} skill {skillKind} disabled on your pawn.");
                 return false;
             }
 
@@ -282,7 +283,7 @@ namespace TwitchToolkit.IncidentHelpers.Special
                 passionPlus = "++";
             }
             
-            VariablesHelpers.SendPurchaseMessage($"Increasing skill {skill.LabelCap} for {pawn.LabelCap} with {pointsWager} coins wagered and ({(int)xpWon} * {percent}%){passionPlus} {(int)xpWon * (percent / 100f)} xp purchased by {Viewer.username}. {increaseText}", separateChannel);
+            VariablesHelpers.SendPurchaseMessage($"Increasing skill {skill.LabelCap} for {pawn.LabelCap} with {pointsWager} coins wagered and ({(int)xpWon} * {percent}%){passionPlus} {(int)xpWon * (percent / 100f)} xp purchased by {Viewer.username}. {increaseText}");
             string text = Helper.ReplacePlaceholder("TwitchStoriesDescription55".Translate(), colonist: pawn.Name.ToString(), skill: skill.defName, first: Math.Round(xpWon).ToString());
             Current.Game.letterStack.ReceiveLetter("TwitchToolkitIncreaseSkill".Translate(), text, LetterDefOf.PositiveEvent, pawn);
         }
@@ -306,7 +307,7 @@ namespace TwitchToolkit.IncidentHelpers.Special
 
             if (!gameComponent.HasUserBeenNamed(viewer.username))
             {
-                Toolkit.client.SendMessage($"@{viewer.username} you must be in the colony to use this command.", separateChannel);
+                MessageQueue.messageQueue.Enqueue($"@{viewer.username} you must be in the colony to use this command.");
                 return false;
             }
 
@@ -346,7 +347,7 @@ namespace TwitchToolkit.IncidentHelpers.Special
 
             Viewer.TakeViewerCoins(storeIncident.cost);
             Viewer.CalculateNewKarma(storeIncident.karmaType, storeIncident.cost);
-            VariablesHelpers.SendPurchaseMessage($"@{Viewer.username} has just swapped genders to " + pawn.gender.GetLabel() + ".", separateChannel);
+            VariablesHelpers.SendPurchaseMessage($"@{Viewer.username} has just swapped genders to " + pawn.gender.GetLabel() + ".");
             string text = $"{Viewer.username} has just swapped genders to " + pawn.gender.GetLabel() + ".";
             Current.Game.letterStack.ReceiveLetter("GenderSwap", text, LetterDefOf.PositiveEvent, pawn);
         }
@@ -366,7 +367,7 @@ namespace TwitchToolkit.IncidentHelpers.Special
             string[] command = message.Split(' ');
             if (command.Length < 4)
             {
-                VariablesHelpers.ViewerDidWrongSyntax(viewer.username, storeIncident.syntax, separateChannel);
+                VariablesHelpers.ViewerDidWrongSyntax(viewer.username, storeIncident.syntax);
                 return false;
             }
 
@@ -374,7 +375,7 @@ namespace TwitchToolkit.IncidentHelpers.Special
 
             if (itemKey == null || itemKey == "")
             {
-                VariablesHelpers.ViewerDidWrongSyntax(viewer.username, storeIncident.syntax, separateChannel);
+                VariablesHelpers.ViewerDidWrongSyntax(viewer.username, storeIncident.syntax);
                 return false;
             }
 
@@ -391,7 +392,7 @@ namespace TwitchToolkit.IncidentHelpers.Special
 
             if (item == null || item.price < 1)
             {
-                Toolkit.client.SendMessage($"@{viewer.username} item not found.", separateChannel);
+                MessageQueue.messageQueue.Enqueue($"@{viewer.username} item not found.");
                 return false;
             }
 
@@ -420,7 +421,7 @@ namespace TwitchToolkit.IncidentHelpers.Special
             {
                 string output = $"@{viewer.username} {itemThingDef.LabelCap} has not been researched yet, must finish research project {researchProject.LabelCap} first.";
 
-                Toolkit.client.SendMessage(output, separateChannel);
+                MessageQueue.messageQueue.Enqueue(output);
 
                 return false;
             }
@@ -429,7 +430,7 @@ namespace TwitchToolkit.IncidentHelpers.Special
 
             if (quantityKey == null || quantityKey == "")
             {
-                VariablesHelpers.ViewerDidWrongSyntax(viewer.username, storeIncident.syntax, separateChannel);
+                VariablesHelpers.ViewerDidWrongSyntax(viewer.username, storeIncident.syntax);
                 return false;
             }
 
@@ -450,20 +451,20 @@ namespace TwitchToolkit.IncidentHelpers.Special
 
             if (quantity < 1 || price < 1)
             {
-                VariablesHelpers.ViewerDidWrongSyntax(viewer.username, storeIncident.syntax, separateChannel);
+                VariablesHelpers.ViewerDidWrongSyntax(viewer.username, storeIncident.syntax);
                 return false;
             }
 
-            if (!Purchase_Handler.CheckIfViewerHasEnoughCoins(viewer, price, separateChannel)) return false;
+            if (!Purchase_Handler.CheckIfViewerHasEnoughCoins(viewer, price)) return false;
 
             if (price < ToolkitSettings.MinimumPurchasePrice)
             {
-                Toolkit.client.SendMessage(Helper.ReplacePlaceholder(
+                MessageQueue.messageQueue.Enqueue(Helper.ReplacePlaceholder(
                     "TwitchToolkitMinPurchaseNotMet".Translate(), 
                     viewer: viewer.username, 
                     amount: price.ToString(), 
                     first: ToolkitSettings.MinimumPurchasePrice.ToString()
-                ), separateChannel);
+                ));
                 return false;
             }
 
@@ -544,7 +545,7 @@ namespace TwitchToolkit.IncidentHelpers.Special
         {
             Viewer.TakeViewerCoins(price);
             Viewer.CalculateNewKarma(storeIncident.karmaType, price);
-            VariablesHelpers.SendPurchaseMessage(Helper.ReplacePlaceholder("TwitchToolkitItemPurchaseConfirm".Translate(), amount: quantity.ToString(), item: item.abr, viewer: Viewer.username), separateChannel);
+            VariablesHelpers.SendPurchaseMessage(Helper.ReplacePlaceholder("TwitchToolkitItemPurchaseConfirm".Translate(), amount: quantity.ToString(), item: item.abr, viewer: Viewer.username));
         }
 
         private int price = 0;
@@ -568,7 +569,7 @@ namespace TwitchToolkit.IncidentHelpers.Special
 
             if (gameComponent.HasUserBeenNamed(viewer.username))
             {
-                Toolkit.client.SendMessage($"@{viewer.username} you are in colony and cannot be a prisoner.", separateChannel);
+                MessageQueue.messageQueue.Enqueue($"@{viewer.username} you are in colony and cannot be a prisoner.");
                 return false;
             }
 
@@ -611,7 +612,7 @@ namespace TwitchToolkit.IncidentHelpers.Special
 
             if (gameComponent.HasUserBeenNamed(viewer.username))
             {
-                Toolkit.client.SendMessage($"@{viewer.username} you are in the colony and cannot visit.", separateChannel);
+                MessageQueue.messageQueue.Enqueue($"@{viewer.username} you are in the colony and cannot visit.");
                 return false;
             }
 
@@ -652,7 +653,7 @@ namespace TwitchToolkit.IncidentHelpers.Special
             if (command.Length - 2 < storeIncident.variables) // subtract 2 for the first part of the command (!buy item)
             {
                 // let viewer know what correct way is
-                Toolkit.client.SendMessage($"@{viewer.username} syntax is {this.storeIncident.syntax}", separateChannel);
+                MessageQueue.messageQueue.Enqueue($"@{viewer.username} syntax is {this.storeIncident.syntax}");
                 return false;
             }
 
@@ -695,7 +696,7 @@ namespace TwitchToolkit.IncidentHelpers.Special
                 Viewer.CalculateNewKarma(storeIncident.karmaType, storeIncident.cost);
 
                 // send a purchase confirmation message
-                VariablesHelpers.SendPurchaseMessage($"@{Viewer.username} purchased a random inspiration.", separateChannel);
+                VariablesHelpers.SendPurchaseMessage($"@{Viewer.username} purchased a random inspiration.");
             }
             else
             {

@@ -5,7 +5,6 @@ using UnityEngine;
 using Verse;
 using TwitchToolkit.Utilities;
 using TwitchToolkit.PawnQueue;
-using TwitchToolkit.IRC;
 using TwitchToolkit.Windows;
 using TwitchToolkit.Store;
 
@@ -18,7 +17,6 @@ namespace TwitchToolkit
         public TwitchToolkit_MainTabWindow()
         {
             _mod = Toolkit.Mod;
-            this.reconnecter = Current.Game.GetComponent<Reconnecter>();
         }
 
         public override MainTabWindowAnchor Anchor
@@ -90,24 +88,6 @@ namespace TwitchToolkit
                 Find.WindowStack.Add(window);
             }
 
-            rectBtn.x += btnWidth + padding;
-            if (Toolkit.client != null && Toolkit.client.Connected)
-            {
-                if (Widgets.ButtonText(rectBtn, "TwitchToolkitReconnect".Translate()))
-                {
-                    Toolkit.client.Reconnect();
-                    Helper.playerMessages = new List<string>();
-                    Purchase_Handler.viewerNamesDoingVariableCommands = new List<string>();
-                }
-            }
-            else
-            {
-                if (Widgets.ButtonText(rectBtn, "TwitchToolkitConnect".Translate()))
-                {
-                    ToolkitIRC.NewInstance();
-                }
-            }
-
 
             rectBtn.x = padding;
             rectBtn.y += padding + 28f;
@@ -168,14 +148,10 @@ namespace TwitchToolkit
             //    TwitchBadges.GetBadgeInfo();
             //}
 
-            var rectMessages = new Rect(padding, rectBtn.height + 36f, inRect.width - (padding * 3), 180f);
-            if (Toolkit.client != null) Widgets.TextArea(rectMessages, string.Join("\r\n", Toolkit.client.MessageLog), true);
-
             btnWidth = inRect.width - (padding / 2);
-            rectBtn = new Rect(padding, rectMessages.y + rectMessages.height, btnWidth, btnHeight);
+            rectBtn = new Rect(padding, rectBtn.y + rectBtn.height, btnWidth, btnHeight);
             Widgets.CheckboxLabeled(rectBtn, "TwitchToolkitEarningCoins".Translate(), ref ToolkitSettings.EarningCoins);
         }
 
-        private Reconnecter reconnecter = null;
     }
 }

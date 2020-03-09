@@ -28,7 +28,7 @@ namespace TwitchToolkit.PawnQueue
                 
                 if (!component.HasUserBeenNamed(viewer.username))
                 {
-                    Toolkit.client.SendMessage($"@{viewer.username} you are not in the colony.");
+                    MessageQueue.messageQueue.Enqueue($"@{viewer.username} you are not in the colony.");
                     return;
                 }
 
@@ -57,14 +57,14 @@ namespace TwitchToolkit.PawnQueue
                     }
                 }
 
-                Toolkit.client.SendMessage(output);
+                MessageQueue.messageQueue.Enqueue(output);
             }
 
             if (msg.Message.StartsWith("!mypawnstory") && CommandsHandler.AllowCommand(msg))
             {
                 if (!component.HasUserBeenNamed(viewer.username))
                 {
-                    Toolkit.client.SendMessage($"@{viewer.username} you are not in the colony.");
+                    MessageQueue.messageQueue.Enqueue($"@{viewer.username} you are not in the colony.");
                     return;
                 }
 
@@ -127,7 +127,7 @@ namespace TwitchToolkit.PawnQueue
                     }
                 }
 
-                Toolkit.client.SendMessage(output);
+                MessageQueue.messageQueue.Enqueue(output);
             }
 
             if (msg.Message.StartsWith("!changepawnname") && CommandsHandler.AllowCommand(msg))
@@ -140,13 +140,13 @@ namespace TwitchToolkit.PawnQueue
 
                 if (newName == null || newName == "" || newName.Length > 16)
                 {
-                    Toolkit.client.SendMessage($"@{viewer.username} your name can be up to 16 characters.");
+                    MessageQueue.messageQueue.Enqueue($"@{viewer.username} your name can be up to 16 characters.");
                     return;
                 }
 
                 if (!component.HasUserBeenNamed(viewer.username))
                 {
-                    Toolkit.client.SendMessage($"@{viewer.username} you are not in the colony.");
+                    MessageQueue.messageQueue.Enqueue($"@{viewer.username} you are not in the colony.");
                     return;
                 }
 
@@ -154,7 +154,7 @@ namespace TwitchToolkit.PawnQueue
 
                 viewer.TakeViewerCoins(500);
                 nameRequests.Add(viewer.username, newName);
-                Toolkit.client.SendMessage($"@{ToolkitSettings.Channel} {viewer.username} has requested to be named {newName}, use !approvename @{viewer.username} or !declinename @{viewer.username}");
+                MessageQueue.messageQueue.Enqueue($"@{ToolkitSettings.Channel} {viewer.username} has requested to be named {newName}, use !approvename @{viewer.username} or !declinename @{viewer.username}");
             }
 
             if (Viewer.IsModerator(viewer.username) || viewer.username == ToolkitSettings.Channel)
@@ -175,7 +175,7 @@ namespace TwitchToolkit.PawnQueue
 
                     if (username == null || username == "" || !nameRequests.ContainsKey(username))
                     {
-                        Toolkit.client.SendMessage($"@{viewer.username} invalid username");
+                        MessageQueue.messageQueue.Enqueue($"@{viewer.username} invalid username");
                         return;
                     }
 
@@ -184,7 +184,7 @@ namespace TwitchToolkit.PawnQueue
                     Pawn pawn = component.PawnAssignedToUser(username);
                     NameTriple old = pawn.Name as NameTriple;
                     pawn.Name = new NameTriple(old.First, nameRequests[username], old.Last);
-                    Toolkit.client.SendMessage($"@{viewer.username} approved request for name change from {old} to {pawn.Name}");
+                    MessageQueue.messageQueue.Enqueue($"@{viewer.username} approved request for name change from {old} to {pawn.Name}");
                 }
 
                 if (msg.Message.StartsWith("!declinename"))
@@ -198,14 +198,14 @@ namespace TwitchToolkit.PawnQueue
 
                     if (username == null || username == "" || !nameRequests.ContainsKey(username))
                     {
-                        Toolkit.client.SendMessage($"@{viewer.username} invalid username");
+                        MessageQueue.messageQueue.Enqueue($"@{viewer.username} invalid username");
                         return;
                     }
 
                     if (!component.HasUserBeenNamed(username)) return;
 
                     nameRequests.Remove(username);
-                    Toolkit.client.SendMessage($"@{viewer.username} declined name change request from {username}");
+                    MessageQueue.messageQueue.Enqueue($"@{viewer.username} declined name change request from {username}");
                 }
             }
 

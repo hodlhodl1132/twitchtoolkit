@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Timers;
-using TwitchToolkit.IRC;
 using UnityEngine;
 using Verse;
 using System.Reflection;
@@ -69,6 +68,5 @@ namespace TwitchToolkit
     {
         public static TwitchToolkit Mod = null;
         public static Scheduled JobManager = new Scheduled();
-        public static ToolkitIRC client = null;
     }
 }

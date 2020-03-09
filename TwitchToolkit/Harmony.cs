@@ -6,7 +6,6 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using TwitchToolkit.Incidents;
-using TwitchToolkit.IRC;
 using TwitchToolkit.Store;
 using TwitchToolkit.Storytellers.StorytellerPackWindows;
 using TwitchToolkit.Utilities;
@@ -107,15 +106,6 @@ namespace TwitchToolkit
 
         static void NewTwitchConnection()
         {
-            if (Toolkit.client != null)
-            {
-                Toolkit.client.Disconnect();
-            }
-
-            Log.Message("<color=#6441A4>== TWITCH TOOLKIT ==</color> Creating new chat client connection");
-
-            if (ToolkitSettings.AutoConnect)
-                ToolkitIRC.NewInstance();
         }
     }
 }

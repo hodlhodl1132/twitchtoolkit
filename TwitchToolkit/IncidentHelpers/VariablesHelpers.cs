@@ -1,4 +1,5 @@
-﻿using System;
+﻿using rim_twitch;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,7 +13,7 @@ namespace TwitchToolkit.IncidentHelpers
     {
         public static void ViewerDidWrongSyntax(string username, string syntax, bool separateChannel = false)
         {
-            Toolkit.client.SendMessage($"@{username} syntax is {syntax}", separateChannel);
+            MessageQueue.messageQueue.Enqueue($"@{username} syntax is {syntax}");
         }
 
         public static bool PointsWagerIsValid(string wager, Viewer viewer, ref int pointsWager, ref StoreIncidentVariables incident, bool separateChannel = false, int quantity = 1, int maxPrice = 25000)
@@ -21,7 +22,7 @@ namespace TwitchToolkit.IncidentHelpers
             {
                 if (! int.TryParse( wager, out checked(pointsWager) ) )
                 {
-                    ViewerDidWrongSyntax(viewer.username, incident.syntax, separateChannel);
+                    ViewerDidWrongSyntax(viewer.username, incident.syntax);
                     return false;
                 }
                 pointsWager = checked(pointsWager * quantity);
@@ -29,29 +30,29 @@ namespace TwitchToolkit.IncidentHelpers
             catch (OverflowException e)
             {
                 Helper.Log(e.Message);
-                Toolkit.client.SendMessage($"@{viewer.username} points wager is invalid.", separateChannel);
+                MessageQueue.messageQueue.Enqueue($"@{viewer.username} points wager is invalid.");
                 return false;
             }
 
             if (incident.maxWager > 0 && incident.maxWager > incident.cost && pointsWager > incident.maxWager)
             {
-                Toolkit.client.SendMessage($"@{viewer.username} you cannot spend more than {incident.maxWager} coins on {incident.abbreviation.CapitalizeFirst()}", separateChannel);
+                MessageQueue.messageQueue.Enqueue($"@{viewer.username} you cannot spend more than {incident.maxWager} coins on {incident.abbreviation.CapitalizeFirst()}");
                 return false;
             }
 
             //|| (incident.minPointsToFire > 0 && pointsWager < incident.minPointsToFire)
             if (pointsWager < incident.cost || pointsWager < incident.minPointsToFire)
             {
-                Toolkit.client.SendMessage(Helper.ReplacePlaceholder(
+                MessageQueue.messageQueue.Enqueue(Helper.ReplacePlaceholder(
                     "TwitchToolkitMinPurchaseNotMet".Translate(), 
                     viewer: viewer.username, 
                     amount: pointsWager.ToString(), 
                     first: incident.cost.ToString()
-                ), separateChannel);
+                ));
                 return false;
             }
 
-            if (!Purchase_Handler.CheckIfViewerHasEnoughCoins(viewer, pointsWager, separateChannel)) return false;
+            if (!Purchase_Handler.CheckIfViewerHasEnoughCoins(viewer, pointsWager)) return false;
 
             return true;
         }
@@ -60,7 +61,7 @@ namespace TwitchToolkit.IncidentHelpers
         {
             if (ToolkitSettings.PurchaseConfirmations)
             {
-                Toolkit.client.SendMessage(message, separateChannel);
+                MessageQueue.messageQueue.Enqueue(message);
             }
         }
     }

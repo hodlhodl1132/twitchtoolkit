@@ -1,4 +1,5 @@
-﻿using RimWorld;
+﻿using rim_twitch;
+using RimWorld;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,7 +20,7 @@ namespace TwitchToolkit.IncidentHelpers.Diseases
             string[] command = message.Split(' ');
             if (command.Length < 3)
             {
-                Toolkit.client.SendMessage($"@{viewer.username} syntax is {this.storeIncident.syntax}", separateChannel);
+                MessageQueue.messageQueue.Enqueue($"@{viewer.username} syntax is {this.storeIncident.syntax}");
                 return false;
             }
 
@@ -58,10 +59,10 @@ namespace TwitchToolkit.IncidentHelpers.Diseases
             {
                 Viewer.TakeViewerCoins(pointsWager);
                 Viewer.CalculateNewKarma(this.storeIncident.karmaType, pointsWager);
-                VariablesHelpers.SendPurchaseMessage($"Starting {worker.def.LabelCap} with {pointsWager} points wagered and {(int)parms.points} disease points purchased by {Viewer.username}", separateChannel);
+                VariablesHelpers.SendPurchaseMessage($"Starting {worker.def.LabelCap} with {pointsWager} points wagered and {(int)parms.points} disease points purchased by {Viewer.username}");
                 return;
             }
-            Toolkit.client.SendMessage($"@{Viewer.username} not enough points spent for diseases.", separateChannel);
+            MessageQueue.messageQueue.Enqueue($"@{Viewer.username} not enough points spent for diseases.");
         }
 
         private int pointsWager = 0;
@@ -82,7 +83,7 @@ namespace TwitchToolkit.IncidentHelpers.Diseases
             string[] command = message.Split(' ');
             if (command.Length < 4)
             {
-                Toolkit.client.SendMessage($"@{viewer.username} syntax is {this.storeIncident.syntax}", separateChannel);
+                MessageQueue.messageQueue.Enqueue($"@{viewer.username} syntax is {this.storeIncident.syntax}");
                 return false;
             }
 
@@ -107,7 +108,7 @@ namespace TwitchToolkit.IncidentHelpers.Diseases
 
             if (allDiseases.Count < 1)
             {
-                Toolkit.client.SendMessage($"@{viewer.username} no disease {diseaseLabel} found.", separateChannel);
+                MessageQueue.messageQueue.Enqueue($"@{viewer.username} no disease {diseaseLabel} found.");
                 return false;
             }
 
@@ -133,10 +134,10 @@ namespace TwitchToolkit.IncidentHelpers.Diseases
             {
                 Viewer.TakeViewerCoins(pointsWager);
                 Viewer.CalculateNewKarma(this.storeIncident.karmaType, pointsWager);
-                VariablesHelpers.SendPurchaseMessage($"Starting {worker.def.LabelCap} with {pointsWager} points wagered and {(int)parms.points} disease points purchased by {Viewer.username}", separateChannel);
+                VariablesHelpers.SendPurchaseMessage($"Starting {worker.def.LabelCap} with {pointsWager} points wagered and {(int)parms.points} disease points purchased by {Viewer.username}");
                 return;
             }
-            Toolkit.client.SendMessage($"@{Viewer.username} not enough points spent for diseases.", separateChannel);
+            MessageQueue.messageQueue.Enqueue($"@{Viewer.username} not enough points spent for diseases.");
         }
 
         private int pointsWager = 0;

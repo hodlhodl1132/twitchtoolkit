@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using TwitchToolkit.Incidents;
-using TwitchToolkit.IRC;
 using TwitchToolkit.Settings;
 using TwitchToolkit.Store;
 using TwitchToolkit.Votes;
@@ -490,14 +489,6 @@ namespace TwitchToolkit
             if (BannedViewers == null || BannedViewers.Count < 1)
             {
                 BannedViewers = new List<string>(PubliclyKnownBots);
-            }
-
-            if (AutoConnect)
-            {
-                if (Toolkit.client == null)
-                {
-                    ToolkitIRC.NewInstance();
-                }
             }
 
             if (VoteWeights == null || VoteWeights.Count < 1)

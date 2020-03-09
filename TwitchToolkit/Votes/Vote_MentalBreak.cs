@@ -1,4 +1,5 @@
-﻿using RimWorld;
+﻿using rim_twitch;
+using RimWorld;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -56,10 +57,10 @@ namespace TwitchToolkit.Votes
 
             if (ToolkitSettings.VotingChatMsgs)
             {
-                Toolkit.client.SendMessage("Which colonist should experience a mental break?");
+                MessageQueue.messageQueue.Enqueue("Which colonist should experience a mental break?");
                 foreach (KeyValuePair<int, Pawn> pair in pawnOptions)
                 {
-                    Toolkit.client.SendMessage($"[{pair.Key + 1}]  {VoteKeyLabel(pair.Key)}");
+                    MessageQueue.messageQueue.Enqueue($"[{pair.Key + 1}]  {VoteKeyLabel(pair.Key)}");
                 }
             }
         }

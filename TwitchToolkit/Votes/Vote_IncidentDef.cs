@@ -1,4 +1,5 @@
-﻿using RimWorld;
+﻿using rim_twitch;
+using RimWorld;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,10 +38,10 @@ namespace TwitchToolkit.Votes
 
             if (ToolkitSettings.VotingChatMsgs)
             {
-                Toolkit.client.SendMessage(title ?? "TwitchStoriesChatMessageNewVote".Translate() + ": " + "TwitchToolKitVoteInstructions".Translate());
+                MessageQueue.messageQueue.Enqueue(title ?? "TwitchStoriesChatMessageNewVote".Translate() + ": " + "TwitchToolKitVoteInstructions".Translate());
                 foreach (KeyValuePair<int, IncidentDef> pair in incidents)
                 {
-                    Toolkit.client.SendMessage($"[{pair.Key + 1}]  {VoteKeyLabel(pair.Key)}");
+                    MessageQueue.messageQueue.Enqueue($"[{pair.Key + 1}]  {VoteKeyLabel(pair.Key)}");
                 }
             }
         }

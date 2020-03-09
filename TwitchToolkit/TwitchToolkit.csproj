@@ -115,13 +115,6 @@
     <Compile Include="Incidents\IncidentWorker_RaidEnemy.cs" />
     <Compile Include="Incidents\IncidentWorker_ResourcePodFrenzy.cs" />
     <Compile Include="Incidents\IncidentWorker_ShipPartCrash.cs" />
-    <Compile Include="IRC\ConcurrentCircularBuffer.cs" />
-    <Compile Include="IRC\NotificationMessage.cs" />
-    <Compile Include="IRC\Notifier.cs" />
-    <Compile Include="IRC\Reconnecter.cs" />
-    <Compile Include="IRC\ToolkitIRC.cs" />
-    <Compile Include="IRC\TwitchBadges.cs" />
-    <Compile Include="IRC\TwitchInterfaceBase.cs" />
     <Compile Include="Twitch\ViewerUpdater.cs" />
     <Compile Include="PawnQueue\Alert_UnnamedColonist.cs" />
     <Compile Include="PawnQueue\CompPawnNamed.cs" />
@@ -207,10 +200,6 @@
     <Compile Include="VotingHelpers\VotingHelpers_Raids.cs" />
     <Compile Include="VotingHelpers\VotingHelpers_Weather.cs" />
     <Compile Include="VotingHelpers\VotingHelper_GameCondition.cs" />
-    <Compile Include="Windows\Installation\ChatSettingsOne.cs" />
-    <Compile Include="Windows\Installation\ChatSettingsTest.cs" />
-    <Compile Include="Windows\Installation\InstallStep.cs" />
-    <Compile Include="Windows\Installation\Window_Install.cs" />
     <Compile Include="Windows\SettingsWindow.cs" />
     <Compile Include="Windows\StoreIncidentEditor.cs" />
     <Compile Include="Windows\StoreIncidentsWindow.cs" />
@@ -250,9 +239,6 @@
     <Compile Include="Extensions.cs" />
     <Compile Include="Incidents\IncidentWorker_PsychicEmanatorShipPartCrash.cs" />
     <Compile Include="Incidents\IncidentWorker_SpecificAnimalsWanderIn.cs" />
-    <Compile Include="IRC\IRCClient.cs" />
-    <Compile Include="IRC\IRCMessage.cs" />
-    <Compile Include="IRC\IRCParser.cs" />
     <Compile Include="Incidents\IncidentWorker_Quote.cs" />
     <Compile Include="Utilities\WebClient.cs" />
     <Compile Include="Viewer.cs" />

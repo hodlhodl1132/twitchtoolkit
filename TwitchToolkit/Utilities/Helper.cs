@@ -8,7 +8,6 @@ using TSIncidents = TwitchToolkit.Incidents;
 using System.Text;
 using TwitchToolkit.Store;
 using TwitchToolkit.Incidents;
-using TwitchToolkit.IRC;
 using Verse.AI.Group;
 
 namespace TwitchToolkit

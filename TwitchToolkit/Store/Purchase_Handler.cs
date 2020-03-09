@@ -1,10 +1,10 @@
-﻿using System;
+﻿using rim_twitch;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using TwitchLib.Client.Models;
 using TwitchToolkit.Incidents;
-using TwitchToolkit.IRC;
 using Verse;
 
 namespace TwitchToolkit.Store
@@ -81,7 +81,7 @@ namespace TwitchToolkit.Store
 
                 formattedMessage = string.Join(" ", commandSplit.ToArray());
 
-                ResolvePurchaseVariables(viewer, message, StoreIncidentDefOf.Item, formattedMessage, separateChannel);
+                ResolvePurchaseVariables(viewer, message, StoreIncidentDefOf.Item, formattedMessage);
             }
 
             return;
@@ -93,13 +93,13 @@ namespace TwitchToolkit.Store
 
             if (cost < 1) return;
 
-            if (CheckIfViewerIsInVariableCommandList(viewer.username, separateChannel)) return;
+            if (CheckIfViewerIsInVariableCommandList(viewer.username)) return;
 
-            if (!CheckIfViewerHasEnoughCoins(viewer, cost, separateChannel)) return;
+            if (!CheckIfViewerHasEnoughCoins(viewer, cost)) return;
 
-            if (CheckIfKarmaTypeIsMaxed(incident, viewer.username, separateChannel)) return;
+            if (CheckIfKarmaTypeIsMaxed(incident, viewer.username)) return;
 
-            if (CheckIfIncidentIsOnCooldown(incident, viewer.username, separateChannel)) return;
+            if (CheckIfIncidentIsOnCooldown(incident, viewer.username)) return;
 
             IncidentHelper helper = StoreIncidentMaker.MakeIncident(incident);
             
@@ -111,7 +111,7 @@ namespace TwitchToolkit.Store
 
             if (!helper.IsPossible())
             {
-                Toolkit.client.SendMessage($"@{viewer.username} " + "TwitchToolkitEventNotPossible".Translate(), separateChannel);
+                MessageQueue.messageQueue.Enqueue($"@{viewer.username} " + "TwitchToolkitEventNotPossible".Translate());
                 return;
             }
 
@@ -132,14 +132,12 @@ namespace TwitchToolkit.Store
 
             if (ToolkitSettings.PurchaseConfirmations)
             {
-                Toolkit.client.SendMessage(
+                MessageQueue.messageQueue.Enqueue(
                     Helper.ReplacePlaceholder(
                         "TwitchToolkitEventPurchaseConfirm".Translate(), 
                         first: incident.label.CapitalizeFirst(), 
                         viewer: viewer.username
-                        ),
-                        separateChannel
-                    );
+                        ));
             }
         }
 
@@ -149,20 +147,20 @@ namespace TwitchToolkit.Store
 
             if (cost < 1 && incident.defName != "Item") return;
 
-            if (CheckIfViewerIsInVariableCommandList(viewer.username, separateChannel)) return;
+            if (CheckIfViewerIsInVariableCommandList(viewer.username)) return;
 
-            if (!CheckIfViewerHasEnoughCoins(viewer, cost, separateChannel)) return;
+            if (!CheckIfViewerHasEnoughCoins(viewer, cost)) return;
 
             if (incident != DefDatabase<StoreIncidentVariables>.GetNamed("Item"))
             {
-                if (CheckIfKarmaTypeIsMaxed(incident, viewer.username, separateChannel)) return;
+                if (CheckIfKarmaTypeIsMaxed(incident, viewer.username)) return;
             }
             else
             {
-                if (CheckIfCarePackageIsOnCooldown(viewer.username, separateChannel)) return;
+                if (CheckIfCarePackageIsOnCooldown(viewer.username)) return;
             }
 
-            if (CheckIfIncidentIsOnCooldown(incident, viewer.username, separateChannel)) return;
+            if (CheckIfIncidentIsOnCooldown(incident, viewer.username)) return;
 
             viewerNamesDoingVariableCommands.Add(viewer.username);
 
@@ -174,7 +172,7 @@ namespace TwitchToolkit.Store
                 return;
             }
 
-            if (!helper.IsPossible(formattedMessage, viewer, separateChannel))
+            if (!helper.IsPossible(formattedMessage, viewer))
             {
                 if (viewerNamesDoingVariableCommands.Contains(viewer.username))
                     viewerNamesDoingVariableCommands.Remove(viewer.username);
@@ -195,7 +193,7 @@ namespace TwitchToolkit.Store
         {
             if (viewerNamesDoingVariableCommands.Contains(username))
             {
-                Toolkit.client.SendMessage($"@{username} you must wait for the game to unpause to buy something else.", separateChannel);
+                MessageQueue.messageQueue.Enqueue($"@{username} you must wait for the game to unpause to buy something else.");
                 return true;
             }
             return false;
@@ -205,15 +203,13 @@ namespace TwitchToolkit.Store
         {
             if (!ToolkitSettings.UnlimitedCoins && viewer.GetViewerCoins() < finalPrice)
             {
-                Toolkit.client.SendMessage(
+                MessageQueue.messageQueue.Enqueue(
                     Helper.ReplacePlaceholder(
                         "TwitchToolkitNotEnoughCoins".Translate(),
                         viewer: viewer.username,
                         amount: finalPrice.ToString(),
                         first: viewer.GetViewerCoins().ToString()
-                    ),
-                    separateChannel
-                );
+                    ));
                 return false;
             }
             return true;
@@ -226,7 +222,7 @@ namespace TwitchToolkit.Store
                 if (maxed)
                 {
                     Store_Component component = Current.Game.GetComponent<Store_Component>();
-                    Toolkit.client.SendMessage($"@{username} {incident.label.CapitalizeFirst()} is maxed from karmatype, wait " + component.DaysTillIncidentIsPurchaseable(incident) + " days to purchase.", separateChannel);
+                    MessageQueue.messageQueue.Enqueue($"@{username} {incident.label.CapitalizeFirst()} is maxed from karmatype, wait " + component.DaysTillIncidentIsPurchaseable(incident) + " days to purchase.");
                 }
 
                 return maxed;
@@ -270,7 +266,7 @@ namespace TwitchToolkit.Store
             if (component.IncidentsInLogOf(incident.abbreviation) >= ToolkitSettings.MaxCarePackagesPerInterval)
             {
                 float daysTill = component.DaysTillIncidentIsPurchaseable(incident);
-                Toolkit.client.SendMessage($"@{username} care packages are on cooldown, wait " + daysTill + $" day{(daysTill != 1 ? "s" : "")}.", separateChannel);
+                MessageQueue.messageQueue.Enqueue($"@{username} care packages are on cooldown, wait " + daysTill + $" day{(daysTill != 1 ? "s" : "")}.");
                 return true;
             }
 
@@ -291,7 +287,7 @@ namespace TwitchToolkit.Store
             if (maxed)
             {
                 float days = component.DaysTillIncidentIsPurchaseable(incident);
-                Toolkit.client.SendMessage($"@{username} {incident.label.CapitalizeFirst()} is maxed, wait " + days + $" day{(days != 1 ? "s" : "")} to purchase.", separateChannel);
+                MessageQueue.messageQueue.Enqueue($"@{username} {incident.label.CapitalizeFirst()} is maxed, wait " + days + $" day{(days != 1 ? "s" : "")} to purchase.");
             }
 
             return maxed;

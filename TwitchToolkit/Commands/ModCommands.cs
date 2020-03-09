@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using rim_twitch;
 using TwitchLib.Client.Models;
-using TwitchToolkit.IRC;
 using TwitchToolkit.Store;
 using Verse;
 
@@ -15,7 +15,7 @@ namespace TwitchToolkit.Commands.ModCommands
         {
             TwitchToolkitDev.WebRequest_BeginGetResponse.Main("https://tmi.twitch.tv/group/user/" + ToolkitSettings.Channel.ToLower() + "/chatters", new Func<TwitchToolkitDev.RequestState, bool>(Viewers.SaveUsernamesFromJsonResponse));
 
-            Toolkit.client.SendMessage($"@{message.Username} viewers have been refreshed.");
+            MessageQueue.messageQueue.Enqueue($"@{message.Username} viewers have been refreshed.");
         }
     }
 
@@ -25,7 +25,7 @@ namespace TwitchToolkit.Commands.ModCommands
         {
             Viewers.AwardViewersCoins();
 
-            Toolkit.client.SendMessage($"@{message.Username} rewarding all active viewers coins.");
+            MessageQueue.messageQueue.Enqueue($"@{message.Username} rewarding all active viewers coins.");
         }
     }
 
@@ -51,7 +51,7 @@ namespace TwitchToolkit.Commands.ModCommands
                         vwr.GiveViewerCoins(amount);
                     }
 
-                    Toolkit.client.SendMessage($"@{message.Username} " + Helper.ReplacePlaceholder("TwitchToolkitGiveAllCoins".Translate(), amount: amount.ToString()));
+                    MessageQueue.messageQueue.Enqueue($"@{message.Username} " + Helper.ReplacePlaceholder("TwitchToolkitGiveAllCoins".Translate(), amount: amount.ToString()));
                 }
             }
             catch (InvalidCastException e)
@@ -78,7 +78,7 @@ namespace TwitchToolkit.Commands.ModCommands
 
                 if (message.Username.ToLower() != ToolkitSettings.Channel.ToLower() && receiver.ToLower() == message.Username.ToLower())
                 {
-                    Toolkit.client.SendMessage($"@{message.Username} " + "TwitchToolkitModCannotGiveCoins".Translate());
+                    MessageQueue.messageQueue.Enqueue($"@{message.Username} " + "TwitchToolkitModCannotGiveCoins".Translate());
                     return;
                 }
 
@@ -90,7 +90,7 @@ namespace TwitchToolkit.Commands.ModCommands
 
                     Helper.Log($"Giving viewer {giftee.username} {amount} coins");
                     giftee.GiveViewerCoins(amount);
-                    Toolkit.client.SendMessage($"@{message.Username} " + Helper.ReplacePlaceholder("TwitchToolkitGivingCoins".Translate(), viewer: giftee.username, amount: amount.ToString(), newbalance: giftee.coins.ToString()));
+                    MessageQueue.messageQueue.Enqueue($"@{message.Username} " + Helper.ReplacePlaceholder("TwitchToolkitGivingCoins".Translate(), viewer: giftee.username, amount: amount.ToString(), newbalance: giftee.coins.ToString()));
                     Store_Logger.LogGiveCoins(message.Username, giftee.username, amount);
                 }
             }
@@ -117,7 +117,7 @@ namespace TwitchToolkit.Commands.ModCommands
                 string target = command[1].Replace("@", "");
 
                 Viewer targeted = Viewers.GetViewer(target);
-                Toolkit.client.SendMessage($"@{message.Username} " + Helper.ReplacePlaceholder("TwitchToolkitCheckUser".Translate(), viewer: targeted.username, amount: targeted.coins.ToString(), karma: targeted.GetViewerKarma().ToString()));
+                MessageQueue.messageQueue.Enqueue($"@{message.Username} " + Helper.ReplacePlaceholder("TwitchToolkitCheckUser".Translate(), viewer: targeted.username, amount: targeted.coins.ToString(), karma: targeted.GetViewerKarma().ToString()));
 
             }
             catch (InvalidCastException e)
@@ -147,7 +147,7 @@ namespace TwitchToolkit.Commands.ModCommands
                 {
                     Viewer targeted = Viewers.GetViewer(target);
                     targeted.SetViewerKarma(amount);
-                    Toolkit.client.SendMessage($"@{message.Username}" + Helper.ReplacePlaceholder("TwitchToolkitSetKarma".Translate(), viewer: targeted.username, karma: amount.ToString()));
+                    MessageQueue.messageQueue.Enqueue($"@{message.Username}" + Helper.ReplacePlaceholder("TwitchToolkitSetKarma".Translate(), viewer: targeted.username, karma: amount.ToString()));
                 }
             }
             catch (InvalidCastException e)
@@ -164,12 +164,12 @@ namespace TwitchToolkit.Commands.ModCommands
             if (ToolkitSettings.EarningCoins)
             {
                 ToolkitSettings.EarningCoins = false;
-                Toolkit.client.SendMessage($"@{message.Username} " + "TwitchToolkitEarningCoinsMessage".Translate() + " " + "TwitchToolkitOff".Translate());
+                MessageQueue.messageQueue.Enqueue($"@{message.Username} " + "TwitchToolkitEarningCoinsMessage".Translate() + " " + "TwitchToolkitOff".Translate());
             }
             else
             {
                 ToolkitSettings.EarningCoins = true;
-                Toolkit.client.SendMessage($"@{message.Username} " + "TwitchToolkitEarningCoinsMessage".Translate() + " " + "TwitchToolkitOn".Translate());
+                MessageQueue.messageQueue.Enqueue($"@{message.Username} " + "TwitchToolkitEarningCoinsMessage".Translate() + " " + "TwitchToolkitOn".Translate());
             }
         }
     }

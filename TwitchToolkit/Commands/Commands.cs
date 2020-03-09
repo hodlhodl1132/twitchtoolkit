@@ -5,7 +5,6 @@ using System.Linq;
 using System.Text;
 using TwitchLib.Client.Models;
 using TwitchToolkit.Incidents;
-using TwitchToolkit.IRC;
 using TwitchToolkit.PawnQueue;
 using TwitchToolkit.Store;
 using Verse;
@@ -95,27 +94,12 @@ namespace TwitchToolkit
 
         public static bool AllowCommand(ChatMessage msg)
         {
-            //if (!ToolkitSettings.UseSeparateChatRoom && (msg.Whisper || ToolkitSettings.AllowBothChatRooms || msg.Channel == "#" + ToolkitSettings.Channel.ToLower())) return true;
-            //if (msg.Channel == "#chatrooms:" + ToolkitSettings.ChannelID + ":" + ToolkitSettings.ChatroomUUID) return true;
-            //if (ToolkitSettings.AllowBothChatRooms && ToolkitSettings.UseSeparateChatRoom || (msg.Whisper)) return true;
             return true;
         }
 
-        public static bool SendToChatroom(IRCMessage msg)
+        public static bool SendToChatroom(ChatMessage msg)
         {
-            if (msg.Whisper && ToolkitSettings.WhispersGoToChatRoom)
-            {
-                return true;
-            }
-            else if (msg.Whisper)
-            {
-                return false;
-            }
-
-            if (msg.Channel == "#" + ToolkitSettings.Channel.ToLower()) return false;
-            if (ToolkitSettings.UseSeparateChatRoom && !ToolkitSettings.AllowBothChatRooms) return true;
-            if (msg.Channel == "#chatrooms:" + ToolkitSettings.ChannelID + ":" + ToolkitSettings.ChatroomUUID && ToolkitSettings.UseSeparateChatRoom) return true;
-            return false;
+            return true;
         }
 
         static DateTime modsCommandCooldown = DateTime.MinValue;

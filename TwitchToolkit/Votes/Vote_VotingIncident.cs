@@ -1,4 +1,5 @@
-﻿using System;
+﻿using rim_twitch;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -45,10 +46,10 @@ namespace TwitchToolkit.Votes
 
             if (ToolkitSettings.VotingChatMsgs)
             {
-                Toolkit.client.SendMessage(title ?? "TwitchStoriesChatMessageNewVote".Translate() + ": " + "TwitchToolKitVoteInstructions".Translate());
+                MessageQueue.messageQueue.Enqueue(title ?? "TwitchStoriesChatMessageNewVote".Translate() + ": " + "TwitchToolKitVoteInstructions".Translate());
                 foreach (KeyValuePair<int, VotingIncident> pair in incidents)
                 {
-                    Toolkit.client.SendMessage($"[{pair.Key + 1}]  {VoteKeyLabel(pair.Key)}");
+                    MessageQueue.messageQueue.Enqueue($"[{pair.Key + 1}]  {VoteKeyLabel(pair.Key)}");
                 }
             }
         }
