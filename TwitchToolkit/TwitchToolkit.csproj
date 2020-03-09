@@ -52,7 +52,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="rim-twitch">
-      <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\RimTwitch\Assemblies\rim-twitch.dll</HintPath>
+      <HintPath>..\Libraries\rim-twitch.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Net" />
@@ -60,9 +60,17 @@
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel.Web" />
     <Reference Include="System.Xml" />
-    <Reference Include="TwitchLib.Client.Models, Version=3.1.4.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Mods\TwitchLib.Client\TwitchLib.Client\bin\Release\net472\TwitchLib.Client.Models.dll</HintPath>
+    <Reference Include="TwitchLib.Client">
+      <HintPath>..\Libraries\TwitchLib.Client.dll</HintPath>
+    </Reference>
+    <Reference Include="TwitchLib.Client.Enums">
+      <HintPath>..\Libraries\TwitchLib.Client.Enums.dll</HintPath>
+    </Reference>
+    <Reference Include="TwitchLib.Client.Models">
+      <HintPath>..\Libraries\TwitchLib.Client.Models.dll</HintPath>
+    </Reference>
+    <Reference Include="TwitchLib.Communication">
+      <HintPath>..\Libraries\TwitchLib.Communication.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine">
       <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\RimWorld\RimWorldWin64_Data\Managed\UnityEngine.dll</HintPath>
@@ -204,7 +212,6 @@
     <Compile Include="Windows\StoreIncidentEditor.cs" />
     <Compile Include="Windows\StoreIncidentsWindow.cs" />
     <Compile Include="Windows\StoreItemsWindow.cs" />
-    <Compile Include="Windows\Window_Chat.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
