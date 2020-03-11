@@ -40,8 +40,6 @@ namespace TwitchToolkit.Store
             }
 
             string productKey = command[1].ToLower();
-
-            Helper.Log(productKey);
             string formattedMessage = string.Join(" ", command.ToArray());
 
             StoreIncidentSimple incident = allStoreIncidentsSimple.Find(s => productKey.ToLower() == s.abbreviation);

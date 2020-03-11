@@ -1,4 +1,5 @@
 ﻿using rim_twitch;
+using TwitchToolkit.Votes;
 using Verse;
 
 namespace TwitchToolkit.Twitch
@@ -12,9 +13,11 @@ namespace TwitchToolkit.Twitch
 
         public override void ParseCommand(global::TwitchLib.Client.Models.ChatMessage message)
         {
-            Helper.Log("RT: " + message.Message);
-
             if (Helper.ModActive) CommandsHandler.CheckCommand(message);
+
+            if (VoteHandler.voteActive && int.TryParse(message.Message, out int voteId)) VoteHandler.currentVote.RecordVote(Viewers.GetViewer(message.Username).id, voteId - 1);
+
+            TwitchToolkit_MainTabWindow.LogChatMessage(message);
         }
     }
 }

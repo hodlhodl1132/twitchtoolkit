@@ -7,12 +7,24 @@ using TwitchToolkit.Utilities;
 using TwitchToolkit.PawnQueue;
 using TwitchToolkit.Windows;
 using TwitchToolkit.Store;
+using TwitchLib.Client.Models;
 
 namespace TwitchToolkit
 {
     public class TwitchToolkit_MainTabWindow : MainTabWindow
     {
         static TwitchToolkit _mod = Toolkit.Mod;
+        static List<ChatMessage> lastFiveChatMessages = new List<ChatMessage>();
+
+        public static void LogChatMessage(ChatMessage message)
+        {
+            if (lastFiveChatMessages.Count >= 5)
+            {
+                lastFiveChatMessages = lastFiveChatMessages.FindAll((s) => s != lastFiveChatMessages[0]);
+            }
+
+            lastFiveChatMessages.Add(message);
+        }
 
         public TwitchToolkit_MainTabWindow()
         {
@@ -88,10 +100,7 @@ namespace TwitchToolkit
                 Find.WindowStack.Add(window);
             }
 
-
-            rectBtn.x = padding;
-            rectBtn.y += padding + 28f;
-
+            rectBtn.x += btnWidth + padding;
             if (Widgets.ButtonText(rectBtn, "Name Queue"))
             {
                 Type type = typeof(QueueWindow);
@@ -111,7 +120,8 @@ namespace TwitchToolkit
                 Find.WindowStack.Add(window);
             }
 
-            rectBtn.x += btnWidth + padding;
+            rectBtn.x = padding;
+            rectBtn.y += padding + 28f;
             if (Widgets.ButtonText(rectBtn, "Debug Fix"))
             {
                 Helper.playerMessages = new List<string>();
@@ -134,23 +144,18 @@ namespace TwitchToolkit
                 Find.WindowStack.Add(window);
             }
 
-            //rectBtn.x += btnWidth + padding;
-            //if (Widgets.ButtonText(rectBtn, "Socket"))
-            //{
-            //    Window_SocketClient window = new Window_SocketClient();
-            //    Find.WindowStack.TryRemove(window.GetType());
-            //    Find.WindowStack.Add(window);
-            //}
-
-            //rectBtn.x += btnWidth + padding;
-            //if (Widgets.ButtonText(rectBtn, "Badges"))
-            //{
-            //    TwitchBadges.GetBadgeInfo();
-            //}
-
             btnWidth = inRect.width - (padding / 2);
             rectBtn = new Rect(padding, rectBtn.y + rectBtn.height, btnWidth, btnHeight);
             Widgets.CheckboxLabeled(rectBtn, "TwitchToolkitEarningCoins".Translate(), ref ToolkitSettings.EarningCoins);
+
+            Rect textBox = new Rect(rectBtn.x, rectBtn.y + rectBtn.height + padding, rectBtn.width, rectBtn.height * 10);
+            string outputText = "";
+            foreach (ChatMessage message in lastFiveChatMessages)
+            {
+                outputText += "\n" + message.Username + ": " + message.Message;
+            }
+
+            Widgets.TextArea(textBox, outputText, true);
         }
 
     }

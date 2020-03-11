@@ -66,8 +66,6 @@ namespace TwitchToolkit
 
         public int GetViewerCoins()
         {
-            if (ToolkitSettings.SyncStreamLabs)
-                coins = StreamLabs.GetViewerPoints(this);
             return coins;
         }
 
@@ -105,14 +103,10 @@ namespace TwitchToolkit
         public void SetViewerCoins(int coins)
         {
             this.coins = coins;
-            if (ToolkitSettings.SyncStreamLabs)
-                StreamLabs.SetViewerPoints(this);
         }
 
         public void GiveViewerCoins(int coins)
         {
-            if (ToolkitSettings.SyncStreamLabs)
-                this.coins = StreamLabs.GetViewerPoints(this);
             // do not let user go below 0 coins
             if (this.coins + coins < 0)
             {
@@ -127,9 +121,6 @@ namespace TwitchToolkit
 
         public void TakeViewerCoins(int coins)
         {
-            if (ToolkitSettings.SyncStreamLabs)
-                this.coins = StreamLabs.GetViewerPoints(this);
-
             SetViewerCoins(this.coins - coins);
         }
 

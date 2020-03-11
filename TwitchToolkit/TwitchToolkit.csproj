@@ -118,11 +118,9 @@
     <Compile Include="Incidents\IncidentWorker_VomitRain.cs" />
     <Compile Include="Incidents\StoreIncident.cs" />
     <Compile Include="Incidents\IncidentWorker_CallForAid.cs" />
-    <Compile Include="Incidents\IncidentWorker_PoisonShipPartCrash.cs" />
     <Compile Include="Incidents\IncidentWorker_Raid.cs" />
     <Compile Include="Incidents\IncidentWorker_RaidEnemy.cs" />
     <Compile Include="Incidents\IncidentWorker_ResourcePodFrenzy.cs" />
-    <Compile Include="Incidents\IncidentWorker_ShipPartCrash.cs" />
     <Compile Include="Twitch\ViewerUpdater.cs" />
     <Compile Include="PawnQueue\Alert_UnnamedColonist.cs" />
     <Compile Include="PawnQueue\CompPawnNamed.cs" />
@@ -141,7 +139,6 @@
     <Compile Include="Settings\Settings_ToolkitExtensions.cs" />
     <Compile Include="Settings\Settings_Options.cs" />
     <Compile Include="Settings\Settings_Store.cs" />
-    <Compile Include="Settings\Settings_Integrations.cs" />
     <Compile Include="Settings\Settings_Storyteller.cs" />
     <Compile Include="Settings\Settings_Viewers.cs" />
     <Compile Include="Settings\Settings_VoteWeights.cs" />
@@ -184,7 +181,6 @@
     <Compile Include="Storytellers\VotingIncidentEntry.cs" />
     <Compile Include="Storytellers\Window_Mercurius.cs" />
     <Compile Include="Storytellers\Window_UristBotSettings.cs" />
-    <Compile Include="StreamLabs.cs" />
     <Compile Include="Twitch\MessageInterface.cs" />
     <Compile Include="Utilities\CustomMatLoader.cs" />
     <Compile Include="Utilities\WeatherOverlay_VomitRain.cs" />
@@ -219,13 +215,10 @@
     </Compile>
     <Compile Include="Windows\Window_CommandEditor.cs" />
     <Compile Include="Windows\Window_Commands.cs" />
-    <Compile Include="Windows\Window_Loading.cs" />
-    <Compile Include="Windows\Window_NewChat.cs" />
     <Compile Include="Windows\Window_NewCustomCommand.cs" />
     <Compile Include="Windows\Window_Trackers.cs" />
     <Compile Include="Windows\Window_ViewerEditProp.cs" />
     <Compile Include="Windows\Window_Viewers.cs" />
-    <Compile Include="Windows\Window_Warning.cs" />
     <Compile Include="Utilities\Scheduled.cs" />
     <Compile Include="Utilities\ScheduledJob.cs" />
     <Compile Include="Utilities\SaveHelper.cs" />
@@ -236,7 +229,6 @@
     <Compile Include="Storytellers\StorytellerComp_CustomCategoryMTB.cs" />
     <Compile Include="Storytellers\StorytellerComp_CustomOnOffCycle.cs" />
     <Compile Include="Storytellers\StorytellerComp_CustomRandomStoryTeller.cs" />
-    <Compile Include="StreamElements.cs" />
     <Compile Include="TwitchToolkit.cs" />
     <Compile Include="Utilities\TimeHelper.cs" />
     <Compile Include="Windows\Window_MainTab.cs" />
@@ -244,7 +236,6 @@
     <Compile Include="Settings\ToolkitSettings.cs" />
     <Compile Include="Ticker.cs" />
     <Compile Include="Extensions.cs" />
-    <Compile Include="Incidents\IncidentWorker_PsychicEmanatorShipPartCrash.cs" />
     <Compile Include="Incidents\IncidentWorker_SpecificAnimalsWanderIn.cs" />
     <Compile Include="Incidents\IncidentWorker_Quote.cs" />
     <Compile Include="Utilities\WebClient.cs" />
@@ -257,7 +248,6 @@
     <Compile Include="Utilities\WebRequest.cs" />
     <Compile Include="Votes\Vote_IncidentDef.cs" />
     <Compile Include="Votes\Vote_Helper.cs" />
-    <Compile Include="Windows\Window_Notification.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

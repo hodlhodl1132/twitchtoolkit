@@ -18,27 +18,19 @@ namespace TwitchToolkit.IncidentHelpers.MilitaryAid
 
         public override void TryExecute()
         {
-            var incident = new IncidentWorker_CallForAid();
-            
-            FactionManager manager = Find.FactionManager;
+            Map currentMap = Find.CurrentMap;
 
-            Faction ofPlayer = Faction.OfPlayer;
-            
-            Faction tryAlly = manager.RandomAlliedFaction(false, false, true, TechLevel.Industrial);
+            IncidentParms incidentParms = StorytellerUtility.DefaultParmsNow(IncidentCategoryDefOf.AllyAssistance, currentMap);
+            incidentParms.forced = true;
+            incidentParms.target = currentMap;
+            incidentParms.raidArrivalMode = PawnsArrivalModeDefOf.EdgeWalkIn;
+            incidentParms.raidStrategy = RaidStrategyDefOf.ImmediateAttackFriendly;
 
-            if (tryAlly == null)
+            var incident = new IncidentWorker_CallForAid()
             {
-                (from x in manager.AllFactions
-                where !x.IsPlayer && (false || !x.def.hidden) && (false || !x.defeated) && (true || x.def.humanlikeFaction) && (x.def.techLevel >= TechLevel.Industrial) && x.PlayerRelationKind == FactionRelationKind.Neutral
-                select x).TryRandomElement(out tryAlly);
-            }
-            
-			IncidentParms incidentParms = new IncidentParms();
-			incidentParms.target = Helper.AnyPlayerMap;
-			incidentParms.faction = tryAlly;
-			incidentParms.raidArrivalModeForQuickMilitaryAid = true;
-			incidentParms.points = DiplomacyTuning.RequestedMilitaryAidPointsRange.RandomInRange;
-			tryAlly.lastMilitaryAidRequestTick = Find.TickManager.TicksGame;
+                def = IncidentDef.Named("RaidFriendly")
+            };
+
             incident.TryExecute(incidentParms);
         }
     }

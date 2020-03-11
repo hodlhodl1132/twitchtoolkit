@@ -77,13 +77,13 @@ namespace TwitchToolkit.VotingHelpers.VotingHelpers_Drops
         public override bool IsPossible()
         {
             var innterType = typeof(IncidentWorker).Assembly.GetTypes()
-                    .Where(s => s.Name == "IncidentWorker_PoisonShipPartCrash").First();
+                    .Where(s => s.Name == "IncidentWorker_CrashedShipPart").First();
 
             var innerObject = Activator.CreateInstance(innterType);
 
             worker = innerObject as IncidentWorker;
 
-            worker.def = IncidentDef.Named("PoisonShipPartCrash");
+            worker.def = IncidentDef.Named("DefoliatorShipPartCrash");
 
             parms = StorytellerUtility.DefaultParmsNow(IncidentCategoryDefOf.ThreatBig, target);
 
@@ -104,7 +104,7 @@ namespace TwitchToolkit.VotingHelpers.VotingHelpers_Drops
         public override bool IsPossible()
         {
             var innterType = typeof(IncidentWorker).Assembly.GetTypes()
-                .Where(s => s.Name == "IncidentWorker_PsychicEmanatorShipPartCrash").First();
+                .Where(s => s.Name == "IncidentWorker_CrashedShipPart").First();
 
             var innerObject = Activator.CreateInstance(innterType);
 

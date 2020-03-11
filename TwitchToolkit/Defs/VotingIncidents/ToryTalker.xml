@@ -789,7 +789,7 @@
     <votingHelper>TwitchToolkit.VotingHelpers.VotingHelpers_Drops.TransportPodDropped</votingHelper>
   </TwitchToolkit.Votes.VotingIncident>
 
-  <!--<TwitchToolkit.Votes.VotingIncident>
+  <TwitchToolkit.Votes.VotingIncident>
     <defName>ShipPartPoison</defName>
     <label>poison ship part</label>
     <weight>4</weight>
@@ -807,7 +807,7 @@
     <eventType>Bad</eventType>
     <eventCategory>Drop</eventCategory>
     <votingHelper>TwitchToolkit.VotingHelpers.VotingHelpers_Drops.ShipPartPsychic</votingHelper>
-  </TwitchToolkit.Votes.VotingIncident>-->
+  </TwitchToolkit.Votes.VotingIncident>
 
   <TwitchToolkit.Votes.VotingIncident>
     <defName>Gold</defName>

@@ -23,9 +23,6 @@ namespace TwitchToolkit
 
         static HarmonyPatches()
         {
-            if (ToolkitSettings.SyncStreamElements)
-                StreamElements.ImportPoints();
-
             SaveHelper.LoadListOfViewers();
 
             Harmony harmony = new Harmony("com.github.harmony.rimworld.mod.twitchtoolkit");
