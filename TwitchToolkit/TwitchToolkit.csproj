@@ -11,12 +11,13 @@
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
+    <CurrentRimWorldLoadFolder>v1.1</CurrentRimWorldLoadFolder> <!-- This must match the folder specified in LoadFolders.xml -->
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>C:\Program Files %28x86%29\Steam\steamapps\common\RimWorld\Mods\TwitchToolkit\Assemblies</OutputPath>
+    <OutputPath>C:\Program Files %28x86%29\Steam\steamapps\common\RimWorld\Mods\TwitchToolkit\$(CurrentRimWorldLoadFolder)\Assemblies</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -24,7 +25,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>none</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>C:\Program Files %28x86%29\Steam\steamapps\common\RimWorld\Mods\TwitchToolkit\Assemblies</OutputPath>
+    <OutputPath>C:\Program Files %28x86%29\Steam\steamapps\common\RimWorld\Mods\TwitchToolkit\$(CurrentRimWorldLoadFolder)\Assemblies</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -203,23 +204,23 @@
   </ItemGroup>
   <ItemGroup>
     <!-- Using ContentWithTargetPath+TargetPath rather than Content+Link because the latter apparently must have the Link path be within OutputDir -->
-    <ContentWithTargetPath Include="About\**\*">
+    <!-- About folder and LoadFolders.xml must be in root dir; Languages, Textures, Sounds folders must also be in root dir for 1.0 compatibility -->
+    <ContentWithTargetPath Include="About\**\*;LoadFolders.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <TargetPath>..\%(RelativeDir)%(Filename)%(Extension)</TargetPath>
+      <TargetPath>..\..\%(RelativeDir)%(Filename)%(Extension)</TargetPath>
     </ContentWithTargetPath>
-    <ContentWithTargetPath Include="Defs\**\*">
+    <!-- Shared: Languages, Textures, Sounds folders must also be in root dir for 1.0 compatibility -->
+    <ContentWithTargetPath Include="Languages\**\*;Textures\**\*">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <TargetPath>..\%(RelativeDir)%(Filename)%(Extension)</TargetPath>
+      <TargetPath>..\..\%(RelativeDir)%(Filename)%(Extension)</TargetPath>
     </ContentWithTargetPath>
-    <ContentWithTargetPath Include="Patches\**\*">
+    <!-- 1.0: Defs, Patches, Assemblies must be in 1.0 folder (NOT v1.0 folder) or root folder - using root folder for parity with above 1.0-compatible folders -->
+    <ContentWithTargetPath Include="v1.0\**\*">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <TargetPath>..\%(RelativeDir)%(Filename)%(Extension)</TargetPath>
+      <TargetPath>..\..\%(RecursiveDir)%(Filename)%(Extension)</TargetPath>
     </ContentWithTargetPath>
-    <ContentWithTargetPath Include="Languages\**\*">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <TargetPath>..\%(RelativeDir)%(Filename)%(Extension)</TargetPath>
-    </ContentWithTargetPath>
-    <ContentWithTargetPath Include="Textures\**\*">
+    <!-- 1.1: Remaining folders (Defs, Patches) are in the same parent folder of $(OutputDir), which is the 1.1 Assemblies folder -->
+    <ContentWithTargetPath Include="Defs\**\*;Patches\**\*">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <TargetPath>..\%(RelativeDir)%(Filename)%(Extension)</TargetPath>
     </ContentWithTargetPath>

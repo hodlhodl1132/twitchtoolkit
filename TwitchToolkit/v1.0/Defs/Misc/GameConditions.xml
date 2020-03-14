@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+  <GameConditionDef>
+    <defName>VomitRain</defName>
+    <conditionClass>TwitchToolkit.GameConditions.GameCondition_VomitRain</conditionClass>
+    <label>Vomit Rain</label>
+    <description>A freak localized vomit storm is blasting a small area with repeated lightning strikes and covering the area with vomit.</description>
+    <endMessage>The worst of the Vomit Rain is ending.</endMessage>
+    <preventRain>true</preventRain>
+    <canBePermanent>true</canBePermanent>
+  </GameConditionDef>
+</Defs>

@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Patch>
+  <Operation Class="PatchOperationSequence">
+    <success>Always</success>
+    <operations>
+      <li Class="PatchOperationTest">
+        <xpath>/Defs/StorytellerDef[defName!="BaseStoryteller"]</xpath>
+      </li>
+      <li Class="PatchOperationConditional">
+        <xpath>/Defs/StorytellerDef[defName!="BaseStoryteller"]/comps</xpath>
+        <match Class="PatchOperationAdd">
+          <xpath>/Defs/StorytellerDef[defName!="BaseStoryteller"]/comps</xpath>
+          <value>
+            <li Class="TwitchToolkit.Storytellers.StorytellerCompProperties_TwitchToolkit">
+              <allowedTargetTags>
+                <li>Map_PlayerHome</li>
+              </allowedTargetTags>
+            </li>
+          </value>
+        </match>
+        <nomatch Class="PatchOperationAdd">
+          <xpath>/Defs/StorytellerDef[defName!="BaseStoryteller"]/comps</xpath>
+          <value>
+            <li Class="TwitchToolkit.Storytellers.StorytellerCompProperties_TwitchToolkit">
+              <allowedTargetTags>
+                <li>Map_PlayerHome</li>
+              </allowedTargetTags>
+            </li>
+          </value>
+        </nomatch>
+      </li>
+    </operations>
+  </Operation>
+</Patch>
