@@ -1,8 +1,7 @@
-﻿using rim_twitch;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using ToolkitCore;
 using TwitchLib.Client.Models;
 using TwitchToolkit.PawnQueue;
 using TwitchToolkit.Store;

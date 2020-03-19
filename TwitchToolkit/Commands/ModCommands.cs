@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using rim_twitch;
+using ToolkitCore;
 using TwitchLib.Client.Models;
 using TwitchToolkit.Store;
 using Verse;

@@ -1,13 +1,11 @@
-﻿using rim_twitch;
-using RimWorld;
+﻿using RimWorld;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using ToolkitCore;
 using TwitchToolkit.IncidentHelpers.IncidentHelper_Settings;
 using TwitchToolkit.Incidents;
 using TwitchToolkit.PawnQueue;
-using TwitchToolkit.Settings;
 using TwitchToolkit.Store;
 using Verse;
 
