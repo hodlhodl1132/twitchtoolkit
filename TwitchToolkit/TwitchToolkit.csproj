@@ -11,7 +11,8 @@
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
-    <CurrentRimWorldLoadFolder>v1.1</CurrentRimWorldLoadFolder> <!-- This must match the folder specified in LoadFolders.xml -->
+    <CurrentRimWorldLoadFolder>v1.1</CurrentRimWorldLoadFolder>
+    <!-- This must match the folder specified in LoadFolders.xml -->
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -34,18 +35,6 @@
     <PackageReference Include="Krafs.Rimworld.Ref" Version="1.1.2575" />
     <PackageReference Include="Lib.Harmony" Version="2.0.0.8" ExcludeAssets="runtime" />
     <PackageReference Include="MoonSharp" Version="2.0.0" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\ToolkitCore\toolkitcore\ToolkitCore.csproj">
-      <Project>{4151f06c-c71c-4785-bf80-bebaad400ffd}</Project>
-      <Name>ToolkitCore</Name>
-      <Private>False</Private>
-    </ProjectReference>
-    <!-- Non-SDK-style csproj don't transitively reference dependencies, so have to manually reference needed dependencies of ToolkitCore -->
-    <Reference Include="TwitchLib.Client.Models">
-      <HintPath>..\..\ToolkitCore\references\TwitchLib.Client.Models.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Commands\Command.cs" />
@@ -224,6 +213,36 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <TargetPath>..\%(RelativeDir)%(Filename)%(Extension)</TargetPath>
     </ContentWithTargetPath>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Assembly-CSharp">
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\RimWorld\RimWorldWin64_Data\Managed\Assembly-CSharp.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="ToolkitCore">
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\ToolkitCore\Assemblies\ToolkitCore.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="TwitchLib.Client.Models">
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\ToolkitCore\Assemblies\TwitchLib.Client.Models.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine">
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\RimWorld\RimWorldWin64_Data\Managed\UnityEngine.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.CoreModule">
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\RimWorld\RimWorldWin64_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.TextRenderingModule">
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\RimWorld\RimWorldWin64_Data\Managed\UnityEngine.TextRenderingModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.UIModule">
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\RimWorld\RimWorldWin64_Data\Managed\UnityEngine.UIModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>
