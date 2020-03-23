@@ -96,7 +96,7 @@ namespace TwitchToolkit
             Helper.Log("Parsing Script " + output);
 
             DynValue res = script.DoString(output);
-            MessageQueue.messageQueue.Enqueue(res.CastToString());
+            TwitchWrapper.SendChatMessage(res.CastToString());
 
             Log.Message(res.CastToString());            
         }

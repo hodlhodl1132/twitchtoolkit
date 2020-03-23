@@ -42,10 +42,10 @@ namespace TwitchToolkit.Votes
 
             if (ToolkitSettings.VotingChatMsgs)
             {
-                MessageQueue.messageQueue.Enqueue("Which exotic item should the colony receive?");
+                TwitchWrapper.SendChatMessage("Which exotic item should the colony receive?");
                 foreach (KeyValuePair<int, List<Thing>> pair in thingsOptions)
                 {
-                    MessageQueue.messageQueue.Enqueue($"[{pair.Key + 1}]  {VoteKeyLabel(pair.Key)}");
+                    TwitchWrapper.SendChatMessage($"[{pair.Key + 1}]  {VoteKeyLabel(pair.Key)}");
                 }
             }
         }

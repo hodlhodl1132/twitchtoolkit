@@ -68,7 +68,7 @@ namespace TwitchToolkit.IncidentHelpers.Special
             if (!Purchase_Handler.CheckIfViewerHasEnoughCoins(viewer, this.storeIncident.cost)) return false;
             if(Current.Game.GetComponent<GameComponentPawns>().HasUserBeenNamed(viewer.username))
             {
-                MessageQueue.messageQueue.Enqueue($"@{viewer.username} you are already in the colony.");
+                TwitchWrapper.SendChatMessage($"@{viewer.username} you are already in the colony.");
                 return false;
             }
 
@@ -122,7 +122,7 @@ namespace TwitchToolkit.IncidentHelpers.Special
             string[] command = message.Split(' ');
             if (command.Length < 4)
             {
-                MessageQueue.messageQueue.Enqueue($"@{viewer.username} syntax is {this.storeIncident.syntax}");
+                TwitchWrapper.SendChatMessage($"@{viewer.username} syntax is {this.storeIncident.syntax}");
                 return false;
             }
 
@@ -147,7 +147,7 @@ namespace TwitchToolkit.IncidentHelpers.Special
 
             if (allAnimals.Count < 1)
             {
-                MessageQueue.messageQueue.Enqueue($"@{viewer.username} no animal {animalKind} found.");
+                TwitchWrapper.SendChatMessage($"@{viewer.username} no animal {animalKind} found.");
                 return false;
             }
 
@@ -179,7 +179,7 @@ namespace TwitchToolkit.IncidentHelpers.Special
                 VariablesHelpers.SendPurchaseMessage($"Spawning animal {pawnKind.LabelCap} with {pointsWager} coins wagered and {(int)parms.points} animal points purchased by {Viewer.username}");
                 return;
             }
-            MessageQueue.messageQueue.Enqueue($"@{Viewer.username} not enough points spent for diseases.");
+            TwitchWrapper.SendChatMessage($"@{Viewer.username} not enough points spent for diseases.");
         }
 
         private int pointsWager = 0;
@@ -201,7 +201,7 @@ namespace TwitchToolkit.IncidentHelpers.Special
             string[] command = message.Split(' ');
             if (command.Length < 4)
             {
-                MessageQueue.messageQueue.Enqueue($"@{viewer.username} syntax is {this.storeIncident.syntax}");
+                TwitchWrapper.SendChatMessage($"@{viewer.username} syntax is {this.storeIncident.syntax}");
                 return false;
             }
 
@@ -209,7 +209,7 @@ namespace TwitchToolkit.IncidentHelpers.Special
 
             if (!gameComponent.HasUserBeenNamed(viewer.username))
             {
-                MessageQueue.messageQueue.Enqueue($"@{viewer.username} you must be in the colony to use this command.");
+                TwitchWrapper.SendChatMessage($"@{viewer.username} you must be in the colony to use this command.");
                 return false;
             }
 
@@ -232,7 +232,7 @@ namespace TwitchToolkit.IncidentHelpers.Special
 
             if (allSkills.Count < 1)
             {
-                MessageQueue.messageQueue.Enqueue($"@{viewer.username} skill {skillKind} not found.");
+                TwitchWrapper.SendChatMessage($"@{viewer.username} skill {skillKind} not found.");
                 return false;
             }
 
@@ -241,13 +241,13 @@ namespace TwitchToolkit.IncidentHelpers.Special
 
             if (pawn.skills.GetSkill(skill).TotallyDisabled)
             {
-                MessageQueue.messageQueue.Enqueue($"@{viewer.username} skill {skillKind} disabled on your pawn.");
+                TwitchWrapper.SendChatMessage($"@{viewer.username} skill {skillKind} disabled on your pawn.");
                 return false;
             }
 
             if (pawn.skills.GetSkill(skill).levelInt >= 20)
             {
-                MessageQueue.messageQueue.Enqueue($"@{viewer.username} skill {skillKind} disabled on your pawn.");
+                TwitchWrapper.SendChatMessage($"@{viewer.username} skill {skillKind} disabled on your pawn.");
                 return false;
             }
 
@@ -305,7 +305,7 @@ namespace TwitchToolkit.IncidentHelpers.Special
 
             if (!gameComponent.HasUserBeenNamed(viewer.username))
             {
-                MessageQueue.messageQueue.Enqueue($"@{viewer.username} you must be in the colony to use this command.");
+                TwitchWrapper.SendChatMessage($"@{viewer.username} you must be in the colony to use this command.");
                 return false;
             }
 
@@ -390,7 +390,7 @@ namespace TwitchToolkit.IncidentHelpers.Special
 
             if (item == null || item.price < 1)
             {
-                MessageQueue.messageQueue.Enqueue($"@{viewer.username} item not found.");
+                TwitchWrapper.SendChatMessage($"@{viewer.username} item not found.");
                 return false;
             }
 
@@ -419,7 +419,7 @@ namespace TwitchToolkit.IncidentHelpers.Special
             {
                 string output = $"@{viewer.username} {itemThingDef.LabelCap} has not been researched yet, must finish research project {researchProject.LabelCap} first.";
 
-                MessageQueue.messageQueue.Enqueue(output);
+                TwitchWrapper.SendChatMessage(output);
 
                 return false;
             }
@@ -457,7 +457,7 @@ namespace TwitchToolkit.IncidentHelpers.Special
 
             if (price < ToolkitSettings.MinimumPurchasePrice)
             {
-                MessageQueue.messageQueue.Enqueue(Helper.ReplacePlaceholder(
+                TwitchWrapper.SendChatMessage(Helper.ReplacePlaceholder(
                     "TwitchToolkitMinPurchaseNotMet".Translate(), 
                     viewer: viewer.username, 
                     amount: price.ToString(), 
@@ -567,7 +567,7 @@ namespace TwitchToolkit.IncidentHelpers.Special
 
             if (gameComponent.HasUserBeenNamed(viewer.username))
             {
-                MessageQueue.messageQueue.Enqueue($"@{viewer.username} you are in colony and cannot be a prisoner.");
+                TwitchWrapper.SendChatMessage($"@{viewer.username} you are in colony and cannot be a prisoner.");
                 return false;
             }
 
@@ -610,7 +610,7 @@ namespace TwitchToolkit.IncidentHelpers.Special
 
             if (gameComponent.HasUserBeenNamed(viewer.username))
             {
-                MessageQueue.messageQueue.Enqueue($"@{viewer.username} you are in the colony and cannot visit.");
+                TwitchWrapper.SendChatMessage($"@{viewer.username} you are in the colony and cannot visit.");
                 return false;
             }
 
@@ -651,7 +651,7 @@ namespace TwitchToolkit.IncidentHelpers.Special
             if (command.Length - 2 < storeIncident.variables) // subtract 2 for the first part of the command (!buy item)
             {
                 // let viewer know what correct way is
-                MessageQueue.messageQueue.Enqueue($"@{viewer.username} syntax is {this.storeIncident.syntax}");
+                TwitchWrapper.SendChatMessage($"@{viewer.username} syntax is {this.storeIncident.syntax}");
                 return false;
             }
 

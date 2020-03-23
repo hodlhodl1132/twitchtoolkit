@@ -163,7 +163,7 @@ namespace TwitchToolkit.Store
                     output += ", ";
             }
 
-            MessageQueue.messageQueue.Enqueue(output);
+            TwitchWrapper.SendChatMessage(output);
         }
     }
 }

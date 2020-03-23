@@ -109,7 +109,7 @@ namespace TwitchToolkit.Store
 
             if (!helper.IsPossible())
             {
-                MessageQueue.messageQueue.Enqueue($"@{viewer.username} " + "TwitchToolkitEventNotPossible".Translate());
+                TwitchWrapper.SendChatMessage($"@{viewer.username} " + "TwitchToolkitEventNotPossible".Translate());
                 return;
             }
 
@@ -130,7 +130,7 @@ namespace TwitchToolkit.Store
 
             if (ToolkitSettings.PurchaseConfirmations)
             {
-                MessageQueue.messageQueue.Enqueue(
+                TwitchWrapper.SendChatMessage(
                     Helper.ReplacePlaceholder(
                         "TwitchToolkitEventPurchaseConfirm".Translate(), 
                         first: incident.label.CapitalizeFirst(), 
@@ -191,7 +191,7 @@ namespace TwitchToolkit.Store
         {
             if (viewerNamesDoingVariableCommands.Contains(username))
             {
-                MessageQueue.messageQueue.Enqueue($"@{username} you must wait for the game to unpause to buy something else.");
+                TwitchWrapper.SendChatMessage($"@{username} you must wait for the game to unpause to buy something else.");
                 return true;
             }
             return false;
@@ -201,7 +201,7 @@ namespace TwitchToolkit.Store
         {
             if (!ToolkitSettings.UnlimitedCoins && viewer.GetViewerCoins() < finalPrice)
             {
-                MessageQueue.messageQueue.Enqueue(
+                TwitchWrapper.SendChatMessage(
                     Helper.ReplacePlaceholder(
                         "TwitchToolkitNotEnoughCoins".Translate(),
                         viewer: viewer.username,
@@ -220,7 +220,7 @@ namespace TwitchToolkit.Store
                 if (maxed)
                 {
                     Store_Component component = Current.Game.GetComponent<Store_Component>();
-                    MessageQueue.messageQueue.Enqueue($"@{username} {incident.label.CapitalizeFirst()} is maxed from karmatype, wait " + component.DaysTillIncidentIsPurchaseable(incident) + " days to purchase.");
+                    TwitchWrapper.SendChatMessage($"@{username} {incident.label.CapitalizeFirst()} is maxed from karmatype, wait " + component.DaysTillIncidentIsPurchaseable(incident) + " days to purchase.");
                 }
 
                 return maxed;
@@ -264,7 +264,7 @@ namespace TwitchToolkit.Store
             if (component.IncidentsInLogOf(incident.abbreviation) >= ToolkitSettings.MaxCarePackagesPerInterval)
             {
                 float daysTill = component.DaysTillIncidentIsPurchaseable(incident);
-                MessageQueue.messageQueue.Enqueue($"@{username} care packages are on cooldown, wait " + daysTill + $" day{(daysTill != 1 ? "s" : "")}.");
+                TwitchWrapper.SendChatMessage($"@{username} care packages are on cooldown, wait " + daysTill + $" day{(daysTill != 1 ? "s" : "")}.");
                 return true;
             }
 
@@ -285,7 +285,7 @@ namespace TwitchToolkit.Store
             if (maxed)
             {
                 float days = component.DaysTillIncidentIsPurchaseable(incident);
-                MessageQueue.messageQueue.Enqueue($"@{username} {incident.label.CapitalizeFirst()} is maxed, wait " + days + $" day{(days != 1 ? "s" : "")} to purchase.");
+                TwitchWrapper.SendChatMessage($"@{username} {incident.label.CapitalizeFirst()} is maxed, wait " + days + $" day{(days != 1 ? "s" : "")} to purchase.");
             }
 
             return maxed;

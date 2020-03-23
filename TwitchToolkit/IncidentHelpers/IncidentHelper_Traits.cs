@@ -169,7 +169,7 @@ namespace TwitchToolkit.IncidentHelpers.Traits
             string[] command = message.Split(' ');
             if (command.Length < 3)
             {
-                MessageQueue.messageQueue.Enqueue($"@{viewer.username} syntax is {this.storeIncident.syntax}");
+                TwitchWrapper.SendChatMessage($"@{viewer.username} syntax is {this.storeIncident.syntax}");
                 return false;
             }
 
@@ -177,7 +177,7 @@ namespace TwitchToolkit.IncidentHelpers.Traits
 
             if (!gameComponent.HasUserBeenNamed(viewer.username))
             {
-                MessageQueue.messageQueue.Enqueue($"@{viewer.username} you must be in the colony to use this command.");
+                TwitchWrapper.SendChatMessage($"@{viewer.username} you must be in the colony to use this command.");
                 return false;
             }
 
@@ -187,7 +187,7 @@ namespace TwitchToolkit.IncidentHelpers.Traits
 
             if (pawn.story.traits.allTraits != null && pawn.story.traits.allTraits.Count >= customMaxTraits)
             {
-                MessageQueue.messageQueue.Enqueue($"@{viewer.username} your pawn already has max {customMaxTraits} traits.");
+                TwitchWrapper.SendChatMessage($"@{viewer.username} your pawn already has max {customMaxTraits} traits.");
                 return false;
             }
 
@@ -198,7 +198,7 @@ namespace TwitchToolkit.IncidentHelpers.Traits
 
             if (search == null)
             {
-                MessageQueue.messageQueue.Enqueue($"@{viewer.username} trait {traitKind} not found.");
+                TwitchWrapper.SendChatMessage($"@{viewer.username} trait {traitKind} not found.");
                 return false;
             }
 
@@ -219,14 +219,14 @@ namespace TwitchToolkit.IncidentHelpers.Traits
             {
                 if (tr.def.ConflictsWith(trait) || traitDef.ConflictsWith(tr))
                 {
-                    MessageQueue.messageQueue.Enqueue($"@{viewer.username} {traitDef.defName} conflicts with your pawn's trait {tr.LabelCap}.");
+                    TwitchWrapper.SendChatMessage($"@{viewer.username} {traitDef.defName} conflicts with your pawn's trait {tr.LabelCap}.");
                     return false;
                 }
             }
 
             if (pawn.story.traits.allTraits != null && pawn.story.traits.allTraits.Find(s => s.def.defName == search.def.defName) != null)
             {
-                MessageQueue.messageQueue.Enqueue($"@{viewer.username} you already have this trait of this type.");
+                TwitchWrapper.SendChatMessage($"@{viewer.username} you already have this trait of this type.");
                 return false;
             }
 
@@ -277,7 +277,7 @@ namespace TwitchToolkit.IncidentHelpers.Traits
             string[] command = message.Split(' ');
             if (command.Length < 3)
             {
-                MessageQueue.messageQueue.Enqueue($"@{viewer.username} syntax is {this.storeIncident.syntax}");
+                TwitchWrapper.SendChatMessage($"@{viewer.username} syntax is {this.storeIncident.syntax}");
                 return false;
             }
 
@@ -285,7 +285,7 @@ namespace TwitchToolkit.IncidentHelpers.Traits
 
             if (!gameComponent.HasUserBeenNamed(viewer.username))
             {
-                MessageQueue.messageQueue.Enqueue($"@{viewer.username} you must be in the colony to use this command.");
+                TwitchWrapper.SendChatMessage($"@{viewer.username} you must be in the colony to use this command.");
                 return false;
             }
 
@@ -293,7 +293,7 @@ namespace TwitchToolkit.IncidentHelpers.Traits
 
             if (pawn.story.traits.allTraits != null && pawn.story.traits.allTraits.Count <= 0)
             {
-                MessageQueue.messageQueue.Enqueue($"@{viewer.username} your pawn doesn't have any traits.");
+                TwitchWrapper.SendChatMessage($"@{viewer.username} your pawn doesn't have any traits.");
                 return false;
             }
 
@@ -303,7 +303,7 @@ namespace TwitchToolkit.IncidentHelpers.Traits
 
             if (search == null)
             {
-                MessageQueue.messageQueue.Enqueue($"@{viewer.username} trait {traitKind} not found.");
+                TwitchWrapper.SendChatMessage($"@{viewer.username} trait {traitKind} not found.");
                 return false;
             }
 

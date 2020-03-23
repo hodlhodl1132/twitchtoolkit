@@ -26,10 +26,10 @@ namespace TwitchToolkit.Votes
 
             if (ToolkitSettings.VotingChatMsgs)
             {
-                MessageQueue.messageQueue.Enqueue(title ?? "TwitchStoriesChatMessageNewVote".Translate() + ": " + "TwitchToolKitVoteInstructions".Translate());
+                TwitchWrapper.SendChatMessage(title ?? "TwitchStoriesChatMessageNewVote".Translate() + ": " + "TwitchToolKitVoteInstructions".Translate());
                 foreach (KeyValuePair<int, VotingIncident> pair in incidents)
                 {
-                    MessageQueue.messageQueue.Enqueue($"[{pair.Key + 1}]  {VoteKeyLabel(pair.Key)}");
+                    TwitchWrapper.SendChatMessage($"[{pair.Key + 1}]  {VoteKeyLabel(pair.Key)}");
                 }
             }
         }

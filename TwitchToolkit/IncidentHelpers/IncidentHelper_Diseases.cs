@@ -20,7 +20,7 @@ namespace TwitchToolkit.IncidentHelpers.Diseases
             string[] command = message.Split(' ');
             if (command.Length < 3)
             {
-                MessageQueue.messageQueue.Enqueue($"@{viewer.username} syntax is {this.storeIncident.syntax}");
+                TwitchWrapper.SendChatMessage($"@{viewer.username} syntax is {this.storeIncident.syntax}");
                 return false;
             }
 
@@ -62,7 +62,7 @@ namespace TwitchToolkit.IncidentHelpers.Diseases
                 VariablesHelpers.SendPurchaseMessage($"Starting {worker.def.LabelCap} with {pointsWager} points wagered and {(int)parms.points} disease points purchased by {Viewer.username}");
                 return;
             }
-            MessageQueue.messageQueue.Enqueue($"@{Viewer.username} not enough points spent for diseases.");
+            TwitchWrapper.SendChatMessage($"@{Viewer.username} not enough points spent for diseases.");
         }
 
         private int pointsWager = 0;
@@ -83,7 +83,7 @@ namespace TwitchToolkit.IncidentHelpers.Diseases
             string[] command = message.Split(' ');
             if (command.Length < 4)
             {
-                MessageQueue.messageQueue.Enqueue($"@{viewer.username} syntax is {this.storeIncident.syntax}");
+                TwitchWrapper.SendChatMessage($"@{viewer.username} syntax is {this.storeIncident.syntax}");
                 return false;
             }
 
@@ -108,7 +108,7 @@ namespace TwitchToolkit.IncidentHelpers.Diseases
 
             if (allDiseases.Count < 1)
             {
-                MessageQueue.messageQueue.Enqueue($"@{viewer.username} no disease {diseaseLabel} found.");
+                TwitchWrapper.SendChatMessage($"@{viewer.username} no disease {diseaseLabel} found.");
                 return false;
             }
 
@@ -137,7 +137,7 @@ namespace TwitchToolkit.IncidentHelpers.Diseases
                 VariablesHelpers.SendPurchaseMessage($"Starting {worker.def.LabelCap} with {pointsWager} points wagered and {(int)parms.points} disease points purchased by {Viewer.username}");
                 return;
             }
-            MessageQueue.messageQueue.Enqueue($"@{Viewer.username} not enough points spent for diseases.");
+            TwitchWrapper.SendChatMessage($"@{Viewer.username} not enough points spent for diseases.");
         }
 
         private int pointsWager = 0;

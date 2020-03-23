@@ -13,7 +13,7 @@ namespace TwitchToolkit.IncidentHelpers
     {
         public static void ViewerDidWrongSyntax(string username, string syntax, bool separateChannel = false)
         {
-            MessageQueue.messageQueue.Enqueue($"@{username} syntax is {syntax}");
+            TwitchWrapper.SendChatMessage($"@{username} syntax is {syntax}");
         }
 
         public static bool PointsWagerIsValid(string wager, Viewer viewer, ref int pointsWager, ref StoreIncidentVariables incident, bool separateChannel = false, int quantity = 1, int maxPrice = 25000)
@@ -30,20 +30,20 @@ namespace TwitchToolkit.IncidentHelpers
             catch (OverflowException e)
             {
                 Helper.Log(e.Message);
-                MessageQueue.messageQueue.Enqueue($"@{viewer.username} points wager is invalid.");
+                TwitchWrapper.SendChatMessage($"@{viewer.username} points wager is invalid.");
                 return false;
             }
 
             if (incident.maxWager > 0 && incident.maxWager > incident.cost && pointsWager > incident.maxWager)
             {
-                MessageQueue.messageQueue.Enqueue($"@{viewer.username} you cannot spend more than {incident.maxWager} coins on {incident.abbreviation.CapitalizeFirst()}");
+                TwitchWrapper.SendChatMessage($"@{viewer.username} you cannot spend more than {incident.maxWager} coins on {incident.abbreviation.CapitalizeFirst()}");
                 return false;
             }
 
             //|| (incident.minPointsToFire > 0 && pointsWager < incident.minPointsToFire)
             if (pointsWager < incident.cost || pointsWager < incident.minPointsToFire)
             {
-                MessageQueue.messageQueue.Enqueue(Helper.ReplacePlaceholder(
+                TwitchWrapper.SendChatMessage(Helper.ReplacePlaceholder(
                     "TwitchToolkitMinPurchaseNotMet".Translate(), 
                     viewer: viewer.username, 
                     amount: pointsWager.ToString(), 
@@ -61,7 +61,7 @@ namespace TwitchToolkit.IncidentHelpers
         {
             if (ToolkitSettings.PurchaseConfirmations)
             {
-                MessageQueue.messageQueue.Enqueue(message);
+                TwitchWrapper.SendChatMessage(message);
             }
         }
     }

@@ -15,7 +15,7 @@ namespace TwitchToolkit.Commands.ViewerCommands
         {
             Viewer viewer = Viewers.GetViewer(message.Username);
 
-            MessageQueue.messageQueue.Enqueue($"@{viewer.username} " + Helper.ReplacePlaceholder("TwitchToolkitBalanceMessage".Translate(), amount: viewer.GetViewerCoins().ToString(), karma: viewer.GetViewerKarma().ToString()));
+            TwitchWrapper.SendChatMessage($"@{viewer.username} " + Helper.ReplacePlaceholder("TwitchToolkitBalanceMessage".Translate(), amount: viewer.GetViewerCoins().ToString(), karma: viewer.GetViewerKarma().ToString()));
         }
     }
 
@@ -25,7 +25,7 @@ namespace TwitchToolkit.Commands.ViewerCommands
         {
             Viewer viewer = Viewers.GetViewer(message.Username);
 
-            MessageQueue.messageQueue.Enqueue($"@{viewer.username} " + "TwitchToolkitWhatIsKarma".Translate() + $" { viewer.GetViewerKarma()}%");
+            TwitchWrapper.SendChatMessage($"@{viewer.username} " + "TwitchToolkitWhatIsKarma".Translate() + $" { viewer.GetViewerKarma()}%");
         }
     }
 
@@ -33,7 +33,7 @@ namespace TwitchToolkit.Commands.ViewerCommands
     {
         public override void RunCommand(ChatMessage message)
         {
-            MessageQueue.messageQueue.Enqueue($"@{message.Username} " + "TwitchToolkitPurchaseList".Translate() + $" {ToolkitSettings.CustomPricingSheetLink}");
+            TwitchWrapper.SendChatMessage($"@{message.Username} " + "TwitchToolkitPurchaseList".Translate() + $" {ToolkitSettings.CustomPricingSheetLink}");
         }
     }
 
@@ -70,7 +70,7 @@ namespace TwitchToolkit.Commands.ViewerCommands
                 {
                     viewer.TakeViewerCoins(amount);
                     giftee.GiveViewerCoins(amount);
-                    MessageQueue.messageQueue.Enqueue($"@{giftee.username} " + Helper.ReplacePlaceholder("TwitchToolkitGiftCoins".Translate(), amount: amount.ToString(), from: viewer.username));
+                    TwitchWrapper.SendChatMessage($"@{giftee.username} " + Helper.ReplacePlaceholder("TwitchToolkitGiftCoins".Translate(), amount: amount.ToString(), from: viewer.username));
                     Store_Logger.LogGiftCoins(viewer.username, giftee.username, amount);
                 }
             }
@@ -94,7 +94,7 @@ namespace TwitchToolkit.Commands.ViewerCommands
             {
                 if (viewer.GetViewerCoins() < ToolkitSettings.CostToJoinQueue)
                 {
-                    MessageQueue.messageQueue.Enqueue($"@{message.Username} you do not have enough coins to purchase a ticket, it costs {ToolkitSettings.CostToJoinQueue} and you have {viewer.GetViewerCoins()}.");
+                    TwitchWrapper.SendChatMessage($"@{message.Username} you do not have enough coins to purchase a ticket, it costs {ToolkitSettings.CostToJoinQueue} and you have {viewer.GetViewerCoins()}.");
                     return;
                 }
 
@@ -102,7 +102,7 @@ namespace TwitchToolkit.Commands.ViewerCommands
             }
 
             pawnComponent.AddViewerToViewerQueue(message.Username);
-            MessageQueue.messageQueue.Enqueue($"@{message.Username} you have purchased a ticket and are in the queue!");
+            TwitchWrapper.SendChatMessage($"@{message.Username} you have purchased a ticket and are in the queue!");
         }
     }
 
@@ -110,7 +110,7 @@ namespace TwitchToolkit.Commands.ViewerCommands
     {
         public override void RunCommand(ChatMessage message)
         {
-            MessageQueue.messageQueue.Enqueue($"@{message.Username} " + "TwitchToolkitModInfo".Translate() + " https://discord.gg/qrtg224 !");
+            TwitchWrapper.SendChatMessage($"@{message.Username} " + "TwitchToolkitModInfo".Translate() + " https://discord.gg/qrtg224 !");
         }
     }
 
@@ -143,7 +143,7 @@ namespace TwitchToolkit.Commands.ViewerCommands
                 karma: ToolkitSettings.KarmaCap.ToString()
                 );
 
-            MessageQueue.messageQueue.Enqueue(stats_message);
+            TwitchWrapper.SendChatMessage(stats_message);
         }
     }
 
@@ -153,7 +153,7 @@ namespace TwitchToolkit.Commands.ViewerCommands
         {
             Command allCommandsCommand = DefDatabase<Command>.GetNamed("AvailableCommands");
 
-            MessageQueue.messageQueue.Enqueue($"@{message.Username} the toolkit is a mod where you earn coins while you watch. Check out the bit.ly/toolkit-guide  or use !" + allCommandsCommand.command + " for a short list. " + ToolkitSettings.Channel.CapitalizeFirst() + " has a list of items/events to purchase at " + ToolkitSettings.CustomPricingSheetLink);
+            TwitchWrapper.SendChatMessage($"@{message.Username} the toolkit is a mod where you earn coins while you watch. Check out the bit.ly/toolkit-guide  or use !" + allCommandsCommand.command + " for a short list. " + ToolkitSettings.Channel.CapitalizeFirst() + " has a list of items/events to purchase at " + ToolkitSettings.CustomPricingSheetLink);
         }
     }
 
@@ -176,7 +176,7 @@ namespace TwitchToolkit.Commands.ViewerCommands
                 }
             }
 
-            MessageQueue.messageQueue.Enqueue(output);
+            TwitchWrapper.SendChatMessage(output);
         }
     }
 
@@ -200,7 +200,7 @@ namespace TwitchToolkit.Commands.ViewerCommands
                 if (i == (mods.Length - 1) || modmsg.Length > 256)
                 {
                     modmsg = modmsg.Substring(0, modmsg.Length - 2);
-                    MessageQueue.messageQueue.Enqueue(modmsg);
+                    TwitchWrapper.SendChatMessage(modmsg);
                     modmsg = "";
                 }
             }

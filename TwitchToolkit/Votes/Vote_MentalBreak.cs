@@ -57,10 +57,10 @@ namespace TwitchToolkit.Votes
 
             if (ToolkitSettings.VotingChatMsgs)
             {
-                MessageQueue.messageQueue.Enqueue("Which colonist should experience a mental break?");
+                TwitchWrapper.SendChatMessage("Which colonist should experience a mental break?");
                 foreach (KeyValuePair<int, Pawn> pair in pawnOptions)
                 {
-                    MessageQueue.messageQueue.Enqueue($"[{pair.Key + 1}]  {VoteKeyLabel(pair.Key)}");
+                    TwitchWrapper.SendChatMessage($"[{pair.Key + 1}]  {VoteKeyLabel(pair.Key)}");
                 }
             }
         }
