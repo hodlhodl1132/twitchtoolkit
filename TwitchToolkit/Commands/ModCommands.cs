@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using ToolkitCore;
+using TwitchLib.Client.Interfaces;
 using TwitchLib.Client.Models;
+using TwitchLib.Client.Models.Interfaces;
 using TwitchToolkit.Store;
 using Verse;
 
@@ -11,31 +13,31 @@ namespace TwitchToolkit.Commands.ModCommands
 {
     public class RefreshViewers : CommandDriver
     {
-        public override void RunCommand(ChatMessage message)
+        public override void RunCommand(ITwitchMessage twitchMessage)
         {
             TwitchToolkitDev.WebRequest_BeginGetResponse.Main("https://tmi.twitch.tv/group/user/" + ToolkitSettings.Channel.ToLower() + "/chatters", new Func<TwitchToolkitDev.RequestState, bool>(Viewers.SaveUsernamesFromJsonResponse));
 
-            TwitchWrapper.SendChatMessage($"@{message.Username} viewers have been refreshed.");
+            TwitchWrapper.SendChatMessage($"@{twitchMessage.Username} viewers have been refreshed.");
         }
     }
 
     public class KarmaRound : CommandDriver
     {
-        public override void RunCommand(ChatMessage message)
+        public override void RunCommand(ITwitchMessage twitchMessage)
         {
             Viewers.AwardViewersCoins();
 
-            TwitchWrapper.SendChatMessage($"@{message.Username} rewarding all active viewers coins.");
+            TwitchWrapper.SendChatMessage($"@{twitchMessage.Username} rewarding all active viewers coins.");
         }
     }
 
     public class GiveAllCoins : CommandDriver
     {
-        public override void RunCommand(ChatMessage message)
+        public override void RunCommand(ITwitchMessage twitchMessage)
         {
             try
             {
-                string[] command = message.Message.Split(' ');
+                string[] command = twitchMessage.Message.Split(' ');
 
                 if (command.Length < 2)
                 {
@@ -51,7 +53,7 @@ namespace TwitchToolkit.Commands.ModCommands
                         vwr.GiveViewerCoins(amount);
                     }
 
-                    TwitchWrapper.SendChatMessage($"@{message.Username} " + Helper.ReplacePlaceholder("TwitchToolkitGiveAllCoins".Translate(), amount: amount.ToString()));
+                    TwitchWrapper.SendChatMessage($"@{twitchMessage.Username} " + Helper.ReplacePlaceholder("TwitchToolkitGiveAllCoins".Translate(), amount: amount.ToString()));
                 }
             }
             catch (InvalidCastException e)
@@ -63,11 +65,11 @@ namespace TwitchToolkit.Commands.ModCommands
 
     public class GiveCoins : CommandDriver
     {
-        public override void RunCommand(ChatMessage message)
+        public override void RunCommand(ITwitchMessage twitchMessage)
         {
             try
             {
-                string[] command = message.Message.Split(' ');
+                string[] command = twitchMessage.Message.Split(' ');
 
                 if (command.Length < 3)
                 {
@@ -76,9 +78,9 @@ namespace TwitchToolkit.Commands.ModCommands
 
                 string receiver = command[1].Replace("@", "");
 
-                if (message.Username.ToLower() != ToolkitSettings.Channel.ToLower() && receiver.ToLower() == message.Username.ToLower())
+                if (twitchMessage.Username.ToLower() != ToolkitSettings.Channel.ToLower() && receiver.ToLower() == twitchMessage.Username.ToLower())
                 {
-                    TwitchWrapper.SendChatMessage($"@{message.Username} " + "TwitchToolkitModCannotGiveCoins".Translate());
+                    TwitchWrapper.SendChatMessage($"@{twitchMessage.Username} " + "TwitchToolkitModCannotGiveCoins".Translate());
                     return;
                 }
 
@@ -90,8 +92,8 @@ namespace TwitchToolkit.Commands.ModCommands
 
                     Helper.Log($"Giving viewer {giftee.username} {amount} coins");
                     giftee.GiveViewerCoins(amount);
-                    TwitchWrapper.SendChatMessage($"@{message.Username} " + Helper.ReplacePlaceholder("TwitchToolkitGivingCoins".Translate(), viewer: giftee.username, amount: amount.ToString(), newbalance: giftee.coins.ToString()));
-                    Store_Logger.LogGiveCoins(message.Username, giftee.username, amount);
+                    TwitchWrapper.SendChatMessage($"@{twitchMessage.Username} " + Helper.ReplacePlaceholder("TwitchToolkitGivingCoins".Translate(), viewer: giftee.username, amount: amount.ToString(), newbalance: giftee.coins.ToString()));
+                    Store_Logger.LogGiveCoins(twitchMessage.Username, giftee.username, amount);
                 }
             }
             catch (InvalidCastException e)
@@ -103,11 +105,11 @@ namespace TwitchToolkit.Commands.ModCommands
 
     public class CheckUser : CommandDriver
     {
-        public override void RunCommand(ChatMessage message)
+        public override void RunCommand(ITwitchMessage twitchMessage)
         {
             try
             {
-                string[] command = message.Message.Split(' ');
+                string[] command = twitchMessage.Message.Split(' ');
 
                 if (command.Length < 2)
                 {
@@ -117,7 +119,7 @@ namespace TwitchToolkit.Commands.ModCommands
                 string target = command[1].Replace("@", "");
 
                 Viewer targeted = Viewers.GetViewer(target);
-                TwitchWrapper.SendChatMessage($"@{message.Username} " + Helper.ReplacePlaceholder("TwitchToolkitCheckUser".Translate(), viewer: targeted.username, amount: targeted.coins.ToString(), karma: targeted.GetViewerKarma().ToString()));
+                TwitchWrapper.SendChatMessage($"@{twitchMessage.Username} " + Helper.ReplacePlaceholder("TwitchToolkitCheckUser".Translate(), viewer: targeted.username, amount: targeted.coins.ToString(), karma: targeted.GetViewerKarma().ToString()));
 
             }
             catch (InvalidCastException e)
@@ -129,11 +131,11 @@ namespace TwitchToolkit.Commands.ModCommands
 
     public class SetKarma : CommandDriver
     {
-        public override void RunCommand(ChatMessage message)
+        public override void RunCommand(ITwitchMessage twitchMessage)
         {
             try
             {
-                string[] command = message.Message.Split(' ');
+                string[] command = twitchMessage.Message.Split(' ');
 
                 if (command.Length < 3)
                 {
@@ -147,7 +149,7 @@ namespace TwitchToolkit.Commands.ModCommands
                 {
                     Viewer targeted = Viewers.GetViewer(target);
                     targeted.SetViewerKarma(amount);
-                    TwitchWrapper.SendChatMessage($"@{message.Username}" + Helper.ReplacePlaceholder("TwitchToolkitSetKarma".Translate(), viewer: targeted.username, karma: amount.ToString()));
+                    TwitchWrapper.SendChatMessage($"@{twitchMessage.Username}" + Helper.ReplacePlaceholder("TwitchToolkitSetKarma".Translate(), viewer: targeted.username, karma: amount.ToString()));
                 }
             }
             catch (InvalidCastException e)
@@ -159,17 +161,17 @@ namespace TwitchToolkit.Commands.ModCommands
 
     public class ToggleCoins : CommandDriver
     {
-        public override void RunCommand(ChatMessage message)
+        public override void RunCommand(ITwitchMessage twitchMessage)
         {
             if (ToolkitSettings.EarningCoins)
             {
                 ToolkitSettings.EarningCoins = false;
-                TwitchWrapper.SendChatMessage($"@{message.Username} " + "TwitchToolkitEarningCoinsMessage".Translate() + " " + "TwitchToolkitOff".Translate());
+                TwitchWrapper.SendChatMessage($"@{twitchMessage.Username} " + "TwitchToolkitEarningCoinsMessage".Translate() + " " + "TwitchToolkitOff".Translate());
             }
             else
             {
                 ToolkitSettings.EarningCoins = true;
-                TwitchWrapper.SendChatMessage($"@{message.Username} " + "TwitchToolkitEarningCoinsMessage".Translate() + " " + "TwitchToolkitOn".Translate());
+                TwitchWrapper.SendChatMessage($"@{twitchMessage.Username} " + "TwitchToolkitEarningCoinsMessage".Translate() + " " + "TwitchToolkitOn".Translate());
             }
         }
     }

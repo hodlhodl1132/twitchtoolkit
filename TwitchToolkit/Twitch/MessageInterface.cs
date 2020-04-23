@@ -1,4 +1,6 @@
 ﻿using ToolkitCore;
+using TwitchLib.Client.Interfaces;
+using TwitchLib.Client.Models.Interfaces;
 using TwitchToolkit.Votes;
 using Verse;
 
@@ -11,13 +13,12 @@ namespace TwitchToolkit.Twitch
 
         }
 
-        public override void ParseCommand(global::TwitchLib.Client.Models.ChatMessage message)
+        public override void ParseMessage(ITwitchMessage twitchMessage)
         {
-            if (Helper.ModActive) CommandsHandler.CheckCommand(message);
+            Log.Message("Starting toolkit message parsing");
+            if (Helper.ModActive) CommandsHandler.CheckCommand(twitchMessage);
 
-            if (VoteHandler.voteActive && int.TryParse(message.Message, out int voteId)) VoteHandler.currentVote.RecordVote(Viewers.GetViewer(message.Username).id, voteId - 1);
-
-            TwitchToolkit_MainTabWindow.LogChatMessage(message);
+            if (VoteHandler.voteActive && int.TryParse(twitchMessage.Message, out int voteId)) VoteHandler.currentVote.RecordVote(Viewers.GetViewer(twitchMessage.Username).id, voteId - 1);
         }
     }
 }

@@ -3,7 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using TwitchLib.Client.Interfaces;
 using TwitchLib.Client.Models;
+using TwitchLib.Client.Models.Interfaces;
 using TwitchToolkit.Incidents;
 using TwitchToolkit.PawnQueue;
 using TwitchToolkit.Store;
@@ -13,28 +15,22 @@ namespace TwitchToolkit
 {
     public static class CommandsHandler
     {
-        public static void CheckCommand(ChatMessage msg)
+        public static void CheckCommand(ITwitchMessage twitchMessage)
         {
+            Log.Message($"Checking command - {twitchMessage.Message}");
 
-            if (msg == null)
+            if (twitchMessage == null)
             {
                 return;
             }
 
-            if (msg.Message == null)
+            if (twitchMessage.Message == null)
             {
                 return;
             }
 
-            string message = msg.Message;
-            string user = msg.Username;
-            if (message.Split(' ')[0] == "/w")
-            {
-                List<string> messagewhisper = message.Split(' ').ToList();
-                messagewhisper.RemoveAt(0);
-                message = string.Join(" ", messagewhisper.ToArray());
-                Helper.Log(message);
-            }
+            string message = twitchMessage.Message;
+            string user = twitchMessage.Username;
 
             Viewer viewer = Viewers.GetViewer(user);
             viewer.last_seen = DateTime.Now;
@@ -44,7 +40,7 @@ namespace TwitchToolkit
                 return;
             }
 
-            Command commandDef = DefDatabase<Command>.AllDefs.ToList().Find(s => msg.Message.StartsWith("!" + s.command));
+            Command commandDef = DefDatabase<Command>.AllDefs.ToList().Find(s => twitchMessage.Message.StartsWith("!" + s.command));
 
             if (commandDef != null)
             {
@@ -55,7 +51,7 @@ namespace TwitchToolkit
                     runCommand = false;
                 }
 
-                if (commandDef.requiresAdmin && msg.Username.ToLower() != ToolkitSettings.Channel.ToLower())
+                if (commandDef.requiresAdmin && twitchMessage.Username.ToLower() != ToolkitSettings.Channel.ToLower())
                 {
                     runCommand = false;
                 }
@@ -65,36 +61,11 @@ namespace TwitchToolkit
                     runCommand = false;
                 }
 
-                if (commandDef.shouldBeInSeparateRoom && !AllowCommand(msg))
-                {
-                    runCommand = false;
-                }
-
                 if (runCommand)
                 {
-                    commandDef.RunCommand(msg);
+                    commandDef.RunCommand(twitchMessage);
                 }
-                
             }
-
-            //Deprecated,  Use RimTwitch Library instead
-
-            //List<TwitchInterfaceBase> modExtensions = Current.Game.components.OfType<TwitchInterfaceBase>().ToList();
-
-            //if (modExtensions == null)
-            //{
-            //    return;
-            //}
-
-            //foreach(TwitchInterfaceBase parser in modExtensions)
-            //{
-            //    parser.ParseCommand(msg);
-            //}
-        }
-
-        public static bool AllowCommand(ChatMessage msg)
-        {
-            return true;
         }
 
         public static bool SendToChatroom(ChatMessage msg)

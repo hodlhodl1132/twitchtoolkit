@@ -1,10 +1,8 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.29911.84
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.705
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwitchToolkit", "TwitchToolkit\TwitchToolkit.csproj", "{358D961A-2FB9-49A0-87BB-AF72A4BC1D29}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToolkitCore", "..\ToolkitCore\toolkitcore\ToolkitCore.csproj", "{4151F06C-C71C-4785-BF80-BEBAAD400FFD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -16,10 +14,6 @@ Global
 		{358D961A-2FB9-49A0-87BB-AF72A4BC1D29}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{358D961A-2FB9-49A0-87BB-AF72A4BC1D29}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{358D961A-2FB9-49A0-87BB-AF72A4BC1D29}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4151F06C-C71C-4785-BF80-BEBAAD400FFD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4151F06C-C71C-4785-BF80-BEBAAD400FFD}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4151F06C-C71C-4785-BF80-BEBAAD400FFD}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4151F06C-C71C-4785-BF80-BEBAAD400FFD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

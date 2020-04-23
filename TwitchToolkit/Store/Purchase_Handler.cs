@@ -6,6 +6,8 @@ using System.Text;
 using TwitchLib.Client.Models;
 using TwitchToolkit.Incidents;
 using Verse;
+using TwitchLib.Client.Interfaces;
+using TwitchLib.Client.Models.Interfaces;
 
 namespace TwitchToolkit.Store
 {
@@ -24,9 +26,9 @@ namespace TwitchToolkit.Store
             viewerNamesDoingVariableCommands = new List<string>();
         }
 
-        public static void ResolvePurchase(Viewer viewer, ChatMessage message, bool separateChannel = false)
+        public static void ResolvePurchase(Viewer viewer, ITwitchMessage twitchMessage, bool separateChannel = false)
         {
-            List<string> command = message.Message.Split(' ').ToList();
+            List<string> command = twitchMessage.Message.Split(' ').ToList();
 
             if (command.Count < 2)
             {
@@ -46,7 +48,7 @@ namespace TwitchToolkit.Store
             
             if (incident != null)
             {
-                ResolvePurchaseSimple(viewer, message, incident, formattedMessage);
+                ResolvePurchaseSimple(viewer, twitchMessage, incident, formattedMessage);
                 return;
             }
 
@@ -54,7 +56,7 @@ namespace TwitchToolkit.Store
 
             if (incidentVariables != null)
             {
-                ResolvePurchaseVariables(viewer, message, incidentVariables, formattedMessage);
+                ResolvePurchaseVariables(viewer, twitchMessage, incidentVariables, formattedMessage);
                 return;
             }
 
@@ -64,7 +66,7 @@ namespace TwitchToolkit.Store
 
             if (item != null)
             {
-                List<String> commandSplit = message.Message.Split(' ').ToList();
+                List<String> commandSplit = twitchMessage.Message.Split(' ').ToList();
                 commandSplit.Insert(1, "item");
 
                 if (commandSplit.Count < 4)
@@ -79,13 +81,13 @@ namespace TwitchToolkit.Store
 
                 formattedMessage = string.Join(" ", commandSplit.ToArray());
 
-                ResolvePurchaseVariables(viewer, message, StoreIncidentDefOf.Item, formattedMessage);
+                ResolvePurchaseVariables(viewer, twitchMessage, StoreIncidentDefOf.Item, formattedMessage);
             }
 
             return;
         }
 
-        public static void ResolvePurchaseSimple(Viewer viewer, ChatMessage message, StoreIncidentSimple incident, string formattedMessage, bool separateChannel = false)
+        public static void ResolvePurchaseSimple(Viewer viewer, ITwitchMessage twitchMessage, StoreIncidentSimple incident, string formattedMessage, bool separateChannel = false)
         {
             int cost = incident.cost;
 
@@ -139,7 +141,7 @@ namespace TwitchToolkit.Store
             }
         }
 
-        public static void ResolvePurchaseVariables(Viewer viewer, ChatMessage message, StoreIncidentVariables incident, string formattedMessage, bool separateChannel = false)
+        public static void ResolvePurchaseVariables(Viewer viewer, ITwitchMessage twitchMessage, StoreIncidentVariables incident, string formattedMessage, bool separateChannel = false)
         {
             int cost = incident.cost;
 
@@ -183,7 +185,7 @@ namespace TwitchToolkit.Store
             helper.message = formattedMessage;
 
             Ticker.IncidentHelperVariables.Enqueue(helper);
-            Store_Logger.LogPurchase(viewer.username, message.Message);
+            Store_Logger.LogPurchase(viewer.username, twitchMessage.Message);
             component.LogIncident(incident);
         }
 

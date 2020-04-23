@@ -116,6 +116,8 @@ namespace TwitchToolkit.Store
 
                 if (search == null || search.Count() < 1)
                 {
+                    finalCount = finalCount - 1;
+                    Log.Message($"Skipping Item: {allItems[i].defname} i: {i} finalCount: {finalCount}", true);
                     continue;
                 }
                 else
@@ -134,7 +136,7 @@ namespace TwitchToolkit.Store
                 json.AppendLine("\t\t\"price\": " + allItems[i].price + ",");
                 json.AppendLine("\t\t\"category\": \"" + category + "\",");
                 json.AppendLine("\t\t\"defname\": \"" + allItems[i].defname + "\"");
-                json.AppendLine("\t}" + (i != finalCount - 1 ? "," : ""));
+                json.AppendLine($"\t}}{(i < finalCount - 1 ? "," : "")}");
             }
 
             json.AppendLine("\t],");

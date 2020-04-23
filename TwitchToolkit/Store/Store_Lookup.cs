@@ -6,6 +6,8 @@ using TwitchLib.Client.Models;
 using TwitchToolkit.IncidentHelpers.Traits;
 using TwitchToolkit.Incidents;
 using Verse;
+using TwitchLib.Client.Interfaces;
+using TwitchLib.Client.Models.Interfaces;
 
 namespace TwitchToolkit.Store
 {
@@ -16,12 +18,12 @@ namespace TwitchToolkit.Store
 
         }
 
-        public override void ParseCommand(ChatMessage msg)
+        public override void ParseMessage(ITwitchMessage twitchMessage)
         {
-            if (msg.Message.StartsWith("!lookup") && CommandsHandler.AllowCommand(msg))
+            if (twitchMessage.Message.StartsWith("!lookup"))
             {
 
-                string[] command = msg.Message.Split(' ');
+                string[] command = twitchMessage.Message.Split(' ');
                 if (command.Length < 2)
                 {   
                     return;
@@ -46,34 +48,34 @@ namespace TwitchToolkit.Store
                     searchQuery = "";
                 }
 
-                FindLookup(msg, searchObject, searchQuery);
+                FindLookup(twitchMessage, searchObject, searchQuery);
             }
 
             Store_Logger.LogString("Finished lookup parse");
         }
 
-        public void FindLookup(ChatMessage msg, string searchObject, string searchQuery)
+        public void FindLookup(ITwitchMessage twitchMessage, string searchObject, string searchQuery)
         {
             List<string> results = new List<string>();
             switch(searchObject)
             {
                 case "disease":
-                    FindLookup(msg, "diseases", searchQuery);
+                    FindLookup(twitchMessage, "diseases", searchQuery);
                     break;
                 case "skill":
-                    FindLookup(msg, "skills", searchQuery);
+                    FindLookup(twitchMessage, "skills", searchQuery);
                     break;
                 case "event":
-                    FindLookup(msg, "events", searchQuery);
+                    FindLookup(twitchMessage, "events", searchQuery);
                     break;
                 case "item":
-                    FindLookup(msg, "items", searchQuery);
+                    FindLookup(twitchMessage, "items", searchQuery);
                     break;
                 case "animal":
-                    FindLookup(msg, "animals", searchQuery);
+                    FindLookup(twitchMessage, "animals", searchQuery);
                     break;
                 case "trait":
-                    FindLookup(msg, "traits", searchQuery);
+                    FindLookup(twitchMessage, "traits", searchQuery);
                     break;
                 case "diseases":
                     IncidentDef[] allDiseases = DefDatabase<IncidentDef>.AllDefs.Where(s => 
@@ -84,7 +86,7 @@ namespace TwitchToolkit.Store
 
                     foreach (IncidentDef disease in allDiseases)
                         results.Add(string.Join("", disease.LabelCap.RawText.Split(' ')).ToLower());
-                    SendTenResults(msg, searchObject.CapitalizeFirst(), searchQuery, results.ToArray());
+                    SendTenResults(twitchMessage, searchObject.CapitalizeFirst(), searchQuery, results.ToArray());
                     break;
                 case "skills":
                     SkillDef[] allSkills = DefDatabase<SkillDef>.AllDefs.Where(s => 
@@ -94,7 +96,7 @@ namespace TwitchToolkit.Store
 
                     foreach (SkillDef skill in allSkills)
                         results.Add(skill.defName.ToLower());
-                    SendTenResults(msg, searchObject.CapitalizeFirst(), searchQuery, results.ToArray());
+                    SendTenResults(twitchMessage, searchObject.CapitalizeFirst(), searchQuery, results.ToArray());
                     break;
                 case "events":
                     StoreIncident[] allEvents = DefDatabase<StoreIncident>.AllDefs.Where(s => 
@@ -107,7 +109,7 @@ namespace TwitchToolkit.Store
 
                     foreach (StoreIncident evt in allEvents)
                         results.Add(string.Join("", evt.abbreviation.Split(' ')).ToLower());
-                    SendTenResults(msg, searchObject.CapitalizeFirst(), searchQuery, results.ToArray());
+                    SendTenResults(twitchMessage, searchObject.CapitalizeFirst(), searchQuery, results.ToArray());
                     break;
                 case "items":
                     Item[] allItems = StoreInventory.items.Where(s => 
@@ -120,7 +122,7 @@ namespace TwitchToolkit.Store
 
                     foreach (Item item in allItems)
                         results.Add(string.Join("", item.abr.Split(' ')).ToLower());
-                    SendTenResults(msg, searchObject.CapitalizeFirst(), searchQuery, results.ToArray());
+                    SendTenResults(twitchMessage, searchObject.CapitalizeFirst(), searchQuery, results.ToArray());
                     break;
                 case "animals":
                     PawnKindDef[] allAnimals = DefDatabase<PawnKindDef>.AllDefs.Where(s =>
@@ -133,7 +135,7 @@ namespace TwitchToolkit.Store
 
                     foreach (PawnKindDef animal in allAnimals)
                         results.Add(animal.defName.ToLower());
-                    SendTenResults(msg, searchObject.CapitalizeFirst(), searchQuery, results.ToArray());
+                    SendTenResults(twitchMessage, searchObject.CapitalizeFirst(), searchQuery, results.ToArray());
                     break;
                 case "traits":
                     BuyableTrait[] allTrait = AllTraits.buyableTraits.Where(s =>
@@ -145,12 +147,12 @@ namespace TwitchToolkit.Store
 
                     foreach (BuyableTrait trait in allTrait)
                         results.Add(trait.label);
-                    SendTenResults(msg, searchObject.CapitalizeFirst(), searchQuery, results.ToArray());
+                    SendTenResults(twitchMessage, searchObject.CapitalizeFirst(), searchQuery, results.ToArray());
                     break;
             }
         }
 
-        public void SendTenResults(ChatMessage msg, string searchObject, string searchQuery, string[] results)
+        public void SendTenResults(ITwitchMessage twitchMessage, string searchObject, string searchQuery, string[] results)
         {
             if (results.Count() < 1) return;
 

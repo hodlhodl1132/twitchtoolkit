@@ -7,6 +7,8 @@ using System.Text;
 using TwitchLib.Client.Models;
 using TwitchToolkit.Store;
 using Verse;
+using TwitchLib.Client.Interfaces;
+using TwitchLib.Client.Models.Interfaces;
 
 namespace TwitchToolkit.PawnQueue
 {
@@ -17,13 +19,13 @@ namespace TwitchToolkit.PawnQueue
 
         }
 
-        public override void ParseCommand(ChatMessage msg)
+        public override void ParseMessage(ITwitchMessage twitchMessage)
         {
-            Viewer viewer = Viewers.GetViewer(msg.Username);
+            Viewer viewer = Viewers.GetViewer(twitchMessage.Username);
 
             GameComponentPawns component = Current.Game.GetComponent<GameComponentPawns>();
             
-            if (msg.Message.StartsWith("!mypawnskills") && CommandsHandler.AllowCommand(msg))
+            if (twitchMessage.Message.StartsWith("!mypawnskills"))
             {
                 
                 if (!component.HasUserBeenNamed(viewer.username))
@@ -60,7 +62,7 @@ namespace TwitchToolkit.PawnQueue
                 TwitchWrapper.SendChatMessage(output);
             }
 
-            if (msg.Message.StartsWith("!mypawnstory") && CommandsHandler.AllowCommand(msg))
+            if (twitchMessage.Message.StartsWith("!mypawnstory"))
             {
                 if (!component.HasUserBeenNamed(viewer.username))
                 {
@@ -130,9 +132,9 @@ namespace TwitchToolkit.PawnQueue
                 TwitchWrapper.SendChatMessage(output);
             }
 
-            if (msg.Message.StartsWith("!changepawnname") && CommandsHandler.AllowCommand(msg))
+            if (twitchMessage.Message.StartsWith("!changepawnname"))
             {
-                string[] command = msg.Message.Split(' ');
+                string[] command = twitchMessage.Message.Split(' ');
 
                 if (command.Length < 2) return;
 
@@ -159,15 +161,15 @@ namespace TwitchToolkit.PawnQueue
 
             if (Viewer.IsModerator(viewer.username) || viewer.username == ToolkitSettings.Channel)
             {
-                if (msg.Message.StartsWith("!unstickpeople"))
+                if (twitchMessage.Message.StartsWith("!unstickpeople"))
                 {
                     Purchase_Handler.viewerNamesDoingVariableCommands = new List<string>();
                 }
 
-                if (msg.Message.StartsWith("!approvename"))
+                if (twitchMessage.Message.StartsWith("!approvename"))
                 {
 
-                    string[] command = msg.Message.Split(' ');
+                    string[] command = twitchMessage.Message.Split(' ');
                     
                     if (command.Length < 2) return;
 
@@ -187,10 +189,10 @@ namespace TwitchToolkit.PawnQueue
                     TwitchWrapper.SendChatMessage($"@{viewer.username} approved request for name change from {old} to {pawn.Name}");
                 }
 
-                if (msg.Message.StartsWith("!declinename"))
+                if (twitchMessage.Message.StartsWith("!declinename"))
                 {
 
-                    string[] command = msg.Message.Split(' ');
+                    string[] command = twitchMessage.Message.Split(' ');
                     
                     if (command.Length < 2) return;
 

@@ -3,7 +3,9 @@ using System;
 using System.Text;
 using System.Text.RegularExpressions;
 using ToolkitCore;
+using TwitchLib.Client.Interfaces;
 using TwitchLib.Client.Models;
+using TwitchLib.Client.Models.Interfaces;
 using Verse;
 
 namespace TwitchToolkit
@@ -11,7 +13,7 @@ namespace TwitchToolkit
     public class Command : Def
     {
 
-        public void RunCommand(ChatMessage message)
+        public void RunCommand(ITwitchMessage twitchMessage)
         {
             if (command == null)
             {
@@ -20,7 +22,7 @@ namespace TwitchToolkit
 
             CommandDriver driver = (CommandDriver)Activator.CreateInstance(commandDriver);
             driver.command = this;
-            driver.RunCommand(message);
+            driver.RunCommand(twitchMessage);
         }
 
         public string Label
@@ -70,11 +72,11 @@ namespace TwitchToolkit
     {
         public Command command = null;
 
-        public virtual void RunCommand(ChatMessage message)
+        public virtual void RunCommand(ITwitchMessage twitchMessage)
         {
             Helper.Log("filtering command");
 
-            string output = FilterTags(message, command.outputMessage);
+            string output = FilterTags(twitchMessage, command.outputMessage);
 
             Helper.Log("command filtered");
 
@@ -101,11 +103,11 @@ namespace TwitchToolkit
             Log.Message(res.CastToString());            
         }
 
-        public string FilterTags(ChatMessage message, string input)
+        public string FilterTags(ITwitchMessage twitchMessage, string input)
         {
             Helper.Log("starting filter");
 
-            Viewer viewer = Viewers.GetViewer(message.Username);
+            Viewer viewer = Viewers.GetViewer(twitchMessage.Username);
 
             StringBuilder output = new StringBuilder(input);
             output.Replace("{username}", viewer.username);

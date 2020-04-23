@@ -8,6 +8,8 @@ using TwitchToolkit.PawnQueue;
 using TwitchToolkit.Store;
 using UnityEngine;
 using Verse;
+using TwitchLib.Client.Interfaces;
+using TwitchLib.Client.Models.Interfaces;
 
 namespace TwitchToolkit.Twitch
 {
@@ -18,29 +20,32 @@ namespace TwitchToolkit.Twitch
 
         }
 
-        public override void ParseCommand(ChatMessage msg)
+        public override void ParseMessage(ITwitchMessage twitchMessage)
         {
-            Viewer viewer = Viewers.GetViewer(msg.Username);
+            // If it is a whisper, do not update viewer details
+            if (twitchMessage.ChatMessage == null) return;
+
+            Viewer viewer = Viewers.GetViewer(twitchMessage.Username);
             GameComponentPawns component = Current.Game.GetComponent<GameComponentPawns>();
 
-            ToolkitSettings.ViewerColorCodes[msg.Username.ToLower()] = msg.ColorHex;
+            ToolkitSettings.ViewerColorCodes[twitchMessage.Username.ToLower()] = twitchMessage.ChatMessage.ColorHex;
 
-            if (component.HasUserBeenNamed(msg.Username))
+            if (component.HasUserBeenNamed(twitchMessage.Username))
             {
-                component.PawnAssignedToUser(msg.Username).story.hairColor = msg.Color;
+                component.PawnAssignedToUser(twitchMessage.Username).story.hairColor = twitchMessage.ChatMessage.Color;
             }
 
-            if (msg.IsModerator && !viewer.mod)
+            if (twitchMessage.ChatMessage.IsModerator && !viewer.mod)
             {
                 viewer.SetAsModerator();
             }
 
-            if (msg.IsSubscriber && !viewer.IsSub)
+            if (twitchMessage.ChatMessage.IsSubscriber && !viewer.IsSub)
             {
                 viewer.subscriber = true;
             }
 
-            if (msg.IsVip && !viewer.IsVIP)
+            if (twitchMessage.ChatMessage.IsVip && !viewer.IsVIP)
             {
                 viewer.vip = true;
             }
