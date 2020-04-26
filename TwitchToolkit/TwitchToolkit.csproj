@@ -35,9 +35,10 @@
     <PackageReference Include="Krafs.Rimworld.Ref" Version="1.1.2575" />
     <PackageReference Include="Lib.Harmony" Version="2.0.0.8" ExcludeAssets="runtime" />
     <PackageReference Include="MoonSharp" Version="2.0.0" />
-    <PackageReference Include="HodlHodl.Rimworld.Toolkit.Core" Version="1.0.6" ExcludeAssets="runtime" />
+    <PackageReference Include="HodlHodl.Rimworld.Toolkit.Core" Version="1.0.10" ExcludeAssets="runtime" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AddonMenu.cs" />
     <Compile Include="Commands\Command.cs" />
     <Compile Include="Commands\CommandEditor.cs" />
     <Compile Include="Commands\Commands.cs" />
@@ -173,7 +174,6 @@
     <Compile Include="Storytellers\StorytellerComp_CustomRandomStoryTeller.cs" />
     <Compile Include="TwitchToolkit.cs" />
     <Compile Include="Utilities\TimeHelper.cs" />
-    <Compile Include="Windows\Window_MainTab.cs" />
     <Compile Include="Utilities\Helper.cs" />
     <Compile Include="Settings\ToolkitSettings.cs" />
     <Compile Include="Ticker.cs" />
@@ -209,7 +209,7 @@
       <TargetPath>..\..\%(RecursiveDir)%(Filename)%(Extension)</TargetPath>
     </ContentWithTargetPath>
     <!-- 1.1: Remaining folders (Defs, Patches) are in the same parent folder of $(OutputDir), which is the 1.1 Assemblies folder -->
-    <ContentWithTargetPath Include="Defs\**\*;Patches\**\*">
+    <ContentWithTargetPath Include="Defs\**\*;Defs\*;Patches\**\*">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <TargetPath>..\%(RelativeDir)%(Filename)%(Extension)</TargetPath>
     </ContentWithTargetPath>
