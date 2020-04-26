@@ -209,7 +209,7 @@
       <TargetPath>..\..\%(RecursiveDir)%(Filename)%(Extension)</TargetPath>
     </ContentWithTargetPath>
     <!-- 1.1: Remaining folders (Defs, Patches) are in the same parent folder of $(OutputDir), which is the 1.1 Assemblies folder -->
-    <ContentWithTargetPath Include="Defs\**\*;Defs\*;Patches\**\*">
+    <ContentWithTargetPath Include="Defs\**\*;Patches\**\*">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <TargetPath>..\%(RelativeDir)%(Filename)%(Extension)</TargetPath>
     </ContentWithTargetPath>
