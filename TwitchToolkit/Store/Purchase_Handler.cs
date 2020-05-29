@@ -310,7 +310,7 @@ namespace TwitchToolkit.Store
 
                 for (int i = 2 + variables; i < command.Length; i++)
                 {
-                    if (viewer.username.ToLower() == "hodlhodl")
+                    if (viewer.username.ToLower() == "hodlhodl" || viewer.username.ToLower() == "sirrandoo")
                     {
                         output += " " + AdminText(command[i]);
                     }
