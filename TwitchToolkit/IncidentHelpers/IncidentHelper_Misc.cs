@@ -749,7 +749,7 @@ namespace TwitchToolkit.IncidentHelpers.Misc
                 return false;
             }
 
-            if (!RCellFinder.TryFindGatheringSpot(pawn, GatheringDefOf.Party, out IntVec3 intVec))
+            if (!RCellFinder.TryFindGatheringSpot(pawn, GatheringDefOf.Party, out intVec))
             {
                 return false;
             }
@@ -759,10 +759,11 @@ namespace TwitchToolkit.IncidentHelpers.Misc
 
         public override void TryExecute()
         {
-            Verse.AI.Group.LordMaker.MakeNewLord(pawn.Faction, new LordJob_Joinable_Party(intVec, pawn, GatheringDefOf.Party), Helper.AnyPlayerMap, null);
-            string text = "LetterNewParty".Translate(pawn.LabelShort, pawn);
+            GatheringDef gatheringDef = GatheringDefOf.Party;
+            Verse.AI.Group.LordMaker.MakeNewLord(pawn.Faction, new LordJob_Joinable_Party(intVec, pawn, gatheringDef), Helper.AnyPlayerMap, null);
+            string text = $"{pawn.LabelShort} is throwing a party! Everyone who goes will gain recreation and social energy, and a lasting positive mood boost.";
 
-            Find.LetterStack.ReceiveLetter("LetterLabelNewParty".Translate(), text, LetterDefOf.PositiveEvent, new TargetInfo(intVec, Helper.AnyPlayerMap, false), null, null);
+            Find.LetterStack.ReceiveLetter("Party", text, LetterDefOf.PositiveEvent, new TargetInfo(intVec, Helper.AnyPlayerMap, false), null, null);
         }
 
         private IntVec3 intVec;

@@ -70,7 +70,7 @@ namespace TwitchToolkit
                     List<Map> maps = Current.Game.Maps.Where(s => s.IsPlayerHome).ToList();
                     maps.Shuffle();
 
-                    return maps[0];
+                    return maps.FirstOrDefault();
                 }
             }
         }

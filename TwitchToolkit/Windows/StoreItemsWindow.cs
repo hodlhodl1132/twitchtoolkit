@@ -293,7 +293,8 @@ namespace TwitchToolkit.Windows
                                 )
                             )
                         )
-                    )
+                    ) &&
+                    t.defName != "Human"
                     orderby t.LabelCap.RawText
                     select t;
 

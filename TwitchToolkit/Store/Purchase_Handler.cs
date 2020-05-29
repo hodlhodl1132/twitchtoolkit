@@ -340,14 +340,11 @@ namespace TwitchToolkit.Store
         {
             char[] chars = input.ToCharArray();
             StringBuilder output = new StringBuilder();
-            output.Append("<size=24>");
 
             foreach (char str in chars)
             {
                 output.Append($"<color=#{Helper.GetRandomColorCode()}>{str}</color>");
             }
-
-            output.Append("</size>");
 
             return output.ToString();
         }

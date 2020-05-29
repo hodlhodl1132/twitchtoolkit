@@ -35,7 +35,9 @@
     <PackageReference Include="Krafs.Rimworld.Ref" Version="1.1.2575" />
     <PackageReference Include="Lib.Harmony" Version="2.0.0.8" ExcludeAssets="runtime" />
     <PackageReference Include="MoonSharp" Version="2.0.0" />
-    <PackageReference Include="HodlHodl.Rimworld.Toolkit.Core" Version="1.1.0" ExcludeAssets="runtime" />
+    <PackageReference Include="HodlHodl.Rimworld.Toolkit.Core" Version="1.1.11" ExcludeAssets="runtime">
+      <IncludeAssets>compile; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AddonMenu.cs" />
@@ -131,6 +133,7 @@
     <Compile Include="Storytellers\Window_Mercurius.cs" />
     <Compile Include="Storytellers\Window_UristBotSettings.cs" />
     <Compile Include="Twitch\MessageInterface.cs" />
+    <Compile Include="Utilities\EasterEgg.cs" />
     <Compile Include="Utilities\WeatherOverlay_VomitRain.cs" />
     <Compile Include="Votes\Vote_ExoticItems.cs" />
     <Compile Include="Votes\Vote_HodlBot.cs" />

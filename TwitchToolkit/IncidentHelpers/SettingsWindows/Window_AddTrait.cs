@@ -24,7 +24,7 @@ namespace TwitchToolkit.IncidentHelpers.SettingsWindows
             listing.Label("Add Trait Settings");
 
             traitsBuffer = AddTraitSettings.maxTraits.ToString();
-            listing.TextFieldNumericLabeled<int>("Maximum Traits", ref AddTraitSettings.maxTraits, ref traitsBuffer, 1f, 10f);
+            listing.TextFieldNumericLabeled<int>("Maximum Traits", ref AddTraitSettings.maxTraits, ref traitsBuffer, 1f, 100f);
 
             listing.End();
         }

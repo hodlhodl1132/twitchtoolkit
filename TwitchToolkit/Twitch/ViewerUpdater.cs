@@ -28,7 +28,9 @@ namespace TwitchToolkit.Twitch
             Viewer viewer = Viewers.GetViewer(twitchMessage.Username);
             GameComponentPawns component = Current.Game.GetComponent<GameComponentPawns>();
 
-            ToolkitSettings.ViewerColorCodes[twitchMessage.Username.ToLower()] = twitchMessage.ChatMessage.ColorHex;
+            ToolkitSettings.ViewerColorCodes[twitchMessage.Username.ToLower()] = twitchMessage.ChatMessage.ColorHex.Replace("#", "");
+
+            Log.Message("ColorHex : " + ToolkitSettings.ViewerColorCodes[twitchMessage.Username.ToLower()]);
 
             if (component.HasUserBeenNamed(twitchMessage.Username))
             {

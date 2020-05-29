@@ -26,7 +26,8 @@ namespace TwitchToolkit.Store
                    where (t.tradeability.TraderCanSell() || ThingSetMakerUtility.CanGenerate(t)) &&
                    (t.building == null || t.Minifiable || ToolkitSettings.MinifiableBuildings) &&
                    (t.FirstThingCategory != null || t.race != null) &&
-                   (t.BaseMarketValue > 0)
+                   (t.BaseMarketValue > 0) &&
+                   (t.defName != "Human")
                    orderby t.LabelCap.RawText
                    select t;
 
@@ -64,6 +65,11 @@ namespace TwitchToolkit.Store
                 {
                     StoreInventory.items.Add( new Item( Convert.ToInt32(def.BaseMarketValue * 10 / 6), string.Join("", def.label.Split(' ')).ToLower().Replace("\"", ""), def.defName ) );
                 }
+            }
+
+            if (StoreInventory.items.Find((item) => item.defname == "Human") != null)
+            {
+                StoreInventory.items = StoreInventory.items.Where((item) => item.defname != "Human").ToList();
             }
 
             UpdateStoreItemList();

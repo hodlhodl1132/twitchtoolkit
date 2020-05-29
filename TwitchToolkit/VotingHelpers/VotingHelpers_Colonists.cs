@@ -118,9 +118,9 @@ namespace TwitchToolkit.VotingHelpers.VotingHelpers_Colonists
                 return;
             }
             Verse.AI.Group.LordMaker.MakeNewLord(pawn.Faction, new LordJob_Joinable_Party(intVec, pawn, GatheringDefOf.Party), Helper.AnyPlayerMap, null);
-            string text = "LetterNewParty".Translate(pawn.LabelShort, pawn);
+            string text = $"{pawn.LabelShort} is throwing a party! Everyone who goes will gain recreation and social energy, and a lasting positive mood boost.";
 
-            Find.LetterStack.ReceiveLetter("LetterLabelNewParty".Translate(), text, LetterDefOf.PositiveEvent, new TargetInfo(intVec, Helper.AnyPlayerMap, false), null, null);
+            Find.LetterStack.ReceiveLetter("Party", text, LetterDefOf.PositiveEvent, new TargetInfo(intVec, map, false), null, null);
         }
 
         private Map map;
