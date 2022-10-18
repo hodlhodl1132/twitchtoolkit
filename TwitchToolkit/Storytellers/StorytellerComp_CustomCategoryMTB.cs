@@ -34,7 +34,8 @@ namespace TwitchToolkit
             {
 
                 IncidentDef selectedDef;
-                options = base.UsableIncidentsInCategory(this.Props.category, target);
+                IncidentParms incidentParms = new IncidentParms { target = target};
+                options = base.UsableIncidentsInCategory(this.Props.category, incidentParms);
                 Helper.Log("Trying to create events");
                 if (options.TryRandomElementByWeight(new Func<IncidentDef, float>(base.IncidentChanceFinal), out selectedDef))
                 {

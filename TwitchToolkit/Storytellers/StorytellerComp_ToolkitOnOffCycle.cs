@@ -58,7 +58,7 @@ namespace TwitchToolkit.Storytellers
 
             if ((float)GenDate.DaysPassed < this.Props.forceRaidEnemyBeforeDaysPassed)
             {
-                if (!IncidentDefOf.RaidEnemy.Worker.CanFireNow(parms, false))
+                if (!IncidentDefOf.RaidEnemy.Worker.CanFireNow(parms))
                 {
                     return null;
                 }

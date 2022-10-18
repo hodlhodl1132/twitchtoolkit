@@ -95,7 +95,8 @@ namespace TwitchToolkit
                     IncidentCategoryDef category = this.ChooseRandomCategory(incidentTarget, triedCategories);
                     Helper.Log($"Trying Category {category}");
                     parms = this.GenerateParms(category, incidentTarget);
-                    options = from d in base.UsableIncidentsInCategory(category, incidentTarget)
+                    IncidentParms incidentParms = new IncidentParms { target = incidentTarget };
+                    options = from d in base.UsableIncidentsInCategory(category, incidentParms)
                               where !d.NeedsParmsPoints || parms.points >= d.minThreatPoints
                               select d;
 
@@ -194,7 +195,9 @@ namespace TwitchToolkit
                         IncidentCategoryDef category = this.ChooseRandomCategory(target, triedCategories);
                         Helper.Log($"Trying Category{category}");
                         parms = this.GenerateParms(category, target);
-                        options = from d in base.UsableIncidentsInCategory(category, target)
+                        IncidentParms incidentParms = new IncidentParms { target = target };
+
+                    options = from d in base.UsableIncidentsInCategory(category, incidentParms)
                                     where !d.NeedsParmsPoints || parms.points >= d.minThreatPoints
                                     select d;
 

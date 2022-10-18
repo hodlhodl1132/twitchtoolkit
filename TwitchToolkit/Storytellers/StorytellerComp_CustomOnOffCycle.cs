@@ -54,7 +54,7 @@ namespace TwitchToolkit
             IncidentDef def2;
             if ((float)GenDate.DaysPassed < this.Props.forceRaidEnemyBeforeDaysPassed)
             {
-                if (!IncidentDefOf.RaidEnemy.Worker.CanFireNow(parms, false))
+                if (!IncidentDefOf.RaidEnemy.Worker.CanFireNow(parms))
                 {
                     return null;
                 }
@@ -62,7 +62,7 @@ namespace TwitchToolkit
             }
             else if (this.Props.incident != null)
             {
-                if (!this.Props.incident.Worker.CanFireNow(parms, false))
+                if (!this.Props.incident.Worker.CanFireNow(parms))
                 {
                     return null;
                 }

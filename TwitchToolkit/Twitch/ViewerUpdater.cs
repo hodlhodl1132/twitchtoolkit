@@ -34,7 +34,7 @@ namespace TwitchToolkit.Twitch
 
             if (component.HasUserBeenNamed(twitchMessage.Username))
             {
-                component.PawnAssignedToUser(twitchMessage.Username).story.hairColor = twitchMessage.ChatMessage.Color;
+                component.PawnAssignedToUser(twitchMessage.Username).story.HairColor = twitchMessage.ChatMessage.Color;
             }
 
             if (twitchMessage.ChatMessage.IsModerator && !viewer.mod)

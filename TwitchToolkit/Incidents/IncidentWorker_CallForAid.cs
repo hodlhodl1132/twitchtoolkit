@@ -113,7 +113,7 @@ namespace TwitchToolkit.Incidents
             {
                 for (int j = 0; j < list.Count; j++)
                 {
-                    if (list[j].apparel.WornApparel.Any((Apparel ap) => ap is ShieldBelt))
+                    if (list[j].apparel.WornApparel.Any((Apparel ap) => ap is MechShield))
                     {
                         LessonAutoActivator.TeachOpportunity(ConceptDefOf.ShieldBelts, OpportunityType.Critical);
                         break;

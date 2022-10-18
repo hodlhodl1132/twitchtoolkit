@@ -144,6 +144,9 @@ namespace TwitchToolkitDev
             catch (WebException e)
             {
                 Helper.Log("WebException raised - callback!");
+                RequestState myRequestState = (RequestState)asynchronousResult.AsyncState;
+                Helper.Log(myRequestState.urlCalled);
+                Helper.Log(e.StackTrace);
                 Helper.Log($"\n{e.Message}");
                 Helper.Log($"\n{e.Status}");
             }

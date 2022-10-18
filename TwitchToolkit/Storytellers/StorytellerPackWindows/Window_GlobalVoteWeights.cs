@@ -27,7 +27,7 @@ namespace TwitchToolkit.Storytellers.StorytellerPackWindows
             Rect viewRect = new Rect(0f, 0f, outRect.width - 20, allVotes.Count * 31f);
 
             listing.Begin(inRect);
-            listing.BeginScrollView(outRect, ref scrollPosition, ref viewRect);
+            //listing.BeginScrollView(outRect, ref scrollPosition, ref viewRect);
 
             listing.Label("Change the weights given to votes. Setting to 0% disables it.");
 
@@ -50,7 +50,7 @@ namespace TwitchToolkit.Storytellers.StorytellerPackWindows
                 totalWeights = newWeights;
             }
 
-            listing.EndScrollView(ref viewRect);
+            //listing.EndScrollView(ref viewRect);
             listing.End();
         }
 

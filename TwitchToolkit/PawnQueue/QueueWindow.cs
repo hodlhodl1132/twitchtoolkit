@@ -172,6 +172,7 @@ namespace TwitchToolkit.PawnQueue
                 PortraitsCache.Get(
                     colonist, 
                     ColonistBarColonistDrawer.PawnTextureSize, 
+                    new Rot4(),
                     ColonistBarColonistDrawer.PawnTextureCameraOffset, 
                     1.28205f
                     )

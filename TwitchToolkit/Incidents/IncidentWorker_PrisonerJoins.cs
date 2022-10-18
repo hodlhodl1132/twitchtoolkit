@@ -31,13 +31,62 @@ namespace TwitchToolkit.Incidents
             Faction ofAncients = Faction.OfAncients;
             bool pawnMustBeCapableOfViolence = this.def.pawnMustBeCapableOfViolence;
             Gender? fixedGender = gender;
-            PawnGenerationRequest request = new PawnGenerationRequest(pawnKind, ofAncients, PawnGenerationContext.NonPlayer, map.Tile, false, false, false, false, true, false, 1f, false, true, true, true, false, false, false, false, 0f, null, 1f, null, null, null, null, null, null, null, fixedGender, null, null, null, null);
+            PawnGenerationRequest request = new PawnGenerationRequest(
+                kind: pawnKind,
+                faction: ofAncients,
+                context: PawnGenerationContext.NonPlayer,
+                tile: map.Tile,
+                forceGenerateNewPawn: false,
+                allowDead: false,
+                allowDowned: false,
+                canGeneratePawnRelations: true,
+                mustBeCapableOfViolence: false,
+                colonistRelationChanceFactor: 1f,
+                forceAddFreeWarmLayerIfNeeded: false,
+                allowGay: true,
+                allowPregnant: true,
+                allowFood: true,
+                allowAddictions: false,
+                inhabitant: false,
+                certainlyBeenInCryptosleep: false,
+                forceRedressWorldPawnIfFormerColonist: false,
+                worldPawnFactionDoesntMatter: false,
+                biocodeWeaponChance: 0f,
+                biocodeApparelChance: 0f,
+                extraPawnForExtraRelationChance: null,
+                relationWithExtraPawnChanceFactor: 1f,
+                validatorPostGear: null,
+                validatorPreGear: null,
+                forcedTraits: null,
+                prohibitedTraits: null,
+                minChanceToRedressWorldPawn: null,
+                fixedBiologicalAge: null,
+                fixedGender: gender,
+                fixedLastName: null,
+                fixedBirthName: null,
+                fixedTitle: null,
+                fixedIdeo: null,
+                forceNoIdeo: false,
+                forceNoBackstory: false,
+                forbidAnyTitle: false,
+                forceDead: false,
+                forcedXenogenes: null,
+                forcedEndogenes: null,
+                forcedXenotype: null,
+                forcedCustomXenotype: null,
+                allowedXenotypes: null,
+                forceBaselinerChance: 0,
+                developmentalStages: DevelopmentalStage.Adult,
+                pawnKindDefGetter: null,
+                excludeBiologicalAgeRange: null,
+                biologicalAgeRange: null,
+                forceRecruitable: false); ;
             List<Pawn> prisoners = new List<Pawn>();
             Pawn pawn = PawnGenerator.GeneratePawn(request);
             NameTriple oldName = pawn.Name as NameTriple;
             NameTriple newName = new NameTriple(oldName.First, viewer.username.CapitalizeFirst(), oldName.Last);
             pawn.Name = newName;
-            pawn.guest.SetGuestStatus(Faction.OfPlayer, true);
+            pawn.guest.SetGuestStatus(Faction.OfPlayer);
             prisoners.Add(pawn);
             parms.raidArrivalMode = PawnsArrivalModeDefOf.CenterDrop;
             if (!parms.raidArrivalMode.Worker.TryResolveRaidSpawnCenter(parms))

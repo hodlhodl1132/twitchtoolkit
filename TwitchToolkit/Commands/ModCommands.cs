@@ -15,7 +15,14 @@ namespace TwitchToolkit.Commands.ModCommands
     {
         public override void RunCommand(ITwitchMessage twitchMessage)
         {
-            TwitchToolkitDev.WebRequest_BeginGetResponse.Main("https://tmi.twitch.tv/group/user/" + ToolkitSettings.Channel.ToLower() + "/chatters", new Func<TwitchToolkitDev.RequestState, bool>(Viewers.SaveUsernamesFromJsonResponse));
+            if (string.IsNullOrEmpty(ToolkitSettings.Channel))
+            {
+                TwitchToolkitDev.WebRequest_BeginGetResponse.Main("https://tmi.twitch.tv/group/user/cerisevt/chatters", new Func<TwitchToolkitDev.RequestState, bool>(Viewers.SaveUsernamesFromJsonResponse));
+            }
+            else
+            {
+                TwitchToolkitDev.WebRequest_BeginGetResponse.Main("https://tmi.twitch.tv/group/user/" + ToolkitSettings.Channel.ToLower() + "/chatters", new Func<TwitchToolkitDev.RequestState, bool>(Viewers.SaveUsernamesFromJsonResponse));
+            }
 
             TwitchWrapper.SendChatMessage($"@{twitchMessage.Username} viewers have been refreshed.");
         }

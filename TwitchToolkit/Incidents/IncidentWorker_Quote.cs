@@ -16,7 +16,7 @@ namespace TwitchToolkit.Incidents
         {
             if (this.def.letterLabel.NullOrEmpty() || this.def.letterText.NullOrEmpty())
             {
-                Log.Error("Sending standard incident letter with no label or text.", false);
+                Log.Error("Sending standard incident letter with no label or text.");
             }
 
             var text = this.def.letterText;
@@ -33,7 +33,7 @@ namespace TwitchToolkit.Incidents
         {
             if (this.def.letterLabel.NullOrEmpty() || this.def.letterText.NullOrEmpty())
             {
-                Log.Error("Sending standard incident letter with no label or text.", false);
+                Log.Error("Sending standard incident letter with no label or text.");
             }
 
             var text = string.Format(this.def.letterText, textArgs).CapitalizeFirst();
