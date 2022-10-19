@@ -65,11 +65,11 @@ namespace TwitchToolkit.IncidentHelpers.Traits
             {
                 num = Rand.ByCurve(LevelRandomCurve);
             }
-            foreach (Backstory backstory in from bs in pawn.story.AllBackstories
+            foreach (BackstoryDef backstory in from bs in pawn.story.AllBackstories
                                             where bs != null
                                             select bs)
             {
-                foreach (KeyValuePair<SkillDef, int> keyValuePair in backstory.skillGainsResolved)
+                foreach (KeyValuePair<SkillDef, int> keyValuePair in backstory.skillGains)
                 {
                     if (keyValuePair.Key == sk)
                     {

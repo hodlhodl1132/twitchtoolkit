@@ -363,7 +363,7 @@ namespace TwitchToolkit.IncidentHelpers.Raids
             worker = new IncidentWorker_Infestation();
             worker.def = IncidentDef.Named("Infestation");
 
-            bool canFire = worker.CanFireNow(parms, true);
+            bool canFire = worker.CanFireNow(parms);
 
             if (!canFire)
             {

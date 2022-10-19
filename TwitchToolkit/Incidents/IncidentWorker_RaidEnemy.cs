@@ -69,7 +69,7 @@ namespace TwitchToolkit.Incidents
                   groupKind,
                   "\nparms=",
                   parms
-                }), false);
+                }));
                 if (!Prefs.DevMode)
                 {
                     parms.raidStrategy = RaidStrategyDefOf.ImmediateAttack;

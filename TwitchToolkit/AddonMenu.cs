@@ -10,6 +10,7 @@ using TwitchToolkit.PawnQueue;
 using TwitchToolkit.Store;
 using TwitchToolkit.Windows;
 using Verse;
+using Window_Commands = TwitchToolkit.Windows.Window_Commands;
 
 namespace TwitchToolkit
 {

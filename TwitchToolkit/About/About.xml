@@ -3,8 +3,7 @@
   <name>Twitch Toolkit</name>
   <author>hodlhodl</author>
   <supportedVersions>
-    <li>1.0</li>
-    <li>1.1</li>
+    <li>1.4</li>
   </supportedVersions>
   <packageId>hodlhodl.twitchtoolkit</packageId>
   <description>...</description>

@@ -341,7 +341,7 @@ namespace TwitchToolkit
             return incident.CanFireNow(new IncidentParms
             {
                 target = Helper.AnyPlayerMap
-            }, true);
+            });
         }
 
         public static void AnimalTame(string quote = null)

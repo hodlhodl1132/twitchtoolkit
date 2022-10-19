@@ -295,7 +295,7 @@ namespace TwitchToolkit
             Listing_Standard optionsListing = new Listing_Standard();
 
             optionsListing.Begin(optionsRect);
-            optionsListing.BeginScrollView(scrollViewer, ref scrollVector2, ref viewRect);
+            optionsListing.Begin(scrollViewer);
 
             switch(currentTab)
             {
@@ -337,7 +337,7 @@ namespace TwitchToolkit
                     break;
             }
 
-            optionsListing.EndScrollView(ref viewRect);
+            //optionsListing.EndScrollView(ref viewRect);
             optionsListing.End();         
         }
 

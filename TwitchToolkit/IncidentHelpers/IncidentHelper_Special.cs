@@ -88,7 +88,56 @@ namespace TwitchToolkit.IncidentHelpers.Special
             PawnKindDef pawnKind = PawnKindDefOf.Colonist;
 			Faction ofPlayer = Faction.OfPlayer;
 			bool pawnMustBeCapableOfViolence = true;
-			PawnGenerationRequest request = new PawnGenerationRequest(pawnKind, ofPlayer, PawnGenerationContext.NonPlayer, map.Tile, false, false, false, false, true, pawnMustBeCapableOfViolence, 1f, false, true, true, true, false, false, false, false, 0f, null, 1f, null, null, null, null, null, null, null, null, null, null, null, null);
+            PawnGenerationRequest request = new PawnGenerationRequest(
+                kind:pawnKind,
+                faction:ofPlayer,
+                context:PawnGenerationContext.NonPlayer,
+                tile:map.Tile,
+                forceGenerateNewPawn: false,
+                allowDead : false,
+                allowDowned : false,
+                canGeneratePawnRelations : true,
+                mustBeCapableOfViolence : true,
+                colonistRelationChanceFactor : 1f,
+                forceAddFreeWarmLayerIfNeeded : false,
+                allowGay : true,
+                allowPregnant : true,
+                allowFood : true,
+                allowAddictions : false,
+                inhabitant : false,
+                certainlyBeenInCryptosleep : false,
+                forceRedressWorldPawnIfFormerColonist : false,
+                worldPawnFactionDoesntMatter : false,
+                biocodeWeaponChance : 0f,
+                biocodeApparelChance : 0f,
+                extraPawnForExtraRelationChance : null,
+                relationWithExtraPawnChanceFactor : 1f,
+                validatorPostGear : null,
+                validatorPreGear : null,
+                forcedTraits : null,
+                prohibitedTraits : null,
+                minChanceToRedressWorldPawn : null,
+                fixedBiologicalAge : null,
+                fixedGender : null,
+                fixedLastName : null,
+                fixedBirthName : null,
+                fixedTitle : null,
+                fixedIdeo : null,
+                forceNoIdeo : false,
+                forceNoBackstory : false,
+                forbidAnyTitle : false,
+                forceDead : false,
+                forcedXenogenes : null,
+                forcedEndogenes : null,
+                forcedXenotype : null,
+                forcedCustomXenotype : null,
+                allowedXenotypes : null,
+                forceBaselinerChance : 0,
+                developmentalStages : DevelopmentalStage.Adult,
+                pawnKindDefGetter : null,
+                excludeBiologicalAgeRange : null,
+                biologicalAgeRange : null,
+                forceRecruitable : false);
             Pawn pawn = PawnGenerator.GeneratePawn(request);
             NameTriple old = pawn.Name as NameTriple;
             pawn.Name = new NameTriple(old.First, Viewer.username, old.Last);
@@ -327,12 +376,12 @@ namespace TwitchToolkit.IncidentHelpers.Special
                 pawn.gender = Gender.Female;
             }
 
-            pawn.story.hairColor = PawnHairColors.RandomHairColor(pawn.story.SkinColor, pawn.ageTracker.AgeBiologicalYears);
-            pawn.story.hairDef = PawnHairChooser.RandomHairDefFor(pawn, FactionDefOf.PlayerColony);
+            pawn.story.HairColor = PawnHairColors.RandomHairColor(pawn,pawn.story.SkinColor, pawn.ageTracker.AgeBiologicalYears);
+            //pawn.story.hairDef = PawnHairChooser.RandomHairDefFor(pawn, FactionDefOf.PlayerColony);
 
-            if (pawn.story.adulthood != null)
+            if (pawn.story.Adulthood != null)
             {
-                pawn.story.bodyType = pawn.story.adulthood.BodyTypeFor(pawn.gender);
+                pawn.story.bodyType = pawn.story.Adulthood.BodyTypeFor(pawn.gender);
             }
             else if (Rand.Value < 0.5f)
             {

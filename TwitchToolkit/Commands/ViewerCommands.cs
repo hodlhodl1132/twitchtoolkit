@@ -84,7 +84,6 @@ namespace TwitchToolkit.Commands.ViewerCommands
         public override void RunCommand(ITwitchMessage twitchMessage)
         {
             Viewer viewer = Viewers.GetViewer(twitchMessage.Username);
-
             GameComponentPawns pawnComponent = Current.Game.GetComponent<GameComponentPawns>();
 
             if (pawnComponent.HasUserBeenNamed(twitchMessage.Username) || pawnComponent.UserInViewerQueue(twitchMessage.Username))

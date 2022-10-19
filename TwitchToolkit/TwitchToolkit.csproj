@@ -18,7 +18,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>C:\Program Files %28x86%29\Steam\steamapps\common\RimWorld\Mods\TwitchToolkit\$(CurrentRimWorldLoadFolder)\Assemblies</OutputPath>
+    <OutputPath>..\..\..\..\..\..\..\Program Files %28x86%29\Steam\steamapps\common\RimWorld\Mods\TwitchToolkit\v1.4\Assemblies\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -32,8 +32,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Krafs.Rimworld.Ref" Version="1.1.2575" />
-    <PackageReference Include="Lib.Harmony" Version="2.0.0.8" ExcludeAssets="runtime" />
+    <PackageReference Include="Krafs.Rimworld.Ref" Version="1.4.3520-beta" />
+    <PackageReference Include="Lib.Harmony" Version="2.2.2" ExcludeAssets="runtime">
+      <IncludeAssets>compile; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="MoonSharp" Version="2.0.0" />
     <PackageReference Include="HodlHodl.Rimworld.Toolkit.Core" Version="1.1.11" ExcludeAssets="runtime">
       <IncludeAssets>compile; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -206,11 +208,75 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <TargetPath>..\..\%(RelativeDir)%(Filename)%(Extension)</TargetPath>
     </ContentWithTargetPath>
-    <!-- 1.0: Defs, Patches, Assemblies must be in 1.0 folder (NOT v1.0 folder) or root folder - using root folder for parity with above 1.0-compatible folders -->
-    <ContentWithTargetPath Include="v1.0\**\*">
+    <ContentWithTargetPath Include="v1.0\Assemblies\0Harmony.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <TargetPath>..\..\%(RecursiveDir)%(Filename)%(Extension)</TargetPath>
+      <TargetPath>..\..\Assemblies\0Harmony.dll</TargetPath>
     </ContentWithTargetPath>
+    <ContentWithTargetPath Include="v1.0\Assemblies\MoonSharp.Interpreter.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <TargetPath>..\..\Assemblies\MoonSharp.Interpreter.dll</TargetPath>
+    </ContentWithTargetPath>
+    <ContentWithTargetPath Include="v1.0\Assemblies\MoonSharp.Interpreter.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <TargetPath>..\..\Assemblies\MoonSharp.Interpreter.xml</TargetPath>
+    </ContentWithTargetPath>
+    <ContentWithTargetPath Include="v1.0\Assemblies\TwitchToolkit.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <TargetPath>..\..\Assemblies\TwitchToolkit.dll</TargetPath>
+    </ContentWithTargetPath>
+    <ContentWithTargetPath Include="v1.0\Defs\Incidents\Incidents.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <TargetPath>..\..\Defs\Incidents\Incidents.xml</TargetPath>
+    </ContentWithTargetPath>
+    <ContentWithTargetPath Include="v1.0\Defs\Misc\Commands.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <TargetPath>..\..\Defs\Misc\Commands.xml</TargetPath>
+    </ContentWithTargetPath>
+    <ContentWithTargetPath Include="v1.0\Defs\Misc\GameConditions.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <TargetPath>..\..\Defs\Misc\GameConditions.xml</TargetPath>
+    </ContentWithTargetPath>
+    <ContentWithTargetPath Include="v1.0\Defs\Misc\IncidentWorkers.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <TargetPath>..\..\Defs\Misc\IncidentWorkers.xml</TargetPath>
+    </ContentWithTargetPath>
+    <ContentWithTargetPath Include="v1.0\Defs\Misc\InstallSteps.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <TargetPath>..\..\Defs\Misc\InstallSteps.xml</TargetPath>
+    </ContentWithTargetPath>
+    <ContentWithTargetPath Include="v1.0\Defs\Misc\Letters.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <TargetPath>..\..\Defs\Misc\Letters.xml</TargetPath>
+    </ContentWithTargetPath>
+    <ContentWithTargetPath Include="v1.0\Defs\Misc\Weather.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <TargetPath>..\..\Defs\Misc\Weather.xml</TargetPath>
+    </ContentWithTargetPath>
+    <ContentWithTargetPath Include="v1.0\Defs\SoundDefs\Tornado.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <TargetPath>..\..\Defs\SoundDefs\Tornado.xml</TargetPath>
+    </ContentWithTargetPath>
+    <ContentWithTargetPath Include="v1.0\Defs\StoreIncidents\StoreIncidents.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <TargetPath>..\..\Defs\StoreIncidents\StoreIncidents.xml</TargetPath>
+    </ContentWithTargetPath>
+    <ContentWithTargetPath Include="v1.0\Defs\StorytellerDefs\StorytellerPacks.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <TargetPath>..\..\Defs\StorytellerDefs\StorytellerPacks.xml</TargetPath>
+    </ContentWithTargetPath>
+    <ContentWithTargetPath Include="v1.0\Defs\StorytellerDefs\TwitchToolkit.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <TargetPath>..\..\Defs\StorytellerDefs\TwitchToolkit.xml</TargetPath>
+    </ContentWithTargetPath>
+    <ContentWithTargetPath Include="v1.0\Defs\VotingIncidents\ToryTalker.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <TargetPath>..\..\Defs\VotingIncidents\ToryTalker.xml</TargetPath>
+    </ContentWithTargetPath>
+    <ContentWithTargetPath Include="v1.0\Patches\StorytellerPatch.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <TargetPath>..\..\Patches\StorytellerPatch.xml</TargetPath>
+    </ContentWithTargetPath>
+    <!-- 1.0: Defs, Patches, Assemblies must be in 1.0 folder (NOT v1.0 folder) or root folder - using root folder for parity with above 1.0-compatible folders -->
     <!-- 1.1: Remaining folders (Defs, Patches) are in the same parent folder of $(OutputDir), which is the 1.1 Assemblies folder -->
     <ContentWithTargetPath Include="Defs\**\*;Patches\**\*">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

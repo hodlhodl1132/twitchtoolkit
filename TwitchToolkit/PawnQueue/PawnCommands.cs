@@ -74,7 +74,7 @@ namespace TwitchToolkit.PawnQueue
 
                 string output = $"@{viewer.username} About {pawn.Name.ToStringShort.CapitalizeFirst()}: ";
 
-                List<Backstory> backstories = pawn.story.AllBackstories.ToList();
+                List<BackstoryDef> backstories = pawn.story.AllBackstories.ToList();
 
                 for (int i = 0; i < backstories.Count; i++)
                 {

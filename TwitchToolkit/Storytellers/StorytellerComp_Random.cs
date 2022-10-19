@@ -30,7 +30,8 @@ namespace TwitchToolkit.Storytellers
                     incidentDefs = new List<IncidentDef>();
                     IncidentCategoryDef category = ChooseRandomCategory(target, triedCategories);
                     IncidentParms parms = this.GenerateParms(category, target);
-                    IEnumerable<IncidentDef> options = from d in base.UsableIncidentsInCategory(category, target)
+                    IncidentParms incidentParms = new IncidentParms { target = target };
+                    IEnumerable<IncidentDef> options = from d in base.UsableIncidentsInCategory(category, incidentParms)
                                                        where d.Worker.CanFireNow(parms) && (!d.NeedsParmsPoints || parms.points >= d.minThreatPoints)
                                                        select d;
 

@@ -46,7 +46,7 @@ namespace TwitchToolkit.Incidents
                   where x.Worker.CanUseWith(parms)
                   select x).TryRandomElementByWeight((PawnsArrivalModeDef x) => x.Worker.GetSelectionWeight(parms), out parms.raidArrivalMode))
             {
-                Log.Error("Could not resolve arrival mode for raid. Defaulting to EdgeWalkIn. parms=" + parms, false);
+                Log.Error($"Could not resolve arrival mode for raid. Defaulting to EdgeWalkIn. parms={parms}");
                 parms.raidArrivalMode = PawnsArrivalModeDefOf.EdgeWalkIn;
             }
         }
