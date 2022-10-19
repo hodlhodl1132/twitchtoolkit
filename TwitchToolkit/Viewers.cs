@@ -278,11 +278,21 @@ namespace TwitchToolkit
 
         public static void RefreshViewers()
         {
-            TwitchToolkitDev.WebRequest_BeginGetResponse.Main(
-                "https://tmi.twitch.tv/group/user/" +
-                ToolkitSettings.Channel.ToLower() +
-                "/chatters", new Func<TwitchToolkitDev.RequestState, bool>(Viewers.SaveUsernamesFromJsonResponse)
+            if (string.IsNullOrEmpty(ToolkitSettings.Channel))
+            {
+                TwitchToolkitDev.WebRequest_BeginGetResponse.Main(
+                    "https://tmi.twitch.tv/group/user/derisevt/chatters", new Func<TwitchToolkitDev.RequestState, bool>(Viewers.SaveUsernamesFromJsonResponse)
                 );
+            }
+            else
+            {
+                TwitchToolkitDev.WebRequest_BeginGetResponse.Main(
+                    "https://tmi.twitch.tv/group/user/" +
+                    ToolkitSettings.Channel.ToLower() +
+                    "/chatters", new Func<TwitchToolkitDev.RequestState, bool>(Viewers.SaveUsernamesFromJsonResponse)
+                );
+            }
+
         }
 
         public static void ResetViewersCoins()

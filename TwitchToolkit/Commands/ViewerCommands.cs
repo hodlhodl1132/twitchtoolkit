@@ -83,13 +83,11 @@ namespace TwitchToolkit.Commands.ViewerCommands
     {
         public override void RunCommand(ITwitchMessage twitchMessage)
         {
-            TwitchWrapper.SendChatMessage($"Pineapple");
             Viewer viewer = Viewers.GetViewer(twitchMessage.Username);
             GameComponentPawns pawnComponent = Current.Game.GetComponent<GameComponentPawns>();
 
             if (pawnComponent.HasUserBeenNamed(twitchMessage.Username) || pawnComponent.UserInViewerQueue(twitchMessage.Username))
             {
-                TwitchWrapper.SendChatMessage($"{pawnComponent.HasUserBeenNamed(twitchMessage.Username)},{pawnComponent.UserInViewerQueue(twitchMessage.Username)}");
                 return;
             }
 
