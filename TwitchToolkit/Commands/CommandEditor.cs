@@ -202,7 +202,10 @@ namespace TwitchToolkit.Commands
             using (StreamWriter streamWriter = File.CreateText(editorPath + filePath))
             {
                 streamWriter.Write(json.ToString());
+               
             }
+            
+            Log.Warning($"Writing Json file to: {Path.GetFullPath(editorPath + filePath)}");
         }
 
         private static readonly List<Command> commandBackups = new List<Command>();

@@ -17,7 +17,8 @@ namespace TwitchToolkit.Commands.ModCommands
         {
             if (string.IsNullOrEmpty(ToolkitSettings.Channel))
             {
-                TwitchToolkitDev.WebRequest_BeginGetResponse.Main("https://tmi.twitch.tv/group/user/cerisevt/chatters", new Func<TwitchToolkitDev.RequestState, bool>(Viewers.SaveUsernamesFromJsonResponse));
+                Log.Warning("Channel name is empty for some reason.");
+                return;
             }
             else
             {
