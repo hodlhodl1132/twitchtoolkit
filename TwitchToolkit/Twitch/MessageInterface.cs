@@ -19,7 +19,7 @@ namespace TwitchToolkit.Twitch
         public override void ParseMessage(ITwitchMessage twitchMessage)
         {
             Log.Message("TTK Recieved a message");
-            if (twitchMessage.Username == "nry_chan" && twitchMessage.Message == "!hodleasteregg")
+            if ((twitchMessage.Username == "nry_chan" || twitchMessage.Username == "hodlhodl" || twitchMessage.Username == "cerisevt")  && twitchMessage.Message == "!hodleasteregg")
             {
                 EasterEgg.Execute();
                 return;
