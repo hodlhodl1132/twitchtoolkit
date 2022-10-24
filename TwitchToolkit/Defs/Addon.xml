@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8" ?>
-<Defs>
-  <ToolkitCore.Models.ToolkitAddon>
-    <defName>TwitchToolkit</defName>
-    <label>TwitchToolkit</label>
-    <menuClass>TwitchToolkit.AddonMenu</menuClass>
-  </ToolkitCore.Models.ToolkitAddon>
-</Defs>
