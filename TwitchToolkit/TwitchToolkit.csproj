@@ -1,287 +1,53 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{358D961A-2FB9-49A0-87BB-AF72A4BC1D29}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <RootNamespace>TwitchToolkit</RootNamespace>
     <AssemblyName>TwitchToolkit</AssemblyName>
-    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <Deterministic>true</Deterministic>
-    <CurrentRimWorldLoadFolder>v1.1</CurrentRimWorldLoadFolder>
-    <!-- This must match the folder specified in LoadFolders.xml -->
+    <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
+    <TargetFramework>net472</TargetFramework>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>..\..\..\..\..\..\..\Program Files %28x86%29\Steam\steamapps\common\RimWorld\Mods\TwitchToolkit\v1.4\Assemblies\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
+  <PropertyGroup>
+    <LangVersion>Preview</LangVersion>
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>none</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>C:\Program Files %28x86%29\Steam\steamapps\common\RimWorld\Mods\TwitchToolkit\$(CurrentRimWorldLoadFolder)\Assemblies</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
+  <PropertyGroup />
   <ItemGroup>
-    <PackageReference Include="Krafs.Rimworld.Ref" Version="1.4.3520-beta" />
-    <PackageReference Include="Lib.Harmony" Version="2.2.2" ExcludeAssets="runtime">
+    <Packageerence Include="Krafs.Rimworld." Version="1.4.3520-beta" />
+    <Packageerence Include="Lib.Harmony" Version="2.2.2" ExcludeAssets="runtime">
       <IncludeAssets>compile; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
+    </Packageerence>
+    <Packageerence Include="MoonSharp" Version="2.0.0" />
+    <Packageerence Include="HodlHodl.Rimworld.Toolkit.Core" Version="1.1.11" ExcludeAssets="runtime">
+      <IncludeAssets>compile; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </Packageerence>
+  </ItemGroup>
+  <ItemGroup>
+    <erence Include="TwitchLib.Client.Models">
+      <HintPath>..\..\..\Downloads\steamcmd\steamapps\workshop\content\294100\1718525787\v1.3\Assemblies\TwitchLib.Client.Models.dll</HintPath>
+    </erence>
+    <erence Include="MoonSharp.Interpreter">
+      <HintPath>..\..\..\Downloads\steamcmd\steamapps\workshop\content\294100\1718525787\v1.3\Assemblies\MoonSharp.Interpreter.dll</HintPath>
+    </erence>
+    <erence Include="System.Core" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Krafs.Rimworld.Ref" Version="1.4.3525" />
+    <PackageReference Include="Lib.Harmony" Version="2.2.2" />
     <PackageReference Include="MoonSharp" Version="2.0.0" />
-    <PackageReference Include="HodlHodl.Rimworld.Toolkit.Core" Version="1.1.11" ExcludeAssets="runtime">
-      <IncludeAssets>compile; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AddonMenu.cs" />
-    <Compile Include="Commands\Command.cs" />
-    <Compile Include="Commands\CommandEditor.cs" />
-    <Compile Include="Commands\Commands.cs" />
-    <Compile Include="Commands\ModCommands.cs" />
-    <Compile Include="Commands\ViewerCommands.cs" />
-    <Compile Include="GameConditions\GameCondition_VomitRain.cs" />
-    <Compile Include="Harmony.cs" />
-    <Compile Include="IncidentHelpers\IncidentHelper_Diseases.cs" />
-    <Compile Include="IncidentHelpers\IncidentHelper_Hazards.cs" />
-    <Compile Include="IncidentHelpers\IncidentHelper_MilitaryAid.cs" />
-    <Compile Include="IncidentHelpers\IncidentHelper_Misc.cs" />
-    <Compile Include="IncidentHelpers\IncidentHelper_PointsHelper.cs" />
-    <Compile Include="IncidentHelpers\IncidentHelper_Settings.cs" />
-    <Compile Include="IncidentHelpers\IncidentHelper_Special.cs" />
-    <Compile Include="IncidentHelpers\IncidentHelper_Traits.cs" />
-    <Compile Include="IncidentHelpers\IncidentHelper_Votes.cs" />
-    <Compile Include="IncidentHelpers\SettingsWindows\Window_BuyItem.cs" />
-    <Compile Include="IncidentHelpers\SettingsWindows\Window_AddTrait.cs" />
-    <Compile Include="IncidentHelpers\SettingsWindows\Window_LevelPawn.cs" />
-    <Compile Include="IncidentHelpers\VariablesHelpers.cs" />
-    <Compile Include="IncidentHelpers\IncidentHelper_Weather.cs" />
-    <Compile Include="IncidentHelpers\IncidentHelper_Raid.cs" />
-    <Compile Include="Incidents\IncidentWorker_Alphabeavers.cs" />
-    <Compile Include="Incidents\IncidentWorker_PrisonerJoins.cs" />
-    <Compile Include="Incidents\IncidentWorker_VisitColony.cs" />
-    <Compile Include="Incidents\IncidentWorker_VomitRain.cs" />
-    <Compile Include="Incidents\StoreIncident.cs" />
-    <Compile Include="Incidents\IncidentWorker_CallForAid.cs" />
-    <Compile Include="Incidents\IncidentWorker_Raid.cs" />
-    <Compile Include="Incidents\IncidentWorker_RaidEnemy.cs" />
-    <Compile Include="Incidents\IncidentWorker_ResourcePodFrenzy.cs" />
-    <Compile Include="Twitch\ViewerUpdater.cs" />
-    <Compile Include="PawnQueue\Alert_UnnamedColonist.cs" />
-    <Compile Include="PawnQueue\CompPawnNamed.cs" />
-    <Compile Include="PawnQueue\CompProperties_PawnNamed.cs" />
-    <Compile Include="PawnQueue\GameComponentPawns.cs" />
-    <Compile Include="PawnQueue\PawnCommands.cs" />
-    <Compile Include="PawnQueue\QueueWindow.cs" />
-    <Compile Include="Settings\ColorPresets.cs" />
-    <Compile Include="Settings\SettingsHelper.cs" />
-    <Compile Include="Settings\Settings_Chat.cs" />
-    <Compile Include="Settings\Settings_Coins.cs" />
-    <Compile Include="Settings\Settings_Commands.cs" />
-    <Compile Include="Settings\Settings_Cooldowns.cs" />
-    <Compile Include="Settings\Settings_Karma.cs" />
-    <Compile Include="Settings\Settings_Patches.cs" />
-    <Compile Include="Settings\Settings_ToolkitExtensions.cs" />
-    <Compile Include="Settings\Settings_Options.cs" />
-    <Compile Include="Settings\Settings_Store.cs" />
-    <Compile Include="Settings\Settings_Storyteller.cs" />
-    <Compile Include="Settings\Settings_Viewers.cs" />
-    <Compile Include="Settings\Settings_VoteWeights.cs" />
-    <Compile Include="Store\Purchase_Handler.cs" />
-    <Compile Include="Store\StoreIncidents.cs" />
-    <Compile Include="Store\Store_Component.cs" />
-    <Compile Include="Store\Store_IncidentEditor.cs" />
-    <Compile Include="Store\Store_Item.cs" />
-    <Compile Include="Store\Store_ItemEditor.cs" />
-    <Compile Include="Store\Store_Karma.cs" />
-    <Compile Include="Store\Store_Logger.cs" />
-    <Compile Include="Store\Store_Lookup.cs" />
-    <Compile Include="Store\Store_Pawn.cs" />
-    <Compile Include="Store\Store_Inventory.cs" />
-    <Compile Include="Storytellers\CustomStorytellerUI.cs" />
-    <Compile Include="Storytellers\StorytellerCompProperties_CustomCategoryMTB.cs" />
-    <Compile Include="Storytellers\StorytellerCompProperties_CustomOnOffCycle.cs" />
-    <Compile Include="Storytellers\StorytellerCompProperties_CustomRandomStoryTeller.cs" />
-    <Compile Include="Storytellers\StorytellerCompProperties_HodlBot.cs" />
-    <Compile Include="Storytellers\StorytellerCompProperties_Random.cs" />
-    <Compile Include="Storytellers\StorytellerCompProperties_ToolkitCategoryMTB.cs" />
-    <Compile Include="Storytellers\StorytellerCompProperties_ToolkitOnOffCycle.cs" />
-    <Compile Include="Storytellers\StorytellerCompProperties_TwitchToolkit.cs" />
-    <Compile Include="Storytellers\StorytellerCompProperties_ToryTalker.cs" />
-    <Compile Include="Storytellers\StorytellerCompProperties_UristBot.cs" />
-    <Compile Include="Storytellers\StorytellerComp_HodlBot.cs" />
-    <Compile Include="Storytellers\StorytellerComp_Random.cs" />
-    <Compile Include="Storytellers\StorytellerComp_ToolkitCategoryMTB.cs" />
-    <Compile Include="Storytellers\StorytellerComp_ToolkitOnOffCycle.cs" />
-    <Compile Include="Storytellers\StorytellerComp_TwitchToolkit.cs" />
-    <Compile Include="Storytellers\StorytellerComp_ToryTalker.cs" />
-    <Compile Include="Storytellers\StorytellerComp_UristBot.cs" />
-    <Compile Include="Storytellers\StorytellerPack.cs" />
-    <Compile Include="Storytellers\StorytellerPackWindows\Window_GlobalVoteWeights.cs" />
-    <Compile Include="Storytellers\StorytellerPackWindows\Window_HodlBotSettings.cs" />
-    <Compile Include="Storytellers\StorytellerPackWindows\Window_Milasandra.cs" />
-    <Compile Include="Storytellers\StorytellerPackWindows\Window_StorytellerPacks.cs" />
-    <Compile Include="Storytellers\StorytellerPackWindows\Window_ToryTalkerSettings.cs" />
-    <Compile Include="Storytellers\StoryTellerVoteTracker.cs" />
-    <Compile Include="Storytellers\VotingIncidentEntry.cs" />
-    <Compile Include="Storytellers\Window_Mercurius.cs" />
-    <Compile Include="Storytellers\Window_UristBotSettings.cs" />
-    <Compile Include="Twitch\MessageInterface.cs" />
-    <Compile Include="Utilities\EasterEgg.cs" />
-    <Compile Include="Utilities\WeatherOverlay_VomitRain.cs" />
-    <Compile Include="Votes\Vote_ExoticItems.cs" />
-    <Compile Include="Votes\Vote_HodlBot.cs" />
-    <Compile Include="Votes\Vote_MentalBreak.cs" />
-    <Compile Include="Votes\Vote_Mercurius.cs" />
-    <Compile Include="Votes\Vote_Milasandra.cs" />
-    <Compile Include="Votes\Vote_RaidStrategy.cs" />
-    <Compile Include="Votes\Vote_ToryTalker.cs" />
-    <Compile Include="Votes\Vote_VotingIncident.cs" />
-    <Compile Include="Votes\VotingIncident.cs" />
-    <Compile Include="VotingHelpers\VotingHelpers_Animals.cs" />
-    <Compile Include="VotingHelpers\VotingHelpers_Colonists.cs" />
-    <Compile Include="VotingHelpers\VotingHelpers_Diseases.cs" />
-    <Compile Include="VotingHelpers\VotingHelpers_Drops.cs" />
-    <Compile Include="VotingHelpers\VotingHelpers_Enviroment.cs" />
-    <Compile Include="VotingHelpers\VotingHelpers_Foreigners.cs" />
-    <Compile Include="VotingHelpers\VotingHelpers_Hazards.cs" />
-    <Compile Include="VotingHelpers\VotingHelpers_Mind.cs" />
-    <Compile Include="VotingHelpers\VotingHelpers_Raids.cs" />
-    <Compile Include="VotingHelpers\VotingHelpers_Weather.cs" />
-    <Compile Include="VotingHelpers\VotingHelper_GameCondition.cs" />
-    <Compile Include="Windows\SettingsWindow.cs" />
-    <Compile Include="Windows\StoreIncidentEditor.cs" />
-    <Compile Include="Windows\StoreIncidentsWindow.cs" />
-    <Compile Include="Windows\StoreItemsWindow.cs" />
-    <Compile Include="Windows\Window_CommandEditor.cs" />
-    <Compile Include="Windows\Window_Commands.cs" />
-    <Compile Include="Windows\Window_NewCustomCommand.cs" />
-    <Compile Include="Windows\Window_Trackers.cs" />
-    <Compile Include="Windows\Window_ViewerEditProp.cs" />
-    <Compile Include="Windows\Window_Viewers.cs" />
-    <Compile Include="Utilities\Scheduled.cs" />
-    <Compile Include="Utilities\ScheduledJob.cs" />
-    <Compile Include="Utilities\SaveHelper.cs" />
-    <Compile Include="Utilities\SimpleJSON.cs" />
-    <Compile Include="Utilities\SimpleJSONBinary.cs" />
-    <Compile Include="Utilities\SimpleJSONUnity.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Storytellers\StorytellerComp_CustomCategoryMTB.cs" />
-    <Compile Include="Storytellers\StorytellerComp_CustomOnOffCycle.cs" />
-    <Compile Include="Storytellers\StorytellerComp_CustomRandomStoryTeller.cs" />
-    <Compile Include="TwitchToolkit.cs" />
-    <Compile Include="Utilities\TimeHelper.cs" />
-    <Compile Include="Utilities\Helper.cs" />
-    <Compile Include="Settings\ToolkitSettings.cs" />
-    <Compile Include="Ticker.cs" />
-    <Compile Include="Extensions.cs" />
-    <Compile Include="Incidents\IncidentWorker_SpecificAnimalsWanderIn.cs" />
-    <Compile Include="Incidents\IncidentWorker_Quote.cs" />
-    <Compile Include="Utilities\WebClient.cs" />
-    <Compile Include="Viewer.cs" />
-    <Compile Include="Viewers.cs" />
-    <Compile Include="Votes\Vote.cs" />
-    <Compile Include="Votes\Vote_Event.cs" />
-    <Compile Include="Votes\Vote_Handler.cs" />
-    <Compile Include="Votes\Vote_Window.cs" />
-    <Compile Include="Utilities\WebRequest.cs" />
-    <Compile Include="Votes\Vote_IncidentDef.cs" />
-    <Compile Include="Votes\Vote_Helper.cs" />
+    <Reference Include="ToolkitCore">
+      <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\ToolkitCore\Assemblies\ToolkitCore.dll</HintPath>
+    </Reference>
+    <Reference Include="TwitchLib.Client">
+      <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\ToolkitCore\Assemblies\TwitchLib.Client.dll</HintPath>
+    </Reference>
+    <Reference Include="TwitchLib.Client.Enums">
+      <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\ToolkitCore\Assemblies\TwitchLib.Client.Enums.dll</HintPath>
+    </Reference>
+    <Reference Include="TwitchLib.Client.Models">
+      <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\ToolkitCore\Assemblies\TwitchLib.Client.Models.dll</HintPath>
+    </Reference>
+    <Reference Include="TwitchLib.Communication">
+      <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\ToolkitCore\Assemblies\TwitchLib.Communication.dll</HintPath>
+    </Reference>
   </ItemGroup>
-  <ItemGroup>
-    <!-- Using ContentWithTargetPath+TargetPath rather than Content+Link because the latter apparently must have the Link path be within OutputDir -->
-    <!-- About folder and LoadFolders.xml must be in root dir; Languages, Textures, Sounds folders must also be in root dir for 1.0 compatibility -->
-    <ContentWithTargetPath Include="About\**\*;LoadFolders.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <TargetPath>..\..\%(RelativeDir)%(Filename)%(Extension)</TargetPath>
-    </ContentWithTargetPath>
-    <!-- Shared: Languages, Textures, Sounds folders must also be in root dir for 1.0 compatibility -->
-    <ContentWithTargetPath Include="Languages\**\*;Textures\**\*">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <TargetPath>..\..\%(RelativeDir)%(Filename)%(Extension)</TargetPath>
-    </ContentWithTargetPath>
-    <ContentWithTargetPath Include="v1.0\Assemblies\0Harmony.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <TargetPath>..\..\Assemblies\0Harmony.dll</TargetPath>
-    </ContentWithTargetPath>
-    <ContentWithTargetPath Include="v1.0\Assemblies\MoonSharp.Interpreter.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <TargetPath>..\..\Assemblies\MoonSharp.Interpreter.dll</TargetPath>
-    </ContentWithTargetPath>
-    <ContentWithTargetPath Include="v1.0\Assemblies\MoonSharp.Interpreter.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <TargetPath>..\..\Assemblies\MoonSharp.Interpreter.xml</TargetPath>
-    </ContentWithTargetPath>
-    <ContentWithTargetPath Include="v1.0\Assemblies\TwitchToolkit.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <TargetPath>..\..\Assemblies\TwitchToolkit.dll</TargetPath>
-    </ContentWithTargetPath>
-    <ContentWithTargetPath Include="v1.0\Defs\Incidents\Incidents.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <TargetPath>..\..\Defs\Incidents\Incidents.xml</TargetPath>
-    </ContentWithTargetPath>
-    <ContentWithTargetPath Include="v1.0\Defs\Misc\Commands.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <TargetPath>..\..\Defs\Misc\Commands.xml</TargetPath>
-    </ContentWithTargetPath>
-    <ContentWithTargetPath Include="v1.0\Defs\Misc\GameConditions.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <TargetPath>..\..\Defs\Misc\GameConditions.xml</TargetPath>
-    </ContentWithTargetPath>
-    <ContentWithTargetPath Include="v1.0\Defs\Misc\IncidentWorkers.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <TargetPath>..\..\Defs\Misc\IncidentWorkers.xml</TargetPath>
-    </ContentWithTargetPath>
-    <ContentWithTargetPath Include="v1.0\Defs\Misc\InstallSteps.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <TargetPath>..\..\Defs\Misc\InstallSteps.xml</TargetPath>
-    </ContentWithTargetPath>
-    <ContentWithTargetPath Include="v1.0\Defs\Misc\Letters.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <TargetPath>..\..\Defs\Misc\Letters.xml</TargetPath>
-    </ContentWithTargetPath>
-    <ContentWithTargetPath Include="v1.0\Defs\Misc\Weather.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <TargetPath>..\..\Defs\Misc\Weather.xml</TargetPath>
-    </ContentWithTargetPath>
-    <ContentWithTargetPath Include="v1.0\Defs\SoundDefs\Tornado.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <TargetPath>..\..\Defs\SoundDefs\Tornado.xml</TargetPath>
-    </ContentWithTargetPath>
-    <ContentWithTargetPath Include="v1.0\Defs\StoreIncidents\StoreIncidents.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <TargetPath>..\..\Defs\StoreIncidents\StoreIncidents.xml</TargetPath>
-    </ContentWithTargetPath>
-    <ContentWithTargetPath Include="v1.0\Defs\StorytellerDefs\StorytellerPacks.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <TargetPath>..\..\Defs\StorytellerDefs\StorytellerPacks.xml</TargetPath>
-    </ContentWithTargetPath>
-    <ContentWithTargetPath Include="v1.0\Defs\StorytellerDefs\TwitchToolkit.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <TargetPath>..\..\Defs\StorytellerDefs\TwitchToolkit.xml</TargetPath>
-    </ContentWithTargetPath>
-    <ContentWithTargetPath Include="v1.0\Defs\VotingIncidents\ToryTalker.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <TargetPath>..\..\Defs\VotingIncidents\ToryTalker.xml</TargetPath>
-    </ContentWithTargetPath>
-    <ContentWithTargetPath Include="v1.0\Patches\StorytellerPatch.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <TargetPath>..\..\Patches\StorytellerPatch.xml</TargetPath>
-    </ContentWithTargetPath>
-    <!-- 1.0: Defs, Patches, Assemblies must be in 1.0 folder (NOT v1.0 folder) or root folder - using root folder for parity with above 1.0-compatible folders -->
-    <!-- 1.1: Remaining folders (Defs, Patches) are in the same parent folder of $(OutputDir), which is the 1.1 Assemblies folder -->
-    <ContentWithTargetPath Include="Defs\**\*;Patches\**\*">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <TargetPath>..\%(RelativeDir)%(Filename)%(Extension)</TargetPath>
-    </ContentWithTargetPath>
-  </ItemGroup>
-  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>
