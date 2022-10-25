@@ -25,7 +25,8 @@ public static class CommandsHandler
 		viewer.last_seen = DateTime.Now;
 		if (viewer.IsBanned)
 		{
-			return;
+            Log.Message("viewer is banned.");
+            return;
 		}
 		Command commandDef = DefDatabase<Command>.AllDefs.ToList().Find((Command s) => twitchMessage.Message.StartsWith("!" + s.command));
 		if (commandDef != null)
@@ -34,18 +35,19 @@ public static class CommandsHandler
 			if (commandDef.requiresMod && !viewer.mod && viewer.username.ToLower() != ToolkitSettings.Channel.ToLower())
 			{
 				runCommand = false;
-			}
+            }
 			if (commandDef.requiresAdmin && twitchMessage.Username.ToLower() != ToolkitSettings.Channel.ToLower())
 			{
 				runCommand = false;
-			}
-			if (!commandDef.enabled)
+
+            }
+            if (!commandDef.enabled)
 			{
 				runCommand = false;
-			}
-			if (runCommand)
+            }
+            if (runCommand)
 			{
-				commandDef.RunCommand(twitchMessage);
+                commandDef.RunCommand(twitchMessage);
 			}
 		}
 	}

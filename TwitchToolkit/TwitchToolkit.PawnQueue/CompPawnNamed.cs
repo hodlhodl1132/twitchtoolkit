@@ -8,7 +8,6 @@ public class CompPawnNamed : ThingComp
 
 	public override void PostExposeData()
 	{
-		((ThingComp)this).PostExposeData();
 		Scribe_Values.Look<bool>(ref PropsName.isNamed, "isNamed", false, false);
 	}
 }

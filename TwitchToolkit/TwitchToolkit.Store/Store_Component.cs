@@ -136,7 +136,6 @@ public class Store_Component : GameComponent
 
 	public override void ExposeData()
 	{
-		((GameComponent)this).ExposeData();
 		Scribe_Values.Look<int>(ref lastID, "logID", 0, false);
 		Scribe_Collections.Look<int, int>(ref tickHistory, "tickHistory", (LookMode)1, (LookMode)1);
 		Scribe_Collections.Look<int, string>(ref abbreviationHistory, "incidentHistory", (LookMode)1, (LookMode)1);

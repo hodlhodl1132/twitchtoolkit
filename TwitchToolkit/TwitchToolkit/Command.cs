@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using TwitchLib.Client.Models.Interfaces;
 using Verse;
 
@@ -36,12 +37,15 @@ public class Command : Def
 
 	public void RunCommand(ITwitchMessage twitchMessage)
 	{
-		if (command == null)
+		Task.Run(() =>
 		{
-			throw new Exception("Command is null");
-		}
-		CommandDriver driver = (CommandDriver)Activator.CreateInstance(commandDriver);
-		driver.command = this;
-		driver.RunCommand(twitchMessage);
+            if (command == null)
+            {
+                throw new Exception("Command is null");
+            }
+            CommandDriver driver = (CommandDriver)Activator.CreateInstance(commandDriver);
+            driver.command = this;
+            driver.RunCommand(twitchMessage);
+        });
 	}
 }
