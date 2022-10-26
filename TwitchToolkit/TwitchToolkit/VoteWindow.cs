@@ -22,16 +22,7 @@ public class VoteWindow : Window
 	{
 		get
 		{
-			//IL_0001: Unknown result type (might be due to invalid IL or missing erences)
-			//IL_0006: Unknown result type (might be due to invalid IL or missing erences)
-			//IL_0035: Unknown result type (might be due to invalid IL or missing erences)
-			//IL_005b: Unknown result type (might be due to invalid IL or missing erences)
-			//IL_0060: Unknown result type (might be due to invalid IL or missing erences)
-			//IL_0082: Unknown result type (might be due to invalid IL or missing erences)
-			//IL_00a8: Unknown result type (might be due to invalid IL or missing erences)
-			//IL_00ad: Unknown result type (might be due to invalid IL or missing erences)
-			//IL_00b0: Unknown result type (might be due to invalid IL or missing erences)
-			GameFont old = Text.Font;
+            GameFont old = Text.Font;
 			float titleHeight;
 			if (ToolkitSettings.LargeVotingWindow)
 			{
@@ -114,8 +105,8 @@ public class VoteWindow : Window
 
 	public override void PreClose()
 	{
-		((Window)this).PreClose();
-		ToolkitSettings.VotingWindowx = ((Rect)( base.windowRect)).x;
-		ToolkitSettings.VotingWindowy = ((Rect)( base.windowRect)).y;
+		base.PreClose();
+		ToolkitSettings.VotingWindowx = base.windowRect.x;
+		ToolkitSettings.VotingWindowy = base.windowRect.y;
 	}
 }

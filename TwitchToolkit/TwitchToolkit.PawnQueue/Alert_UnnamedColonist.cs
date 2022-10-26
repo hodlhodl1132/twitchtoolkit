@@ -59,18 +59,7 @@ public class Alert_UnnamedColonist : Alert
 
 	public override Rect DrawAt(float topY, bool minimized)
 	{
-		//IL_0036: Unknown result type (might be due to invalid IL or missing erences)
-		//IL_0041: Unknown result type (might be due to invalid IL or missing erences)
-		//IL_004d: Unknown result type (might be due to invalid IL or missing erences)
-		//IL_0058: Unknown result type (might be due to invalid IL or missing erences)
-		//IL_0076: Unknown result type (might be due to invalid IL or missing erences)
-		//IL_0088: Unknown result type (might be due to invalid IL or missing erences)
-		//IL_0093: Unknown result type (might be due to invalid IL or missing erences)
-		//IL_00a0: Unknown result type (might be due to invalid IL or missing erences)
-		//IL_00dc: Unknown result type (might be due to invalid IL or missing erences)
-		//IL_00dd: Unknown result type (might be due to invalid IL or missing erences)
-		//IL_00e1: Unknown result type (might be due to invalid IL or missing erences)
-		Text.Font =((GameFont)1);
+        Text.Font =((GameFont)1);
 		string label = ((Alert)this).GetLabel();
 		float height = Text.CalcHeight(label, 148f);
 		Rect rect = new Rect((float)UI.screenWidth - 154f, topY, 154f, height);

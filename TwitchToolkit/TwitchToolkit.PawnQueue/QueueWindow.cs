@@ -35,19 +35,7 @@ internal class QueueWindow : Window
 
 	public override void DoWindowContents(Rect inRect)
 	{
-		//IL_0024: Unknown result type (might be due to invalid IL or missing erences)
-		//IL_0069: Unknown result type (might be due to invalid IL or missing erences)
-		//IL_0092: Unknown result type (might be due to invalid IL or missing erences)
-		//IL_00dd: Unknown result type (might be due to invalid IL or missing erences)
-		//IL_0121: Unknown result type (might be due to invalid IL or missing erences)
-		//IL_0153: Unknown result type (might be due to invalid IL or missing erences)
-		//IL_019f: Unknown result type (might be due to invalid IL or missing erences)
-		//IL_01d0: Unknown result type (might be due to invalid IL or missing erences)
-		//IL_0228: Unknown result type (might be due to invalid IL or missing erences)
-		//IL_025e: Unknown result type (might be due to invalid IL or missing erences)
-		//IL_029a: Unknown result type (might be due to invalid IL or missing erences)
-		//IL_02d6: Unknown result type (might be due to invalid IL or missing erences)
-		Rect unnamedCounter = new Rect(((Rect)(inRect)).x + 10f, 0f, 300f, 52f);
+        Rect unnamedCounter = new Rect(((Rect)(inRect)).x + 10f, 0f, 300f, 52f);
 		Widgets.Label(unnamedCounter, "Unnamed Colonists: " + unnamedColonists.Count);
 		Rect colonistPortrait = new Rect(((Rect)(inRect)).x + 10f, 60f, 100f, 140f);
 		DrawColonist(colonistPortrait, selectedPawn);
@@ -168,11 +156,7 @@ internal class QueueWindow : Window
 
 	public void DrawColonist(Rect rect, Pawn colonist)
 	{
-		//IL_0001: Unknown result type (might be due to invalid IL or missing erences)
-		//IL_0003: Unknown result type (might be due to invalid IL or missing erences)
-		//IL_0009: Unknown result type (might be due to invalid IL or missing erences)
-		//IL_000e: Unknown result type (might be due to invalid IL or missing erences)
-		GUI.DrawTexture(rect, (Texture)(object)PortraitsCache.Get(colonist, ColonistBarColonistDrawer.PawnTextureSize, new Rot4(0), ColonistBarColonistDrawer.PawnTextureCameraOffset, 1.28205f, true, true, true, true, (Dictionary<Apparel, Color>)null, (Color?)null, false));
+        GUI.DrawTexture(rect, (Texture)(object)PortraitsCache.Get(colonist, ColonistBarColonistDrawer.PawnTextureSize, new Rot4(0), ColonistBarColonistDrawer.PawnTextureCameraOffset, 1.28205f, true, true, true, true, (Dictionary<Apparel, Color>)null, (Color?)null, false));
 	}
 
 	public void NameColonist(string username, Pawn pawn)

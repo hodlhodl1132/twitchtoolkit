@@ -8,15 +8,7 @@ public static class Settings_Coins
 {
 	public static void DoWindowContents(Rect rect, Listing_Standard optionsListing)
 	{
-		//IL_0007: Unknown result type (might be due to invalid IL or missing erences)
-		//IL_0031: Unknown result type (might be due to invalid IL or missing erences)
-		//IL_006b: Unknown result type (might be due to invalid IL or missing erences)
-		//IL_00a5: Unknown result type (might be due to invalid IL or missing erences)
-		//IL_00db: Unknown result type (might be due to invalid IL or missing erences)
-		//IL_010f: Unknown result type (might be due to invalid IL or missing erences)
-		//IL_012b: Unknown result type (might be due to invalid IL or missing erences)
-		//IL_0164: Unknown result type (might be due to invalid IL or missing erences)
-		optionsListing.AddLabeledNumericalTextField((TaggedString)(Translator.Translate("TwitchToolkitStartingBalance")),  ToolkitSettings.StartingBalance, 0.8f);
+        optionsListing.AddLabeledNumericalTextField((TaggedString)(Translator.Translate("TwitchToolkitStartingBalance")),  ToolkitSettings.StartingBalance, 0.8f);
 		optionsListing.SliderLabeled((TaggedString)(Translator.Translate("TwitchToolkitCoinInterval")),  ToolkitSettings.CoinInterval, Math.Round((float)ToolkitSettings.CoinInterval).ToString(), 1f, 15f);
 		optionsListing.SliderLabeled((TaggedString)(Translator.Translate("TwitchToolkitCoinAmount")),  ToolkitSettings.CoinAmount, Math.Round((float)ToolkitSettings.CoinAmount).ToString());
 		optionsListing.AddLabeledNumericalTextField((TaggedString)(Translator.Translate("TwitchToolkitMinimumPurchasePrice")),  ToolkitSettings.MinimumPurchasePrice, 0.8f);

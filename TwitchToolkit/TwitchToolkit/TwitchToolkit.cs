@@ -39,7 +39,6 @@ public class TwitchToolkit : Mod
 
 	public override void DoSettingsWindowContents(Rect inRect)
 	{
-		//IL_0007: Unknown result type (might be due to invalid IL or missing erences)
 		((Mod)this).GetSettings<ToolkitSettings>().DoWindowContents(inRect);
 	}
 

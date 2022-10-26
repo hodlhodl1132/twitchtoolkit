@@ -138,6 +138,6 @@ public class Window_ViewerEditProp : Window
 			}
 			break;
 		}
-		((Window)this).Close(true);
+		this.Close();
 	}
 }

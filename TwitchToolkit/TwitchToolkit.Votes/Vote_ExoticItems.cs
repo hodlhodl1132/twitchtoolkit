@@ -25,16 +25,7 @@ public class Vote_ExoticItems : Vote
 
 	public override void EndVote()
 	{
-		//IL_0038: Unknown result type (might be due to invalid IL or missing erences)
-		//IL_0043: Expected O, but got Unknown
-		//IL_0046: Unknown result type (might be due to invalid IL or missing erences)
-		//IL_004b: Unknown result type (might be due to invalid IL or missing erences)
-		//IL_004c: Unknown result type (might be due to invalid IL or missing erences)
-		//IL_0075: Unknown result type (might be due to invalid IL or missing erences)
-		//IL_007f: Unknown result type (might be due to invalid IL or missing erences)
-		//IL_0089: Unknown result type (might be due to invalid IL or missing erences)
-		//IL_008c: Unknown result type (might be due to invalid IL or missing erences)
-		Map map = Helper.AnyPlayerMap;
+        Map map = Helper.AnyPlayerMap;
 		Find.WindowStack.TryRemove(typeof(VoteWindow), true);
 		Messages.Message(new Message("Chat voted for: " + VoteKeyLabel(DecideWinner()), MessageTypeDefOf.PositiveEvent), true);
 		IntVec3 intVec = DropCellFinder.RandomDropSpot(map, true);
