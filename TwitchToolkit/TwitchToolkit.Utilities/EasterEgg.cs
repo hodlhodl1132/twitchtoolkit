@@ -47,7 +47,7 @@ public static class EasterEgg
 
 	public static void ExecuteSirRandooEasterEgg()
 	{
-		List<Item> possibleItems = StoreInventory.items.FindAll((Item x) => x.price > 200 && x.price < 2000);
+        List<Item> possibleItems = StoreInventory.items.FindAll((Item x) => x.price > 200 && x.price < 2000);
 		Item randomItem = GenCollection.RandomElement<Item>((IEnumerable<Item>)possibleItems);
 		string text = "SirRandoo has sent you a rare item! Enjoy!";
 		Find.LetterStack.ReceiveLetter((TaggedString)("SirRandoo is here"), (TaggedString)(text), LetterDefOf.PositiveEvent);
@@ -58,15 +58,48 @@ public static class EasterEgg
     {
         string text = "Valorous luck.  -nry";
         Find.LetterStack.ReceiveLetter((TaggedString)("New objective: Survive."), (TaggedString)(text), LetterDefOf.PositiveEvent);
-        IncidentHelpers.Hazards.Tornados tornados = new IncidentHelpers.Hazards.Tornados();
-        tornados.TryExecute();
-        IncidentHelpers.Misc.Meteorite meteorite = new IncidentHelpers.Misc.Meteorite();
-        meteorite.TryExecute();
-        IncidentHelpers.Misc.Meteorite meteorite2 = new IncidentHelpers.Misc.Meteorite();
-        meteorite2.TryExecute();
-        List<Item> possibleItems = StoreInventory.items.FindAll((Item x) => x.price > 800 && x.price < 3000);
-        Item randomItem = GenCollection.RandomElement<Item>((IEnumerable<Item>)possibleItems);
-        randomItem.PutItemInCargoPod("This might help ;)", Rand.Range(1, 5), "Nry");
+
+        List<Item> possibleItems = StoreInventory.items.FindAll((Item x) => x.price > 100 && x.price < 3000);
+        Item randomItem = GenCollection.RandomElement(possibleItems);
+        randomItem.PutItemInCargoPod("This might help ;)", Rand.Range(1, 5), "nry_chan");
+
+        IncidentHelpers.Misc.Meteorite meteorite = new IncidentHelpers.Misc.Meteorite() { Viewer = new Viewer("nry_chan") };
+        if (meteorite.IsPossible())
+        {
+            meteorite.TryExecute();
+        }
+        IncidentHelpers.Misc.Meteorite meteorite2 = new IncidentHelpers.Misc.Meteorite() { Viewer = new Viewer("nry_chan") };
+        if (meteorite2.IsPossible())
+        {
+            meteorite2.TryExecute();
+        }
+
+        IncidentHelpers.Misc.Meteorite meteorite3 = new IncidentHelpers.Misc.Meteorite() { Viewer = new Viewer("nry_chan") };
+        if (meteorite3.IsPossible())
+        {
+            meteorite3.TryExecute();
+        }
+
+        IncidentHelpers.Misc.Meteorite meteorite4 = new IncidentHelpers.Misc.Meteorite() { Viewer = new Viewer("nry_chan") };
+        if (meteorite4.IsPossible())
+        {
+            meteorite4.TryExecute();
+        }
+
+        IncidentHelpers.Hazards.Tornados tornados = new IncidentHelpers.Hazards.Tornados(){Viewer = new Viewer("nry_chan")};
+        if (tornados.IsPossible())
+        {
+            tornados.TryExecute();
+        }
+
+        IncidentHelpers.Hazards.Tornados tornados2 = new IncidentHelpers.Hazards.Tornados() { Viewer = new Viewer("nry_chan") };
+        if (tornados2.IsPossible())
+        {
+            tornados2.TryExecute();
+        }
+
+        Log.Warning("reached the last portion");
+
     }
 
     public static void ExecuteYiskahEasterEgg()

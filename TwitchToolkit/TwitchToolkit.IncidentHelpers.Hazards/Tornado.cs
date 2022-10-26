@@ -52,7 +52,7 @@ public class Tornado : IncidentHelper
 	{
 		Tornado tornado = (Tornado)GenSpawn.Spawn(ThingDefOf.Tornado, loc, map, 0);
 		string text = "A  mobile, destructive vortex of violently rotating winds have appeard. Seek safe shelter!";
-		Find.LetterStack.ReceiveLetter((TaggedString)("Tornado"), (TaggedString)(text), LetterDefOf.NegativeEvent, (LookTargets)((Thing)(object)tornado), (Faction)null, (Quest)null, (List<ThingDef>)null, (string)null);
+		Find.LetterStack.ReceiveLetter((TaggedString)("Tornado"), (TaggedString)(text), LetterDefOf.NegativeEvent, (LookTargets)((Thing)(object)tornado));
 	}
 
 	protected bool CanSpawnTornadoAt(IntVec3 c, Map map)

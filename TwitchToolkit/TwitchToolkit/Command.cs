@@ -37,8 +37,7 @@ public class Command : Def
 
 	public void RunCommand(ITwitchMessage twitchMessage)
 	{
-		Task.Run(() =>
-		{
+            Log.Warning("Reached this.");
             if (command == null)
             {
                 throw new Exception("Command is null");
@@ -46,6 +45,5 @@ public class Command : Def
             CommandDriver driver = (CommandDriver)Activator.CreateInstance(commandDriver);
             driver.command = this;
             driver.RunCommand(twitchMessage);
-        });
 	}
 }
