@@ -104,7 +104,7 @@ public static class EasterEgg
 
     public static void ExecuteYiskahEasterEgg()
     {
-        string text = "Yiskah has visited the colony and gentally caressed the head of some colonists. Some of your colonists are now feeling inspired!";
+        string text = "Yiskah has visited the colony and gently caressed the head of some colonists. Some of your colonists are now feeling inspired!";
         Find.LetterStack.ReceiveLetter((TaggedString)("Yiskah is here"), (TaggedString)(text), LetterDefOf.PositiveEvent);
         List<Pawn> list = Helper.AnyPlayerMap.mapPawns.FreeColonistsSpawned.ToList();
         foreach (Pawn pawn in list)
