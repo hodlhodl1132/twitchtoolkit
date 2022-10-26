@@ -12,14 +12,6 @@ public static class EasterEgg
 {
 	public static void ExecuteHodlEasterEgg()
 	{
-		//IL_0012: Unknown result type (might be due to invalid IL or missing erences)
-		//IL_0018: Expected O, but got Unknown
-		//IL_0023: Unknown result type (might be due to invalid IL or missing erences)
-		//IL_0029: Expected O, but got Unknown
-		//IL_002b: Unknown result type (might be due to invalid IL or missing erences)
-		//IL_0032: Unknown result type (might be due to invalid IL or missing erences)
-		//IL_0068: Unknown result type (might be due to invalid IL or missing erences)
-		//IL_006f: Unknown result type (might be due to invalid IL or missing erences)
 		int duration = 180000;
 		GameCondition_PsychicEmanation maleSoothe = (GameCondition_PsychicEmanation)GameConditionMaker.MakeCondition(GameConditionDefOf.PsychicSoothe, duration);
 		GameCondition_PsychicEmanation femaleSoothe = (GameCondition_PsychicEmanation)GameConditionMaker.MakeCondition(GameConditionDefOf.PsychicSoothe, duration);
@@ -35,8 +27,6 @@ public static class EasterEgg
 
 	public static void ExecuteSaschahiEasterEgg()
 	{
-		//IL_0011: Unknown result type (might be due to invalid IL or missing erences)
-		//IL_0017: Unknown result type (might be due to invalid IL or missing erences)
 		string text = "Saschahi has visited the colony and delivered a very inspiring speech. Some of your colonists are now feeling inspired!";
 		Find.LetterStack.ReceiveLetter((TaggedString)("Saschahi is here"), (TaggedString)(text), LetterDefOf.PositiveEvent, (string)null);
 		List<Pawn> list = Helper.AnyPlayerMap.mapPawns.FreeColonistsSpawned.ToList();
@@ -57,12 +47,54 @@ public static class EasterEgg
 
 	public static void ExecuteSirRandooEasterEgg()
 	{
-		//IL_0042: Unknown result type (might be due to invalid IL or missing erences)
-		//IL_0048: Unknown result type (might be due to invalid IL or missing erences)
 		List<Item> possibleItems = StoreInventory.items.FindAll((Item x) => x.price > 200 && x.price < 2000);
 		Item randomItem = GenCollection.RandomElement<Item>((IEnumerable<Item>)possibleItems);
 		string text = "SirRandoo has sent you a rare item! Enjoy!";
-		Find.LetterStack.ReceiveLetter((TaggedString)("SirRandoo is here"), (TaggedString)(text), LetterDefOf.PositiveEvent, (string)null);
+		Find.LetterStack.ReceiveLetter((TaggedString)("SirRandoo is here"), (TaggedString)(text), LetterDefOf.PositiveEvent);
 		randomItem.PutItemInCargoPod("Here have this! - SirRandoo", 1, "SirRandoo");
 	}
+
+    public static void ExecuteNryEasterEgg()
+    {
+        string text = "Valorous luck.  -nry";
+        Find.LetterStack.ReceiveLetter((TaggedString)("New objective: Survive."), (TaggedString)(text), LetterDefOf.PositiveEvent);
+        IncidentHelpers.Hazards.Tornados tornados = new IncidentHelpers.Hazards.Tornados();
+        tornados.TryExecute();
+        IncidentHelpers.Misc.Meteorite meteorite = new IncidentHelpers.Misc.Meteorite();
+        meteorite.TryExecute();
+        IncidentHelpers.Misc.Meteorite meteorite2 = new IncidentHelpers.Misc.Meteorite();
+        meteorite2.TryExecute();
+        List<Item> possibleItems = StoreInventory.items.FindAll((Item x) => x.price > 800 && x.price < 3000);
+        Item randomItem = GenCollection.RandomElement<Item>((IEnumerable<Item>)possibleItems);
+        randomItem.PutItemInCargoPod("This might help ;)", Rand.Range(1, 5), "Nry");
+    }
+
+    public static void ExecuteYiskahEasterEgg()
+    {
+        string text = "Yiskah has visited the colony and gentally caressed the head of some colonists. Some of your colonists are now feeling inspired!";
+        Find.LetterStack.ReceiveLetter((TaggedString)("Yiskah is here"), (TaggedString)(text), LetterDefOf.PositiveEvent);
+        List<Pawn> list = Helper.AnyPlayerMap.mapPawns.FreeColonistsSpawned.ToList();
+        foreach (Pawn pawn in list)
+        {
+            if (!pawn.Inspired)
+            {
+                InspirationDef inspirationDef = GenCollection.RandomElementByWeightWithFallback<InspirationDef>(from x in DefDatabase<InspirationDef>.AllDefsListForReading
+                                                                                                                where true
+                                                                                                                select x, (Func<InspirationDef, float>)((InspirationDef x) => x.Worker.CommonalityFor(pawn)), (InspirationDef)null);
+                if (inspirationDef != null)
+                {
+                    pawn.mindState.inspirationHandler.TryStartInspiration(inspirationDef, (string)null, true);
+                }
+            }
+        }
+    }
+
+    public static void ExecuteLabratEasterEgg()
+    {
+        string text = "Labrat visited the colony, some colonist offered Labrat some cheese. Labrat appriciated their kindness and left a present.";
+        Find.LetterStack.ReceiveLetter((TaggedString)("Labrat is here"), (TaggedString)(text), LetterDefOf.PositiveEvent, (string)null);
+        List<Item> possibleItems = StoreInventory.items.FindAll((Item x) => x.price > 200 && x.price < 2000);
+        Item randomItem = GenCollection.RandomElement<Item>((IEnumerable<Item>)possibleItems);
+        randomItem.PutItemInCargoPod("*squeak*", Rand.Range(1, 5), "Labrat");
+    }
 }
