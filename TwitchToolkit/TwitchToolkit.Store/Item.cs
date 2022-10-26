@@ -53,17 +53,7 @@ public class Item
 
 	public void PutItemInCargoPod(string quote, int amount, string username)
 	{
-		//IL_0012: Unknown result type (might be due to invalid IL or missing erences)
-		//IL_0018: Expected O, but got Unknown
-		//IL_00ad: Unknown result type (might be due to invalid IL or missing erences)
-		//IL_00f5: Unknown result type (might be due to invalid IL or missing erences)
-		//IL_00fc: Expected O, but got Unknown
-		//IL_0110: Unknown result type (might be due to invalid IL or missing erences)
-		//IL_0115: Unknown result type (might be due to invalid IL or missing erences)
-		//IL_0124: Unknown result type (might be due to invalid IL or missing erences)
-		//IL_0129: Unknown result type (might be due to invalid IL or missing erences)
-		//IL_015f: Unknown result type (might be due to invalid IL or missing erences)
-		ThingDef itemDef = ThingDef.Named("DropPodIncoming");
+        ThingDef itemDef = ThingDef.Named("DropPodIncoming");
 		Thing itemThing = new Thing();
 		ThingDef stuff = null;
 		ThingDef itemThingDef = ThingDef.Named(defname);

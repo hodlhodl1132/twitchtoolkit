@@ -28,6 +28,7 @@ public static class Purchase_Handler
 
 	public static void ResolvePurchase(Viewer viewer, ITwitchMessage twitchMessage, bool separateChannel = false)
 	{
+		Log.Warning("reached purchase resolver");
 		List<string> command = twitchMessage.Message.Split(' ').ToList();
 		if (command.Count < 2)
 		{

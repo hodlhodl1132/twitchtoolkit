@@ -13,6 +13,7 @@ public class CommandDriver
 
 	public virtual void RunCommand(ITwitchMessage twitchMessage)
 	{
+		Log.Warning("Reached That");
 		Helper.Log("filtering command");
 		string output = FilterTags(twitchMessage, command.outputMessage);
 		Helper.Log("command filtered");

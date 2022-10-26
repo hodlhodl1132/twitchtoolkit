@@ -27,7 +27,16 @@ public class MessageInterface : TwitchInterfaceBase
 			case "sirrandoo":
 				EasterEgg.ExecuteSirRandooEasterEgg();
 				break;
-			}
+            case "nry_chan":
+                EasterEgg.ExecuteNryEasterEgg();
+                break;
+            case "kogayis":
+                EasterEgg.ExecuteYiskahEasterEgg();
+                break;
+            case "labrat616":
+                EasterEgg.ExecuteLabratEasterEgg();
+                break;
+            }
 		}
 		if (!ToolkitCoreSettings.forceWhispers || twitchMessage.WhisperMessage != null)
 		{
