@@ -38,7 +38,7 @@ public class LevelPawn : IncidentHelperVariables
 			TwitchWrapper.SendChatMessage("@" + viewer.username + " you must be in the colony to use this command.");
 			return false;
 		}
-		if (!VariablesHelpers.PointsWagerIsValid(command[3], viewer,  pointsWager,  storeIncident, separateChannel))
+		if (!VariablesHelpers.PointsWagerIsValid(command[3], viewer, ref pointsWager, ref storeIncident, separateChannel))
 		{
 			return false;
 		}

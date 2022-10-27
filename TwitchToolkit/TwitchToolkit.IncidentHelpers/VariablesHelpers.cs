@@ -13,9 +13,8 @@ public static class VariablesHelpers
 		TwitchWrapper.SendChatMessage("@" + username + " syntax is " + syntax);
 	}
 
-	public static bool PointsWagerIsValid(string wager, Viewer viewer,  int pointsWager,  StoreIncidentVariables incident, bool separateChannel = false, int quantity = 1, int maxPrice = 25000)
+	public static bool PointsWagerIsValid(string wager, Viewer viewer, ref int pointsWager, ref StoreIncidentVariables incident, bool separateChannel = false, int quantity = 1, int maxPrice = 25000)
 	{
-		//IL_00ed: Unknown result type (might be due to invalid IL or missing erences)
 		checked
 		{
 			try

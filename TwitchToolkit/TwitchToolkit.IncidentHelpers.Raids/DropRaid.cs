@@ -31,7 +31,7 @@ public class DropRaid : IncidentHelperVariables
 			TwitchWrapper.SendChatMessage("@" + viewer.username + " syntax is " + storeIncident.syntax);
 			return false;
 		}
-		if (!VariablesHelpers.PointsWagerIsValid(command[2], viewer,  pointsWager,  storeIncident, separateChannel))
+		if (!VariablesHelpers.PointsWagerIsValid(command[2], viewer, ref pointsWager, ref storeIncident, separateChannel))
 		{
 			return false;
 		}

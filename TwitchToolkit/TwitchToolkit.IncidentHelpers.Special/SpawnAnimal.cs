@@ -34,7 +34,7 @@ public class SpawnAnimal : IncidentHelperVariables
 			TwitchWrapper.SendChatMessage("@" + viewer.username + " syntax is " + storeIncident.syntax);
 			return false;
 		}
-		if (!VariablesHelpers.PointsWagerIsValid(command[3], viewer,  pointsWager,  storeIncident, separateChannel))
+		if (!VariablesHelpers.PointsWagerIsValid(command[3], viewer, ref pointsWager, ref storeIncident, separateChannel))
 		{
 			return false;
 		}
