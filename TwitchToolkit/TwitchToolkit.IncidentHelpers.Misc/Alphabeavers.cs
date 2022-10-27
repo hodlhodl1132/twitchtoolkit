@@ -13,12 +13,12 @@ public class Alphabeavers : IncidentHelper
 
 	public override bool IsPossible()
 	{
-		worker = (IncidentWorker)(object)new IncidentWorker_Alphabeavers();
+		worker = new IncidentWorker_Alphabeavers();
 		worker.def = IncidentDef.Named("Alphabeavers");
 		Map map = Helper.AnyPlayerMap;
 		if (map != null)
 		{
-			parms = StorytellerUtility.DefaultParmsNow(IncidentCategoryDefOf.Misc, (IIncidentTarget)(object)map);
+			parms = StorytellerUtility.DefaultParmsNow(IncidentCategoryDefOf.Misc, map);
 			parms.forced = true;
 			return worker.CanFireNow(parms);
 		}

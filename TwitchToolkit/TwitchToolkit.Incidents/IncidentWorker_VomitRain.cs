@@ -10,9 +10,7 @@ public class IncidentWorker_VomitRain : IncidentWorker
 {
 	protected override bool CanFireNowSub(IncidentParms parms)
 	{
-		//IL_0007: Unknown result type (might be due to invalid IL or missing erences)
-		//IL_000d: Expected O, but got Unknown
-		Map map = (Map)parms.target;
+        Map map = (Map)parms.target;
 		return !map.gameConditionManager.ConditionIsActive(GameConditionDef.Named("VomitRain"));
 	}
 

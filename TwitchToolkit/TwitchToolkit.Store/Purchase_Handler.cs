@@ -41,7 +41,7 @@ public static class Purchase_Handler
 		}
 		string productKey = command[1].ToLower();
 		string formattedMessage = string.Join(" ", command.ToArray());
-		StoreIncidentSimple incident = allStoreIncidentsSimple.Find((StoreIncidentSimple s) => productKey.ToLower() == s.abbreviation);
+		StoreIncidentSimple incident = allStoreIncidentsSimple.Find(s => productKey.ToLower() == s.abbreviation);
 		if (incident != null)
 		{
 			ResolvePurchaseSimple(viewer, twitchMessage, incident, formattedMessage);
@@ -74,10 +74,7 @@ public static class Purchase_Handler
 
 	public static void ResolvePurchaseSimple(Viewer viewer, ITwitchMessage twitchMessage, StoreIncidentSimple incident, string formattedMessage, bool separateChannel = false)
 	{
-		//IL_00c9: Unknown result type (might be due to invalid IL or missing erences)
-		//IL_00ce: Unknown result type (might be due to invalid IL or missing erences)
-		//IL_0155: Unknown result type (might be due to invalid IL or missing erences)
-		int cost = incident.cost;
+        int cost = incident.cost;
 		if (cost < 1 || CheckIfViewerIsInVariableCommandList(viewer.username) || !CheckIfViewerHasEnoughCoins(viewer, cost) || CheckIfKarmaTypeIsMaxed(incident, viewer.username) || CheckIfIncidentIsOnCooldown(incident, viewer.username))
 		{
 			return;
@@ -85,12 +82,12 @@ public static class Purchase_Handler
 		IncidentHelper helper = StoreIncidentMaker.MakeIncident(incident);
 		if (helper == null)
 		{
-			Helper.Log("Missing helper for incident " + ((Def)incident).defName);
+			Helper.Log("Missing helper for incident " + incident.defName);
 			return;
 		}
 		if (!helper.IsPossible())
 		{
-			TwitchWrapper.SendChatMessage((TaggedString)("@" + viewer.username + " " + Translator.Translate("TwitchToolkitEventNotPossible")));
+			TwitchWrapper.SendChatMessage(("@" + viewer.username + " " + Translator.Translate("TwitchToolkitEventNotPossible")));
 			return;
 		}
 		if (!ToolkitSettings.UnlimitedCoins)
@@ -106,7 +103,7 @@ public static class Purchase_Handler
 		viewer.CalculateNewKarma(incident.karmaType, cost);
 		if (ToolkitSettings.PurchaseConfirmations)
 		{
-			TwitchWrapper.SendChatMessage(Helper.ReplacePlaceholder((TaggedString)(Translator.Translate("TwitchToolkitEventPurchaseConfirm")), null, null, null, null, null, null, null, null, null, null, null, null, first: GenText.CapitalizeFirst(((Def)incident).label), viewer: viewer.username));
+			TwitchWrapper.SendChatMessage(Helper.ReplacePlaceholder((Translator.Translate("TwitchToolkitEventPurchaseConfirm")), null, null, null, null, null, null, null, null, null, null, null, null, first: GenText.CapitalizeFirst(((Def)incident).label), viewer: viewer.username));
 		}
 	}
 
@@ -167,7 +164,6 @@ public static class Purchase_Handler
 
 	public static bool CheckIfViewerHasEnoughCoins(Viewer viewer, int finalPrice, bool separateChannel = false)
 	{
-		//IL_001e: Unknown result type (might be due to invalid IL or missing erences)
 		if (!ToolkitSettings.UnlimitedCoins && viewer.GetViewerCoins() < finalPrice)
 		{
 			TwitchWrapper.SendChatMessage(Helper.ReplacePlaceholder((TaggedString)(Translator.Translate("TwitchToolkitNotEnoughCoins")), null, null, null, null, null, null, null, null, null, null, viewer: viewer.username, amount: finalPrice.ToString(), mod: null, newbalance: null, karma: null, first: viewer.GetViewerCoins().ToString()));

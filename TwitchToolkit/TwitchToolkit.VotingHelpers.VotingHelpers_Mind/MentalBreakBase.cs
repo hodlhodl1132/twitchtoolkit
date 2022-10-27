@@ -18,9 +18,9 @@ public class MentalBreakBase : VotingHelper
 	{
 		if (target is Map)
 		{
-			 Map erence =  map;
+            Map reference =  map;
 			IIncidentTarget obj = target;
-			erence = (Map)(object)((obj is Map) ? obj : null);
+			reference = (Map)(object)((obj is Map) ? obj : null);
 			List<Pawn> candidates = (from s in map.mapPawns.FreeColonistsSpawned
 				where !s.mindState.mentalStateHandler.InMentalState
 				orderby s.mindState.mentalBreaker.CurMood

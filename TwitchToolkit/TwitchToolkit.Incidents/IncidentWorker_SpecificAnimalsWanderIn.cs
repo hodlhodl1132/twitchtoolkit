@@ -44,13 +44,14 @@ public class IncidentWorker_SpecificAnimalsWanderIn : IncidentWorker
 
 	protected override bool CanFireNowSub(IncidentParms parms)
 	{
-		//IL_001a: Unknown result type (might be due to invalid IL or missing erences)
-		//IL_0020: Expected O, but got Unknown
-		if (!CanFireNowSub(parms))
-		{
-			return false;
-		}
-		Map map = (Map)parms.target;
+        if (!parms.forced)
+        {
+            if (!base.CanFireNowSub(parms))
+            {
+                return false;
+            }
+        }
+        Map map = (Map)parms.target;
 		IntVec3 intVec = default(IntVec3);
 		return RCellFinder.TryFindRandomPawnEntryCell(out intVec, map, CellFinder.EdgeRoadChance_Animal, false, (Predicate<IntVec3>)null);
 	}

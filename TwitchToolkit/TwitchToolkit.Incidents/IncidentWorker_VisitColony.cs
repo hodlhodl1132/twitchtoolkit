@@ -29,7 +29,7 @@ public class IncidentWorker_VisitColony : IncidentWorker_NeutralGroup
 		{
 			return false;
 		}
-		return CanFireNowSub(parms);
+		return base.CanFireNowSub(parms);
 	}
 
 	protected override bool TryExecuteWorker(IncidentParms parms)
