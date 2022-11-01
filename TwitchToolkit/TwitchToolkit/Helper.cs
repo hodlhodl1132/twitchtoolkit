@@ -4,10 +4,11 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using RimWorld;
-using TwitchToolkit;
 using UnityEngine;
 using Verse;
 using static Verse.CellRect;
+
+namespace TwitchToolkit;
 
 public static class Helper
 {
