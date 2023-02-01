@@ -2,39 +2,29 @@ using System.Collections.Generic;
 using RimWorld;
 using TwitchToolkit.Store;
 using Verse;
-
-namespace TwitchToolkit.IncidentHelpers.Weather;
-
-public class ToxicFallout : IncidentHelper
+namespace TwitchToolkit.IncidentHelpers.Weather
 {
-	private IncidentParms parms = null;
-
-	private IncidentWorker worker = null;
-
-	public override bool IsPossible()
+	public class ToxicFallout : IncidentHelper
 	{
-		//IL_0002: Unknown result type (might be due to invalid IL or missing erences)
-		//IL_000c: Expected O, but got Unknown
-		//IL_001d: Unknown result type (might be due to invalid IL or missing erences)
-		//IL_0027: Expected O, but got Unknown
-		worker = (IncidentWorker)new IncidentWorker_MakeGameCondition();
-		worker.def = IncidentDefOf.ToxicFallout;
-		parms = new IncidentParms();
-		List<Map> allMaps = Current.Game.Maps;
-		allMaps.Shuffle();
-		foreach (Map map in allMaps)
+		private IncidentParms parms = (IncidentParms) null;
+		private IncidentWorker worker = (IncidentWorker) null;
+
+		public override bool IsPossible()
 		{
-			parms.target = (IIncidentTarget)(object)map;
-			if (worker.CanFireNow(parms))
+			this.worker = (IncidentWorker) new IncidentWorker_MakeGameCondition();
+			this.worker.def = IncidentDefOf.ToxicFallout;
+			this.parms = new IncidentParms();
+			List<Map> maps = Current.Game.Maps;
+			maps.Shuffle<Map>();
+			foreach (IIncidentTarget incidentTarget in maps)
 			{
-				return true;
+				this.parms.target = incidentTarget;
+				if (this.worker.CanFireNow(this.parms))
+					return true;
 			}
+			return false;
 		}
-		return false;
-	}
 
-	public override void TryExecute()
-	{
-		worker.TryExecute(parms);
+		public override void TryExecute() => this.worker.TryExecute(this.parms);
 	}
 }

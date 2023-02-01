@@ -3,33 +3,29 @@ using RimWorld;
 using TwitchToolkit.Store;
 using Verse;
 
-namespace TwitchToolkit.IncidentHelpers.Weather;
-
-public class WeatherClear : IncidentHelper
+namespace TwitchToolkit.IncidentHelpers.Weather
 {
-	private Map target = null;
-
-	private WeatherDef weather = null;
-
-	public override bool IsPossible()
+	public class WeatherClear : IncidentHelper
 	{
-		weather = DefDatabase<WeatherDef>.GetNamed("Clear", true);
-		List<Map> allMaps = Current.Game.Maps;
-		allMaps.Shuffle();
-		foreach (Map map in allMaps)
+		private Map target = (Map) null;
+		private WeatherDef weather = (WeatherDef) null;
+
+		public override bool IsPossible()
 		{
-			if (map.weatherManager.curWeather != weather)
+			this.weather = DefDatabase<WeatherDef>.GetNamed("Clear");
+			List<Map> maps = Current.Game.Maps;
+			maps.Shuffle<Map>();
+			foreach (Map map in maps)
 			{
-				target = map;
-				return true;
+				if (map.weatherManager.curWeather != this.weather)
+				{
+					this.target = map;
+					return true;
+				}
 			}
+			return false;
 		}
-		return false;
-	}
 
-	public override void TryExecute()
-	{
-		//IL_0006: Unknown result type (might be due to invalid IL or missing erences)
-		Helper.Weather((TaggedString)(Translator.Translate("TwitchStoriesDescription29")), weather, LetterDefOf.PositiveEvent);
+		public override void TryExecute() => Helper.Weather((string) "TwitchStoriesDescription29".Translate(), this.weather, LetterDefOf.PositiveEvent);
 	}
 }

@@ -2,68 +2,49 @@ using System;
 using UnityEngine;
 using Verse;
 
-namespace TwitchToolkit;
-
-public class TwitchToolkit : Mod
+namespace TwitchToolkit
 {
-	public string Version = "2.0.10";
-
-	private Ticker ticker;
-
-	public DateTime StartTime;
-
-	private DateTime _lastTick = DateTime.MinValue;
-
-	private DateTime _timerElapsed = DateTime.MinValue;
-
-	private DateTime _lastEventCheck = DateTime.MinValue;
-
-	private bool _paused;
-
-	private double _extraWait = 0.0;
-
-	public TwitchToolkit(ModContentPack content)
-		: base(content)
+	public class TwitchToolkit : Mod
 	{
-		Toolkit.Mod = this;
-		if (ticker == null)
+		public string Version = "2.0.10";
+		private Ticker ticker;
+		public DateTime StartTime;
+		private DateTime _lastTick = DateTime.MinValue;
+		private DateTime _timerElapsed = DateTime.MinValue;
+		private DateTime _lastEventCheck = DateTime.MinValue;
+		private bool _paused;
+		private double _extraWait = 0.0;
+
+		public TwitchToolkit(ModContentPack content)
+			: base(content)
 		{
-			RegisterTicker();
+			Toolkit.Mod = this;
+			if (this.ticker != null)
+				return;
+			this.RegisterTicker();
 		}
-	}
 
-	public override string SettingsCategory()
-	{
-		return "Twitch Toolkit";
-	}
+		public override string SettingsCategory() => "Twitch Toolkit";
 
-	public override void DoSettingsWindowContents(Rect inRect)
-	{
-		((Mod)this).GetSettings<ToolkitSettings>().DoWindowContents(inRect);
-	}
+		public override void DoSettingsWindowContents(Rect inRect) => this.GetSettings<ToolkitSettings>().DoWindowContents(inRect);
 
-	public void Tick()
-	{
-		DateTime tick = DateTime.Now;
-		if (!(_lastTick == DateTime.MinValue))
+		public void Tick()
 		{
-			if (_paused)
+			DateTime now = DateTime.Now;
+			if (!(this._lastTick == DateTime.MinValue))
 			{
-				double wait = (_timerElapsed - _lastTick).TotalMilliseconds;
-				_extraWait = Math.Min(Math.Max(wait, 0.0), 60000.0);
-				_paused = false;
-				RegisterTicker();
+				if (this._paused)
+				{
+					this._extraWait = Math.Min(Math.Max((this._timerElapsed - this._lastTick).TotalMilliseconds, 0.0), 60000.0);
+					this._paused = false;
+					this.RegisterTicker();
+				}
+				else if ((now - this._lastTick).TotalSeconds > 5.0)
+					this._extraWait += (now - this._lastTick).TotalMilliseconds;
 			}
-			else if ((tick - _lastTick).TotalSeconds > 5.0)
-			{
-				_extraWait += (tick - _lastTick).TotalMilliseconds;
-			}
+			this._lastTick = now;
 		}
-		_lastTick = tick;
-	}
 
-	public void RegisterTicker()
-	{
-		ticker = Ticker.Instance;
+		public void RegisterTicker() => this.ticker = Ticker.Instance;
 	}
 }

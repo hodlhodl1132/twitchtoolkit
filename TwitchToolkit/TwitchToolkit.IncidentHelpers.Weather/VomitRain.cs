@@ -4,37 +4,35 @@ using TwitchToolkit.Incidents;
 using TwitchToolkit.Store;
 using Verse;
 
-namespace TwitchToolkit.IncidentHelpers.Weather;
-
-public class VomitRain : IncidentHelper
+namespace TwitchToolkit.IncidentHelpers.Weather
 {
-	private Map target = null;
-
-	private WeatherDef weather = null;
-
-	public override bool IsPossible()
+	public class VomitRain : IncidentHelper
 	{
-		weather = DefDatabase<WeatherDef>.GetNamed("VomitRain", true);
-		List<Map> allMaps = Current.Game.Maps;
-		allMaps.Shuffle();
-		foreach (Map map in allMaps)
+		private Map target = (Map) null;
+		private WeatherDef weather = (WeatherDef) null;
+
+		public override bool IsPossible()
 		{
-			if (map.weatherManager.curWeather != weather)
+			this.weather = DefDatabase<WeatherDef>.GetNamed(nameof (VomitRain));
+			List<Map> maps = Current.Game.Maps;
+			maps.Shuffle<Map>();
+			foreach (Map map in maps)
 			{
-				target = map;
-				return true;
+				if (map.weatherManager.curWeather != this.weather)
+				{
+					this.target = map;
+					return true;
+				}
 			}
+			return false;
 		}
-		return false;
-	}
 
-	public override void TryExecute()
-	{
-		IncidentWorker worker = (IncidentWorker)(object)new IncidentWorker_VomitRain
+		public override void TryExecute()
 		{
-			def = IncidentDef.Named("VomitRain")
-		};
-		IncidentParms parms = StorytellerUtility.DefaultParmsNow(IncidentCategoryDefOf.Misc, (IIncidentTarget)(object)target);
-		worker.TryExecute(parms);
+			IncidentWorker_VomitRain incidentWorkerVomitRain = new IncidentWorker_VomitRain();
+			incidentWorkerVomitRain.def = IncidentDef.Named(nameof (VomitRain));
+			incidentWorkerVomitRain.TryExecute(StorytellerUtility.DefaultParmsNow(IncidentCategoryDefOf.Misc, (IIncidentTarget) this.target));
+		}
 	}
 }
+

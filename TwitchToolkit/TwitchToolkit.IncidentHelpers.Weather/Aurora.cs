@@ -3,38 +3,29 @@ using RimWorld;
 using TwitchToolkit.Store;
 using Verse;
 
-namespace TwitchToolkit.IncidentHelpers.Weather;
-
-public class Aurora : IncidentHelper
+namespace TwitchToolkit.IncidentHelpers.Weather
 {
-	private IncidentParms parms = null;
-
-	private IncidentWorker worker = null;
-
-	public override bool IsPossible()
+	public class Aurora : IncidentHelper
 	{
-		//IL_0002: Unknown result type (might be due to invalid IL or missing erences)
-		//IL_000c: Expected O, but got Unknown
-		//IL_0022: Unknown result type (might be due to invalid IL or missing erences)
-		//IL_002c: Expected O, but got Unknown
-		worker = (IncidentWorker)new IncidentWorker_Aurora();
-		worker.def = IncidentDef.Named("Aurora");
-		parms = new IncidentParms();
-		List<Map> allMaps = Current.Game.Maps;
-		allMaps.Shuffle();
-		foreach (Map map in allMaps)
+		private IncidentParms parms = (IncidentParms) null;
+		private IncidentWorker worker = (IncidentWorker) null;
+
+		public override bool IsPossible()
 		{
-			parms.target = (IIncidentTarget)(object)map;
-			if (worker.CanFireNow(parms))
+			this.worker = (IncidentWorker) new IncidentWorker_Aurora();
+			this.worker.def = IncidentDef.Named(nameof (Aurora));
+			this.parms = new IncidentParms();
+			List<Map> maps = Current.Game.Maps;
+			maps.Shuffle<Map>();
+			foreach (IIncidentTarget incidentTarget in maps)
 			{
-				return true;
+				this.parms.target = incidentTarget;
+				if (this.worker.CanFireNow(this.parms))
+					return true;
 			}
+			return false;
 		}
-		return false;
-	}
 
-	public override void TryExecute()
-	{
-		worker.TryExecute(parms);
+		public override void TryExecute() => this.worker.TryExecute(this.parms);
 	}
 }
