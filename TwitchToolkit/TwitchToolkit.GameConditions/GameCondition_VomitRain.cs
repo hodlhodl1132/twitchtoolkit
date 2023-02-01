@@ -10,6 +10,7 @@ public class GameCondition_VomitRain : GameCondition_Flashstorm
 
 	public override void ExposeData()
 	{
+		Scribe_Defs.Look(ref def, "def");
 		Scribe_Values.Look<IntVec2>(ref base.centerLocation, "centerLocation", default(IntVec2), false);
 		Scribe_Values.Look<int>(ref areaRadius, "areaRadius", 0, false);
 	}
