@@ -106,6 +106,11 @@ public class WebRequest_BeginGetResponse
 
 	private static void RespCallback(IAsyncResult asynchronousResult)
 	{
+		// We won't signal that we're done with the HTTP request within the
+		// "try" block as we still need to *read* the contents of the response,
+		// but we'll signal that the request is done should an error be raised
+		// at any point during the process.
+		
 		try
 		{
 			RequestState myRequestState = (RequestState)asynchronousResult.AsyncState;
@@ -119,17 +124,23 @@ public class WebRequest_BeginGetResponse
 			Helper.Log("WebException raised - callback! RespCallback");
 			Helper.Log("\n" + e2.Message);
 			Helper.Log($"\n{e2.Status}");
+
+			allDone.Set();
 		}
 		catch (Exception e)
 		{
 			Helper.Log("Exception raised!");
 			Helper.Log("Source : " + e.Source);
 			Helper.Log("Message : " + e.Message + " " + e.StackTrace);
+
+			allDone.Set();
 		}
 	}
 
 	private static void ReadCallBack(IAsyncResult asyncResult)
 	{
+		// We'll signal that the request is done when 
+		
 		try
 		{
 			RequestState myRequestState = (RequestState)asyncResult.AsyncState;
@@ -150,7 +161,6 @@ public class WebRequest_BeginGetResponse
 				}
 			}
 			responseStream.Close();
-			allDone.Set();
 		}
 		catch (WebException e2)
 		{
@@ -164,6 +174,8 @@ public class WebRequest_BeginGetResponse
 			Helper.Log("Source : " + e.Source);
 			Helper.Log("Message : " + e.Message + " " + e.StackTrace);
 		}
+
+		allDone.Set();
 	}
 
 	public static bool MyRemoteCertificateValidationCallback(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors)
